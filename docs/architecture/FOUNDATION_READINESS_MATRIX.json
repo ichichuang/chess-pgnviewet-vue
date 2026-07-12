@@ -1437,8 +1437,76 @@
     "node_modules/.vite remains because it contains a pre-existing vitest cache outside the authorized deps deletion path; node_modules/.vite/deps was removed in F1.",
     "F1 established the root .gitignore boundary and verified dependency, generated, environment, editor, browser, database, and local-tool exclusions before staging."
   ],
-  "plannedNextPhase": "F2_TOOLCHAIN_LINT_FORMAT_STATIC_GOVERNANCE_AND_PACKAGE_SCRIPT_CLOSURE",
-  "updatedAt": "2026-07-12T04:17:21.836Z",
+  "plannedNextPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
+  "updatedAt": "2026-07-12T04:30:22Z",
+  "f2aToolchainDesign": {
+    "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
+    "status": "DESIGN_RECORDED_NOT_IMPLEMENTED",
+    "report": ".ai/reports/F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH_REPORT.json",
+    "designAuthority": "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+    "selectedFutureToolOwners": {
+      "eslint": "language correctness, Vue/TypeScript linting, import restrictions, runtime-global restrictions",
+      "prettier": "formatting check and explicit write only",
+      "stylelint": "CSS and Vue style-block validity",
+      "knip": "unused dependencies, files, exports, and package-entry drift",
+      "projectGovernanceScanners": "dependency policy, architecture boundaries, raw visual values, forbidden mock data, and redacted secret patterns",
+      "pnpmAudit": "production dependency vulnerability reporting without automatic fixes"
+    },
+    "selectedFutureDependencies": {
+      "eslint": "10.7.0",
+      "@eslint/js": "10.0.1",
+      "typescript-eslint": "8.63.0",
+      "eslint-plugin-vue": "10.9.2",
+      "vue-eslint-parser": "10.4.1",
+      "eslint-config-prettier": "10.1.8",
+      "prettier": "3.9.5",
+      "stylelint": "17.14.0",
+      "stylelint-config-standard": "40.0.0",
+      "postcss-html": "1.8.1",
+      "knip": "6.26.0",
+      "npm-run-all2": "9.0.2"
+    },
+    "versionExceptions": [
+      {
+        "package": "typescript",
+        "currentSelectedVersion": "6.0.3",
+        "latestStableObserved": "7.0.2",
+        "reason": "current stable typescript-eslint supports TypeScript >=4.8.4 <6.1.0 and active Vue tooling policy gates TypeScript 7 adoption"
+      },
+      {
+        "package": "pnpm",
+        "currentSelectedVersion": "11.11.0",
+        "latestStableObserved": "11.12.0",
+        "reason": "F2A records a plan only and does not modify mise or packageManager baselines"
+      }
+    ],
+    "remainingImplementationStatus": {
+      "eslintConfig": "NOT_IMPLEMENTED",
+      "prettierConfig": "NOT_IMPLEMENTED",
+      "stylelintConfig": "NOT_IMPLEMENTED",
+      "knipConfig": "NOT_IMPLEMENTED",
+      "governanceScanners": "NOT_IMPLEMENTED",
+      "packageScripts": "NOT_IMPLEMENTED",
+      "dependenciesInstalled": false,
+      "automatedTestsAdded": false,
+      "productUiWorkStarted": false
+    },
+    "plannedImplementationSlices": [
+      "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
+      "F2C_MARKDOWN_FORMATTING_DEBT_REMEDIATION",
+      "F2D_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+      "F2E_STATIC_CHECK_INTEGRATION_AND_FAILURE_REMEDIATION",
+      "F2F_TOOLCHAIN_STATIC_GOVERNANCE_CLOSURE"
+    ],
+    "markdownWhitespaceDebtDisposition": "Existing trailing two-space Markdown hard-break debt is limited to line 3 of API_BOUNDARY_ADR.md, PERSISTENCE_ADR.md, SOURCE_ADAPTER_ADR.md, and TECH_STACK_DECISION.md; F2C should normalize it in a dedicated commit or use a narrow temporary exclusion removed in F2C.",
+    "evidenceReferences": [
+      "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+      ".ai/reports/F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH_REPORT.json",
+      "npm registry metadata queried 2026-07-12",
+      "Context7 official ESLint/typescript-eslint/Stylelint owner documentation"
+    ],
+    "nextRequiredPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION"
+  },
   "f1Baseline": {
     "phase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
     "finalVerdict": "F1_BASELINE_PUSH_PASS_READY_FOR_TOOLCHAIN_CLOSURE",
