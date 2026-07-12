@@ -63,8 +63,9 @@ The owner-approved pre-product sequence was:
 4. `P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION`
 
 Because F3C, F3D, and the dedicated gate review are accepted in the live target,
-P1A, P1B, and P1C have now been implemented and browser validated. The next
-required phase is `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`. This document
+P1A, P1B, P1C, and P1D have now been implemented and browser validated. The
+next required phase is
+`P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`. This document
 does not reopen F3C or F3D.
 
 The active P1 sequence is:
@@ -143,6 +144,30 @@ P1C is now implemented and browser validated:
   runtime remain unimplemented.
 - The next required phase is
   `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`.
+
+P1D is now implemented and browser validated:
+
+- Result:
+  `P1D_CANONICAL_ANNOTATION_PASS_READY_FOR_WORKSPACE_COMPLETION`.
+- Report:
+  `.ai/reports/P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `4d0860fb3bf4116c8e35f02258c66be7b145b405`.
+- `/pgnViewer/` now supports canonical board annotation runtime: arrows, square
+  outlines, filled highlights, six semantic colors, pointer/touch drawing,
+  duplicate removal, PGN-node ownership, variation isolation, YCDW parsing,
+  comment preservation, resize behavior, and cleanup.
+- The product route remains white-oriented in P1D because user-facing
+  orientation control belongs to the P1E workspace toolbar/panel phase. Black
+  orientation passed through the accepted board public contract in an external
+  temporary harness that imported the real target runtime.
+- Complete panels/toolbars/splitters, AI analysis, authentication, production
+  APIs, settings, persistence, live/replay import, and later P1 runtime remain
+  unimplemented.
+- The next required phase is
+  `P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`.
 
 ## P1 Product Migration Program
 
@@ -298,9 +323,9 @@ push unless an explicit later owner instruction authorizes that operation.
 
 `PRODUCT_UI_MIGRATION_READY` means F3C and F3D have passed, theme and Naive UI
 provider ownership are stable, static checks pass, narrow browser checks pass,
-local `HEAD` equals remote `main`, and the worktree is clean. P1A, P1B, and P1C
-have now passed; the active next phase is
-`P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`.
+local `HEAD` equals remote `main`, and the worktree is clean. P1A, P1B, P1C,
+and P1D have now passed; the active next phase is
+`P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`.
 
 `PRODUCT_COMPLETE_USABLE` means the canonical product runtime and user-facing
 product flows are implemented with real data and real APIs, the primary

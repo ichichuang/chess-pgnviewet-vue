@@ -226,7 +226,7 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
+            "nextRequiredPhase": "P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
             "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
             "p1aCanonicalApplicationShell": {
@@ -248,6 +248,31 @@
                     "authentication",
                     "production APIs",
                     "settings"
+                ]
+            },
+            "p1dCanonicalAnnotationRuntime": {
+                "status": "IMPLEMENTED_BROWSER_VALIDATED",
+                "phase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
+                "report": ".ai/reports/P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION_REPORT.json",
+                "baseline": "docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md",
+                "implementationCommit": "4d0860fb3bf4116c8e35f02258c66be7b145b405",
+                "implementationPush": "4d0860fb3bf4116c8e35f02258c66be7b145b405",
+                "route": "/pgnViewer/",
+                "browserValidation": "PASS: product route white orientation and external board-contract black orientation validated in installed Chrome 149.",
+                "annotationRuntime": "PASS: arrows, square outlines, highlights, six semantic colors, duplicate removal, gestures, touch, resize, and cleanup validated.",
+                "nodeAssociation": "PASS: committed annotation state belongs to the intended PGN node and restores on return.",
+                "variationIsolation": "PASS: mainline and side-variation annotations remain isolated.",
+                "productRouteOrientationStatus": "WHITE_ORIENTED_BY_DESIGN_IN_P1D",
+                "blackOrientationBoardContract": "PASS_THROUGH_EXTERNAL_TEMPORARY_HARNESS",
+                "nextRequiredPhase": "P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION",
+                "laterCapabilitiesRemainUnimplemented": [
+                    "complete workspace panels, toolbars, splitters, undo/redo, and clear-all controls",
+                    "AI analysis and Web Workers",
+                    "authentication",
+                    "production APIs",
+                    "settings",
+                    "cloud persistence and export UI",
+                    "live/replay/tournament runtime expansion"
                 ]
             }
         },

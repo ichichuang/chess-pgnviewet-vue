@@ -276,6 +276,36 @@ Implementation result:
 - Next phase:
   `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`.
 
+## P1D
+
+Implementation result:
+
+- Status:
+  `P1D_CANONICAL_ANNOTATION_PASS_READY_FOR_WORKSPACE_COMPLETION`.
+- Report:
+  `.ai/reports/P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `4d0860fb3bf4116c8e35f02258c66be7b145b405`.
+- `/pgnViewer/` now supports canonical board annotation runtime over the P1B
+  board and P1C PGN owner: arrows, square outlines, filled highlights, six
+  semantic annotation colors, pointer/touch drawing, duplicate-toggle removal,
+  outside-release cancellation, PGN-node ownership, variation isolation, YCDW
+  comment-tag parsing, unknown-field preservation, and cleanup.
+- Product-route validation passed in white orientation from a temporary
+  production build. Black orientation passed through the actual board public
+  contract in an external temporary Vite harness that imported the target board,
+  annotation, PGN, token, and provider runtime directly.
+- Product-facing orientation control remains deferred to P1E; P1D adds no
+  permanent debug hook, route parameter, DOM command, validation route, browser
+  dependency, or automated test infrastructure.
+- Complete panels/toolbars/splitters, clear/undo controls, AI analysis,
+  authentication, production APIs, persistence, settings, live/replay import,
+  and later P1 runtime remain unimplemented.
+- Next phase:
+  `P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`.
+
 ## Later Phase Dependencies
 
 P1B depends on the P1A shell. It is implemented and must not be expanded in
