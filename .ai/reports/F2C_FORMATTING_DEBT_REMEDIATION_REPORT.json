@@ -1,0 +1,991 @@
+{
+    "phase": "F2C_FORMATTING_DEBT_REMEDIATION",
+    "attemptHistory": [
+        {
+            "phase": "F2CR_EMBEDDED_CODE_FORMATTING_POLICY_CORRECTION_AND_F2C_CLOSURE",
+            "attemptedAt": "2026-07-12T06:33:46.889Z",
+            "blockedF2CAttempt": {
+                "result": "STOPPED_BEFORE_COMMIT",
+                "affectedMarkdownPaths": [
+                    "docs/product/WORKSPACE_MODES.md",
+                    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+                    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+                    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+                    "docs/ui/THEME_SYSTEM_SPEC.md"
+                ],
+                "mismatchCategory": "Prettier default embedded-language formatting changed governed fenced-code block contents."
+            },
+            "cleanContentRestoration": {
+                "method": "accepted HEAD object snapshot copied from external operating-system temporary directory",
+                "sourceCommit": "d9df97ce81077fba50b799fafe6a9de4f1195af9",
+                "restoredFileCount": 30,
+                "byteEqualToAcceptedHeadBeforeReformat": true
+            },
+            "policyCorrection": {
+                "prettierOption": "embeddedLanguageFormatting",
+                "configuredValue": "off",
+                "validation": "effective config resolved to off for blocked Markdown documents and representative Markdown documents"
+            }
+        }
+    ],
+    "startedAt": "2026-07-12T06:33:46.889Z",
+    "completedAt": "2026-07-12T06:38:06.944Z",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "sourceDirectories": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+        "/Users/cc/Work/neobv/Chess/pgnViewer",
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer"
+    ],
+    "authorityFilesRead": [
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        ".ai/reports/F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH_REPORT.json",
+        ".ai/reports/F2BR2_PNPM_LOCKFILE_FORMAT_OWNERSHIP_AND_SCOPE_RECONCILIATION_REPORT.json",
+        ".ai/reports/F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION_REPORT.json",
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+        "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        ".prettierignore",
+        "prettier.config.mjs",
+        "package.json",
+        "pnpm-lock.yaml"
+    ],
+    "safetyGate": {
+        "targetResolved": true,
+        "targetIsSymlink": false,
+        "gitRoot": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "branch": "main",
+        "authorizedOrigin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+        "acceptedBaseline": "3919fdde60bbec908d3252278b5a560460cf0e8c",
+        "initialDirtySetMatchedExactThirty": true,
+        "initialIndexEmpty": true,
+        "activeTargetWriterProcess": false,
+        "evidenceSourceTrackedModification": false
+    },
+    "prerequisiteVerdicts": {
+        "f2a": "F2A_TOOLCHAIN_DESIGN_PASS_READY_FOR_IMPLEMENTATION",
+        "f2br2": "F2BR2_FORMATTING_SCOPE_PASS_READY_TO_RESUME_F2B",
+        "f2b": "F2B_TOOLCHAIN_CONFIG_PASS_READY_FOR_FORMATTING_DEBT_REMEDIATION"
+    },
+    "prePhaseState": {
+        "head": "3919fdde60bbec908d3252278b5a560460cf0e8c",
+        "branch": "main",
+        "dirtyDebtFileCount": 30,
+        "indexEmpty": true
+    },
+    "blockedAttemptState": {
+        "currentDirtyMatchedOldPrettierOutput": true,
+        "blockedAttemptFiles": [
+            "docs/product/WORKSPACE_MODES.md",
+            "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+            "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+            "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+            "docs/ui/THEME_SYSTEM_SPEC.md"
+        ],
+        "mismatchCategory": "default embedded-language formatting changed fenced-code contents"
+    },
+    "cleanContentRestoration": {
+        "method": "external /tmp HEAD snapshot copied over exact 30 paths",
+        "snapshotDirectory": "/tmp/chess-pgnviewer-vue-f2cr.5QTYBT/head-clean",
+        "restoredFileCount": 30,
+        "byteEqualToAcceptedHeadBeforeReformat": true
+    },
+    "remoteState": {
+        "beforeRemediationPush": "3919fdde60bbec908d3252278b5a560460cf0e8c",
+        "afterRemediationPush": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "githubCommitsPageObserved": true,
+        "currentLocalHead": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "currentRemoteMain": "75a355e3dd152f0c80319e4a71e6a8460284acf2"
+    },
+    "debtBaselineIntegrity": {
+        "temporaryDebtFileCount": 30,
+        "initialReportedFileCount": 45,
+        "knownFourLineDebtCount": 4,
+        "additionalDebtCount": 26,
+        "permanentExclusions": [
+            {
+                "path": ".ai/reports/",
+                "reason": "Historical machine reports are immutable evidence validated outside Prettier ownership.",
+                "validationOwner": "machine-report-governance"
+            },
+            {
+                "path": "pnpm-lock.yaml",
+                "reason": "pnpm-lock.yaml is generated and structurally owned exclusively by the project-pinned pnpm package manager. Prettier must never format, rewrite, normalize, or directly validate pnpm-lock.yaml. Manual editing remains forbidden; integrity is governed by pnpm version pinning, package-manager exclusivity checks, manifest-to-lockfile review, lockfile-diff review after authorized dependency operations, dependency audits, frozen-lockfile validation in later appropriate phases, and Git review.",
+                "validationOwner": "package-manager-and-lockfile-governance"
+            }
+        ]
+    },
+    "temporaryDebtFiles": [
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/PERSISTENCE_ADR.md",
+        "docs/architecture/SOURCE_ADAPTER_ADR.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+        "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+        "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+        "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+        "docs/migration/API_AUTHORITY_MAP.json",
+        "docs/migration/ASSET_INVENTORY.json",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+        "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+        "docs/migration/CAPABILITY_MATRIX.json",
+        "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+        "docs/migration/DOCUMENT_INVENTORY.json",
+        "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+        "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/product/WORKSPACE_MODES.md",
+        "docs/ui/ACCESSIBILITY_SPEC.md",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+        "docs/ui/I18N_SPEC.md",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+        "docs/ui/PAGE_STYLE_SPEC.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+        "docs/ui/THEME_SYSTEM_SPEC.md",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+    ],
+    "preFormatHashes": {
+        "docs/architecture/API_BOUNDARY_ADR.md": "5d1f27fc4c965069d6afb23f10484e2f6159f9bd90f7db25db4281a32e12e9e9",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json": "734afc53b7b9fad5681e3d7c69b3c1c00723ec1938a995e1421d56a0a4be8476",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md": "00f50cd5c28cb51cd07ddeff90a30e8fde4fa9a0e402b6cdd4f0ea6c973ad099",
+        "docs/architecture/PERSISTENCE_ADR.md": "3acc927b791b73ec621ae8eac49a853c9c58e6c67458a03b59aadf269d6b2f70",
+        "docs/architecture/SOURCE_ADAPTER_ADR.md": "d11d0d1cf1411822778a430931a550ce0de677942805f247bfb23026f6731320",
+        "docs/architecture/TECH_STACK_DECISION.md": "af2f43451a0636cc15e8ddc6b583da5044c653069cd0b6b5089cbc3643e8cfd7",
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md": "aae6d8251a5c7701e27939f99de61946b413f61a1407c13f2dba349d82861792",
+        "docs/archive/historical-evidence/API_MASTER_SUMMARY.json": "8c1e6c5b6ae2d918beed5b4b023bd1acbb290912b756991383a05859636a779c",
+        "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json": "745286ef4983e7bc6e9e3b9782a3141d8f2f0e7238e0ad3f8ea97e58ad6cfb87",
+        "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json": "88b8234c5f39d5e72473553d3ae0735bd7f5f3b5f83027049f4f6f2c4b6a25bb",
+        "docs/migration/API_AUTHORITY_MAP.json": "6ab3392b058008da4c1311eb57f5c50e5f1bb1e680ac09e1f851efa79568ee69",
+        "docs/migration/ASSET_INVENTORY.json": "18f90bf504e04f52ed8e8b5896b817f451eab171dd41e4d09d83f1922f0639fc",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json": "456d842d7422bc0bd5fff937fb407647951c502ea8bf6121cfe8ab1a42bef095",
+        "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json": "3996437b33081a8ecdd72ab5af7db606fcef77e7b4209c07f64620aaa84b8eb0",
+        "docs/migration/CAPABILITY_MATRIX.json": "75d35ddb501b7ca0159f4e4fc03ef436bce32d71f87018f96e863febb2b4ee81",
+        "docs/migration/DEPENDENCY_VERSION_BASELINE.json": "de83f08ebb6ccb70d72a03d6e93293cbdda4d17089aad95f27fd37e5f149f7e9",
+        "docs/migration/DOCUMENT_INVENTORY.json": "8c1902e634bd33ac287971c01c091c0a71bc566fa08169392348cb0bedbda24c",
+        "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json": "06ee53d68b4ac95556ee1959e223e03b32e04c659efd3d41627fd1fb69d2a43a",
+        "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json": "485ab30667ae43c5c3702940ce23505bf42fbcb6533c1ec7a2e4c9c25f6e0fef",
+        "docs/product/PRODUCT_DEFINITION.md": "a84601c31dcfe09f448e6540655d8ce023b20139f5e666cede6105cfe5ebf7d9",
+        "docs/product/WORKSPACE_MODES.md": "3e9a3a810c907c7029898f82b99bcdd46cfb0a71e2e639fedb576efbcb5a66ae",
+        "docs/ui/ACCESSIBILITY_SPEC.md": "b761e7ec674f3eab0889336ddf3ca8f428bac1424cbf9ff16c3f0cb07ff4f9fb",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md": "3854398d82b064ff178b06f03ddafad10702406fdc125ad21ccd6dbbbea4cc85",
+        "docs/ui/I18N_SPEC.md": "0d6c11a6c93ccf7d2a415522a255da66b65524bc214688d37f9d4892f3b6ec34",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md": "45f8ffc89d230eba19737a3e32920d926ebfb7cfa0c557f9a6806faf7ccb356a",
+        "docs/ui/PAGE_STYLE_SPEC.md": "09bc4ca698d1f442c4e801e400749659be4d65e0ec4b80fe8342125b1d67f69b",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md": "674987c712de96315eb56e1ae2e075a61bfc1c1aa4464b9311d84d55843a4270",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md": "fe23bdf470dfb1dd81f00bdff2f3aa8e2fa263e4bbddeb1de4be3e78974a925c",
+        "docs/ui/THEME_SYSTEM_SPEC.md": "c6608b0e85181bc187cf5916b3fdd3713d02d80e4e19ac593fb8a38461dc76c9",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md": "073342b37545e29c93cb1d7dda0663d55c8d3cef2e04c675c6fe9aa9fa7f597a"
+    },
+    "preFormatSemanticSnapshots": {
+        "jsonFileCount": 13,
+        "markdownFileCount": 17,
+        "storedOutsideRepository": true,
+        "completeSourceDocumentsOmittedFromReport": true
+    },
+    "embeddedCodeFormattingPolicy": {
+        "prettierOption": "embeddedLanguageFormatting",
+        "configuredValue": "off",
+        "markdownStructureOwner": "prettier",
+        "fencedCodeContentOwner": "document-and-domain-governance",
+        "validationRule": "byte-for-byte fenced-code preservation is required for Markdown formatting remediation",
+        "blockedAttemptFiles": [
+            "docs/product/WORKSPACE_MODES.md",
+            "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+            "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+            "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+            "docs/ui/THEME_SYSTEM_SPEC.md"
+        ]
+    },
+    "formatCommand": {
+        "command": "mise exec -- pnpm exec prettier --write --ignore-path /dev/null docs/architecture/API_BOUNDARY_ADR.md docs/architecture/FOUNDATION_READINESS_MATRIX.json docs/architecture/FRONTEND_ARCHITECTURE_RFC.md docs/architecture/PERSISTENCE_ADR.md docs/architecture/SOURCE_ADAPTER_ADR.md docs/architecture/TECH_STACK_DECISION.md docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md docs/archive/historical-evidence/API_MASTER_SUMMARY.json docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json docs/migration/API_AUTHORITY_MAP.json docs/migration/ASSET_INVENTORY.json docs/migration/CANONICAL_RUNTIME_CLOSURE.json docs/migration/CANONICAL_TOOLCHAIN_PARITY.json docs/migration/CAPABILITY_MATRIX.json docs/migration/DEPENDENCY_VERSION_BASELINE.json docs/migration/DOCUMENT_INVENTORY.json docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json docs/product/PRODUCT_DEFINITION.md docs/product/WORKSPACE_MODES.md docs/ui/ACCESSIBILITY_SPEC.md docs/ui/COMPONENT_SYSTEM_SPEC.md docs/ui/I18N_SPEC.md docs/ui/LAYOUT_SYSTEM_SPEC.md docs/ui/PAGE_STYLE_SPEC.md docs/ui/PERSISTENCE_RECOVERY_SPEC.md docs/ui/RESPONSIVE_SCREEN_SPEC.md docs/ui/THEME_SYSTEM_SPEC.md docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+    },
+    "formattedFiles": [
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/PERSISTENCE_ADR.md",
+        "docs/architecture/SOURCE_ADAPTER_ADR.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+        "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+        "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+        "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+        "docs/migration/API_AUTHORITY_MAP.json",
+        "docs/migration/ASSET_INVENTORY.json",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+        "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+        "docs/migration/CAPABILITY_MATRIX.json",
+        "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+        "docs/migration/DOCUMENT_INVENTORY.json",
+        "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+        "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/product/WORKSPACE_MODES.md",
+        "docs/ui/ACCESSIBILITY_SPEC.md",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+        "docs/ui/I18N_SPEC.md",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+        "docs/ui/PAGE_STYLE_SPEC.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+        "docs/ui/THEME_SYSTEM_SPEC.md",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+    ],
+    "unexpectedChangeAudit": {
+        "unexpectedModifiedPaths": [],
+        "unexpectedCreatedPaths": [],
+        "unexpectedDeletedPaths": [],
+        "statusAfterFormat": "only exact 30 debt files and prettier.config.mjs changed"
+    },
+    "jsonSemanticValidation": {
+        "result": "PASS",
+        "files": {
+            "docs/architecture/FOUNDATION_READINESS_MATRIX.json": "PASS",
+            "docs/archive/historical-evidence/API_MASTER_SUMMARY.json": "PASS",
+            "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json": "PASS",
+            "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json": "PASS",
+            "docs/migration/API_AUTHORITY_MAP.json": "PASS",
+            "docs/migration/ASSET_INVENTORY.json": "PASS",
+            "docs/migration/CANONICAL_RUNTIME_CLOSURE.json": "PASS",
+            "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json": "PASS",
+            "docs/migration/CAPABILITY_MATRIX.json": "PASS",
+            "docs/migration/DEPENDENCY_VERSION_BASELINE.json": "PASS",
+            "docs/migration/DOCUMENT_INVENTORY.json": "PASS",
+            "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json": "PASS",
+            "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json": "PASS"
+        }
+    },
+    "markdownSemanticValidation": {
+        "result": "PASS",
+        "files": {
+            "docs/architecture/API_BOUNDARY_ADR.md": "PASS",
+            "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md": "PASS",
+            "docs/architecture/PERSISTENCE_ADR.md": "PASS",
+            "docs/architecture/SOURCE_ADAPTER_ADR.md": "PASS",
+            "docs/architecture/TECH_STACK_DECISION.md": "PASS",
+            "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md": "PASS",
+            "docs/product/PRODUCT_DEFINITION.md": "PASS",
+            "docs/product/WORKSPACE_MODES.md": "PASS",
+            "docs/ui/ACCESSIBILITY_SPEC.md": "PASS",
+            "docs/ui/COMPONENT_SYSTEM_SPEC.md": "PASS",
+            "docs/ui/I18N_SPEC.md": "PASS",
+            "docs/ui/LAYOUT_SYSTEM_SPEC.md": "PASS",
+            "docs/ui/PAGE_STYLE_SPEC.md": "PASS",
+            "docs/ui/PERSISTENCE_RECOVERY_SPEC.md": "PASS",
+            "docs/ui/RESPONSIVE_SCREEN_SPEC.md": "PASS",
+            "docs/ui/THEME_SYSTEM_SPEC.md": "PASS",
+            "docs/ui/UI_ACCEPTANCE_CHECKLIST.md": "PASS"
+        }
+    },
+    "fencedCodeByteEqualityValidation": {
+        "result": "PASS",
+        "files": {
+            "docs/architecture/API_BOUNDARY_ADR.md": {
+                "result": "PASS",
+                "blockCount": 0,
+                "before": [],
+                "after": []
+            },
+            "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md": {
+                "result": "PASS",
+                "blockCount": 1,
+                "before": [
+                    {
+                        "language": "text",
+                        "sha256": "803aa620f83f3a6aa79739bb62c7b814cb4fa355a0c617622fbe06e447db0f61"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "text",
+                        "sha256": "803aa620f83f3a6aa79739bb62c7b814cb4fa355a0c617622fbe06e447db0f61"
+                    }
+                ]
+            },
+            "docs/architecture/PERSISTENCE_ADR.md": {
+                "result": "PASS",
+                "blockCount": 0,
+                "before": [],
+                "after": []
+            },
+            "docs/architecture/SOURCE_ADAPTER_ADR.md": {
+                "result": "PASS",
+                "blockCount": 0,
+                "before": [],
+                "after": []
+            },
+            "docs/architecture/TECH_STACK_DECISION.md": {
+                "result": "PASS",
+                "blockCount": 0,
+                "before": [],
+                "after": []
+            },
+            "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md": {
+                "result": "PASS",
+                "blockCount": 0,
+                "before": [],
+                "after": []
+            },
+            "docs/product/PRODUCT_DEFINITION.md": {
+                "result": "PASS",
+                "blockCount": 1,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "5cc6d5853ec34e2cd9d11dd0771ab02877ae9543605270e75b93454df8452357"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "5cc6d5853ec34e2cd9d11dd0771ab02877ae9543605270e75b93454df8452357"
+                    }
+                ]
+            },
+            "docs/product/WORKSPACE_MODES.md": {
+                "result": "PASS",
+                "blockCount": 1,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "82b78e41a96c0e27d8185a87a605a74be9c0bb16445990217f01c256536afa22"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "82b78e41a96c0e27d8185a87a605a74be9c0bb16445990217f01c256536afa22"
+                    }
+                ]
+            },
+            "docs/ui/ACCESSIBILITY_SPEC.md": {
+                "result": "PASS",
+                "blockCount": 1,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "6d0a705bd45fb894aa85a057daee62f5ce3b60a1bfda4f2ec15a9d03f45bae3b"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "6d0a705bd45fb894aa85a057daee62f5ce3b60a1bfda4f2ec15a9d03f45bae3b"
+                    }
+                ]
+            },
+            "docs/ui/COMPONENT_SYSTEM_SPEC.md": {
+                "result": "PASS",
+                "blockCount": 1,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "87356a06e1dd0036e722cea18b462d174a3e5f191d7c192aa2bf680caf5f2d56"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "87356a06e1dd0036e722cea18b462d174a3e5f191d7c192aa2bf680caf5f2d56"
+                    }
+                ]
+            },
+            "docs/ui/I18N_SPEC.md": {
+                "result": "PASS",
+                "blockCount": 3,
+                "before": [
+                    {
+                        "language": "",
+                        "sha256": "f1f4f9857290b89eecc33e03a5a2e775a7c344bac8d2dc8ff3d503c56135885a"
+                    },
+                    {
+                        "language": "vue",
+                        "sha256": "460d622be755f69064dcc1e999a8a190cf83c6cae231d6ba60cecee5a70d6b49"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "7d50b23a6fda006eb17608f01903527f5892a7e9e47a4271298f5758a5b26547"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "",
+                        "sha256": "f1f4f9857290b89eecc33e03a5a2e775a7c344bac8d2dc8ff3d503c56135885a"
+                    },
+                    {
+                        "language": "vue",
+                        "sha256": "460d622be755f69064dcc1e999a8a190cf83c6cae231d6ba60cecee5a70d6b49"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "7d50b23a6fda006eb17608f01903527f5892a7e9e47a4271298f5758a5b26547"
+                    }
+                ]
+            },
+            "docs/ui/LAYOUT_SYSTEM_SPEC.md": {
+                "result": "PASS",
+                "blockCount": 4,
+                "before": [
+                    {
+                        "language": "css",
+                        "sha256": "5170d80c46509563e4d710504f02a3ddf509ea39d987f59b3c20b704b0c06cba"
+                    },
+                    {
+                        "language": "",
+                        "sha256": "e3244d2f28d0043e0e661c7899a6ed204dccb468faefbdfaa4452f22ef56c3dc"
+                    },
+                    {
+                        "language": "vue",
+                        "sha256": "19a3bd4ea074d489bc598c5ff36069f855877a3c3e54431007b01bb334d83c56"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "583d12e4d1ec6dc9f1b5afda5638a2144d541cbf34f1430270545bc03528393a"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "css",
+                        "sha256": "5170d80c46509563e4d710504f02a3ddf509ea39d987f59b3c20b704b0c06cba"
+                    },
+                    {
+                        "language": "",
+                        "sha256": "e3244d2f28d0043e0e661c7899a6ed204dccb468faefbdfaa4452f22ef56c3dc"
+                    },
+                    {
+                        "language": "vue",
+                        "sha256": "19a3bd4ea074d489bc598c5ff36069f855877a3c3e54431007b01bb334d83c56"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "583d12e4d1ec6dc9f1b5afda5638a2144d541cbf34f1430270545bc03528393a"
+                    }
+                ]
+            },
+            "docs/ui/PAGE_STYLE_SPEC.md": {
+                "result": "PASS",
+                "blockCount": 1,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "6b541ce060030be5b7ba548d52b87824d480878c3d77b63d03e0886d861cf95d"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "6b541ce060030be5b7ba548d52b87824d480878c3d77b63d03e0886d861cf95d"
+                    }
+                ]
+            },
+            "docs/ui/PERSISTENCE_RECOVERY_SPEC.md": {
+                "result": "PASS",
+                "blockCount": 2,
+                "before": [
+                    {
+                        "language": "ts",
+                        "sha256": "9367cea06555f011af8da6946ef1bb9310d1c4364684cacd233511dd7d90972b"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "159172947a91cb3c452d2f34900cf47a67bc3549242551bfa2f52abf45348569"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "ts",
+                        "sha256": "9367cea06555f011af8da6946ef1bb9310d1c4364684cacd233511dd7d90972b"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "159172947a91cb3c452d2f34900cf47a67bc3549242551bfa2f52abf45348569"
+                    }
+                ]
+            },
+            "docs/ui/RESPONSIVE_SCREEN_SPEC.md": {
+                "result": "PASS",
+                "blockCount": 4,
+                "before": [
+                    {
+                        "language": "css",
+                        "sha256": "f79676bcdfbb09a71a68793356ab6047270bc257864f6eeb2ff1f4daf4950d2a"
+                    },
+                    {
+                        "language": "css",
+                        "sha256": "93924f843caae7ad6f84be036f14bc6d141fec6a23f75132b5c12d0de456eca7"
+                    },
+                    {
+                        "language": "",
+                        "sha256": "c9e02f37d6764cde507bd9c1baba9889d0351450cb209f75c9f7c7cd9d32bda8"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "0ef94f5a1c903d2c787406bf4ac248831acc5b0cc39455accefe3393c7ebe44a"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "css",
+                        "sha256": "f79676bcdfbb09a71a68793356ab6047270bc257864f6eeb2ff1f4daf4950d2a"
+                    },
+                    {
+                        "language": "css",
+                        "sha256": "93924f843caae7ad6f84be036f14bc6d141fec6a23f75132b5c12d0de456eca7"
+                    },
+                    {
+                        "language": "",
+                        "sha256": "c9e02f37d6764cde507bd9c1baba9889d0351450cb209f75c9f7c7cd9d32bda8"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "0ef94f5a1c903d2c787406bf4ac248831acc5b0cc39455accefe3393c7ebe44a"
+                    }
+                ]
+            },
+            "docs/ui/THEME_SYSTEM_SPEC.md": {
+                "result": "PASS",
+                "blockCount": 1,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "a7eb33847cbd60f3a54b5df76dab5f0d22ef707660016bbf06805e14e1b9f7f7"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "a7eb33847cbd60f3a54b5df76dab5f0d22ef707660016bbf06805e14e1b9f7f7"
+                    }
+                ]
+            },
+            "docs/ui/UI_ACCEPTANCE_CHECKLIST.md": {
+                "result": "PASS",
+                "blockCount": 1,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "d8ec68f9223cffa5e5419ec9ed64d8a2e34cba476a97bed9cdfa15cb5f11650f"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "d8ec68f9223cffa5e5419ec9ed64d8a2e34cba476a97bed9cdfa15cb5f11650f"
+                    }
+                ]
+            }
+        }
+    },
+    "previouslyBlockedFilesValidation": {
+        "docs/product/WORKSPACE_MODES.md": {
+            "blockCount": 1,
+            "equal": true,
+            "before": [
+                {
+                    "language": "json",
+                    "sha256": "82b78e41a96c0e27d8185a87a605a74be9c0bb16445990217f01c256536afa22"
+                }
+            ],
+            "after": [
+                {
+                    "language": "json",
+                    "sha256": "82b78e41a96c0e27d8185a87a605a74be9c0bb16445990217f01c256536afa22"
+                }
+            ]
+        },
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md": {
+            "blockCount": 4,
+            "equal": true,
+            "before": [
+                {
+                    "language": "css",
+                    "sha256": "5170d80c46509563e4d710504f02a3ddf509ea39d987f59b3c20b704b0c06cba"
+                },
+                {
+                    "language": "",
+                    "sha256": "e3244d2f28d0043e0e661c7899a6ed204dccb468faefbdfaa4452f22ef56c3dc"
+                },
+                {
+                    "language": "vue",
+                    "sha256": "19a3bd4ea074d489bc598c5ff36069f855877a3c3e54431007b01bb334d83c56"
+                },
+                {
+                    "language": "json",
+                    "sha256": "583d12e4d1ec6dc9f1b5afda5638a2144d541cbf34f1430270545bc03528393a"
+                }
+            ],
+            "after": [
+                {
+                    "language": "css",
+                    "sha256": "5170d80c46509563e4d710504f02a3ddf509ea39d987f59b3c20b704b0c06cba"
+                },
+                {
+                    "language": "",
+                    "sha256": "e3244d2f28d0043e0e661c7899a6ed204dccb468faefbdfaa4452f22ef56c3dc"
+                },
+                {
+                    "language": "vue",
+                    "sha256": "19a3bd4ea074d489bc598c5ff36069f855877a3c3e54431007b01bb334d83c56"
+                },
+                {
+                    "language": "json",
+                    "sha256": "583d12e4d1ec6dc9f1b5afda5638a2144d541cbf34f1430270545bc03528393a"
+                }
+            ]
+        },
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md": {
+            "blockCount": 2,
+            "equal": true,
+            "before": [
+                {
+                    "language": "ts",
+                    "sha256": "9367cea06555f011af8da6946ef1bb9310d1c4364684cacd233511dd7d90972b"
+                },
+                {
+                    "language": "json",
+                    "sha256": "159172947a91cb3c452d2f34900cf47a67bc3549242551bfa2f52abf45348569"
+                }
+            ],
+            "after": [
+                {
+                    "language": "ts",
+                    "sha256": "9367cea06555f011af8da6946ef1bb9310d1c4364684cacd233511dd7d90972b"
+                },
+                {
+                    "language": "json",
+                    "sha256": "159172947a91cb3c452d2f34900cf47a67bc3549242551bfa2f52abf45348569"
+                }
+            ]
+        },
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md": {
+            "blockCount": 4,
+            "equal": true,
+            "before": [
+                {
+                    "language": "css",
+                    "sha256": "f79676bcdfbb09a71a68793356ab6047270bc257864f6eeb2ff1f4daf4950d2a"
+                },
+                {
+                    "language": "css",
+                    "sha256": "93924f843caae7ad6f84be036f14bc6d141fec6a23f75132b5c12d0de456eca7"
+                },
+                {
+                    "language": "",
+                    "sha256": "c9e02f37d6764cde507bd9c1baba9889d0351450cb209f75c9f7c7cd9d32bda8"
+                },
+                {
+                    "language": "json",
+                    "sha256": "0ef94f5a1c903d2c787406bf4ac248831acc5b0cc39455accefe3393c7ebe44a"
+                }
+            ],
+            "after": [
+                {
+                    "language": "css",
+                    "sha256": "f79676bcdfbb09a71a68793356ab6047270bc257864f6eeb2ff1f4daf4950d2a"
+                },
+                {
+                    "language": "css",
+                    "sha256": "93924f843caae7ad6f84be036f14bc6d141fec6a23f75132b5c12d0de456eca7"
+                },
+                {
+                    "language": "",
+                    "sha256": "c9e02f37d6764cde507bd9c1baba9889d0351450cb209f75c9f7c7cd9d32bda8"
+                },
+                {
+                    "language": "json",
+                    "sha256": "0ef94f5a1c903d2c787406bf4ac248831acc5b0cc39455accefe3393c7ebe44a"
+                }
+            ]
+        },
+        "docs/ui/THEME_SYSTEM_SPEC.md": {
+            "blockCount": 1,
+            "equal": true,
+            "before": [
+                {
+                    "language": "json",
+                    "sha256": "a7eb33847cbd60f3a54b5df76dab5f0d22ef707660016bbf06805e14e1b9f7f7"
+                }
+            ],
+            "after": [
+                {
+                    "language": "json",
+                    "sha256": "a7eb33847cbd60f3a54b5df76dab5f0d22ef707660016bbf06805e14e1b9f7f7"
+                }
+            ]
+        }
+    },
+    "knownFourLineDebtRemediation": {
+        "docs/architecture/API_BOUNDARY_ADR.md": {
+            "before": [
+                {
+                    "line": 3,
+                    "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                }
+            ],
+            "after": [
+                {
+                    "line": 3,
+                    "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                }
+            ],
+            "proseEqual": true,
+            "headingsEqual": true
+        },
+        "docs/architecture/PERSISTENCE_ADR.md": {
+            "before": [
+                {
+                    "line": 3,
+                    "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                }
+            ],
+            "after": [
+                {
+                    "line": 3,
+                    "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                }
+            ],
+            "proseEqual": true,
+            "headingsEqual": true
+        },
+        "docs/architecture/SOURCE_ADAPTER_ADR.md": {
+            "before": [
+                {
+                    "line": 3,
+                    "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                }
+            ],
+            "after": [
+                {
+                    "line": 3,
+                    "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                }
+            ],
+            "proseEqual": true,
+            "headingsEqual": true
+        },
+        "docs/architecture/TECH_STACK_DECISION.md": {
+            "before": [
+                {
+                    "line": 3,
+                    "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                }
+            ],
+            "after": [
+                {
+                    "line": 3,
+                    "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                }
+            ],
+            "proseEqual": true,
+            "headingsEqual": true
+        }
+    },
+    "additionalDebtRemediation": {
+        "result": "PASS",
+        "files": [
+            "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+            "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+            "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+            "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+            "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+            "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+            "docs/migration/API_AUTHORITY_MAP.json",
+            "docs/migration/ASSET_INVENTORY.json",
+            "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+            "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+            "docs/migration/CAPABILITY_MATRIX.json",
+            "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+            "docs/migration/DOCUMENT_INVENTORY.json",
+            "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+            "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+            "docs/product/PRODUCT_DEFINITION.md",
+            "docs/product/WORKSPACE_MODES.md",
+            "docs/ui/ACCESSIBILITY_SPEC.md",
+            "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+            "docs/ui/I18N_SPEC.md",
+            "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+            "docs/ui/PAGE_STYLE_SPEC.md",
+            "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+            "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+            "docs/ui/THEME_SYSTEM_SPEC.md",
+            "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+        ]
+    },
+    "prettierConfigurationUpdate": {
+        "path": "prettier.config.mjs",
+        "embeddedLanguageFormatting": "off",
+        "effectiveConfigValidated": true
+    },
+    "prettierIgnoreUpdate": {
+        "temporaryDebtSectionRemoved": true,
+        "temporaryDebtEntriesRemaining": [],
+        "permanentExclusionsRetained": true
+    },
+    "permanentExclusions": [
+        ".ai/reports/",
+        "pnpm-lock.yaml"
+    ],
+    "temporaryExclusionsRemaining": [],
+    "fullPrettierValidation": {
+        "command": "mise exec -- pnpm run format:check",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "independentDebtFileFormattingValidation": {
+        "command": "mise exec -- pnpm exec prettier --check --ignore-path /dev/null docs/architecture/API_BOUNDARY_ADR.md docs/architecture/FOUNDATION_READINESS_MATRIX.json docs/architecture/FRONTEND_ARCHITECTURE_RFC.md docs/architecture/PERSISTENCE_ADR.md docs/architecture/SOURCE_ADAPTER_ADR.md docs/architecture/TECH_STACK_DECISION.md docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md docs/archive/historical-evidence/API_MASTER_SUMMARY.json docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json docs/migration/API_AUTHORITY_MAP.json docs/migration/ASSET_INVENTORY.json docs/migration/CANONICAL_RUNTIME_CLOSURE.json docs/migration/CANONICAL_TOOLCHAIN_PARITY.json docs/migration/CAPABILITY_MATRIX.json docs/migration/DEPENDENCY_VERSION_BASELINE.json docs/migration/DOCUMENT_INVENTORY.json docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json docs/product/PRODUCT_DEFINITION.md docs/product/WORKSPACE_MODES.md docs/ui/ACCESSIBILITY_SPEC.md docs/ui/COMPONENT_SYSTEM_SPEC.md docs/ui/I18N_SPEC.md docs/ui/LAYOUT_SYSTEM_SPEC.md docs/ui/PAGE_STYLE_SPEC.md docs/ui/PERSISTENCE_RECOVERY_SPEC.md docs/ui/RESPONSIVE_SCREEN_SPEC.md docs/ui/THEME_SYSTEM_SPEC.md docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "toolchainImplementationFormattingValidation": {
+        "command": "mise exec -- pnpm exec prettier --check package.json eslint.config.mjs knip.json prettier.config.mjs stylelint.config.mjs",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "eslintValidation": {
+        "command": "mise exec -- pnpm run lint",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "stylelintValidation": {
+        "command": "mise exec -- pnpm run lint:style",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "knipValidation": {
+        "command": "mise exec -- pnpm run check:unused",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "typecheck": {
+        "command": "mise exec -- pnpm run typecheck",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "build": {
+        "command": "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-f2cr.5QTYBT/vite-build-output --emptyOutDir",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "productionSecurityAudit": {
+        "command": "mise exec -- pnpm run audit:prod",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "fullSecurityAudit": {
+        "command": "mise exec -- pnpm audit",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "installedDependencyValidation": {
+        "command": "mise exec -- pnpm list --depth 0",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "aggregateValidation": {
+        "command": "mise exec -- pnpm run check:static",
+        "status": "PASS",
+        "exitCode": 0,
+        "beforeProtected": [],
+        "afterProtected": [],
+        "statusChanged": false
+    },
+    "browserValidation": {
+        "status": "NOT_APPLICABLE",
+        "reason": "formatting and governance configuration only; no visible runtime behavior changed"
+    },
+    "automatedTestAudit": {
+        "status": "PASS",
+        "testsRun": false,
+        "testFilesAdded": false,
+        "testInfrastructureAdded": false
+    },
+    "mockDataAudit": {
+        "status": "PASS",
+        "runtimeMockDataChanged": false,
+        "scannerStillUnimplemented": true
+    },
+    "secretRiskAudit": {
+        "status": "PASS",
+        "redactedDiffSecretPatternScan": "PASS",
+        "secretScannerStillUnimplemented": true
+    },
+    "filesCreated": [
+        ".ai/reports/F2C_FORMATTING_DEBT_REMEDIATION_REPORT.json"
+    ],
+    "filesModified": [
+        "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+    ],
+    "filesDeleted": [],
+    "remediationCommit": {
+        "sha": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "subject": "style(governance): 清理 F2 历史格式债务"
+    },
+    "remediationPush": {
+        "sha": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "remote": "origin",
+        "branch": "main",
+        "forcePush": false,
+        "verified": true
+    },
+    "readinessMatrixUpdate": {
+        "path": "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "status": "F2C_FORMATTING_DEBT_PASS_READY_FOR_STATIC_SCANNER_IMPLEMENTATION",
+        "nextRequiredPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION"
+    },
+    "closureCommitPlan": {
+        "subject": "docs(governance): 记录 F2C 格式债务清理验收证据",
+        "files": [
+            ".ai/reports/F2C_FORMATTING_DEBT_REMEDIATION_REPORT.json",
+            "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json",
+            "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+        ]
+    },
+    "gitStateAtReportCreation": {
+        "head": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "remoteMain": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "status": ""
+    },
+    "warnings": [
+        "Governance closure commit SHA is reported after the commit/push because recording it inside its own committed file would require amend/rewrite."
+    ],
+    "blockers": [],
+    "nextRequiredPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+    "finalVerdict": "F2C_FORMATTING_DEBT_PASS_READY_FOR_STATIC_SCANNER_IMPLEMENTATION"
+}

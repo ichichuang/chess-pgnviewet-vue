@@ -1503,7 +1503,7 @@
         "fencedCodeByteEqualityResult": "PASS",
         "knownFourLineDebtResult": "PASS",
         "fullPrettierCheckResult": "PASS",
-        "implementationCommit": "PENDING",
+        "implementationCommit": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
         "reviewTrigger": "Reopen if Prettier embedded-language formatting is re-enabled, Markdown fenced-code byte equality fails, temporary exact-path exclusions return, or new authored files bypass formatting.",
         "reopenConditions": [
             "embeddedLanguageFormatting is not off",
@@ -1527,7 +1527,14 @@
             "aggregateValidation": "PASS",
             "browserValidation": "NOT_APPLICABLE",
             "automatedTests": "NOT_RUN_BY_POLICY"
-        }
+        },
+        "remediationPush": {
+            "remote": "origin",
+            "branch": "main",
+            "sha": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+            "verifiedBy": ["local git", "git ls-remote", "GitHub commits page"]
+        },
+        "finalVerdict": "F2C_FORMATTING_DEBT_PASS_READY_FOR_STATIC_SCANNER_IMPLEMENTATION"
     },
     "f2cValidationResults": {
         "fullPrettierCheckResult": "PASS",
@@ -1544,5 +1551,15 @@
         "aggregateValidation": "PASS",
         "browserValidation": "NOT_APPLICABLE",
         "automatedTests": "NOT_RUN_BY_POLICY"
+    },
+    "f2cRemediationCommit": {
+        "sha": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "subject": "style(governance): 清理 F2 历史格式债务"
+    },
+    "f2cRemediationPush": {
+        "sha": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "remote": "origin",
+        "branch": "main",
+        "verified": true
     }
 }

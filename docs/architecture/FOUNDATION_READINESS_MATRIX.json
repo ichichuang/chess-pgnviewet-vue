@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "F2B_TOOLCHAIN_CONFIG_PASS_READY_FOR_FORMATTING_DEBT_REMEDIATION",
+    "overallStatus": "F2C_FORMATTING_DEBT_PASS_READY_FOR_STATIC_SCANNER_IMPLEMENTATION",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -1419,10 +1419,11 @@
         "node_modules/.vite remains because it contains a pre-existing vitest cache outside the authorized deps deletion path; node_modules/.vite/deps was removed in F1.",
         "F1 established the root .gitignore boundary and verified dependency, generated, environment, editor, browser, database, and local-tool exclusions before staging.",
         "F2B validated and pushed toolchain configuration; F2 is not complete because F2C formatting debt remediation and future project-owned scanners remain open.",
-        "The 30 temporary Prettier debt paths remain unresolved and exact-path ignored until F2C."
+        "The 30 temporary Prettier debt paths remain unresolved and exact-path ignored until F2C.",
+        "F2C closes temporary formatting debt only; project-owned static-governance scanners remain unimplemented."
     ],
-    "plannedNextPhase": "F2C_FORMATTING_DEBT_REMEDIATION",
-    "updatedAt": "2026-07-12T06:07:03.715Z",
+    "plannedNextPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+    "updatedAt": "2026-07-12T06:38:06.944Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -1613,5 +1614,37 @@
         "futureProjectOwnedScanners": "NOT_IMPLEMENTED_OUTSIDE_F2B",
         "f2Complete": false,
         "nextRequiredPhase": "F2C_FORMATTING_DEBT_REMEDIATION"
+    },
+    "f2cFormattingDebtRemediation": {
+        "status": "F2C_FORMATTING_DEBT_PASS_READY_FOR_STATIC_SCANNER_IMPLEMENTATION",
+        "remediationCommit": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "remediationPush": "75a355e3dd152f0c80319e4a71e6a8460284acf2",
+        "temporaryFormattingDebtClosed": true,
+        "remediatedFileCount": 30,
+        "remainingTemporaryDebtFileCount": 0,
+        "temporaryPrettierAllowlistRemoved": true,
+        "embeddedMarkdownCodeFormatting": "disabled via embeddedLanguageFormatting off",
+        "fencedCodeContentPreserved": true,
+        "permanentOwnershipRetained": [".ai/reports/", "pnpm-lock.yaml"],
+        "validation": {
+            "fullPrettier": "PASS",
+            "independentDebtFormatting": "PASS",
+            "eslint": "PASS",
+            "stylelint": "PASS",
+            "knip": "PASS",
+            "typecheck": "PASS",
+            "build": "PASS",
+            "productionAudit": "PASS",
+            "fullAudit": "PASS",
+            "checkStatic": "PASS"
+        },
+        "nextRequiredPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+        "notImplemented": [
+            "project-owned architecture scanner",
+            "project-owned raw-value scanner",
+            "project-owned mock-data scanner",
+            "project-owned secret scanner",
+            "project-owned dependency-policy scanner"
+        ]
     }
 }
