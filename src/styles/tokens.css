@@ -1,176 +1,206 @@
+/* stylelint-disable value-keyword-case, alpha-value-notation, color-hex-length, color-function-alias-notation, color-function-notation, comment-empty-line-before -- F3B preserves accepted inventory values and representations exactly. */
+
 :root {
   /*
-    One global token registry — P0 foundation.
-    `initial` means P3_PENDING_CANONICAL_EXTRACTION and is intentionally
-    unusable until evidence-backed values are approved. Only values required
-    by the neutral P0 shell use CSS system colors or baseline type metrics.
+    F3B global semantic token registry.
+    Source of truth: docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json.
+    Do not add raw visual values outside this file.
   */
-  --p3-pending-canonical-extraction: initial;
-
-  /* Workspace backgrounds — neutral P0 shell values */
-  --bg: Canvas;
-  --surface: Canvas;
-  --surface-2: Canvas;
-  --surface-3: Canvas;
-
-  /* Panel backgrounds */
-  --panel-bg: var(--p3-pending-canonical-extraction);
-  --panel-bg-elevated: var(--p3-pending-canonical-extraction);
-
-  /* Dividers */
-  --divider: var(--p3-pending-canonical-extraction);
-
-  /* Text roles — neutral P0 shell values */
-  --text: CanvasText;
-  --text-2: CanvasText;
-  --text-muted: GrayText;
-  --text-faint: GrayText;
-  --text-on-accent: var(--p3-pending-canonical-extraction);
-
-  /* Control surfaces */
-  --control-surface: var(--p3-pending-canonical-extraction);
-  --control-surface-hover: var(--p3-pending-canonical-extraction);
-  --control-surface-active: var(--p3-pending-canonical-extraction);
-
-  /* Focus states — neutral P0 browser-system value */
-  --focus-ring: 0 0 0 2px Highlight;
-  --focus-border: Highlight;
-
-  /* Board colors */
-  --cg-square-light: var(--p3-pending-canonical-extraction);
-  --cg-square-dark: var(--p3-pending-canonical-extraction);
-
-  /* Chess-piece presentation */
-  --cg-piece-set: var(--p3-pending-canonical-extraction);
-  --cg-piece-outline: var(--p3-pending-canonical-extraction);
-
-  /* Legal-move states */
-  --cg-legal-dot: var(--p3-pending-canonical-extraction);
-  --cg-legal-ring: var(--p3-pending-canonical-extraction);
-
-  /* Selected-square states */
-  --cg-selected: var(--p3-pending-canonical-extraction);
-  --cg-select-ring: var(--p3-pending-canonical-extraction);
-
-  /* Last-move states */
-  --cg-last-move: var(--p3-pending-canonical-extraction);
-  --cg-lastmove-from: var(--p3-pending-canonical-extraction);
-  --cg-lastmove-to: var(--p3-pending-canonical-extraction);
-
-  /* Check states */
-  --cg-check: var(--p3-pending-canonical-extraction);
-  --cg-check-ring: var(--p3-pending-canonical-extraction);
-
-  /* Annotation colors */
-  --cg-arrow-red: var(--p3-pending-canonical-extraction);
-  --cg-arrow-green: var(--p3-pending-canonical-extraction);
-  --cg-arrow-yellow: var(--p3-pending-canonical-extraction);
-  --cg-arrow-orange: var(--p3-pending-canonical-extraction);
-  --cg-arrow-purple: var(--p3-pending-canonical-extraction);
-  --cg-arrow-black: var(--p3-pending-canonical-extraction);
-
-  /* Annotation widths */
-  --annotation-arrow-width: var(--p3-pending-canonical-extraction);
-  --annotation-square-width: var(--p3-pending-canonical-extraction);
-
-  /* Annotation line styles */
-  --annotation-style-solid: var(--p3-pending-canonical-extraction);
-  --annotation-style-dashed: var(--p3-pending-canonical-extraction);
-  --annotation-style-dotted: var(--p3-pending-canonical-extraction);
-
-  /* Evaluation colors */
-  --eval-white: var(--p3-pending-canonical-extraction);
-  --eval-black: var(--p3-pending-canonical-extraction);
-  --eval-advantage-line: var(--p3-pending-canonical-extraction);
-  --eval-blunder: var(--p3-pending-canonical-extraction);
-  --eval-mistake: var(--p3-pending-canonical-extraction);
-  --eval-inaccuracy: var(--p3-pending-canonical-extraction);
-  --eval-good: var(--p3-pending-canonical-extraction);
-  --eval-excellent: var(--p3-pending-canonical-extraction);
-  --eval-best: var(--p3-pending-canonical-extraction);
-  --eval-book: var(--p3-pending-canonical-extraction);
-  --eval-forced: var(--p3-pending-canonical-extraction);
-
-  /* Player states */
-  --player-white: var(--p3-pending-canonical-extraction);
-  --player-black: var(--p3-pending-canonical-extraction);
-  --player-active: var(--p3-pending-canonical-extraction);
-
-  /* Status states */
-  --success: var(--p3-pending-canonical-extraction);
-  --success-bg: var(--p3-pending-canonical-extraction);
-  --warning: var(--p3-pending-canonical-extraction);
-  --warning-bg: var(--p3-pending-canonical-extraction);
-  --danger: var(--p3-pending-canonical-extraction);
-  --danger-bg: var(--p3-pending-canonical-extraction);
-  --info: var(--p3-pending-canonical-extraction);
-  --info-bg: var(--p3-pending-canonical-extraction);
 
   /* Spacing */
-  --s-1: var(--p3-pending-canonical-extraction);
-  --s-2: var(--p3-pending-canonical-extraction);
-  --s-3: var(--p3-pending-canonical-extraction);
-  --s-4: var(--p3-pending-canonical-extraction);
-  --s-5: var(--p3-pending-canonical-extraction);
-  --s-6: var(--p3-pending-canonical-extraction);
-  --s-8: var(--p3-pending-canonical-extraction);
-  --s-10: var(--p3-pending-canonical-extraction);
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
 
-  /* Typography — neutral P0 shell values */
-  --font-sans: system-ui, sans-serif;
-  --font-mono: ui-monospace, monospace;
-  --fs-xs: var(--p3-pending-canonical-extraction);
-  --fs-sm: var(--p3-pending-canonical-extraction);
-  --fs-base: 1rem;
-  --fs-lg: var(--p3-pending-canonical-extraction);
-  --fs-xl: var(--p3-pending-canonical-extraction);
-  --fs-2xl: var(--p3-pending-canonical-extraction);
-
-  /* Control heights */
-  --control-h: var(--p3-pending-canonical-extraction);
-  --toolbar-h: var(--p3-pending-canonical-extraction);
+  /* Typography */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, Consolas, monospace;
+  --fs-xs: clamp(11px, 0.33vw + 7.4px, 16px);
+  --fs-sm: clamp(12px, 0.42vw + 7.2px, 18px);
+  /* prettier-ignore */
+  --fs-base: clamp(13px, 0.50vw + 7.2px, 20px);
+  --fs-lg: clamp(15px, 0.67vw + 6.9px, 24px);
+  --fs-xl: clamp(18px, 0.84vw + 8.5px, 30px);
+  --fs-2xl: clamp(22px, 1.15vw + 10px, 38px);
 
   /* Radius */
-  --r-xs: var(--p3-pending-canonical-extraction);
-  --r-sm: var(--p3-pending-canonical-extraction);
-  --r-md: var(--p3-pending-canonical-extraction);
-  --r-lg: var(--p3-pending-canonical-extraction);
-  --r-xl: var(--p3-pending-canonical-extraction);
-  --r-full: var(--p3-pending-canonical-extraction);
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-full: 999px;
 
-  /* Elevation */
-  --shadow-xs: var(--p3-pending-canonical-extraction);
-  --shadow-sm: var(--p3-pending-canonical-extraction);
-  --shadow-md: var(--p3-pending-canonical-extraction);
-  --shadow-lg: var(--p3-pending-canonical-extraction);
+  /* Control geometry */
+  --control-h: clamp(38px, 0.8vw + 26px, 52px);
+  --control-h-sm: clamp(30px, 0.6vw + 22px, 42px);
+  --toolbar-h: 0px;
+  --brand-h: clamp(60px, 1.8vh + 48px, 92px);
 
-  /* z-index */
-  --z-base: var(--p3-pending-canonical-extraction);
-  --z-dropdown: var(--p3-pending-canonical-extraction);
-  --z-sticky: var(--p3-pending-canonical-extraction);
-  --z-overlay: var(--p3-pending-canonical-extraction);
-  --z-modal: var(--p3-pending-canonical-extraction);
-  --z-toast: var(--p3-pending-canonical-extraction);
+  /* Board and move-state roles */
+  --cg-square-light: #e9efd6;
+  --cg-square-dark: #7eb95e;
+  --cg-coord-light: #3f5f2a;
+  --cg-coord-dark: #eef5e0;
+  --cg-overlay-lastmove: rgb(255 209 102 / 0.34);
+  --cg-overlay-selected: rgb(255 255 255 / 0.24);
+  --cg-overlay-hover: rgb(255 255 255 / 0.13);
+  /* prettier-ignore */
+  --cg-overlay-drop-ok: rgb(255 255 255 / 0.30);
+  --cg-overlay-drop-bad: rgb(214 63 63 / 0.32);
+  --cg-overlay-check: rgb(214 63 63 / 0.48);
+  --cg-hint-fill: rgb(20 45 25 / 0.46);
+  --cg-hint-stroke: rgb(255 255 255 / 0.72);
+  --cg-select-ring: rgb(18 44 24 / 0.68);
 
-  /* Motion duration and easing */
-  --duration-fast: var(--p3-pending-canonical-extraction);
-  --duration-normal: var(--p3-pending-canonical-extraction);
-  --duration-slow: var(--p3-pending-canonical-extraction);
-  --ease-out: var(--p3-pending-canonical-extraction);
-  --ease-in-out: var(--p3-pending-canonical-extraction);
-  --motion-default: var(--p3-pending-canonical-extraction);
+  /* Annotation colors */
+  /* prettier-ignore */
+  --cg-arrow-red: #FF2828;
+  /* prettier-ignore */
+  --cg-arrow-green: #61ED00;
+  /* prettier-ignore */
+  --cg-arrow-yellow: #FFC81F;
+  /* prettier-ignore */
+  --cg-arrow-orange: #FA810B;
+  /* prettier-ignore */
+  --cg-arrow-purple: #6F2EE2;
+  --cg-arrow-black: #333333;
 
-  /* Responsive geometry */
-  --responsive-mobile-max: var(--p3-pending-canonical-extraction);
-  --responsive-tablet-max: var(--p3-pending-canonical-extraction);
-  --responsive-laptop-max: var(--p3-pending-canonical-extraction);
-  --responsive-desktop-min: var(--p3-pending-canonical-extraction);
-  --responsive-board-min: var(--p3-pending-canonical-extraction);
+  /* Annotation geometry */
+  --annotation-arrow-width: 0.16;
+  --annotation-square-width: 0.1;
+  --annotation-arrow-opacity: 0.88;
+  --annotation-square-opacity: 0.9;
+  --annotation-highlight-opacity: 0.36;
+  --annotation-style-solid: solid;
+
+  /* Evaluation roles */
+  --eval-black: linear-gradient(180deg, #0c0e12, #191c23);
+  --eval-white: linear-gradient(180deg, #fbfcfd, #d9dde3);
+  --eval-advantage-line: var(--accent-strong, var(--accent)) with 0 0 6px 1px var(--accent);
+  --eval-neutral: var(--text-2);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    /* Reduced motion is safe and concrete in the neutral P0 shell. */
-    --motion-default: 0ms;
-  }
+:root,
+:root[data-theme='light'] {
+  /* UI chrome */
+  --bg: #f4f6f4;
+  --surface: #ffffff;
+  --surface-2: #eef1ee;
+  --surface-3: #e6eae6;
+
+  /* Borders and separators */
+  --border: #e2e6e2;
+  --border-strong: #cfd5cf;
+  --border-focus: #1f9d57;
+
+  /* Text and icon roles */
+  --text: #161a17;
+  --text-2: #2d342f;
+  --text-muted: #5d6760;
+  --text-faint: #8a938c;
+  --text-on-accent: #ffffff;
+
+  /* Brand and accent roles */
+  --accent: #1f9d57;
+  --accent-strong: #178048;
+  --accent-press: #126539;
+  --accent-soft: #6fcc93;
+  --accent-bg: #e7f5ec;
+  --accent-bg-2: #d6eede;
+  --accent-line: #b7e0c6;
+  --brand-sage: #86a665;
+
+  /* Interaction states */
+  --state-hover-bg: #ecf3ee;
+  --state-active-bg: #e2efe6;
+  --state-focus-ring: 0 0 0 3px rgba(31, 157, 87, 0.22);
+
+  /* Semantic status roles */
+  --success: #1f9d57;
+  --warning: #c47d10;
+  --danger: #d23f3f;
+  --info: #2f76d6;
+
+  /* Elevation */
+  --shadow-xs: 0 1px 2px rgba(20, 35, 25, 0.05);
+  --shadow-sm: 0 1px 3px rgba(20, 35, 25, 0.07), 0 1px 2px rgba(20, 35, 25, 0.04);
+  --shadow-md: 0 4px 12px rgba(20, 35, 25, 0.08), 0 1px 3px rgba(20, 35, 25, 0.05);
+  --shadow-lg: 0 12px 32px rgba(20, 35, 25, 0.12), 0 4px 8px rgba(20, 35, 25, 0.06);
+
+  /*
+    Governed compatibility aliases.
+    Current consumers: none.
+    Review trigger: before F3D/F3E provider or board migration consumes them.
+    Removal condition: remove when no canonical migration code requires legacy names.
+    Latest allowed removal phase: F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE.
+  */
+  --hover: var(--state-hover-bg);
+  --active-bg: var(--state-active-bg);
+  --ring-accent: var(--state-focus-ring);
+}
+
+:root[data-theme='dark'] {
+  /* UI chrome */
+  --bg: #0f1419;
+  --surface: #181d24;
+  --surface-2: #20262e;
+  --surface-3: #283038;
+
+  /* Borders and separators */
+  --border: #2a323b;
+  --border-strong: #3b4651;
+  --border-focus: #36c177;
+
+  /* Text and icon roles */
+  --text: #e7edf1;
+  --text-2: #c3ccd3;
+  --text-muted: #8a96a0;
+  --text-faint: #6a7680;
+  --text-on-accent: #0c130e;
+
+  /* Brand and accent roles */
+  --accent: #36c177;
+  --accent-strong: #46cf85;
+  --accent-press: #2aa566;
+  --accent-soft: #3a7f56;
+  --accent-bg: #16311f;
+  --accent-bg-2: #1c3e28;
+  --accent-line: #2c5a3b;
+  --brand-sage: #9cc07c;
+
+  /* Interaction states */
+  --state-hover-bg: #232b34;
+  --state-active-bg: #1c2c22;
+  /* prettier-ignore */
+  --state-focus-ring: 0 0 0 3px rgba(54, 193, 119, 0.30);
+
+  /* Semantic status roles */
+  --success: #36c177;
+  --warning: #e0a83a;
+  --danger: #e8635f;
+  --info: #5a9bf0;
+
+  /* Elevation */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55), 0 4px 8px rgba(0, 0, 0, 0.4);
+
+  /*
+    Governed compatibility aliases.
+    Current consumers: none.
+    Review trigger: before F3D/F3E provider or board migration consumes them.
+    Removal condition: remove when no canonical migration code requires legacy names.
+    Latest allowed removal phase: F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE.
+  */
+  --hover: var(--state-hover-bg);
+  --active-bg: var(--state-active-bg);
+  --ring-accent: var(--state-focus-ring);
 }
