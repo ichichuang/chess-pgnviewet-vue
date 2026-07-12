@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_COMPLETE",
+    "overallStatus": "F3A_TOKEN_THEME_DESIGN_VALIDATED_PENDING_GIT_CLOSURE",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -95,6 +95,46 @@
             ],
             "nextRequiredPhase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
             "note": "F2 completion closes toolchain/static governance only and does not complete the overall foundation or authorize product UI migration."
+        },
+        "f3aTokenThemeDesign": {
+            "status": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_COMPLETE",
+            "report": ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json",
+            "inventory": "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+            "baseline": "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+            "decision": "Keep src/styles/tokens.css as sole token authority; migrate canonical values through token/provider slices; do not copy canonical raw-value ownership patterns.",
+            "currentGaps": [
+                "accent scale",
+                "hover/active state tokens",
+                "disabled text/icon tokens",
+                "inverse icon tokens",
+                "link token",
+                "overlay/dialog/tooltip/menu component tokens",
+                "safe-area tokens",
+                "breakpoint tokens with concrete values",
+                "board coordinate tokens",
+                "board overlay tokens",
+                "legal capture token",
+                "connection/analysis status tokens",
+                "white/black/inactive player states",
+                "line-height/font-weight tokens",
+                "z-index concrete scale",
+                "motion duration/easing concrete scale",
+                "meta theme-color values"
+            ],
+            "nextRequiredPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+            "inventoryEntryCount": 86,
+            "unresolvedEntryCount": 0,
+            "phaseNameReconciliation": {
+                "status": "RECONCILED_CANONICAL_F3_SEQUENCE",
+                "supersededLocalAlias": "F3B_TOKEN_AUTHORITY_IMPLEMENTATION",
+                "canonicalReplacement": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+                "canonicalLaterSlices": [
+                    "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+                    "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+                    "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+                    "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE"
+                ]
+            }
         }
     },
     "capabilities": [
@@ -1159,7 +1199,7 @@
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         }
     ],
-    "overallVerdict": "F2_IN_PROGRESS_F2D_VALIDATED_READY_FOR_FINAL_STATIC_GOVERNANCE_CLOSURE",
+    "overallVerdict": "F3A_TOKEN_THEME_DESIGN_PASS_READY_FOR_TOKEN_REGISTRY_IMPLEMENTATION",
     "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
     "correctionHistory": [
         {
@@ -1460,15 +1500,12 @@
     },
     "blockers": [],
     "warnings": [
-        "Original browser validation was not rerun in F1 because F1 authorized no visible runtime changes and accepted the F0/F0B browser evidence.",
-        "node_modules/.vite remains because it contains a pre-existing vitest cache outside the authorized deps deletion path; node_modules/.vite/deps was removed in F1.",
-        "F1 established the root .gitignore boundary and verified dependency, generated, environment, editor, browser, database, and local-tool exclusions before staging.",
-        "F2B validated and pushed toolchain configuration; F2 is not complete because F2C formatting debt remediation and future project-owned scanners remain open.",
-        "The 30 temporary Prettier debt paths remain unresolved and exact-path ignored until F2C.",
-        "F2C closes temporary formatting debt only; project-owned static-governance scanners remain unimplemented."
+        "F3A remains design/evidence only; it implements no runtime token values, theme provider, preference persistence, routes, components, or product UI.",
+        "F3B_TOKEN_AUTHORITY_IMPLEMENTATION is a superseded local alias; active documents use F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION.",
+        "Inventory gaps for system behavior, meta theme-color, icon roles, geometry classification, and secondary evidence are documented review triggers and do not authorize invention."
     ],
-    "plannedNextPhase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
-    "updatedAt": "2026-07-12T07:26:32.246Z",
+    "plannedNextPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+    "updatedAt": "2026-07-12T08:08:39.064Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -1800,5 +1837,121 @@
             "productUi": "NOT_ADVANCED"
         },
         "nextRequiredPhase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN"
+    },
+    "f3aCanonicalTokenThemeInventoryAndTargetDesign": {
+        "phase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
+        "status": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_COMPLETE",
+        "report": ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json",
+        "inventory": "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+        "baseline": "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+        "designDecision": {
+            "tokenAuthority": "src/styles/tokens.css remains the sole token authority.",
+            "themeModes": ["light", "dark", "system"],
+            "rootMarkers": [
+                "data-theme",
+                "data-theme-mode",
+                "data-board-theme",
+                "data-display-theme"
+            ],
+            "boardTheme": "Independent from UI light/dark and selected through board-theme marker/contextual tokens.",
+            "naiveUi": "Project-owned provider/adapters only; token-derived overrides only."
+        },
+        "currentGaps": [
+            "accent scale",
+            "hover/active state tokens",
+            "disabled text/icon tokens",
+            "inverse icon tokens",
+            "link token",
+            "overlay/dialog/tooltip/menu component tokens",
+            "safe-area tokens",
+            "breakpoint tokens with concrete values",
+            "board coordinate tokens",
+            "board overlay tokens",
+            "legal capture token",
+            "connection/analysis status tokens",
+            "white/black/inactive player states",
+            "line-height/font-weight tokens",
+            "z-index concrete scale",
+            "motion duration/easing concrete scale",
+            "meta theme-color values"
+        ],
+        "futureOwners": {
+            "tokenAuthority": "src/styles/tokens.css",
+            "themeBootstrap": "future src/bootstrap/preferences and src/app/providers/theme owner",
+            "appProvider": "future src/app/providers owner",
+            "naiveAdapter": "future src/app/providers/NaiveThemeProvider.vue and src/ui adapters",
+            "boardThemeRuntime": "future board/theme adapter slice",
+            "persistence": "future Dexie preferences table and typed preference repository",
+            "validation": "project-owned F2 scanners plus typecheck/build and narrow real-browser runtime evidence for visible theme changes"
+        },
+        "implementationSlices": [
+            {
+                "id": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+                "owner": "src/styles/tokens.css",
+                "scope": "Implement the global semantic token registry from the verified canonical inventory without product UI migration, providers, routes, stores, persistence, or runtime theme behavior.",
+                "validation": [
+                    "mise exec -- pnpm run check:tokens",
+                    "mise exec -- pnpm run typecheck",
+                    "temporary-output production build"
+                ]
+            },
+            {
+                "id": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+                "owner": "future src/bootstrap/preferences and src/app/providers/theme owner",
+                "scope": "Implement light/dark/system resolution, no-flash pre-Vue bootstrap, html markers, color-scheme, meta theme-color, preference fallback, system listeners, and cross-tab synchronization without Naive UI provider work.",
+                "validation": [
+                    "mise exec -- pnpm run check:governance",
+                    "mise exec -- pnpm run typecheck",
+                    "temporary-output production build",
+                    "narrow real-browser bootstrap/theme interaction validation"
+                ]
+            },
+            {
+                "id": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+                "owner": "future src/app/providers/NaiveThemeProvider.vue and src/ui adapters",
+                "scope": "Install project-owned Naive UI provider/adapters and token-derived theme overrides without duplicating raw values or beginning product UI migration.",
+                "validation": [
+                    "mise exec -- pnpm run check:architecture",
+                    "mise exec -- pnpm run check:tokens",
+                    "mise exec -- pnpm run typecheck",
+                    "temporary-output production build",
+                    "narrow real-browser provider validation"
+                ]
+            },
+            {
+                "id": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
+                "owner": "future F3E closure report and browser-validation evidence",
+                "scope": "Validate token/theme runtime behavior in a real browser and close F3 after F3B, F3C, and F3D are implemented; do not merge this with earlier implementation phases.",
+                "validation": [
+                    "complete static validation",
+                    "typecheck",
+                    "temporary-output production build",
+                    "narrow real-browser token/theme validation"
+                ]
+            }
+        ],
+        "validationRequirements": [
+            "All F3 implementation phases must preserve F2 scanners and 62 blocking rules.",
+            "Do not create automated tests or test scripts.",
+            "Run check:tokens first for token edits, then typecheck and build.",
+            "Visible UI/theme changes require one narrow real-browser runtime validation with nonblank DOM, no Vite overlay, no console-breaking errors, and an interaction/theme state change when applicable.",
+            "No package manager mutation and no dependency changes in F3 token/theme implementation unless separately approved."
+        ],
+        "nextRequiredPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+        "inventoryEntryCount": 86,
+        "unresolvedEntryCount": 0,
+        "phaseNameReconciliation": {
+            "status": "RECONCILED_CANONICAL_F3_SEQUENCE",
+            "supersededLocalAlias": "F3B_TOKEN_AUTHORITY_IMPLEMENTATION",
+            "canonicalReplacement": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+            "canonicalLaterSlices": [
+                "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+                "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+                "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+                "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE"
+            ]
+        },
+        "finalVerdict": "F3A_TOKEN_THEME_DESIGN_PASS_READY_FOR_TOKEN_REGISTRY_IMPLEMENTATION",
+        "validatedAt": "2026-07-12T08:08:39.064Z"
     }
 }

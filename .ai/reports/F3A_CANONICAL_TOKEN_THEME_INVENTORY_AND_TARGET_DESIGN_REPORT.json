@@ -1,0 +1,537 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-12T07:47:56.192Z",
+  "phase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
+  "status": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_COMPLETE",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "safetyGate": {
+    "targetResolvedPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "isSymlink": false,
+    "gitRoot": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "branch": "main",
+    "origin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "head": "9db9f348e54231f2cced3ba55fcb1c231fd35f6b",
+    "originMain": "9db9f348e54231f2cced3ba55fcb1c231fd35f6b",
+    "liveRemoteMain": "9db9f348e54231f2cced3ba55fcb1c231fd35f6b",
+    "finalF2Subject": "docs(governance): 完成 F2 工具链与静态治理收口",
+    "targetTrackedWorktree": "clean before F3A writes",
+    "targetIndex": "empty before F3A writes",
+    "evidenceSourceState": "pgnViewer-new and chess-pgnviewer are non-git evidence directories in this environment; pgnViewer contains only known untracked .serena metadata, ignored by instruction.",
+    "activeMutationProcess": "No Vite/build/formatter/package-manager process found modifying target; MCP/Serena helpers had cwd only."
+  },
+  "prerequisiteStatus": {
+    "f2FinalStatus": "F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_COMPLETE",
+    "finalVerdict": "F2E_TOOLCHAIN_STATIC_GOVERNANCE_COMPLETE_READY_FOR_F3",
+    "f2ClosureReportParsed": true,
+    "activeDocumentsParsed": true,
+    "openF2BlockerFound": false
+  },
+  "filesCreated": [
+    "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+    "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+    ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json"
+  ],
+  "filesModified": [
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+  ],
+  "commandsRun": [
+    "git rev-parse/status/remote checks",
+    "git ls-remote origin refs/heads/main",
+    "git show -s --format=%H%n%s HEAD",
+    "node JSON parse checks for F0/F2 reports and matrix",
+    "mise exec -- pnpm run check:tokens --json"
+  ],
+  "scannerEvidence": {
+    "command": "mise exec -- pnpm run check:tokens --json",
+    "findingCount": 0,
+    "skippedCount": 0
+  },
+  "targetCurrentStateSummary": {
+    "authorityFiles": [
+      "src/styles/tokens.css"
+    ],
+    "directConsumers": [
+      "src/styles/index.css imports token authority",
+      "src/styles/base.css consumes --font-sans --fs-base --text --bg --focus-ring",
+      "src/App.vue consumes --bg --text",
+      "src/main.ts imports src/styles/index.css"
+    ],
+    "namespaces": [
+      "--p3-pending-canonical-extraction",
+      "--bg/--surface/--text neutral P0 semantic namespace",
+      "--cg-* board namespace",
+      "--annotation-* annotation namespace",
+      "--eval-* evaluation namespace",
+      "--player-* player namespace",
+      "--s-* spacing namespace",
+      "--fs-* typography namespace",
+      "--r-* radius namespace",
+      "--shadow-* elevation namespace",
+      "--z-* stacking namespace",
+      "--duration-* and --ease-* motion namespace",
+      "--responsive-* geometry namespace"
+    ],
+    "implementedConcreteValues": [
+      "--bg Canvas",
+      "--surface Canvas",
+      "--surface-2 Canvas",
+      "--surface-3 Canvas",
+      "--text CanvasText",
+      "--text-2 CanvasText",
+      "--text-muted GrayText",
+      "--text-faint GrayText",
+      "--focus-ring 0 0 0 2px Highlight",
+      "--focus-border Highlight",
+      "--font-sans system-ui, sans-serif",
+      "--font-mono ui-monospace, monospace",
+      "--fs-base 1rem",
+      "--motion-default 0ms under prefers-reduced-motion"
+    ],
+    "placeholderValues": [
+      "--text-on-accent",
+      "--success",
+      "--warning",
+      "--danger",
+      "--info",
+      "--shadow-xs",
+      "--shadow-sm",
+      "--shadow-md",
+      "--shadow-lg",
+      "--r-xs",
+      "--r-sm",
+      "--r-md",
+      "--r-lg",
+      "--r-xl",
+      "--r-full",
+      "--s-1",
+      "--s-2",
+      "--s-3",
+      "--s-4",
+      "--s-5",
+      "--s-6",
+      "--s-8",
+      "--s-10",
+      "--fs-xs",
+      "--fs-sm",
+      "--fs-lg",
+      "--fs-xl",
+      "--fs-2xl",
+      "--control-h",
+      "--toolbar-h",
+      "--cg-square-light",
+      "--cg-square-dark",
+      "--cg-select-ring",
+      "--cg-arrow-red",
+      "--cg-arrow-green",
+      "--cg-arrow-yellow",
+      "--cg-arrow-orange",
+      "--cg-arrow-purple",
+      "--cg-arrow-black",
+      "--annotation-arrow-width",
+      "--annotation-square-width",
+      "--annotation-style-solid",
+      "--eval-black",
+      "--eval-white",
+      "--eval-advantage-line"
+    ],
+    "missingThemeMechanisms": [
+      "No data-theme marker in index.html or Vue bootstrap",
+      "No color-scheme declaration in target runtime HTML/CSS except canonical docs",
+      "No meta theme-color mechanism",
+      "No startup/prepaint theme script",
+      "No theme preference store/provider",
+      "No system preference listener",
+      "No cross-tab listener",
+      "No Naive UI provider or theme override integration"
+    ],
+    "classifications": {
+      "tokenAuthority": "IMPLEMENTED_NOT_VALIDATED",
+      "concreteCanonicalValues": "MISSING",
+      "themeModeRuntime": "MISSING",
+      "boardThemeRuntime": "MISSING",
+      "naiveUiIntegration": "MISSING",
+      "reducedMotionCss": "PARTIAL",
+      "rawValueScanner": "IMPLEMENTED_VALIDATED",
+      "bodyScrollLock": "IMPLEMENTED_VALIDATED"
+    }
+  },
+  "designDecisions": {
+    "tokenAuthority": {
+      "status": "APPROVED_TARGET_DESIGN",
+      "authorityFile": "src/styles/tokens.css",
+      "decision": "Keep one global CSS custom-property registry. Move canonical values into that registry in later implementation; do not keep canonical TS objects or feature-local raw values as token authority.",
+      "namespaces": [
+        "semantic UI tokens",
+        "state aliases",
+        "component aliases",
+        "board --cg-* tokens",
+        "annotation tokens",
+        "evaluation/data tokens",
+        "spacing/type/radius/shadow/z/motion/responsive geometry tokens"
+      ],
+      "compatibilityAliasesAllowed": [
+        "--hover -> --state-hover-bg",
+        "--active-bg -> --state-active-bg",
+        "--ring-accent -> --state-focus-ring",
+        "--panel/--input/--fg/--muted legacy aliases only inside token authority"
+      ],
+      "duplicateNamespaceDisposition": "Canonical --cg-light/--cg-dark and --panel/--input/--fg/--muted are aliases only; feature code must migrate to semantic tokens."
+    },
+    "themeMode": {
+      "status": "APPROVED_TARGET_DESIGN",
+      "modes": [
+        "light",
+        "dark",
+        "system"
+      ],
+      "canonicalEvidence": "pgnViewer-new supports light/dark persisted as T:colorMode; target governance requires light/dark/system.",
+      "targetDecision": "Persist user intent as themeMode light|dark|system; resolve applied mode to light|dark; listen to prefers-color-scheme only when themeMode is system.",
+      "persistence": "Future Dexie preferences table owns themeMode, accentColor, boardTheme, pieceSet, coordinates, language. Browser localStorage from canonical source is evidence only and must not become target ownership."
+    },
+    "rootThemeMarkers": {
+      "status": "APPROVED_TARGET_DESIGN",
+      "markers": [
+        "html[data-theme=\"light|dark\"] for applied mode",
+        "html[data-theme-mode=\"light|dark|system\"] for persisted user intent",
+        "html[data-board-theme=\"green|wood|blue|gray|contrast\"] for board palette",
+        "html[data-display-theme=\"standard|display\"] only when display route is active"
+      ],
+      "startup": "Future prepaint script must be minimal, same-origin, non-secret, and mirror Dexie/bootstrap preference contract; update color-scheme and meta[name=theme-color] before Vue mount.",
+      "currentTargetStatus": "MISSING"
+    },
+    "naiveUi": "Install Naive only behind project-owned Vue provider/adapter boundaries. Theme overrides must be derived from token names or a generated token manifest, not duplicated literals in component files."
+  },
+  "currentGaps": [
+    "accent scale",
+    "hover/active state tokens",
+    "disabled text/icon tokens",
+    "inverse icon tokens",
+    "link token",
+    "overlay/dialog/tooltip/menu component tokens",
+    "safe-area tokens",
+    "breakpoint tokens with concrete values",
+    "board coordinate tokens",
+    "board overlay tokens",
+    "legal capture token",
+    "connection/analysis status tokens",
+    "white/black/inactive player states",
+    "line-height/font-weight tokens",
+    "z-index concrete scale",
+    "motion duration/easing concrete scale",
+    "meta theme-color values"
+  ],
+  "implementationSlices": [
+    {
+      "id": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+      "owner": "src/styles/tokens.css",
+      "scope": "Implement canonical semantic, state, component, board, annotation, evaluation, geometry, radius, shadow, z-index, typography, and motion tokens without product UI migration.",
+      "validation": [
+        "pnpm run check:tokens",
+        "pnpm run typecheck",
+        "pnpm run build"
+      ]
+    },
+    {
+      "id": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+      "owner": "src/app/providers/theme + src/bootstrap/preferences",
+      "scope": "Implement light/dark/system resolution, html markers, color-scheme, meta theme-color, Dexie-backed preference bootstrap, system/cross-tab listeners, and reduced-motion helpers.",
+      "validation": [
+        "pnpm run check:governance",
+        "pnpm run typecheck",
+        "pnpm run build",
+        "narrow real-browser bootstrap/theme toggle validation"
+      ]
+    },
+    {
+      "id": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+      "owner": "src/app/providers/NaiveThemeProvider.vue and src/ui adapters",
+      "scope": "Install NConfigProvider and message/dialog/notification/loading-bar ownership using token-derived overrides only.",
+      "validation": [
+        "pnpm run check:architecture",
+        "pnpm run check:tokens",
+        "pnpm run typecheck",
+        "pnpm run build",
+        "narrow real-browser provider validation"
+      ]
+    },
+    {
+      "id": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
+      "owner": "future board/theme adapters",
+      "scope": "Apply board theme tokens and annotation tokens mechanically before board feature migration.",
+      "validation": [
+        "pnpm run check:tokens",
+        "pnpm run typecheck",
+        "pnpm run build",
+        "real-browser board route after route exists"
+      ]
+    }
+  ],
+  "validationRequirements": [
+    "All F3 implementation phases must preserve F2 scanners and 62 blocking rules.",
+    "Do not create automated tests or test scripts.",
+    "Run check:tokens first for token edits, then typecheck and build.",
+    "Visible UI/theme changes require one narrow real-browser runtime validation with nonblank DOM, no Vite overlay, no console-breaking errors, and an interaction/theme state change when applicable.",
+    "No package manager mutation and no dependency changes in F3 token/theme implementation unless separately approved."
+  ],
+  "residualRisks": [
+    "Canonical source does not provide system theme behavior; target must design system mode from governance requirements.",
+    "Canonical source does not provide meta theme-color behavior; target must derive values from --bg per mode during F3 implementation.",
+    "Canonical source does not provide a complete icon token namespace; derive from text/icon governance in target docs.",
+    "Canonical source contains feature-local raw geometry values; F3B/F3C must decide which become global tokens versus component-local constants in approved token authority.",
+    "Secondary pgnViewer evidence was not needed because pgnViewer-new and active governance were sufficient for F3A."
+  ],
+  "nextRequiredPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+  "updatedAt": "2026-07-12T08:08:39.064Z",
+  "inventoryEntryCount": 86,
+  "inventoryDomainCounts": {
+    "ui-chrome": 31,
+    "radius": 6,
+    "spacing": 8,
+    "typography": 8,
+    "control-geometry": 4,
+    "board": 13,
+    "annotation": 6,
+    "annotation-geometry": 6,
+    "evaluation": 4
+  },
+  "requestedDomainCounts": {
+    "brandAndAccent": 11,
+    "neutralAndSurfaces": 8,
+    "textAndIcons": 5,
+    "bordersAndSeparators": 3,
+    "interactionStates": 14,
+    "semanticStatusColors": 4,
+    "boardAndMoveStates": 13,
+    "annotation": 12,
+    "evaluation": 4,
+    "playerAndConnectionStates": 0,
+    "spacing": 8,
+    "typography": 8,
+    "controlAndTouchGeometry": 4,
+    "radius": 6,
+    "shadowAndElevation": 4,
+    "zIndex": 0,
+    "motionAndEasing": 0,
+    "reducedMotion": 0,
+    "viewportAndSafeAreas": 0,
+    "headerAndToolbarGeometry": 2,
+    "panelAndSplitterGeometry": 0,
+    "boardAndSidebarGeometry": 13,
+    "responsiveBreakpoints": 0,
+    "overlayAndDialogGeometry": 6,
+    "scrollSurfaces": 0
+  },
+  "unresolvedEntryCount": 0,
+  "unresolvedEvidenceCount": 5,
+  "dependenciesReviewed": {
+    "status": "REVIEWED_NO_MUTATION",
+    "packageManager": "pnpm@11.11.0",
+    "source": "package.json and pnpm-lock.yaml unchanged by F3A/F3A2"
+  },
+  "dependenciesAdded": [],
+  "dependenciesRemoved": [],
+  "typecheck": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run typecheck",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:56.968Z",
+    "completedAt": "2026-07-12T08:07:57.967Z",
+    "protectedHashChanges": []
+  },
+  "build": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm exec vite build --outDir /tmp/f3a2-build-7cZ62v/dist --emptyOutDir",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:57.989Z",
+    "completedAt": "2026-07-12T08:07:58.439Z",
+    "protectedHashChanges": [],
+    "outputDirectory": "/tmp/f3a2-build-7cZ62v/dist"
+  },
+  "prettierValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run format:check",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:51.143Z",
+    "completedAt": "2026-07-12T08:07:52.324Z",
+    "protectedHashChanges": []
+  },
+  "eslintValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run lint",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:52.347Z",
+    "completedAt": "2026-07-12T08:07:53.905Z",
+    "protectedHashChanges": []
+  },
+  "stylelintValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run lint:style",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:53.927Z",
+    "completedAt": "2026-07-12T08:07:54.510Z",
+    "protectedHashChanges": []
+  },
+  "knipValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:unused",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:54.533Z",
+    "completedAt": "2026-07-12T08:07:55.154Z",
+    "protectedHashChanges": []
+  },
+  "governanceValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:governance",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:55.176Z",
+    "completedAt": "2026-07-12T08:07:56.946Z",
+    "protectedHashChanges": []
+  },
+  "productionSecurityAudit": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run audit:prod",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:58.461Z",
+    "completedAt": "2026-07-12T08:08:00.317Z",
+    "protectedHashChanges": []
+  },
+  "fullSecurityAudit": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm audit",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:08:00.348Z",
+    "completedAt": "2026-07-12T08:08:02.696Z",
+    "protectedHashChanges": []
+  },
+  "installedDependencyValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm list --depth 0",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:08:02.729Z",
+    "completedAt": "2026-07-12T08:08:03.041Z",
+    "protectedHashChanges": []
+  },
+  "staticAggregateValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:static",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:08:03.063Z",
+    "completedAt": "2026-07-12T08:08:10.545Z",
+    "protectedHashChanges": []
+  },
+  "browserValidation": {
+    "status": "NOT_APPLICABLE",
+    "reason": "F3A changed only architecture documents, inventory data, reports, and readiness metadata; it implemented no runtime UI, route, provider, preference, persistence, theme, or interaction behavior."
+  },
+  "tokenImpact": {
+    "status": "DESIGN_ONLY",
+    "authorityFile": "src/styles/tokens.css",
+    "runtimeValuesChanged": false
+  },
+  "themeImpact": {
+    "status": "DESIGN_ONLY",
+    "runtimeThemeBehaviorChanged": false,
+    "modesDesigned": [
+      "light",
+      "dark",
+      "system"
+    ]
+  },
+  "uiFrameworkImpact": {
+    "status": "DESIGN_ONLY",
+    "naiveUiRuntimeChanged": false,
+    "futureOwner": "project-owned provider/adapters with token-derived overrides"
+  },
+  "i18nImpact": {
+    "status": "NO_RUNTIME_CHANGE"
+  },
+  "persistenceImpact": {
+    "status": "DESIGN_ONLY",
+    "runtimePersistenceChanged": false,
+    "futureOwner": "Dexie preferences plus non-sensitive synchronous bootstrap mirror"
+  },
+  "apiBoundaryImpact": {
+    "status": "NO_RUNTIME_CHANGE"
+  },
+  "securityImpact": {
+    "status": "NO_SECRET_OR_AUTH_CHANGE",
+    "browserSecretOwnership": false
+  },
+  "filesChanged": {
+    "created": [
+      "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+      "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+      ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json"
+    ],
+    "modified": [
+      "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+    ],
+    "deleted": []
+  },
+  "gitState": {
+    "status": "PENDING_SELF_REFERENCE",
+    "expectedCommitSubject": "docs(architecture): 锁定 F3 Token 与主题目标架构",
+    "note": "Final commit SHA and push evidence are recorded in the F3A2 execution response because this report is committed inside that SHA."
+  },
+  "phaseNameReconciliation": {
+    "status": "RECONCILED_CANONICAL_F3_SEQUENCE",
+    "supersededLocalAlias": "F3B_TOKEN_AUTHORITY_IMPLEMENTATION",
+    "canonicalReplacement": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+    "canonicalLaterSlices": [
+      "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+      "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+      "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+      "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE"
+    ]
+  },
+  "correctedByPhase": "F3A2_TOKEN_THEME_DESIGN_VALIDATION_AND_GIT_CLOSURE",
+  "finalVerdict": "F3A_TOKEN_THEME_DESIGN_PASS_READY_FOR_TOKEN_REGISTRY_IMPLEMENTATION",
+  "changedFilesPrettierValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm exec prettier --check docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md .ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json .ai/reports/F3A2_TOKEN_THEME_DESIGN_VALIDATION_AND_GIT_CLOSURE_REPORT.json docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:50.768Z",
+    "completedAt": "2026-07-12T08:07:51.121Z",
+    "protectedHashChanges": []
+  },
+  "dependencyPolicyValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:deps",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:49.160Z",
+    "completedAt": "2026-07-12T08:07:49.437Z",
+    "protectedHashChanges": []
+  },
+  "architectureValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:architecture",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:49.460Z",
+    "completedAt": "2026-07-12T08:07:49.741Z",
+    "protectedHashChanges": []
+  },
+  "rawVisualValueValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:tokens",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:49.763Z",
+    "completedAt": "2026-07-12T08:07:50.045Z",
+    "protectedHashChanges": []
+  },
+  "mockDataValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:mocks",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:50.067Z",
+    "completedAt": "2026-07-12T08:07:50.350Z",
+    "protectedHashChanges": []
+  },
+  "secretPatternValidation": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:secrets",
+    "exitCode": 0,
+    "startedAt": "2026-07-12T08:07:50.372Z",
+    "completedAt": "2026-07-12T08:07:50.747Z",
+    "protectedHashChanges": []
+  }
+}
