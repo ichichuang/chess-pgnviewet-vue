@@ -15,7 +15,7 @@ Compatibility routes resolve a sanitized handoff into the unified workspace; the
 
 ## Stack authority
 
-pnpm is the sole package manager. Vue 3, TypeScript strict, Vite, Vue Router, Pinia, project-owned Vue UI adapters, canonical-only Naive UI use, GSAP/Vue transitions, chess.js plus reviewed canonical chess-domain logic, Dexie, Zod, and TanStack Vue Query define the approved target stack. P0E removes automated-test infrastructure from the active target stack so visible, user-facing interface delivery can proceed after governance closure.
+pnpm is the sole package manager. Vue 3, TypeScript strict, Vite, Vue Router, Pinia, project-owned Vue UI adapters, canonical-only Naive UI use, GSAP/Vue transitions, chess.js plus reviewed canonical chess-domain logic, Dexie, Zod, and TanStack Vue Query define the approved target stack. P0E removes automated-test infrastructure from the active target stack; product UI migration proceeds through `PRODUCT_UI_MIGRATION_READY` as defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
 
 Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph, not as unrelated package maxima. The newest stable version that passes the required architecture contract is authoritative. Exceptions require upstream evidence, explicit recording, owner, review trigger, and removal condition; silent or unexplained downgrades remain forbidden.
 
@@ -40,4 +40,4 @@ Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, r
 - Confirmed reads use typed repositories and a same-origin server boundary. Unknown contracts remain blocked, never faked.
 - Browser code never owns upstream credentials or signing secrets.
 - Do not modify any of the three evidence-source repositories.
-- `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden. P1 remains blocked only until P0E acceptance passes.
+- `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden. P1 product UI migration remains blocked until `PRODUCT_UI_MIGRATION_READY` is set by `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`; P0E remains accepted but is no longer the only pre-product gate.

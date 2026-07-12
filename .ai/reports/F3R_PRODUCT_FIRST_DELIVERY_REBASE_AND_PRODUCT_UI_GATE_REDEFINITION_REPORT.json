@@ -1,0 +1,450 @@
+{
+    "phase": "F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION",
+    "startedAt": "2026-07-12T09:15:00Z",
+    "completedAt": "2026-07-12T09:38:24Z",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "sourceDirectories": [
+        {
+            "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+            "access": "read-only evidence",
+            "gitState": "not a git repository in this environment"
+        },
+        {
+            "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+            "access": "read-only evidence",
+            "gitState": "tracked worktree clean; known untracked .serena ignored"
+        },
+        {
+            "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+            "access": "read-only evidence",
+            "gitState": "not a git repository in this environment"
+        }
+    ],
+    "authorityFilesRead": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        ".ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+        ".ai/reports/F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE_REPORT.json",
+        ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json",
+        ".ai/reports/F3A2_TOKEN_THEME_DESIGN_VALIDATION_AND_GIT_CLOSURE_REPORT.json",
+        ".ai/reports/F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION_REPORT.json",
+        ".ai/reports/F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION_REPORT.json",
+        "docs/architecture/F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_CLOSURE.md",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+        "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md",
+        "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/PERSISTENCE_ADR.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/product/WORKSPACE_MODES.md",
+        "docs/ui/THEME_SYSTEM_SPEC.md",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+        "docs/ui/ACCESSIBILITY_SPEC.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md"
+    ],
+    "safetyGate": {
+        "targetResolvedPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "isSymlink": false,
+        "gitRoot": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "branch": "main",
+        "authorizedOrigin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+        "repositoryFullName": "ichichuang/chess-pgnviewet-vue",
+        "indexState": "EMPTY_BEFORE_F3R",
+        "trackedWorktree": "CLEAN_BEFORE_F3R",
+        "unexplainedUntrackedNonIgnoredPaths": [],
+        "activeTargetWriterProcesses": "NONE_FOUND; Codex kernel attached to target, unrelated AIOS Vite server outside target ignored",
+        "evidenceSourceState": "PASS; no tracked evidence-source modification found; ambient pgnViewer .serena ignored; pgnViewer-new and chess-pgnviewer are not Git repositories in this environment"
+    },
+    "prerequisiteVerdicts": {
+        "f0": "ACCEPTED_BASELINE_RETAINED",
+        "f1": "ACCEPTED_BASELINE_RETAINED",
+        "f2": "F2E_TOOLCHAIN_STATIC_GOVERNANCE_COMPLETE_RETAINED",
+        "f3a": "F3A_TOKEN_THEME_DESIGN_ACCEPTED_RETAINED",
+        "f3a2": "F3A2_TOKEN_THEME_DESIGN_CLOSURE_ACCEPTED_RETAINED",
+        "f3b": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTED_RETAINED",
+        "f3c": "F3C_THEME_ENGINE_IMPLEMENTED_VALIDATED_RETAINED_FROM_LIVE_STATE"
+    },
+    "prePhaseState": {
+        "promptExpectedHead": "bc9247e9241d5e131e79496999d5b6cd28fa1714",
+        "verifiedLiveHeadBeforeF3R": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "promptExpectedSubject": "docs(governance): 记录 F3B Token 注册表验收证据",
+        "verifiedLiveSubjectBeforeF3R": "docs(governance): 记录 F3C 主题引擎验收证据",
+        "promptExpectedNextPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+        "verifiedLiveNextPhaseBeforeF3R": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+        "resolution": "Preserve accepted F3C live state and rebase remaining roadmap from F3D forward; do not roll roadmap backward."
+    },
+    "remoteState": {
+        "startingHead": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "startingOriginMain": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "startingLiveRemoteMain": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "preCommitRevalidation": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "finalLocalHead": "PENDING_COMMIT",
+        "finalRemoteMain": "PENDING_PUSH",
+        "localHeadBeforeCommit": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "originMainBeforeCommit": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "concurrentRemoteCommitDetectedBeforeReportUpdate": false
+    },
+    "ownerDecision": {
+        "primaryDeliveryObjective": "PRODUCT_COMPLETE_USABLE",
+        "decisionDate": "2026-07-12",
+        "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+        "summary": "Completing a fully usable real product now takes precedence over completing every generalized foundation architecture before product UI work."
+    },
+    "supersededGate": {
+        "id": "FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI",
+        "status": "SUPERSEDED_AS_ACTIVE_PRE_PRODUCT_GATE",
+        "reason": "Owner decision prioritizes usable product delivery.",
+        "replacementGate": "PRODUCT_UI_MIGRATION_READY",
+        "deferredClosurePolicy": "Comprehensive generalized foundation closure moves to post-product hardening unless a real product feature requires a narrow boundary earlier."
+    },
+    "replacementGate": {
+        "id": "PRODUCT_UI_MIGRATION_READY",
+        "liveStatus": "PENDING_F3D",
+        "minimumPrerequisites": [
+            "accepted F0/F1/F2 repository and governance baseline",
+            "accepted F3A/F3B token architecture and semantic token registry",
+            "accepted F3C theme engine and no-flash bootstrap",
+            "F3D single Naive UI root provider and project-token-based theme mapping",
+            "one Vue application root",
+            "one Router",
+            "one Pinia graph",
+            "existing static governance scanners",
+            "typecheck/static/build/browser validation for applicable visible phases"
+        ]
+    },
+    "immediatePhaseSequence": [
+        {
+            "id": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+            "liveStatus": "IMPLEMENTED_VALIDATED"
+        },
+        {
+            "id": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+            "liveStatus": "NEXT_REQUIRED_PHASE"
+        },
+        {
+            "id": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+            "liveStatus": "PENDING_F3D"
+        },
+        {
+            "id": "P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION",
+            "liveStatus": "PENDING_PRODUCT_UI_MIGRATION_READY"
+        }
+    ],
+    "productMigrationProgram": [
+        "Application shell and canonical workspace geometry",
+        "Canonical self-developed board rendering and interaction",
+        "Real PGN loading, parsing, navigation, variation, and replay runtime",
+        "Canonical annotation runtime",
+        "Canonical panels, toolbars, splitters, responsive workspace behavior, and persisted user layout only when directly required by the workspace",
+        "Canonical AI analysis runtime and Web Worker behavior",
+        "Real production authentication and API-backed product capabilities",
+        "Real product error, unavailable, loading, permission, and retry behavior only as required by implemented product flows",
+        "Final complete product flow integration"
+    ],
+    "deferredCapabilities": [
+        "state.query_client",
+        "api.repository_boundaries",
+        "env.runtime_config",
+        "security.same_origin_secrets",
+        "runtime.error_lifecycle",
+        "accessibility.focus_motion",
+        "browser.validation_readiness",
+        "ui.adapters_icons_overlays",
+        "persistence.dexie_boundary",
+        "layout.viewport_scroll",
+        "motion.ownership"
+    ],
+    "nonDeferrableControls": [
+        "no secrets in repository",
+        "no browser ownership of upstream credentials or signing secrets",
+        "no direct imports from evidence-source projects",
+        "no React runtime",
+        "no duplicate Vue root, Router, or Pinia graph",
+        "no competing package manager or lockfile",
+        "no mock or fake product data",
+        "no invented API contracts",
+        "no generic /CALL",
+        "no proxyRequest",
+        "no MQTT publish",
+        "no unauthorized write/admin endpoints",
+        "no raw visual values outside semantic token authority",
+        "no direct Naive UI imports outside approved provider or src/ui ownership",
+        "no arbitrary localStorage/sessionStorage/IndexedDB outside approved owners",
+        "no direct import.meta.env outside approved runtime config ownership",
+        "no automated test framework or test script",
+        "no force push",
+        "no source-project modification"
+    ],
+    "featureOwnedMinimumBoundaries": {
+        "rule": "Implement only the smallest real-feature-owned boundary required by an active product slice.",
+        "requirements": [
+            "real production APIs and confirmed contracts only",
+            "same-origin browser boundaries preserved",
+            "no browser upstream credentials, HMAC secrets, MQTT credentials, auth tokens, or private cookies",
+            "validate untrusted runtime responses when required for safe operation",
+            "truthful loading, empty, permission, unavailable, retry, and failure states",
+            "no fake success fallback",
+            "no unnecessary generalized framework before real product evidence requires it"
+        ]
+    },
+    "validationPolicy": {
+        "requiredCommands": [
+            "mise exec -- pnpm run check:deps",
+            "mise exec -- pnpm run check:architecture",
+            "mise exec -- pnpm run check:tokens",
+            "mise exec -- pnpm run check:mocks",
+            "mise exec -- pnpm run check:secrets",
+            "mise exec -- pnpm run format:check",
+            "mise exec -- pnpm run lint",
+            "mise exec -- pnpm run lint:style",
+            "mise exec -- pnpm run check:unused",
+            "mise exec -- pnpm run check:governance",
+            "mise exec -- pnpm run typecheck",
+            "mise exec -- pnpm exec vite build --outDir <tmp>/dist --emptyOutDir",
+            "mise exec -- pnpm run audit:prod",
+            "mise exec -- pnpm audit",
+            "mise exec -- pnpm list --depth 0",
+            "mise exec -- pnpm run check:static"
+        ],
+        "noAutomatedTestsRun": true,
+        "noFormatWriteRun": true,
+        "noDependencyMutation": true
+    },
+    "browserValidationPolicy": {
+        "result": "NOT_APPLICABLE",
+        "reason": "F3R changes governance documents and reports only; visible runtime phases still require narrow real-browser validation."
+    },
+    "realDataPolicy": "Real production APIs and confirmed contracts only; no mock/fake product data, fake PGNs, fake replay, fake live transport, fake AI output, invented endpoints, or invented DTO fields.",
+    "securityPolicy": "Existing no-secret, same-origin, no-browser-credential, no-/CALL, no-proxyRequest, no-MQTT-publish, and no-write/admin controls remain non-deferrable.",
+    "sourceAuthorityPolicy": "pgnViewer-new remains canonical runtime authority; chess-pgnviewer remains product/UI/API/security evidence authority; React runtime is not target architecture authority; evidence sources remain read-only.",
+    "gitPolicy": "Authorized origin is https://github.com/ichichuang/chess-pgnviewet-vue.git; normal non-force push only; explicit path staging only; no reset/restore/stash/clean/amend/tag.",
+    "activeDocumentConflicts": [
+        {
+            "file": "AGENTS.md",
+            "conflict": "P0E-only P1 gate wording",
+            "resolution": "Replaced with PRODUCT_UI_MIGRATION_READY reference."
+        },
+        {
+            "file": "CLAUDE.md",
+            "conflict": "P0E-only product UI/P1 gate wording",
+            "resolution": "Replaced with PRODUCT_UI_MIGRATION_READY reference."
+        },
+        {
+            "file": ".ai/skills/project-ui/SKILL.md",
+            "conflict": "P0E-only P1 gate wording",
+            "resolution": "Replaced with PRODUCT_UI_MIGRATION_READY reference."
+        },
+        {
+            "file": "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+            "conflict": "P0E-only P1 gate wording",
+            "resolution": "Replaced with PRODUCT_UI_MIGRATION_READY reference."
+        },
+        {
+            "file": "docs/architecture/TECH_STACK_DECISION.md",
+            "conflict": "P0E-only visible delivery wording",
+            "resolution": "Replaced with product-first gate sequence reference."
+        },
+        {
+            "file": "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+            "conflict": "F3E listed as remaining pre-product token/theme slice",
+            "resolution": "Marked F3E superseded as separate pre-product gate and moved broad closure to post-product hardening."
+        },
+        {
+            "file": "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+            "conflict": "Generalized foundation gaps and product UI blocking language treated broad foundations as pre-product blockers",
+            "resolution": "Rebased to PRODUCT_UI_MIGRATION_READY and DEFERRED_UNTIL_PRODUCT_COMPLETE records."
+        }
+    ],
+    "documentationReconciliation": {
+        "filesCreated": [
+            "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+            ".ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json"
+        ],
+        "filesModified": [
+            "AGENTS.md",
+            "CLAUDE.md",
+            ".ai/skills/project-ui/SKILL.md",
+            "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+            "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+            "docs/architecture/TECH_STACK_DECISION.md",
+            "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md"
+        ],
+        "historicalReportsModified": [],
+        "runtimeFilesModified": [],
+        "dependencyFilesModified": [],
+        "scannerFilesModified": [],
+        "evidenceSourceFilesModified": []
+    },
+    "readinessMatrixRebase": {
+        "deferredCapabilities": [
+            "state.query_client",
+            "api.repository_boundaries",
+            "env.runtime_config",
+            "security.same_origin_secrets",
+            "runtime.error_lifecycle",
+            "accessibility.focus_motion",
+            "browser.validation_readiness",
+            "ui.adapters_icons_overlays",
+            "persistence.dexie_boundary",
+            "layout.viewport_scroll",
+            "motion.ownership"
+        ],
+        "requiredBeforeProductUi": [
+            "theme.light_dark_system",
+            "ui.naive_providers"
+        ],
+        "productUiMigrationDependency": "PRODUCT_UI_MIGRATION_READY",
+        "activeNextPhaseFromLiveState": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
+    },
+    "filesCreated": [
+        "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+        ".ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json"
+    ],
+    "filesModified": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md"
+    ],
+    "filesDeleted": [],
+    "dependenciesAdded": [],
+    "dependenciesRemoved": [],
+    "automatedTestAudit": {
+        "result": "PASS",
+        "testsAdded": false,
+        "testInfrastructureAdded": false,
+        "pnpmTestScriptPresent": false,
+        "testsRun": false
+    },
+    "mockDataAudit": {
+        "command": "mise exec -- pnpm run check:mocks",
+        "result": "PASS"
+    },
+    "secretRiskAudit": {
+        "command": "mise exec -- pnpm run check:secrets",
+        "result": "PASS"
+    },
+    "dependencyPolicyValidation": {
+        "command": "mise exec -- pnpm run check:deps",
+        "result": "PASS"
+    },
+    "architectureValidation": {
+        "command": "mise exec -- pnpm run check:architecture",
+        "result": "PASS"
+    },
+    "rawVisualValueValidation": {
+        "command": "mise exec -- pnpm run check:tokens",
+        "result": "PASS"
+    },
+    "mockDataValidation": {
+        "command": "mise exec -- pnpm run check:mocks",
+        "result": "PASS"
+    },
+    "secretPatternValidation": {
+        "command": "mise exec -- pnpm run check:secrets",
+        "result": "PASS"
+    },
+    "prettierValidation": {
+        "command": "mise exec -- pnpm run format:check",
+        "result": "PASS",
+        "note": "FOUNDATION_READINESS_MATRIX.json normalized to project Prettier JSON style without invoking format:write."
+    },
+    "eslintValidation": {
+        "command": "mise exec -- pnpm run lint",
+        "result": "PASS"
+    },
+    "stylelintValidation": {
+        "command": "mise exec -- pnpm run lint:style",
+        "result": "PASS"
+    },
+    "knipValidation": {
+        "command": "mise exec -- pnpm run check:unused",
+        "result": "PASS"
+    },
+    "governanceValidation": {
+        "command": "mise exec -- pnpm run check:governance",
+        "result": "PASS"
+    },
+    "typecheck": {
+        "command": "mise exec -- pnpm run typecheck",
+        "result": "PASS"
+    },
+    "build": {
+        "command": "mise exec -- pnpm exec vite build --outDir /tmp/f3r-build.HyHt33/dist --emptyOutDir",
+        "result": "PASS",
+        "tempBuildPath": "/tmp/f3r-build.HyHt33/dist",
+        "cleanup": "removed after build"
+    },
+    "productionSecurityAudit": {
+        "command": "mise exec -- pnpm run audit:prod",
+        "result": "PASS",
+        "vulnerabilities": "none known"
+    },
+    "fullSecurityAudit": {
+        "command": "mise exec -- pnpm audit",
+        "result": "PASS",
+        "vulnerabilities": "none known"
+    },
+    "installedDependencyValidation": {
+        "command": "mise exec -- pnpm list --depth 0",
+        "result": "PASS",
+        "dependencyCount": 27
+    },
+    "staticAggregateValidation": {
+        "command": "mise exec -- pnpm run check:static",
+        "result": "PASS"
+    },
+    "browserValidation": {
+        "result": "NOT_APPLICABLE",
+        "reason": "Governance documentation/report phase only; no visible runtime changed."
+    },
+    "gitStateBeforeCommit": {
+        "status": "PASS_READY_FOR_EXPLICIT_STAGING",
+        "branch": "main",
+        "localHead": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "originMain": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "liveRemoteMain": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+        "indexState": "EMPTY_BEFORE_STAGING",
+        "trackedWorktree": "DIRTY_WITH_INTENDED_GOVERNANCE_CHANGES_ONLY",
+        "untrackedPaths": [
+            ".ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json",
+            "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md"
+        ],
+        "protectedRuntimeAndToolingDiff": "NONE",
+        "historicalReportDiff": "NONE",
+        "evidenceSourceModification": "NONE_FOUND; known pgnViewer .serena ignored",
+        "diffCheck": "PASS",
+        "secretPatternValidation": "PASS"
+    },
+    "commit": {
+        "status": "PENDING_EXPLICIT_STAGING_AND_COMMIT",
+        "subject": "docs(governance): 重设产品优先交付门禁与延期架构范围",
+        "sha": null,
+        "selfReferenceNote": "The report cannot embed its own final commit SHA without amend; final response records pushed SHA."
+    },
+    "push": {
+        "status": "PENDING_NORMAL_PUSH",
+        "remote": "origin",
+        "branch": "main",
+        "forcePush": false
+    },
+    "warnings": [
+        "The owner prompt described an older F3B starting point, but live repository state had already accepted F3C; F3R preserves live F3C and sets F3D as next required phase.",
+        "Strict prompt text requested nextRequiredPhase=F3C; applying that literally would roll the active roadmap backward. This report records F3D from verified live state instead.",
+        "F3E remains mentioned only as a superseded pre-product gate and post-product hardening concern."
+    ],
+    "blockers": [],
+    "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+    "finalVerdict": "F3R_PRODUCT_FIRST_REBASE_PARTIAL",
+    "finalVerdictRationale": "All validations passed and all active gate contradictions were reconciled, but the strict prompt requested nextRequiredPhase=F3C from an older starting state. The live repository already accepted F3C, so F3R preserves live state and records F3D as next; verdict remains PARTIAL rather than PASS_READY_FOR_F3C."
+}

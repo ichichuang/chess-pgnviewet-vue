@@ -118,9 +118,15 @@ Next required phase: `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTAT
 
 Superseded local alias: `F3B_TOKEN_AUTHORITY_IMPLEMENTATION`. The canonical replacement is `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`.
 
-Completed F3B scope: token authority only. Completed F3C scope: theme preference engine, synchronous no-flash bootstrap, Pinia theme store, document synchronization, system listener, approved cross-tab synchronization, and failure-safe non-sensitive bootstrap preference handling. Product UI, routes, Naive provider, Dexie schema, board runtime, API, auth, and feature components remain blocked until their own implementation slice is opened.
+Completed F3B scope: token authority only. Completed F3C scope: theme preference engine, synchronous no-flash bootstrap, Pinia theme store, document synchronization, system listener, approved cross-tab synchronization, and failure-safe non-sensitive bootstrap preference handling. Product UI, routes, Dexie schema, board runtime, API, auth, and feature components remain blocked until `PRODUCT_UI_MIGRATION_READY` is set and their own implementation slice is opened. Naive provider work remains the next required minimum pre-product slice.
 
 Remaining canonical slices:
 
 1. `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
-2. `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE`
+
+Superseded as a separate pre-product gate:
+`F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE`.
+
+Narrow theme browser validation remains mandatory inside F3C and F3D. Broad
+token-theme and cross-feature integration closure moves to post-product
+hardening under `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.

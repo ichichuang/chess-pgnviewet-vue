@@ -62,13 +62,13 @@ Before implementing a feature, require:
 
 P0 authorizes only the neutral bootstrap and token-registry foundation. It authorizes no product UI.
 
-P1 feature migration is blocked only until P0E UI-first/no-automated-test governance closure passes. After P0E, P1 must prioritize mechanical migration of the canonical visible interface from `pgnViewer-new`, preserving canonical layout, interaction, density, board focus, panel geometry, keyboard behavior, and motion before refactoring. Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph. Exceptions from independent package maxima require upstream evidence, explicit recording, owner, review trigger, and removal condition; silent or unexplained downgrades remain forbidden.
+P1 product UI migration remains blocked until `PRODUCT_UI_MIGRATION_READY` is set by `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`; P0E remains accepted but is no longer the only pre-product gate. After that gate, P1 must prioritize mechanical migration of the canonical visible interface from `pgnViewer-new`, preserving canonical layout, interaction, density, board focus, panel geometry, keyboard behavior, and motion before refactoring. Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph. Exceptions from independent package maxima require upstream evidence, explicit recording, owner, review trigger, and removal condition; silent or unexplained downgrades remain forbidden.
 
 The authoritative Vue compiler is the newest stable official TypeScript 6.x package while stable Vue TypeScript 7 integration is unavailable. This follows official TypeScript guidance for Vue and other embedded-language projects. `@typescript/typescript6` is not used because the current stable Volar and `vue-tsc` stack cannot consume its shim. TypeScript 7 is not an active dependency during this compatibility period; adoption is a future gated upgrade only after stable TypeScript programmatic API support, stable Vue Language Tools support, stable `vue-tsc` support, full typecheck/build/browser validation, and owner acceptance.
 
 ## Owner delivery policy
 
-- The project prioritizes visible, user-facing interface delivery after P0E governance closure.
+- The project prioritizes visible, user-facing interface delivery through the product-first gate sequence defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
 - No automated unit, component, integration, snapshot, visual-regression, or E2E test files may be created or retained.
 - Vitest, Vue Test Utils, jsdom test environments, Playwright, Cypress, Jest, Testing Library, snapshots, coverage tools, test setup files, fixtures, test utilities, and `test` package scripts are forbidden in the active target.
 - Real production APIs are the only product data path. Mock data, fixtures, fake records, fake replay, fake live messages, fake AI output, sample tournaments, and silent fallback success states are forbidden.

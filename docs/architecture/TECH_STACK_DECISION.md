@@ -36,7 +36,7 @@ The target is one Vue application and must not be converted into an artificial m
 
 ## Owner delivery policy
 
-The project prioritizes visible, user-facing interface delivery after P0E governance closure. No automated test files or automated test infrastructure may be created or retained. This includes Vitest, Vue Test Utils, jsdom as a test environment, Playwright, Cypress, Jest, Testing Library, test setup files, test fixtures, snapshots, coverage, automated E2E suites, and `test` package scripts.
+The project prioritizes visible, user-facing interface delivery through the product-first gate sequence defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`. No automated test files or automated test infrastructure may be created or retained. This includes Vitest, Vue Test Utils, jsdom as a test environment, Playwright, Cypress, Jest, Testing Library, test setup files, test fixtures, snapshots, coverage, automated E2E suites, and `test` package scripts.
 
 The canonical source contains automated-test infrastructure, but the target intentionally does not adopt it under explicit owner policy. This difference does not change the Vue runtime architecture. The absence of automated tests does not permit weakening type checking, production build validation, API contracts, security boundaries, real-browser runtime validation, accessibility, token, focus, reduced-motion, scroll-ownership, or canonical-migration requirements.
 

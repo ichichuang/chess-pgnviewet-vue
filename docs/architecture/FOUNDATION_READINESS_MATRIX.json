@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "F3C_THEME_ENGINE_IMPLEMENTED_VALIDATED",
+    "overallStatus": "F3R_PRODUCT_FIRST_DELIVERY_REBASE_RECORDED",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -123,19 +123,26 @@
                 "motion duration/easing concrete scale",
                 "meta theme-color values"
             ],
-            "nextRequiredPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+            "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
             "inventoryEntryCount": 86,
             "unresolvedEntryCount": 0,
             "phaseNameReconciliation": {
-                "status": "RECONCILED_CANONICAL_F3_SEQUENCE",
+                "status": "RECONCILED_PRODUCT_FIRST_F3_SEQUENCE",
                 "supersededLocalAlias": "F3B_TOKEN_AUTHORITY_IMPLEMENTATION",
                 "canonicalReplacement": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
                 "canonicalLaterSlices": [
                     "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
                     "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+                    "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
+                ],
+                "productFirstSequence": [
+                    "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
                     "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
-                    "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE"
-                ]
+                    "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+                    "P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION"
+                ],
+                "supersededPreProductGate": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
+                "replacementGate": "PRODUCT_UI_MIGRATION_READY"
             }
         },
         "f3bSemanticTokenRegistry": {
@@ -212,6 +219,14 @@
                 "product UI"
             ],
             "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
+        },
+        "productFirstDelivery": {
+            "ownerDecision": "PRODUCT_COMPLETE_USABLE",
+            "supersededGate": "FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI",
+            "replacementGate": "PRODUCT_UI_MIGRATION_READY",
+            "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
+            "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+            "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier."
         }
     },
     "capabilities": [
@@ -239,7 +254,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -249,7 +264,7 @@
             ],
             "browserEvidence": "NOT_APPLICABLE",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F1_LOCAL_GIT_BASELINE",
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         },
@@ -277,7 +292,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -287,7 +302,7 @@
             ],
             "browserEvidence": "PASS on http://127.0.0.1:5176/pgnViewer/",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F1_LOCAL_GIT_BASELINE",
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         },
@@ -316,7 +331,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -359,7 +374,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED_F2_CLOSED",
             "validationEvidence": [
@@ -411,7 +426,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED_F2_CLOSED",
             "validationEvidence": [
@@ -457,7 +472,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED_F2_CLOSED",
             "validationEvidence": [
@@ -476,7 +491,14 @@
             "blockers": [],
             "reviewTrigger": "Before changing toolchain, scanner policy, dependency graph, package scripts, or entering F3 implementation.",
             "plannedPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
-            "finalVerdict": "FOUNDATION_TOOLCHAIN_STATIC_GOVERNANCE_ACCEPTABLE_F2_CLOSED"
+            "finalVerdict": "FOUNDATION_TOOLCHAIN_STATIC_GOVERNANCE_ACCEPTABLE_F2_CLOSED",
+            "productGateImpact": "Required safeguard or prerequisite retained for PRODUCT_UI_MIGRATION_READY.",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            }
         },
         {
             "identifier": "router.foundation",
@@ -502,7 +524,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -512,9 +534,16 @@
             ],
             "browserEvidence": "PASS: RouterView rendered HomeView child at /pgnViewer/",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F1_LOCAL_GIT_BASELINE",
-            "finalVerdict": "FOUNDATION_ACCEPTABLE"
+            "finalVerdict": "FOUNDATION_ACCEPTABLE",
+            "productGateImpact": "Required safeguard or prerequisite retained for PRODUCT_UI_MIGRATION_READY.",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            }
         },
         {
             "identifier": "state.pinia_foundation",
@@ -540,7 +569,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -551,9 +580,16 @@
             ],
             "browserEvidence": "PASS: no duplicate Pinia warnings; theme listener inventory stable after repeated initialization",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F1_LOCAL_GIT_BASELINE",
-            "finalVerdict": "FOUNDATION_ACCEPTABLE"
+            "finalVerdict": "FOUNDATION_ACCEPTABLE",
+            "productGateImpact": "Required safeguard or prerequisite retained for PRODUCT_UI_MIGRATION_READY.",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            }
         },
         {
             "identifier": "state.query_client",
@@ -579,15 +615,34 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": ["@tanstack/vue-query installed but not referenced in src"],
-            "browserEvidence": "NOT_APPLICABLE",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F3_SERVER_STATE_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Comprehensive TanStack Vue Query server-state architecture and general QueryClient policy/query-key framework.",
+            "productRisk": "P1 API slices may duplicate narrow fetch state unless feature-owned boundaries are recorded for consolidation."
         },
         {
             "identifier": "theme.token_registry",
@@ -617,7 +672,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -631,9 +686,16 @@
             ],
             "browserEvidence": "PASS: /pgnViewer/ loaded from temporary production build in Google Chrome; registry present in built CSS; computed token samples resolved; dark declarations present; no console/network errors",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
-            "finalVerdict": "FOUNDATION_TOKEN_REGISTRY_ACCEPTABLE_F3B_IMPLEMENTED"
+            "finalVerdict": "FOUNDATION_TOKEN_REGISTRY_ACCEPTABLE_F3B_IMPLEMENTED",
+            "productGateImpact": "Required safeguard or prerequisite retained for PRODUCT_UI_MIGRATION_READY.",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            }
         },
         {
             "identifier": "theme.light_dark_system",
@@ -667,7 +729,7 @@
             "providerOwnership": "NO_NAIVE_PROVIDER_IN_F3C",
             "persistenceOwnership": "themeMode bootstrap preference only; Dexie remains future",
             "themeOwnership": "src/styles/tokens.css remains sole visual-value authority; F3C runtime applies markers only",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -683,9 +745,16 @@
             ],
             "browserEvidence": "PASS: Google Chrome /pgnViewer/ validation covered clean, light, dark, system light/dark, runtime changes, storage failures, cross-tab sync, idempotency, and no-flash dark startup.",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
-            "finalVerdict": "FOUNDATION_THEME_ENGINE_ACCEPTABLE_F3C_IMPLEMENTED"
+            "finalVerdict": "FOUNDATION_THEME_ENGINE_ACCEPTABLE_F3C_IMPLEMENTED",
+            "productGateImpact": "Minimum pre-product prerequisite satisfied by accepted F3C live state.",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            }
         },
         {
             "identifier": "ui.naive_providers",
@@ -711,9 +780,9 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Minimum pre-product prerequisite; no product UI migration opens until this provider slice passes.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "REQUIRED_BEFORE_PRODUCT_UI",
             "validationEvidence": [
                 "naive-ui installed but no Naive provider or direct Naive imports in target src",
                 "F3C browser validation confirmed no .n-config-provider DOM",
@@ -721,9 +790,31 @@
             ],
             "browserEvidence": "NOT_PRESENT",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "F3D must pass before PRODUCT_UI_MIGRATION_READY can be set.",
             "plannedPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "finalVerdict": "MINIMUM_PRE_PRODUCT_GATE_PENDING",
+            "productGateImpact": "Blocks PRODUCT_UI_MIGRATION_READY until F3D installs the single Naive UI root provider and project-token-based theme mapping.",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "replacementGate": {
+                "supersededGate": "FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI",
+                "replacementGate": "PRODUCT_UI_MIGRATION_READY",
+                "minimumPrerequisites": [
+                    "accepted F0/F1/F2 repository and governance baseline",
+                    "accepted F3A/F3B token architecture and semantic token registry",
+                    "F3C light/dark/system theme preference runtime with no-flash bootstrap",
+                    "F3D single Naive UI root provider and project-token-based theme mapping",
+                    "one Vue application root",
+                    "one Router",
+                    "one Pinia graph",
+                    "existing static governance scanners",
+                    "typecheck, static checks, production build, and narrow browser validation for visible runtime phases"
+                ]
+            }
         },
         {
             "identifier": "ui.adapters_icons_overlays",
@@ -749,18 +840,37 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "src/ui/index.ts intentionally empty",
                 "no icon libraries imported in target"
             ],
-            "browserEvidence": "NOT_APPLICABLE",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_UI_ADAPTER_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Generalized UI adapter, icon, overlay stacking, focus-trap, and scroll-lock framework beyond the F3D provider minimum.",
+            "productRisk": "P1 slices may need narrow adapters for real controls before the comprehensive adapter framework is consolidated."
         },
         {
             "identifier": "i18n.locale_foundation",
@@ -786,7 +896,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "MISSING",
             "validationEvidence": [
@@ -796,7 +906,7 @@
             ],
             "browserEvidence": "Current title/body English bootstrap only",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F2_I18N_FOUNDATION",
             "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
         },
@@ -824,19 +934,38 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "dexie and zod installed but no Dexie schema is implemented in src",
                 "F3C implements only synchronous non-sensitive themeMode bootstrap preference adapter",
                 "structured Dexie preference ownership remains future work"
             ],
-            "browserEvidence": "NOT_APPLICABLE_TO_DEXIE; F3C storage failure browser probes PASS for themeMode bootstrap adapter",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F3_PERSISTENCE_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Comprehensive Dexie schema, migration, hydration, reset, logout, quota, unavailable-storage, and cross-tab persistence framework.",
+            "productRisk": "Workspace persistence may need a narrow feature-owned Dexie boundary when the canonical workspace slice requires it."
         },
         {
             "identifier": "persistence.safe_bootstrap_preferences",
@@ -866,7 +995,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "themeMode bootstrap preference adapter only; browser-storage denylist enforced by implementation boundary and scanners",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -879,7 +1008,7 @@
             ],
             "browserEvidence": "PASS: storage read failure, write failure, corrupted value, and clean profile all mounted /pgnViewer/ without console errors",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
             "finalVerdict": "FOUNDATION_SAFE_THEME_BOOTSTRAP_PREFERENCE_ACCEPTABLE_F3C_IMPLEMENTED"
         },
@@ -907,18 +1036,37 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "no src/api directory in target",
                 "API_BOUNDARY_ADR confirms NOT_IN_P0"
             ],
-            "browserEvidence": "NOT_APPLICABLE",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F3_API_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "General repository abstraction, DTO/domain repository layering, and product-wide normalized API policy.",
+            "productRisk": "Feature slices may need narrow real-contract repositories before the general repository framework exists."
         },
         {
             "identifier": "env.runtime_config",
@@ -944,19 +1092,38 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "src/env.d.ts contains only Vite/SFC/asset types",
                 "no .env.example found",
                 "no env variable use found in target src"
             ],
-            "browserEvidence": "NOT_APPLICABLE",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_ENV_SECURITY_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Comprehensive environment and runtime-configuration architecture beyond active real-feature needs.",
+            "productRisk": "Future deployment settings may require narrow typed config before broad config hardening."
         },
         {
             "identifier": "security.same_origin_secrets",
@@ -985,18 +1152,37 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "PARTIAL",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "target src contains no fetch/proxyRequest/HMAC/MQTT credential handling",
                 "manual secret scan found documentation-only policy strings, no secret values exposed"
             ],
-            "browserEvidence": "PASS: no runtime console errors; CSP headers not implemented",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_SECURITY_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Comprehensive security-runtime architecture and security-header program.",
+            "productRisk": "Security headers and runtime redaction remain incomplete until post-product hardening unless an active feature needs them earlier."
         },
         {
             "identifier": "runtime.error_lifecycle",
@@ -1022,18 +1208,37 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "src/main.ts has synchronous createApp/use/mount only",
                 "no global error handlers or notification provider"
             ],
-            "browserEvidence": "PASS neutral route, but no error-policy implementation",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_RUNTIME_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Comprehensive global error, feedback, notification, loading, and query/persistence error framework.",
+            "productRisk": "Feature slices must implement truthful scoped errors without creating a fake global success layer."
         },
         {
             "identifier": "accessibility.focus_motion",
@@ -1059,19 +1264,38 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "PARTIAL",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "focus-visible ring exists",
                 "prefers-reduced-motion CSS exists",
                 "neutral bootstrap has main and paragraph; no interactions"
             ],
-            "browserEvidence": "PASS for nonblank route only; interactive a11y not applicable",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_UI_ADAPTER_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Comprehensive accessibility foundation and product-wide accessibility remediation.",
+            "productRisk": "Each visible slice must handle affected keyboard, focus, contrast, names, and reduced-motion behavior locally until product-wide hardening."
         },
         {
             "identifier": "layout.viewport_scroll",
@@ -1097,19 +1321,38 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "PARTIAL",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "App shell uses 100dvh",
                 "html/body overflow hidden",
                 "no panels/splitters/overlays implemented"
             ],
-            "browserEvidence": "PASS: body overflow hidden and no document overflow at current browser viewport",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_LAYOUT_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Generalized responsive, panel, splitter, safe-area, overlay, and ResizeObserver layout framework not required by the current product slice.",
+            "productRisk": "Canonical workspace geometry must still be migrated mechanically where a visible slice requires it."
         },
         {
             "identifier": "motion.ownership",
@@ -1135,19 +1378,38 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "PARTIAL",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "gsap installed but unused",
                 "global reduced-motion CSS exists",
                 "canonical pgnViewer-new uses GSAP with cleanup/reduced-motion checks"
             ],
-            "browserEvidence": "No motion in neutral bootstrap",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F3_MOTION_FOUNDATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Generalized motion framework, timing scale, GSAP cleanup policy, cancellation, and reduced-motion consolidation.",
+            "productRisk": "Canonical motion must still be preserved for migrated interactions and reduced-motion rules must be honored locally."
         },
         {
             "identifier": "browser.validation_readiness",
@@ -1173,25 +1435,44 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Deferred comprehensive foundation hardening; product-first migration may proceed after PRODUCT_UI_MIGRATION_READY with feature-owned minimum boundaries.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "IMPLEMENTED_VALIDATED",
+            "implementationStatus": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
             "validationEvidence": [
                 "original browser load/reload PASS on /pgnViewer/",
                 "no console warning/error and no Vite overlay in original evidence",
                 "F0B did not rerun browser validation because running Vite would regenerate node_modules/.vite/deps",
                 "F0B removed node_modules/.vite/deps side effect after terminating isolated target Vite process"
             ],
-            "browserEvidence": "PASS on /pgnViewer/; original evidence reused; side effect corrected by F0B",
+            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F1_LOCAL_GIT_BASELINE",
-            "finalVerdict": "FOUNDATION_ACCEPTABLE"
+            "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
+            "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+            "finalVerdict": "DEFERRED_UNTIL_PRODUCT_COMPLETE",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "productGateImpact": "Does not block PRODUCT_UI_MIGRATION_READY except for a narrow feature-owned boundary required by an active real product slice.",
+            "deferralRationale": "Comprehensive generalized foundation completion would delay usable product delivery and is not required to operate the canonical product UI migration gate.",
+            "earlierImplementationTrigger": "A real product feature cannot truthfully operate without this narrow boundary using confirmed production contracts.",
+            "currentSafeguards": [
+                "existing project-owned scanners remain blocking",
+                "same-origin and no-secret rules remain active",
+                "no mock/fake product data remains active",
+                "typecheck, static checks, production build, and narrow browser validation remain mandatory when applicable"
+            ],
+            "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
+            "finalHardeningOwner": "post-product foundation hardening owner",
+            "deferredCapability": "Comprehensive foundation preview and broad final cross-feature browser-integration closure.",
+            "productRisk": "Broad integration defects may be found later; narrow browser validation remains mandatory in every visible slice."
         },
         {
             "identifier": "product.feature_gate",
             "domain": "future product gates",
-            "requirement": "No product UI, product mocks, feature migration, API runtime, auth, persistence, board, PGN, AI, tournament implementation in P0",
+            "requirement": "Product UI migration depends on PRODUCT_UI_MIGRATION_READY; no product mocks, fake data, feature migration, or product UI implementation before the gate review.",
             "authority": [
                 "CLAUDE.md",
                 "AGENTS.md",
@@ -1212,9 +1493,9 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first migration opens only after F3D and PRODUCT_UI_MIGRATION_READY review; broad generalized foundations are deferred.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "IMPLEMENTED_VALIDATED",
+            "implementationStatus": "PRODUCT_UI_MIGRATION_READY_PENDING_F3D",
             "validationEvidence": [
                 "forbidden/premature architecture scan found no target src product implementation",
                 "route count remains 1 neutral bootstrap",
@@ -1222,9 +1503,35 @@
             ],
             "browserEvidence": "PASS neutral bootstrap only",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F1_LOCAL_GIT_BASELINE",
-            "finalVerdict": "FOUNDATION_ACCEPTABLE"
+            "reviewTrigger": "After F3D passes and all PRODUCT_UI_MIGRATION_READY prerequisites are verified.",
+            "plannedPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+            "finalVerdict": "GATE_REDEFINED_BY_F3R",
+            "productGateImpact": "Replaces FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI as the active pre-product gate.",
+            "ownerDecision": {
+                "objective": "PRODUCT_COMPLETE_USABLE",
+                "decisionDate": "2026-07-12",
+                "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+            },
+            "replacementGate": {
+                "supersededGate": "FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI",
+                "replacementGate": "PRODUCT_UI_MIGRATION_READY",
+                "minimumPrerequisites": [
+                    "accepted F0/F1/F2 repository and governance baseline",
+                    "accepted F3A/F3B token architecture and semantic token registry",
+                    "F3C light/dark/system theme preference runtime with no-flash bootstrap",
+                    "F3D single Naive UI root provider and project-token-based theme mapping",
+                    "one Vue application root",
+                    "one Router",
+                    "one Pinia graph",
+                    "existing static governance scanners",
+                    "typecheck, static checks, production build, and narrow browser validation for visible runtime phases"
+                ]
+            },
+            "dependencies": [
+                "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+                "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
+            ]
         },
         {
             "identifier": "git.remote_safety",
@@ -1250,7 +1557,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "Remote exact spelling preserved; no fetch/add/commit/push performed",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
@@ -1262,7 +1569,7 @@
             ],
             "browserEvidence": "NOT_APPLICABLE",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         },
@@ -1290,7 +1597,7 @@
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+            "userFacingImpact": "Product-first delivery gate applies through PRODUCT_UI_MIGRATION_READY; this capability does not independently block product UI migration unless named as a minimum pre-product prerequisite.",
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "CORRECTED_BY_F0B",
             "validationEvidence": [
@@ -1302,12 +1609,12 @@
             ],
             "browserEvidence": "Original browser PASS preserved; cache side effect corrected; browser not rerun",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+            "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         }
     ],
-    "overallVerdict": "F3C_THEME_ENGINE_PASS_READY_FOR_NAIVE_UI_PROVIDER_IMPLEMENTATION",
+    "overallVerdict": "F3R_PRODUCT_FIRST_REBASE_RECORDED_READY_FOR_F3D_FROM_LIVE_F3C",
     "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
     "correctionHistory": [
         {
@@ -1520,6 +1827,13 @@
             "jsonValidation": "PENDING_FINAL_PARSE_AFTER_WRITE",
             "finalFilesystemVerification": "PENDING_FINAL_PARSE_AFTER_WRITE",
             "verdict": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE"
+        },
+        {
+            "phase": "F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION",
+            "recordedAt": "2026-07-12T09:33:05Z",
+            "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+            "report": ".ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json",
+            "summary": "Replaced the full-foundation pre-product gate with PRODUCT_UI_MIGRATION_READY, preserved accepted F3C live state, kept F3D as next required phase, and deferred comprehensive generalized foundations until PRODUCT_COMPLETE_USABLE."
         }
     ],
     "validationReferences": {
@@ -1596,7 +1910,8 @@
             "pnpm list --depth 0 PASS",
             "check:static PASS",
             "Google Chrome real-browser no-flash/theme validation PASS"
-        ]
+        ],
+        "f3rReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json"
     },
     "browserSideEffectStatus": {
         "originalStatus": "PASS_WITH_CACHE_SIDE_EFFECT",
@@ -1631,10 +1946,13 @@
     "warnings": [
         "F3C implements only non-sensitive themeMode bootstrap persistence; Dexie structured preferences remain future work.",
         "Naive UI provider composition, token-derived themeOverrides, reusable UI adapters, icons, and product UI remain unimplemented until F3D or later.",
-        "Board-theme and display-theme runtimes remain independent future slices; F3C did not implement board or product controls."
+        "Board-theme and display-theme runtimes remain independent future slices; F3C did not implement board or product controls.",
+        "F3R preserved accepted F3C live state although the owner prompt described an older F3B starting point.",
+        "F3E is superseded as a separate pre-product gate; broad integration closure moves to post-product hardening.",
+        "Deferred generalized foundations remain tracked and may be triggered earlier only by real product-feature needs."
     ],
     "plannedNextPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
-    "updatedAt": "2026-07-12T09:11:54Z",
+    "updatedAt": "2026-07-12T09:33:05Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -1969,7 +2287,7 @@
     },
     "f3aCanonicalTokenThemeInventoryAndTargetDesign": {
         "phase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
-        "status": "F3C_THEME_ENGINE_IMPLEMENTED_VALIDATED",
+        "status": "F3R_PRODUCT_FIRST_REBASE_RECORDED_F3C_IMPLEMENTED",
         "report": ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json",
         "inventory": "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
         "baseline": "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
@@ -2043,13 +2361,15 @@
             {
                 "id": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
                 "owner": "future F3E closure report and browser-validation evidence",
-                "scope": "Validate token/theme runtime behavior in a real browser and close F3 after F3B, F3C, and F3D are implemented; do not merge this with earlier implementation phases.",
+                "scope": "Superseded as a separate pre-product gate by F3R; broad token-theme and cross-feature integration closure moves to post-product hardening while narrow browser validation remains mandatory in F3C, F3D, and visible product slices.",
                 "validation": [
                     "complete static validation",
                     "typecheck",
                     "temporary-output production build",
                     "narrow real-browser token/theme validation"
-                ]
+                ],
+                "implementationStatus": "SUPERSEDED_AS_PRE_PRODUCT_GATE",
+                "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING"
             }
         ],
         "validationRequirements": [
@@ -2063,15 +2383,22 @@
         "inventoryEntryCount": 86,
         "unresolvedEntryCount": 0,
         "phaseNameReconciliation": {
-            "status": "RECONCILED_CANONICAL_F3_SEQUENCE",
+            "status": "RECONCILED_PRODUCT_FIRST_F3_SEQUENCE",
             "supersededLocalAlias": "F3B_TOKEN_AUTHORITY_IMPLEMENTATION",
             "canonicalReplacement": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
             "canonicalLaterSlices": [
                 "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
                 "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+                "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
+            ],
+            "productFirstSequence": [
+                "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
                 "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
-                "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE"
-            ]
+                "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+                "P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION"
+            ],
+            "supersededPreProductGate": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
+            "replacementGate": "PRODUCT_UI_MIGRATION_READY"
         },
         "finalVerdict": "F3C_THEME_ENGINE_PASS_READY_FOR_NAIVE_UI_PROVIDER_IMPLEMENTATION",
         "validatedAt": "2026-07-12T09:11:54Z",
@@ -2085,6 +2412,155 @@
             "storageKey": "themeMode",
             "startupDefault": "system",
             "browserValidation": "PASS"
+        },
+        "productFirstDeliveryRebase": {
+            "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+            "supersededPreProductGate": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
+            "replacementGate": "PRODUCT_UI_MIGRATION_READY",
+            "note": "F3E is superseded as a separate pre-product gate. Narrow browser validation remains mandatory inside F3C, F3D, and later visible product slices."
         }
+    },
+    "productFirstDeliveryRebase": {
+        "phase": "F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION",
+        "recordedAt": "2026-07-12T09:33:05Z",
+        "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+        "report": ".ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json",
+        "ownerDecision": {
+            "objective": "PRODUCT_COMPLETE_USABLE",
+            "decisionDate": "2026-07-12",
+            "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+            "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration."
+        },
+        "supersededGate": {
+            "id": "FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI",
+            "status": "SUPERSEDED_AS_ACTIVE_PRE_PRODUCT_GATE",
+            "reason": "Owner prioritizes completing a fully usable real product over completing every generalized foundation program before product UI migration.",
+            "replacement": "PRODUCT_UI_MIGRATION_READY",
+            "deferredClosurePolicy": "Comprehensive generalized foundation closure moves to post-product hardening unless a real product feature requires a narrow boundary earlier."
+        },
+        "replacementGate": {
+            "supersededGate": "FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI",
+            "replacementGate": "PRODUCT_UI_MIGRATION_READY",
+            "minimumPrerequisites": [
+                "accepted F0/F1/F2 repository and governance baseline",
+                "accepted F3A/F3B token architecture and semantic token registry",
+                "F3C light/dark/system theme preference runtime with no-flash bootstrap",
+                "F3D single Naive UI root provider and project-token-based theme mapping",
+                "one Vue application root",
+                "one Router",
+                "one Pinia graph",
+                "existing static governance scanners",
+                "typecheck, static checks, production build, and narrow browser validation for visible runtime phases"
+            ]
+        },
+        "liveStateReconciliation": {
+            "promptExpectedHead": "bc9247e9241d5e131e79496999d5b6cd28fa1714",
+            "verifiedLiveHeadBeforeF3R": "c7974ad4a70c8f36c3f54deebc0b42a429075a31",
+            "promptExpectedNextPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+            "verifiedLiveNextPhaseBeforeF3R": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+            "resolution": "Preserve accepted F3C live state; do not roll roadmap backward. F3D is the remaining minimum pre-product implementation phase."
+        },
+        "immediatePhaseSequence": [
+            {
+                "id": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+                "liveStatus": "IMPLEMENTED_VALIDATED"
+            },
+            {
+                "id": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+                "liveStatus": "NEXT_REQUIRED_PHASE"
+            },
+            {
+                "id": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+                "liveStatus": "PENDING_F3D"
+            },
+            {
+                "id": "P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION",
+                "liveStatus": "PENDING_PRODUCT_UI_MIGRATION_READY"
+            }
+        ],
+        "productMigrationProgram": [
+            "Application shell and canonical workspace geometry",
+            "Canonical self-developed board rendering and interaction",
+            "Real PGN loading, parsing, navigation, variation, and replay runtime",
+            "Canonical annotation runtime",
+            "Canonical panels, toolbars, splitters, responsive workspace behavior, and persisted user layout only when directly required by the workspace",
+            "Canonical AI analysis runtime and Web Worker behavior",
+            "Real production authentication and API-backed product capabilities",
+            "Real product error, unavailable, loading, permission, and retry behavior only as required by implemented product flows",
+            "Final complete product flow integration"
+        ],
+        "deferredCapabilities": [
+            {
+                "identifier": "state.query_client",
+                "deferredCapability": "Comprehensive TanStack Vue Query server-state architecture and general QueryClient policy/query-key framework."
+            },
+            {
+                "identifier": "api.repository_boundaries",
+                "deferredCapability": "General repository abstraction, DTO/domain repository layering, and product-wide normalized API policy."
+            },
+            {
+                "identifier": "env.runtime_config",
+                "deferredCapability": "Comprehensive environment and runtime-configuration architecture beyond active real-feature needs."
+            },
+            {
+                "identifier": "security.same_origin_secrets",
+                "deferredCapability": "Comprehensive security-runtime architecture and security-header program."
+            },
+            {
+                "identifier": "runtime.error_lifecycle",
+                "deferredCapability": "Comprehensive global error, feedback, notification, loading, and query/persistence error framework."
+            },
+            {
+                "identifier": "accessibility.focus_motion",
+                "deferredCapability": "Comprehensive accessibility foundation and product-wide accessibility remediation."
+            },
+            {
+                "identifier": "browser.validation_readiness",
+                "deferredCapability": "Comprehensive foundation preview and broad final cross-feature browser-integration closure."
+            },
+            {
+                "identifier": "ui.adapters_icons_overlays",
+                "deferredCapability": "Generalized UI adapter, icon, overlay stacking, focus-trap, and scroll-lock framework beyond the F3D provider minimum."
+            },
+            {
+                "identifier": "persistence.dexie_boundary",
+                "deferredCapability": "Comprehensive Dexie schema, migration, hydration, reset, logout, quota, unavailable-storage, and cross-tab persistence framework."
+            },
+            {
+                "identifier": "layout.viewport_scroll",
+                "deferredCapability": "Generalized responsive, panel, splitter, safe-area, overlay, and ResizeObserver layout framework not required by the current product slice."
+            },
+            {
+                "identifier": "motion.ownership",
+                "deferredCapability": "Generalized motion framework, timing scale, GSAP cleanup policy, cancellation, and reduced-motion consolidation."
+            }
+        ],
+        "nonDeferrableControls": [
+            "no secrets in repository",
+            "no browser upstream credentials or signing secrets",
+            "no evidence-source imports",
+            "no React runtime",
+            "no duplicate Vue root, Router, or Pinia graph",
+            "no competing package manager or lockfile",
+            "no mock or fake product data",
+            "no invented API contracts",
+            "no generic /CALL",
+            "no proxyRequest",
+            "no MQTT publish",
+            "no unauthorized write/admin endpoints",
+            "no raw visual values outside token authority",
+            "no direct Naive UI imports outside approved owners",
+            "no arbitrary browser storage outside approved owners",
+            "no direct import.meta.env outside runtime config ownership",
+            "no automated test framework or test script",
+            "no force push",
+            "no source-project modification"
+        ],
+        "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+        "finalMilestones": [
+            "PRODUCT_UI_MIGRATION_READY",
+            "PRODUCT_COMPLETE_USABLE",
+            "POST_PRODUCT_FOUNDATION_HARDENING_COMPLETE"
+        ]
     }
 }

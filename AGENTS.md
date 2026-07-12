@@ -43,7 +43,7 @@ Never inspect or copy environment files, credentials, certificates, keys, databa
 ## Implementation gates
 
 - P0 is baseline-only: no teaching, board, PGN, AI, tournament, auth, gateway, persistence, or settings feature implementation.
-- P1 feature migration remains blocked only until P0E UI-first/no-automated-test governance closure passes.
+- P1 product UI migration remains blocked until `PRODUCT_UI_MIGRATION_READY` is set by `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`; P0E remains accepted but is no longer the only pre-product gate.
 - Later feature migration requires an approved closure node, source provenance, architecture compatibility, mandatory typecheck/build validation, narrow real-browser runtime evidence, and a narrow implementation report.
 - Canonical runtime feature migration must be mechanical before refactoring: preserve canonical layout, interaction, density, board focus, panel geometry, keyboard behavior, and motion before any refactor.
 - Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph, not as unrelated package maxima. The newest stable version that passes the required architecture contract is authoritative.
@@ -54,7 +54,7 @@ Never inspect or copy environment files, credentials, certificates, keys, databa
 - Presentational components accept typed props and emit events; they do not import Pinia stores or repositories.
 - External DTOs are mapped and Zod-validated inside repository/source adapters before entering domain or UI code.
 - Live/replay data is read-only; import into analysis requires explicit user action.
-- The project prioritizes visible, user-facing interface delivery after P0E governance closure.
+- The project prioritizes visible, user-facing interface delivery through the product-first gate sequence defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
 - No automated test files or automated test infrastructure may be created or retained. This includes unit, component, integration, snapshot, visual-regression, and E2E test files; Vitest, Vue Test Utils, jsdom test environments, Playwright/Cypress/Jest/Testing Library runners; fixtures; snapshots; coverage; test setup; and `test` package scripts.
 - UI changes require one narrow real-browser runtime validation of the intended route, nonblank DOM, absence of Vite error overlay, absence of console-breaking errors, and a real user interaction state change when the slice includes interaction. Browser validation must not generate test files, fixtures, snapshots, scripted E2E suites, screenshot loops, or pixel measurements.
 - Accessibility, focus, reduced-motion, token, scroll-ownership, real-API, security, and canonical-migration requirements remain mandatory.
