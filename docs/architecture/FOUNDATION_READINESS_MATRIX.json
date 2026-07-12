@@ -25,7 +25,7 @@
       "headSymref": "EMPTY_OUTPUT_EXIT_0"
     }
   },
-  "overallStatus": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE",
+  "overallStatus": "F2B_TOOLCHAIN_CONFIG_PASS_READY_FOR_FORMATTING_DEBT_REMEDIATION",
   "summary": {
     "confirmedBaseline": [
       "one Vue root",
@@ -170,15 +170,16 @@
         "docs/architecture/TECH_STACK_DECISION.md",
         "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
       ],
-      "implementationOwner": "future foundation owner",
-      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "implementationOwner": "F2B toolchain owner",
+      "packageOwner": "pnpm package graph with exact F2A-approved devDependencies",
       "configurationFiles": [
         "package.json",
         "pnpm-lock.yaml",
-        "pnpm-workspace.yaml",
-        ".mise.toml",
-        "tsconfig.json",
-        "vite.config.ts"
+        "eslint.config.mjs",
+        "prettier.config.mjs",
+        ".prettierignore",
+        "stylelint.config.mjs",
+        "knip.json"
       ],
       "runtimeFiles": [],
       "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
@@ -186,37 +187,39 @@
       "themeOwnership": "src/styles/tokens.css when applicable",
       "userFacingImpact": "Foundation readiness only; product UI remains blocked",
       "securityImpact": "No browser secret owner introduced in P0 target",
-      "implementationStatus": "MISSING",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
       "validationEvidence": [
-        "package.json has no lint script",
-        "no eslint config found",
-        "eslint package absent from direct deps"
+        "eslint.config.mjs flat config added",
+        "mise exec -- pnpm exec eslint --print-config src/main.ts PASS",
+        "mise exec -- pnpm exec eslint --print-config src/App.vue PASS",
+        "mise exec -- pnpm run lint PASS"
       ],
       "browserEvidence": "NOT_APPLICABLE",
       "blockers": [],
       "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-      "plannedPhase": "F2_FOUNDATION_TOOLING",
-      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+      "plannedPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
+      "finalVerdict": "FOUNDATION_TOOLCHAIN_ACCEPTABLE_F2B_SCOPE"
     },
     {
       "identifier": "tooling.format_stylelint",
       "domain": "code-quality tooling",
-      "requirement": "Prettier, Stylelint, CSS custom-property governance, forbidden raw-color scans",
+      "requirement": "Prettier, Stylelint, CSS custom-property governance; raw-color scanner remains future project-owned work",
       "authority": [
         "CLAUDE.md",
         "AGENTS.md",
         "docs/architecture/TECH_STACK_DECISION.md",
         "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
       ],
-      "implementationOwner": "future foundation owner",
-      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "implementationOwner": "F2B toolchain owner",
+      "packageOwner": "pnpm package graph with exact F2A-approved devDependencies",
       "configurationFiles": [
         "package.json",
         "pnpm-lock.yaml",
-        "pnpm-workspace.yaml",
-        ".mise.toml",
-        "tsconfig.json",
-        "vite.config.ts"
+        "eslint.config.mjs",
+        "prettier.config.mjs",
+        ".prettierignore",
+        "stylelint.config.mjs",
+        "knip.json"
       ],
       "runtimeFiles": [],
       "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
@@ -224,16 +227,22 @@
       "themeOwnership": "src/styles/tokens.css when applicable",
       "userFacingImpact": "Foundation readiness only; product UI remains blocked",
       "securityImpact": "No browser secret owner introduced in P0 target",
-      "implementationStatus": "MISSING",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
       "validationEvidence": [
-        "package.json has no format/stylelint/static-scan scripts",
-        "raw color scan currently manual via rg"
+        "prettier.config.mjs and .prettierignore added",
+        "permanent Prettier exclusions: .ai/reports/ and pnpm-lock.yaml",
+        "temporary F2C formatting debt entries: 30",
+        "mise exec -- pnpm run format:check PASS",
+        "owned implementation-file prettier check PASS",
+        "stylelint.config.mjs with stylelint-config-standard and postcss-html added",
+        "mise exec -- pnpm run lint:style PASS",
+        "raw visual-value scanner NOT_IMPLEMENTED outside F2B"
       ],
       "browserEvidence": "NOT_APPLICABLE",
       "blockers": [],
       "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-      "plannedPhase": "F2_FOUNDATION_TOOLING",
-      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+      "plannedPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
+      "finalVerdict": "FOUNDATION_TOOLCHAIN_ACCEPTABLE_F2B_SCOPE"
     },
     {
       "identifier": "tooling.dependency_unused_checks",
@@ -245,15 +254,16 @@
         "docs/architecture/TECH_STACK_DECISION.md",
         "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
       ],
-      "implementationOwner": "future foundation owner",
-      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "implementationOwner": "F2B toolchain owner",
+      "packageOwner": "pnpm package graph with exact F2A-approved devDependencies",
       "configurationFiles": [
         "package.json",
         "pnpm-lock.yaml",
-        "pnpm-workspace.yaml",
-        ".mise.toml",
-        "tsconfig.json",
-        "vite.config.ts"
+        "eslint.config.mjs",
+        "prettier.config.mjs",
+        ".prettierignore",
+        "stylelint.config.mjs",
+        "knip.json"
       ],
       "runtimeFiles": [],
       "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
@@ -261,16 +271,20 @@
       "themeOwnership": "src/styles/tokens.css when applicable",
       "userFacingImpact": "Foundation readiness only; product UI remains blocked",
       "securityImpact": "No browser secret owner introduced in P0 target",
-      "implementationStatus": "MISSING",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
       "validationEvidence": [
-        "no knip/madge/dependency-cruiser scripts configured",
-        "direct dependency inventory completed manually"
+        "knip.json added for Vite/Vue entrypoints",
+        "mise exec -- pnpm run check:unused PASS",
+        "mise exec -- pnpm list --depth 0 PASS",
+        "mise exec -- pnpm run audit:prod PASS",
+        "mise exec -- pnpm audit PASS",
+        "future architecture/mock/secret scanners NOT_IMPLEMENTED outside F2B"
       ],
       "browserEvidence": "NOT_APPLICABLE",
       "blockers": [],
       "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-      "plannedPhase": "F2_FOUNDATION_TOOLING",
-      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+      "plannedPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
+      "finalVerdict": "FOUNDATION_TOOLCHAIN_ACCEPTABLE_F2B_SCOPE"
     },
     {
       "identifier": "tooling.security_static_scans",
@@ -298,15 +312,16 @@
       "themeOwnership": "src/styles/tokens.css when applicable",
       "userFacingImpact": "Foundation readiness only; product UI remains blocked",
       "securityImpact": "No browser secret owner introduced in P0 target",
-      "implementationStatus": "PARTIAL",
+      "implementationStatus": "PARTIAL_MANUAL_ONLY",
       "validationEvidence": [
-        "manual rg scans run for forbidden architecture, secrets, tests, raw visual values",
-        "no configured repeatable scan scripts"
+        "targeted redacted secret-pattern scan over F2B commit files PASS",
+        "production and full pnpm audits PASS",
+        "project-owned architecture, raw-visual-value, mock-data, and secret scanners NOT_IMPLEMENTED outside F2B"
       ],
       "browserEvidence": "NOT_APPLICABLE",
       "blockers": [],
       "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-      "plannedPhase": "F2_FOUNDATION_TOOLING",
+      "plannedPhase": "F2D_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
       "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
     },
     {
@@ -1142,7 +1157,7 @@
       "finalVerdict": "FOUNDATION_ACCEPTABLE"
     }
   ],
-  "overallVerdict": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE",
+  "overallVerdict": "F2_IN_PROGRESS_F2B_VALIDATED_READY_FOR_F2C_FORMATTING_DEBT_REMEDIATION",
   "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
   "correctionHistory": [
     {
@@ -1400,7 +1415,23 @@
         "route": "http://127.0.0.1:5176/pgnViewer/",
         "reasonNotRerun": "Rerunning Vite would regenerate the corrected dependency cache."
       }
-    }
+    },
+    "f2bReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION_REPORT.json",
+    "f2bImplementationCommit": "35c7af7affcbdc284240836fe3ddbd88ae9ea9b3",
+    "f2bValidations": [
+      "configuration load PASS",
+      "eslint PASS",
+      "stylelint PASS",
+      "knip PASS",
+      "prettier check PASS",
+      "owned implementation-file prettier check PASS",
+      "typecheck PASS",
+      "temporary outDir production build PASS",
+      "production audit PASS",
+      "full audit PASS",
+      "pnpm list --depth 0 PASS",
+      "check:static PASS"
+    ]
   },
   "browserSideEffectStatus": {
     "originalStatus": "PASS_WITH_CACHE_SIDE_EFFECT",
@@ -1435,13 +1466,15 @@
   "warnings": [
     "Original browser validation was not rerun in F1 because F1 authorized no visible runtime changes and accepted the F0/F0B browser evidence.",
     "node_modules/.vite remains because it contains a pre-existing vitest cache outside the authorized deps deletion path; node_modules/.vite/deps was removed in F1.",
-    "F1 established the root .gitignore boundary and verified dependency, generated, environment, editor, browser, database, and local-tool exclusions before staging."
+    "F1 established the root .gitignore boundary and verified dependency, generated, environment, editor, browser, database, and local-tool exclusions before staging.",
+    "F2B validated and pushed toolchain configuration; F2 is not complete because F2C formatting debt remediation and future project-owned scanners remain open.",
+    "The 30 temporary Prettier debt paths remain unresolved and exact-path ignored until F2C."
   ],
-  "plannedNextPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
-  "updatedAt": "2026-07-12T04:30:22Z",
+  "plannedNextPhase": "F2C_FORMATTING_DEBT_REMEDIATION",
+  "updatedAt": "2026-07-12T06:07:03.715Z",
   "f2aToolchainDesign": {
     "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
-    "status": "DESIGN_RECORDED_NOT_IMPLEMENTED",
+    "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
     "report": ".ai/reports/F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH_REPORT.json",
     "designAuthority": "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
     "selectedFutureToolOwners": {
@@ -1481,15 +1514,16 @@
       }
     ],
     "remainingImplementationStatus": {
-      "eslintConfig": "NOT_IMPLEMENTED",
-      "prettierConfig": "NOT_IMPLEMENTED",
-      "stylelintConfig": "NOT_IMPLEMENTED",
-      "knipConfig": "NOT_IMPLEMENTED",
+      "eslintConfig": "IMPLEMENTED_VALIDATED",
+      "prettierConfig": "IMPLEMENTED_VALIDATED",
+      "stylelintConfig": "IMPLEMENTED_VALIDATED",
+      "knipConfig": "IMPLEMENTED_VALIDATED",
       "governanceScanners": "NOT_IMPLEMENTED",
-      "packageScripts": "NOT_IMPLEMENTED",
-      "dependenciesInstalled": false,
+      "packageScripts": "IMPLEMENTED_VALIDATED_CURRENT_F2B_SCOPE",
+      "dependenciesInstalled": true,
       "automatedTestsAdded": false,
-      "productUiWorkStarted": false
+      "productUiWorkStarted": false,
+      "formattingDebtResolved": false
     },
     "plannedImplementationSlices": [
       "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
@@ -1498,14 +1532,14 @@
       "F2E_STATIC_CHECK_INTEGRATION_AND_FAILURE_REMEDIATION",
       "F2F_TOOLCHAIN_STATIC_GOVERNANCE_CLOSURE"
     ],
-    "markdownWhitespaceDebtDisposition": "Existing trailing two-space Markdown hard-break debt is limited to line 3 of API_BOUNDARY_ADR.md, PERSISTENCE_ADR.md, SOURCE_ADAPTER_ADR.md, and TECH_STACK_DECISION.md; F2C should normalize it in a dedicated commit or use a narrow temporary exclusion removed in F2C.",
+    "markdownWhitespaceDebtDisposition": "Unresolved temporary formatting debt remains assigned to F2C_FORMATTING_DEBT_REMEDIATION; current exact debt count is 30, including the four original line-3 Markdown hard-break entries and 26 additional authored debt files.",
     "evidenceReferences": [
       "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
       ".ai/reports/F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH_REPORT.json",
       "npm registry metadata queried 2026-07-12",
       "Context7 official ESLint/typescript-eslint/Stylelint owner documentation"
     ],
-    "nextRequiredPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION"
+    "nextRequiredPhase": "F2C_FORMATTING_DEBT_REMEDIATION"
   },
   "f1Baseline": {
     "phase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
@@ -1545,5 +1579,88 @@
       "note": "Foundation capability gaps remain as recorded; F1 only establishes Git baseline and governance evidence."
     },
     "report": ".ai/reports/F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH_REPORT.json"
+  },
+  "f2bToolchainImplementation": {
+    "phase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
+    "status": "IMPLEMENTED_VALIDATED",
+    "report": ".ai/reports/F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION_REPORT.json",
+    "implementationCommit": "35c7af7affcbdc284240836fe3ddbd88ae9ea9b3",
+    "implementationCommitSubject": "chore(tooling): 建立 F2 静态质量工具链配置基线",
+    "implementationPush": "35c7af7affcbdc284240836fe3ddbd88ae9ea9b3",
+    "approvedDependencies": {
+      "eslint": "10.7.0",
+      "@eslint/js": "10.0.1",
+      "typescript-eslint": "8.63.0",
+      "eslint-plugin-vue": "10.9.2",
+      "vue-eslint-parser": "10.4.1",
+      "eslint-config-prettier": "10.1.8",
+      "prettier": "3.9.5",
+      "stylelint": "17.14.0",
+      "stylelint-config-standard": "40.0.0",
+      "postcss-html": "1.8.1",
+      "knip": "6.26.0",
+      "npm-run-all2": "9.0.2"
+    },
+    "configurationsImplemented": [
+      "eslint.config.mjs",
+      "prettier.config.mjs",
+      ".prettierignore",
+      "stylelint.config.mjs",
+      "knip.json"
+    ],
+    "validations": [
+      "configuration load PASS",
+      "eslint PASS",
+      "stylelint PASS",
+      "knip PASS",
+      "prettier check PASS",
+      "owned implementation-file prettier check PASS",
+      "typecheck PASS",
+      "temporary outDir production build PASS",
+      "production audit PASS",
+      "full audit PASS",
+      "pnpm list --depth 0 PASS",
+      "check:static PASS"
+    ],
+    "lockfileOwnership": "pnpm-lock.yaml remains pnpm-owned and permanently excluded from Prettier",
+    "temporaryFormattingDebt": {
+      "status": "UNRESOLVED_ASSIGNED_TO_F2C",
+      "count": 30,
+      "paths": [
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/PERSISTENCE_ADR.md",
+        "docs/architecture/SOURCE_ADAPTER_ADR.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+        "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+        "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+        "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+        "docs/migration/API_AUTHORITY_MAP.json",
+        "docs/migration/ASSET_INVENTORY.json",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+        "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+        "docs/migration/CAPABILITY_MATRIX.json",
+        "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+        "docs/migration/DOCUMENT_INVENTORY.json",
+        "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+        "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/product/WORKSPACE_MODES.md",
+        "docs/ui/ACCESSIBILITY_SPEC.md",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+        "docs/ui/I18N_SPEC.md",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+        "docs/ui/PAGE_STYLE_SPEC.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+        "docs/ui/THEME_SYSTEM_SPEC.md",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+      ]
+    },
+    "futureProjectOwnedScanners": "NOT_IMPLEMENTED_OUTSIDE_F2B",
+    "f2Complete": false,
+    "nextRequiredPhase": "F2C_FORMATTING_DEBT_REMEDIATION"
   }
 }
