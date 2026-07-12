@@ -63,10 +63,9 @@ The owner-approved pre-product sequence was:
 4. `P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION`
 
 Because F3C, F3D, and the dedicated gate review are accepted in the live target,
-the next required phase is
-`P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION`. This
-document does not reopen F3C or F3D and does not authorize implementing P1A
-inside the gate-review commit.
+P1A and P1B have now been implemented and browser validated. The next required
+phase is `P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`. This
+document does not reopen F3C or F3D.
 
 The active P1 sequence is:
 
@@ -98,6 +97,27 @@ P1A is now implemented and browser validated:
 - `PRODUCT_UI_MIGRATION_READY` remains active and unchanged.
 - The next required phase is
   `P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION`.
+
+P1B is now implemented and browser validated:
+
+- Result:
+  `P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION`.
+- Report:
+  `.ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `48c99fd670d476437b17481c523d95a1f8120d42`.
+- `/pgnViewer/` renders the real self-developed canonical board runtime inside
+  the accepted P1A workspace shell.
+- Board rendering, click move, invalid rejection, drag move, capture, check,
+  keyboard movement, promotion selection, and six responsive viewport checks
+  passed against a temporary production build.
+- PGN loading/navigation, annotations, complete panels/toolbars/splitters, AI
+  analysis, authentication, production APIs, settings, persistence, and later P1
+  runtime remain unimplemented.
+- The next required phase is
+  `P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`.
 
 ## P1 Product Migration Program
 
@@ -253,8 +273,9 @@ push unless an explicit later owner instruction authorizes that operation.
 
 `PRODUCT_UI_MIGRATION_READY` means F3C and F3D have passed, theme and Naive UI
 provider ownership are stable, static checks pass, narrow browser checks pass,
-local `HEAD` equals remote `main`, and the worktree is clean. The active next
-phase is `P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION`.
+local `HEAD` equals remote `main`, and the worktree is clean. P1A and P1B have
+now passed; the active next phase is
+`P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`.
 
 `PRODUCT_COMPLETE_USABLE` means the canonical product runtime and user-facing
 product flows are implemented with real data and real APIs, the primary

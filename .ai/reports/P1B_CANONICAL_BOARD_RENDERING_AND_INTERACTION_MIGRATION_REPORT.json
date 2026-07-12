@@ -1,0 +1,205 @@
+{
+    "schemaVersion": 1,
+    "generatedAt": "2026-07-12T13:41:54Z",
+    "phase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
+    "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "sourceAuthorities": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+        "/Users/cc/Work/neobv/Chess/pgnViewer"
+    ],
+    "canonicalSource": {
+        "primaryRuntime": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+        "boardFiles": [
+            "src/features/board/BoardView.vue",
+            "src/features/board/boardCells.ts",
+            "src/features/board/PromotionDialog.vue",
+            "src/domains/board/fenBoard.ts",
+            "src/domains/board/shapes.ts",
+            "src/domains/board/pieces.ts",
+            "src/domains/pgn/mutations.ts",
+            "src/stores/pgnStore.ts",
+            "src/assets/pieces/merida/*.png"
+        ]
+    },
+    "implementationCommit": "48c99fd670d476437b17481c523d95a1f8120d42",
+    "pushed": {
+        "remote": "origin",
+        "branch": "main",
+        "status": "PUSHED_FAST_FORWARD"
+    },
+    "targetFiles": [
+        "src/features/board/CanonicalChessBoard.vue",
+        "src/features/board/BoardView.vue",
+        "src/features/board/PromotionChooser.vue",
+        "src/features/board/domain/boardTypes.ts",
+        "src/features/board/domain/fenBoard.ts",
+        "src/features/board/domain/boardGeometry.ts",
+        "src/features/board/domain/boardCells.ts",
+        "src/features/board/domain/pieceAssets.ts",
+        "src/features/board/domain/chessRules.ts",
+        "src/features/board/useBoardView.ts",
+        "src/features/board/useCanonicalChessBoard.ts",
+        "src/assets/chess/pieces/merida/*.png",
+        "src/features/teaching-workspace/TeachingWorkspace.vue",
+        "src/styles/tokens.css",
+        "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md"
+    ],
+    "implementedScope": [
+        "self-developed SVG chessboard with 64 squares",
+        "canonical Merida piece assets copied byte-identically from pgnViewer-new",
+        "board-local FEN state and standard initial position",
+        "chess.js legal destination computation, move application, check detection, and promotion detection",
+        "click, drag, keyboard, hover, selection, legal move marker, capture marker, last-move, check, ghost, and cancellation interaction state",
+        "four-choice promotion chooser without silent queen fallback",
+        "responsive board fit inside the accepted P1A shell, including short mobile landscape",
+        "public component contract for position and orientation handoff to later PGN owner"
+    ],
+    "explicitlyExcluded": [
+        "PGN loading, parsing, move-tree navigation, variation, and replay runtime",
+        "annotations, arrows, square drawing, free setup, and board editor",
+        "AI analysis and Web Workers",
+        "authentication, production APIs, QueryClient/repository framework, settings, and persistence",
+        "mock product data, sample PGNs, fake games, fake live/replay, and fake API success states",
+        "automated test files, automated test infrastructure, and package/dependency changes"
+    ],
+    "validation": [
+        {
+            "command": "mise exec -- pnpm run check:deps",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run check:architecture",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run check:tokens",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run check:mocks",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run check:secrets",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run format:check",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run lint",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run lint:style",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run check:unused",
+            "status": "PASS_WITH_EXISTING_KNIP_CONFIGURATION_HINTS",
+            "note": "Knip reported only existing ignoreDependencies hints for chess.js and naive-ui with exit code 0."
+        },
+        {
+            "command": "mise exec -- pnpm run check:governance",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run typecheck",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm run typecheck:vue",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-p1b-final-build.NsJWqg --emptyOutDir",
+            "status": "PASS_TEMP_OUTDIR"
+        },
+        {
+            "command": "mise exec -- pnpm run audit:prod",
+            "status": "PASS_NO_KNOWN_VULNERABILITIES"
+        },
+        {
+            "command": "mise exec -- pnpm audit",
+            "status": "PASS_NO_KNOWN_VULNERABILITIES"
+        },
+        {
+            "command": "mise exec -- pnpm list --depth 0",
+            "status": "PASS_27_PACKAGES_NO_DEPENDENCY_CHANGE"
+        },
+        {
+            "command": "mise exec -- pnpm run check:static",
+            "status": "PASS"
+        },
+        {
+            "command": "git diff --check",
+            "status": "PASS"
+        },
+        {
+            "command": "git diff --cached --check",
+            "status": "PASS"
+        }
+    ],
+    "browserValidation": {
+        "route": "http://127.0.0.1:4177/pgnViewer/",
+        "source": "temporary production build served from /tmp, no project test files or test infrastructure",
+        "browser": "Codex in-app browser, Chromium-family runtime",
+        "pageIdentity": "PASS title Application bootstrap, route /pgnViewer/",
+        "nonBlankDom": "PASS 64 SVG squares and 32 Merida piece images on initial board",
+        "frameworkOverlay": "PASS no Vite overlay detected",
+        "consoleHealth": "PASS no console warning/error entries during validation",
+        "networkHealth": "PASS app assets loaded from /pgnViewer/; a temporary empty /favicon.ico was served from /tmp to avoid browser-default 404 noise",
+        "interactions": [
+            "PASS click-to-select shows selected square and legal destination markers",
+            "PASS illegal e2-e5 is rejected with position unchanged and no last-move overlay",
+            "PASS legal e2-e4 updates piece square and last-move overlays",
+            "PASS drag e7-e5 updates black pawn position",
+            "PASS Qh5xe5+ reduces piece count and displays one check overlay",
+            "PASS keyboard Enter/ArrowUp/Enter executes e2-e3",
+            "PASS promotion path b7xa8 opens a four-choice promotion chooser and resolving Q completes promotion"
+        ],
+        "responsive": [
+            {
+                "viewport": "1440x900 desktop",
+                "status": "PASS"
+            },
+            {
+                "viewport": "1920x1080 large desktop",
+                "status": "PASS"
+            },
+            {
+                "viewport": "768x1024 tablet portrait",
+                "status": "PASS"
+            },
+            {
+                "viewport": "1024x768 tablet landscape",
+                "status": "PASS"
+            },
+            {
+                "viewport": "390x844 mobile portrait",
+                "status": "PASS"
+            },
+            {
+                "viewport": "844x390 mobile landscape",
+                "status": "PASS"
+            }
+        ],
+        "screenshots": [
+            "/tmp/chess-pgnviewer-vue-p1b-desktop.png",
+            "/tmp/chess-pgnviewer-vue-p1b-mobile-landscape.png"
+        ],
+        "limitation": "Black orientation is exposed as the P1B component contract for the P1C owner but has no user-facing toolbar control in P1B, so browser validation covered the default white orientation and source-contract evidence for orientation switching."
+    },
+    "protectionEvidence": {
+        "sourceProjectStatus": "pgnViewer-new and chess-pgnviewer are not Git repos in this workspace; pgnViewer still only reports pre-existing untracked .serena/.",
+        "protectedHashDiff": "Only src/styles/tokens.css and src/features/teaching-workspace/TeachingWorkspace.vue changed among the pre-recorded protected hash set; both are authorized P1B implementation files.",
+        "assetParity": "12 Merida PNG target hashes match pgnViewer-new source hashes exactly.",
+        "viteDepsCache": "node_modules/.vite/deps absent after validation.",
+        "dependencyChange": "No package.json or pnpm-lock.yaml change."
+    },
+    "finalVerdict": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
+    "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
+}

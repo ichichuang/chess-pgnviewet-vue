@@ -148,10 +148,76 @@ Implementation result:
 - Next phase:
   `P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION`.
 
+## P1B
+
+Expected visible outcome:
+
+- `/pgnViewer/` renders the accepted P1A workspace shell with the real
+  self-developed canonical chessboard in the board stage.
+- The board renders 64 squares, canonical Merida piece assets, coordinates,
+  legal move markers, capture markers, selected/focused/last-move/check states,
+  drag ghost state, and the four-choice promotion chooser.
+- Board interaction supports click-to-select, click-to-move, drag-to-move,
+  keyboard movement, invalid move rejection, legal captures, check display, and
+  promotion resolution.
+
+Canonical source areas:
+
+- `pgnViewer-new/src/features/board/BoardView.vue`
+- `pgnViewer-new/src/features/board/boardCells.ts`
+- `pgnViewer-new/src/features/board/PromotionDialog.vue`
+- `pgnViewer-new/src/domains/board/fenBoard.ts`
+- `pgnViewer-new/src/domains/board/shapes.ts`
+- `pgnViewer-new/src/domains/board/pieces.ts`
+- `pgnViewer-new/src/domains/pgn/mutations.ts`
+- `pgnViewer-new/src/stores/pgnStore.ts`
+- `pgnViewer-new/src/assets/pieces/merida/*.png`
+
+Target ownership:
+
+- board-local position state until P1C supplies a real PGN owner;
+- board rendering and board interaction components;
+- framework-free FEN, square geometry, piece asset, and chess-rule helpers;
+- semantic-token-backed board geometry, overlay, promotion, and piece visuals;
+- public position/orientation contract for the later PGN owner.
+
+Forbidden P1B scope:
+
+- PGN loading, parsing, navigation, variation tree, or replay;
+- annotation runtime, arrows, square drawing, board editor, or free setup;
+- AI analysis and worker migration;
+- authentication, production API calls, QueryClient/repository frameworks,
+  settings, persistence, or product records;
+- mock data, fake APIs, fake games, fake PGNs, fake replay, fake live transport,
+  fake analysis output, or placeholder success states;
+- automated test files, automated test infrastructure, dependency changes, or
+  package-manager changes.
+
+Implementation result:
+
+- Status:
+  `P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION`.
+- Report:
+  `.ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `48c99fd670d476437b17481c523d95a1f8120d42`.
+- `/pgnViewer/` now renders the real canonical self-developed board runtime in
+  the P1A workspace.
+- Static checks, typecheck, temporary-output production build, audits,
+  dependency listing, aggregate static check, and production-bundle browser
+  validation passed.
+- PGN loading/navigation, annotations, complete panels/toolbars/splitters, AI
+  analysis, authentication, production APIs, settings, persistence, and later P1
+  runtime remain unimplemented.
+- Next phase:
+  `P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`.
+
 ## Later Phase Dependencies
 
-P1B depends on the P1A shell. It may migrate board rendering and interaction but
-must not add PGN navigation, annotation, AI, authentication, or API behavior.
+P1B depends on the P1A shell. It is implemented and must not be expanded in
+place to add PGN navigation, annotation, AI, authentication, or API behavior.
 
 P1C depends on P1B. It owns real PGN loading, parsing, navigation, variation,
 and replay behavior using real sources or truthful unavailable states.

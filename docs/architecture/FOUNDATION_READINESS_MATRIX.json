@@ -250,6 +250,12 @@
                     "settings"
                 ]
             }
+        },
+        "p1bCanonicalBoard": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "implementationCommit": "48c99fd670d476437b17481c523d95a1f8120d42",
+            "report": ".ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json",
+            "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
         }
     },
     "capabilities": [
@@ -1684,7 +1690,6 @@
             ],
             "browserEvidence": "Chromium-family browser 149.0.7827.197, route /pgnViewer/, 19 viewport/theme captures, clean console/network/page errors, no body overflow, expected interactions.",
             "deferredLaterP1Capabilities": [
-                "P1B board runtime",
                 "P1C PGN runtime",
                 "P1D annotation runtime",
                 "P1E complete panels and splitters",
@@ -1695,6 +1700,55 @@
             "blockers": [],
             "finalVerdict": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
             "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION"
+        },
+        {
+            "identifier": "product.p1b_canonical_board_rendering_interaction",
+            "domain": "product UI migration",
+            "requirement": "Canonical self-developed board rendering and board-local interaction at /pgnViewer/ without PGN navigation, annotations, AI, auth, API, settings, persistence, or later P1 runtime.",
+            "authority": [
+                "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md",
+                ".ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json",
+                "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+            ],
+            "implementationOwner": "P1B canonical board migration owner",
+            "runtimeFiles": [
+                "src/features/board/CanonicalChessBoard.vue",
+                "src/features/board/BoardView.vue",
+                "src/features/board/PromotionChooser.vue",
+                "src/features/board/domain/boardTypes.ts",
+                "src/features/board/domain/fenBoard.ts",
+                "src/features/board/domain/boardGeometry.ts",
+                "src/features/board/domain/boardCells.ts",
+                "src/features/board/domain/pieceAssets.ts",
+                "src/features/board/domain/chessRules.ts",
+                "src/features/board/useBoardView.ts",
+                "src/features/board/useCanonicalChessBoard.ts",
+                "src/assets/chess/pieces/merida/*.png",
+                "src/features/teaching-workspace/TeachingWorkspace.vue",
+                "src/styles/tokens.css"
+            ],
+            "implementationStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "implementationCommit": "48c99fd670d476437b17481c523d95a1f8120d42",
+            "validationEvidence": [
+                "all required scanners PASS",
+                "format/lint/stylelint/knip/governance/typecheck PASS",
+                "temporary outDir production build PASS",
+                "audit:prod and full pnpm audit PASS",
+                "production-bundle browser validation PASS for rendering and board interactions",
+                "12 Merida piece assets match canonical source hashes exactly"
+            ],
+            "browserEvidence": "Route /pgnViewer/ production bundle PASS: 64 squares, 32 initial pieces, no Vite overlay, no console warnings/errors, legal/illegal click movement, drag movement, capture, check, keyboard movement, promotion chooser, and six responsive viewport checks including mobile landscape.",
+            "deferredLaterP1Capabilities": [
+                "P1C PGN runtime",
+                "P1D annotation runtime",
+                "P1E complete panels and splitters",
+                "P1F AI analysis",
+                "P1G auth and production API capabilities",
+                "P1H product integration"
+            ],
+            "blockers": [],
+            "finalVerdict": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
+            "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
         }
     ],
     "overallVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
@@ -1932,11 +1986,13 @@
         "authority": "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
         "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
         "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
-        "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
+        "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION",
         "p1Authority": "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
         "deferredPolicy": "Deferred comprehensive foundations remain DEFERRED_UNTIL_PRODUCT_COMPLETE with earlier trigger only for real feature-owned need.",
         "p1aResult": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
-        "p1aReport": ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json"
+        "p1aReport": ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json",
+        "p1bResult": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
+        "p1bReport": ".ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json"
     },
     "validationReferences": {
         "f0Report": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
@@ -2013,7 +2069,30 @@
             "check:static PASS",
             "Google Chrome real-browser no-flash/theme validation PASS"
         ],
-        "f3rReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json"
+        "f3rReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json",
+        "p1bReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json",
+        "p1bImplementationCommit": "48c99fd670d476437b17481c523d95a1f8120d42",
+        "p1bValidations": [
+            "mise exec -- pnpm run check:deps PASS",
+            "mise exec -- pnpm run check:architecture PASS",
+            "mise exec -- pnpm run check:tokens PASS",
+            "mise exec -- pnpm run check:mocks PASS",
+            "mise exec -- pnpm run check:secrets PASS",
+            "mise exec -- pnpm run format:check PASS",
+            "mise exec -- pnpm run lint PASS",
+            "mise exec -- pnpm run lint:style PASS",
+            "mise exec -- pnpm run check:unused PASS_WITH_EXISTING_KNIP_CONFIGURATION_HINTS",
+            "mise exec -- pnpm run check:governance PASS",
+            "mise exec -- pnpm run typecheck PASS",
+            "mise exec -- pnpm run typecheck:vue PASS",
+            "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-p1b-final-build.NsJWqg --emptyOutDir PASS_TEMP_OUTDIR",
+            "mise exec -- pnpm run audit:prod PASS_NO_KNOWN_VULNERABILITIES",
+            "mise exec -- pnpm audit PASS_NO_KNOWN_VULNERABILITIES",
+            "mise exec -- pnpm list --depth 0 PASS_27_PACKAGES_NO_DEPENDENCY_CHANGE",
+            "mise exec -- pnpm run check:static PASS",
+            "git diff --check PASS",
+            "git diff --cached --check PASS"
+        ]
     },
     "browserSideEffectStatus": {
         "originalStatus": "PASS_WITH_CACHE_SIDE_EFFECT",
@@ -2052,10 +2131,11 @@
         "F3R preserved accepted F3C live state although the owner prompt described an older F3B starting point.",
         "F3E is superseded as a separate pre-product gate; broad integration closure moves to post-product hardening.",
         "Deferred generalized foundations remain tracked and may be triggered earlier only by real product-feature needs.",
-        "PRODUCT_UI_MIGRATION_READY opens only P1A; this gate commit does not begin product UI, board, PGN, AI, auth, API, persistence, or settings implementation."
+        "PRODUCT_UI_MIGRATION_READY opens only P1A; this gate commit does not begin product UI, board, PGN, AI, auth, API, persistence, or settings implementation.",
+        "P1B implements only the canonical self-developed board runtime; PGN, annotations, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices."
     ],
-    "plannedNextPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
-    "updatedAt": "2026-07-12T12:36:19Z",
+    "plannedNextPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION",
+    "updatedAt": "2026-07-12T13:41:54Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -2675,7 +2755,7 @@
             "no force push",
             "no source-project modification"
         ],
-        "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
+        "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION",
         "finalMilestones": [
             "PRODUCT_UI_MIGRATION_READY",
             "PRODUCT_COMPLETE_USABLE",
@@ -2686,6 +2766,15 @@
             "implementationCommit": "bccfd01054575b9789e0559f4ca1aae897902767",
             "report": ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json",
             "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION"
+        },
+        "p1bCanonicalBoardRenderingInteraction": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "implementationCommit": "48c99fd670d476437b17481c523d95a1f8120d42",
+            "report": ".ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json",
+            "baseline": "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md",
+            "result": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
+            "browserEvidence": "Production-bundle browser validation PASS for board rendering, click, drag, keyboard, invalid rejection, capture, check, promotion, and 6 responsive viewports.",
+            "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
         }
     }
 }
