@@ -1,0 +1,536 @@
+{
+    "phase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+    "startedAt": "2026-07-12T08:12:00Z",
+    "completedAt": "2026-07-12T09:11:54Z",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "sourceDirectories": [
+        {
+            "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+            "access": "read-only evidence",
+            "gitState": "not a git repository in this environment"
+        },
+        {
+            "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+            "access": "read-only evidence",
+            "gitState": "tracked worktree clean; known untracked .serena ignored"
+        },
+        {
+            "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+            "access": "read-only evidence",
+            "gitState": "not a git repository in this environment"
+        }
+    ],
+    "authorityFilesRead": [
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/product/WORKSPACE_MODES.md",
+        "docs/ui/THEME_SYSTEM_SPEC.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+        "docs/ui/ACCESSIBILITY_SPEC.md",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+        "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+        "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+        "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json",
+        ".ai/reports/F3A2_TOKEN_THEME_DESIGN_VALIDATION_AND_GIT_CLOSURE_REPORT.json",
+        ".ai/reports/F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION_REPORT.json",
+        "package.json",
+        "pnpm-lock.yaml",
+        "index.html",
+        "src/main.ts",
+        "src/App.vue",
+        "src/stores/index.ts",
+        "src/styles/tokens.css",
+        "src/styles/base.css",
+        "src/router/index.ts",
+        "scripts/governance/policy.mjs",
+        "scripts/governance/check-architecture-boundaries.mjs",
+        "scripts/governance/check-raw-visual-values.mjs",
+        "scripts/governance/check-forbidden-mock-data.mjs",
+        "scripts/governance/check-secret-patterns.mjs",
+        "scripts/governance/check-dependency-policy.mjs"
+    ],
+    "safetyGate": {
+        "targetResolvedPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "isSymlink": false,
+        "gitRoot": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "branch": "main",
+        "authorizedOrigin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+        "repositoryFullName": "ichichuang/chess-pgnviewet-vue",
+        "startingHead": "bc9247e9241d5e131e79496999d5b6cd28fa1714",
+        "startingOriginMain": "bc9247e9241d5e131e79496999d5b6cd28fa1714",
+        "startingLiveRemoteMain": "bc9247e9241d5e131e79496999d5b6cd28fa1714",
+        "startingSubject": "docs(governance): 记录 F3B Token 注册表验收证据",
+        "indexState": "EMPTY_BEFORE_IMPLEMENTATION",
+        "trackedWorktree": "CLEAN_BEFORE_IMPLEMENTATION",
+        "unexplainedUntrackedNonIgnoredPaths": [],
+        "activeTargetWriterProcesses": "NONE_FOUND; only Codex kernel/language tooling attached to target",
+        "evidenceSourceState": "PASS; no tracked evidence-source modification found; ambient pgnViewer .serena ignored"
+    },
+    "prerequisiteVerdicts": {
+        "f3a": "F3A_TOKEN_THEME_DESIGN_PASS_READY_FOR_TOKEN_REGISTRY_IMPLEMENTATION",
+        "f3a2": "F3A2_TOKEN_THEME_DESIGN_CLOSURE_PASS_READY_FOR_TOKEN_REGISTRY_IMPLEMENTATION",
+        "f3b": "F3B_TOKEN_REGISTRY_PASS_READY_FOR_THEME_ENGINE_IMPLEMENTATION"
+    },
+    "prePhaseState": {
+        "f3bImplementedInventoryEntries": 86,
+        "semanticNamespace": "one src/styles/tokens.css registry",
+        "sharedDeclarations": 55,
+        "lightDeclarations": 31,
+        "darkDeclarations": 31,
+        "undefinedTokenReferences": 0,
+        "aliasCycles": 0,
+        "absentBeforeF3C": [
+            "theme preference runtime",
+            "pre-Vue no-flash bootstrap",
+            "Pinia theme store",
+            "system listener",
+            "cross-tab listener",
+            "runtime color-scheme sync",
+            "runtime meta theme-color sync",
+            "Naive UI provider",
+            "product UI behavior"
+        ]
+    },
+    "remoteState": {
+        "implementationParentRemoteMain": "bc9247e9241d5e131e79496999d5b6cd28fa1714",
+        "implementationPushedRemoteMain": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+        "lsRemoteAfterImplementationPush": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+        "githubApiAfterImplementationPush": "f5293e2de24806b55a33e4ae6dba66f66068617c"
+    },
+    "themeContractIntegrity": {
+        "preferenceType": "ThemePreference",
+        "preferenceIdentifiers": [
+            "light",
+            "dark",
+            "system"
+        ],
+        "resolvedThemeIdentifiers": [
+            "light",
+            "dark"
+        ],
+        "storageKey": "themeMode",
+        "startupDefault": "system",
+        "systemMediaQuery": "(prefers-color-scheme: dark)",
+        "markerContract": [
+            "html[data-theme-mode=\"light|dark|system\"]",
+            "html[data-theme=\"light|dark\"]"
+        ],
+        "crossTabPolicy": "approved via storage event for themeMode only",
+        "transitionDecision": "no decorative transition animation in F3C",
+        "ownerPaths": [
+            "index.html",
+            "src/theme/constants.ts",
+            "src/theme/types.ts",
+            "src/theme/runtime.ts",
+            "src/bootstrap/preferences/themePreference.ts",
+            "src/stores/theme.ts",
+            "src/main.ts"
+        ],
+        "contradictoryOrMissingContract": false
+    },
+    "preferenceModel": "Typed light/dark/system preference model with runtime normalization and resolved light/dark output.",
+    "preferenceIdentifiers": [
+        "light",
+        "dark",
+        "system"
+    ],
+    "resolvedThemeIdentifiers": [
+        "light",
+        "dark"
+    ],
+    "storageOwnership": {
+        "owner": "src/bootstrap/preferences/themePreference.ts",
+        "key": "themeMode",
+        "directLocalStorageOwnersInSrc": [
+            "src/bootstrap/preferences/themePreference.ts"
+        ],
+        "inlineBootstrapBoundary": "index.html duplicates only immutable key and small sync resolver for pre-Vue no-flash startup",
+        "storeDirectStorageAccess": false
+    },
+    "storageKeyClassification": {
+        "key": "themeMode",
+        "sensitivity": "non-sensitive UI preference identifier only",
+        "allowedValues": [
+            "light",
+            "dark",
+            "system"
+        ],
+        "forbiddenStoredValues": [
+            "passwords",
+            "tokens",
+            "authorization headers",
+            "signing secrets",
+            "HMAC secrets",
+            "MQTT credentials",
+            "cookies",
+            "private session data",
+            "credential-bearing URLs",
+            "unrelated browser data"
+        ]
+    },
+    "startupDefault": "system; resolves to matchMedia dark when available, otherwise light fallback",
+    "bootstrapOwnership": {
+        "preVue": "index.html inline bootstrap",
+        "typedRuntime": "src/theme/runtime.ts",
+        "piniaAdoption": "src/stores/theme.ts initialized from src/main.ts before mount",
+        "duplicatedBoundary": "inline bootstrap duplicates key, identifiers, media query, and existing --bg light/dark values for pre-stylesheet meta theme-color only"
+    },
+    "bootstrapOrder": [
+        "index.html inline bootstrap runs in head",
+        "safe read of localStorage themeMode",
+        "resolve system through matchMedia when available",
+        "apply data-theme-mode and data-theme",
+        "sync documentElement.style.colorScheme",
+        "sync meta[name=\"theme-color\"]",
+        "publish window.__KAISAILE_THEME_BOOTSTRAP__",
+        "src/main.ts creates app and installs existing Pinia",
+        "theme store initializes and adopts snapshot before router installation and app.mount",
+        "bootstrap snapshot cleared after adoption"
+    ],
+    "bootstrapSnapshot": {
+        "global": "window.__KAISAILE_THEME_BOOTSTRAP__",
+        "fields": [
+            "preference",
+            "resolvedTheme",
+            "systemTheme",
+            "storageAvailable",
+            "storageValueAccepted"
+        ],
+        "clearedAfterStoreAdoption": true,
+        "containsSecrets": false
+    },
+    "noFlashImplementation": {
+        "rootMarkersAppliedBeforeVueMount": true,
+        "darkExplicitProbe": "PASS: data-theme=dark before Vue surface and at first paint",
+        "systemDarkProbe": "PASS: data-theme=dark and data-theme-mode=system before Vue surface and at first paint",
+        "lightFrameBeforeDarkObserved": false,
+        "storeAdoptionConflictObserved": false
+    },
+    "persistenceImplementation": {
+        "type": "synchronous bootstrap preference adapter only",
+        "durableStructuredDexieSchema": "NOT_IMPLEMENTED_BY_F3C",
+        "safeRead": true,
+        "safeWrite": true,
+        "safeRemove": true,
+        "corruptedValueFallback": "system in memory without overwriting storage",
+        "unavailableStorageFallback": "system in memory without throwing",
+        "quotaOrSecurityWriteFailure": "runtime state still updates; write result false; no throw"
+    },
+    "corruptedValueHandling": "Invalid stored values are rejected, normalized to system in memory, and not persisted as invented values.",
+    "unavailableStorageHandling": "Storage access exceptions return null/false and never block app mount.",
+    "storageReadFailureHandling": "Browser probe forced Storage.getItem to throw; app mounted with system/light fallback and no uncaught exception.",
+    "storageWriteFailureHandling": "Browser probe forced Storage.setItem to throw; runtime marker changed to dark, lastWriteSucceeded=false, and no uncaught exception occurred.",
+    "systemPreferenceImplementation": {
+        "owner": "src/stores/theme.ts",
+        "mediaQuery": "(prefers-color-scheme: dark)",
+        "listenerCountPerStore": 1,
+        "unavailableMatchMediaFallback": "resolved light; no system listener attached"
+    },
+    "systemChangeImplementation": {
+        "systemLightToDark": "PASS",
+        "systemDarkToLight": "PASS",
+        "explicitLightIgnoresSystemDark": "PASS",
+        "explicitDarkIgnoresSystemLight": "PASS"
+    },
+    "crossTabImplementation": {
+        "mechanism": "window storage event",
+        "key": "themeMode",
+        "validExternalChange": "PASS: second tab set dark, first tab updated once to dark",
+        "malformedExternalChange": "PASS: ignored",
+        "unrelatedKey": "PASS: ignored",
+        "feedbackLoopObserved": false
+    },
+    "markerContract": {
+        "preferenceMarker": "data-theme-mode",
+        "resolvedMarker": "data-theme",
+        "competingMarkersAdded": [],
+        "boardMarkerRuntime": "NOT_IMPLEMENTED_BY_F3C"
+    },
+    "colorSchemeImplementation": "document.documentElement.style.colorScheme is synchronized to the resolved light/dark theme.",
+    "metaThemeColorImplementation": {
+        "preVue": "index.html sets existing light/dark --bg values before Vue",
+        "runtime": "src/theme/runtime.ts derives content from computed --bg token",
+        "newTokenValuesAdded": false
+    },
+    "piniaOwnership": {
+        "createPiniaOwner": "src/stores/index.ts remains the single createPinia owner",
+        "appUsePiniaOwner": "src/main.ts remains the single app.use(pinia) owner",
+        "themeStore": "src/stores/theme.ts",
+        "duplicatePiniaGraph": false
+    },
+    "storeLifecycle": {
+        "initializeBeforeMount": true,
+        "setPreference": true,
+        "resetPreference": true,
+        "dispose": true,
+        "noNaiveThemeObjects": true,
+        "noProductState": true
+    },
+    "listenerInventory": {
+        "systemMediaListener": "one when matchMedia is available",
+        "storageEventListener": "one",
+        "duplicateListenerValidation": "PASS: repeated initialize() preserved single listener inventory"
+    },
+    "listenerCleanup": "dispose() removes media and storage listeners and clears initialized state.",
+    "idempotencyValidation": "PASS: repeated initialize() did not duplicate listener inventory and kept stable markers.",
+    "dependencyReadiness": "PASS; no dependency mutation required or performed",
+    "dependenciesReviewed": [
+        "pinia@3.0.4",
+        "vue@3.5.39",
+        "vite@8.1.4",
+        "vue-tsc@3.3.7"
+    ],
+    "dependenciesAdded": [],
+    "dependenciesRemoved": [],
+    "automatedTestAudit": {
+        "result": "PASS",
+        "testsAdded": false,
+        "testInfrastructureAdded": false,
+        "pnpmTestScriptPresent": false
+    },
+    "mockDataAudit": {
+        "command": "mise exec -- pnpm run check:mocks",
+        "result": "PASS"
+    },
+    "secretRiskAudit": {
+        "result": "PASS",
+        "command": "mise exec -- pnpm run check:secrets",
+        "note": "No secret-like values added; report excludes browser profile and storage contents."
+    },
+    "dependencyPolicyValidation": {
+        "command": "mise exec -- pnpm run check:deps",
+        "result": "PASS"
+    },
+    "architectureValidation": {
+        "command": "mise exec -- pnpm run check:architecture",
+        "result": "PASS",
+        "note": "Raw localStorage access in src is confined to src/bootstrap/preferences/themePreference.ts; one Pinia graph preserved; no Naive provider."
+    },
+    "rawVisualValueValidation": {
+        "command": "mise exec -- pnpm run check:tokens",
+        "result": "PASS",
+        "note": "No token-registry value changed; raw values remain outside src feature/runtime files except approved index bootstrap boundary."
+    },
+    "mockDataValidation": {
+        "command": "mise exec -- pnpm run check:mocks",
+        "result": "PASS"
+    },
+    "secretPatternValidation": {
+        "command": "mise exec -- pnpm run check:secrets",
+        "result": "PASS"
+    },
+    "prettierValidation": {
+        "command": "mise exec -- pnpm run format:check",
+        "result": "PASS"
+    },
+    "eslintValidation": {
+        "command": "mise exec -- pnpm run lint",
+        "result": "PASS"
+    },
+    "stylelintValidation": {
+        "command": "mise exec -- pnpm run lint:style",
+        "result": "PASS"
+    },
+    "knipValidation": {
+        "command": "mise exec -- pnpm run check:unused",
+        "result": "PASS"
+    },
+    "governanceValidation": {
+        "command": "mise exec -- pnpm run check:governance",
+        "result": "PASS"
+    },
+    "typecheck": {
+        "command": "mise exec -- pnpm run typecheck",
+        "result": "PASS"
+    },
+    "build": {
+        "command": "mise exec -- pnpm exec vite build --outDir /tmp/f3c-theme-build.SmzNL5/dist --emptyOutDir",
+        "result": "PASS",
+        "tempBuildPath": "/tmp/f3c-theme-build.SmzNL5/dist",
+        "cleanup": "removed after browser validation"
+    },
+    "productionSecurityAudit": {
+        "command": "mise exec -- pnpm run audit:prod",
+        "result": "PASS"
+    },
+    "fullSecurityAudit": {
+        "command": "mise exec -- pnpm audit",
+        "result": "PASS"
+    },
+    "installedDependencyValidation": {
+        "command": "mise exec -- pnpm list --depth 0",
+        "result": "PASS",
+        "packageCount": 27
+    },
+    "staticAggregateValidation": {
+        "command": "mise exec -- pnpm run check:static",
+        "result": "PASS"
+    },
+    "browserValidation": {
+        "result": "PASS",
+        "browser": "installed Google Chrome headless via temporary CDP harness outside repository",
+        "route": "http://127.0.0.1:49631/pgnViewer/",
+        "servingMethod": "Node built-in static server serving /tmp/f3c-theme-build.SmzNL5/dist under /pgnViewer/",
+        "scenarios": [
+            "clean profile",
+            "stored explicit light",
+            "stored explicit dark",
+            "stored system light",
+            "stored system dark",
+            "runtime system light-to-dark",
+            "runtime system dark-to-light",
+            "explicit light ignores system dark",
+            "explicit dark ignores system light",
+            "runtime light/dark/system changes",
+            "cold document loads for valid preferences",
+            "corrupted stored preference",
+            "storage read failure",
+            "storage write failure",
+            "unavailable matchMedia fallback",
+            "two-tab cross-tab sync",
+            "unrelated storage event ignored",
+            "malformed storage event ignored",
+            "repeated initialization"
+        ],
+        "routeMount": "PASS",
+        "nonblankDom": "PASS",
+        "viteOverlay": "ABSENT",
+        "consoleErrors": 0,
+        "failedRequests": 0,
+        "productUiOrProviderAppeared": false
+    },
+    "noFlashBrowserValidation": {
+        "result": "PASS",
+        "explicitDark": {
+            "markerBeforeVueSurface": "dark",
+            "markerAtFirstPaint": "dark"
+        },
+        "systemDark": {
+            "preferenceMarkerBeforeVueSurface": "system",
+            "resolvedMarkerBeforeVueSurface": "dark",
+            "markerAtFirstPaint": "dark"
+        },
+        "lightFrameBeforeDarkObserved": false
+    },
+    "preferenceRestorationValidation": {
+        "clean": "PASS",
+        "light": "PASS",
+        "dark": "PASS",
+        "systemLight": "PASS",
+        "systemDark": "PASS",
+        "corrupted": "PASS"
+    },
+    "systemModeValidation": {
+        "systemLightToDark": "PASS",
+        "systemDarkToLight": "PASS",
+        "matchMediaUnavailableFallback": "PASS"
+    },
+    "explicitModeValidation": {
+        "lightIgnoresSystem": "PASS",
+        "darkIgnoresSystem": "PASS",
+        "runtimeLightDarkSystemChanges": "PASS"
+    },
+    "storageFailureValidation": {
+        "readFailure": "PASS",
+        "writeFailure": "PASS",
+        "unavailableStorage": "PASS"
+    },
+    "crossTabValidation": {
+        "result": "PASS",
+        "validChange": "PASS",
+        "unrelatedIgnored": "PASS",
+        "malformedIgnored": "PASS",
+        "feedbackLoopObserved": false
+    },
+    "processCleanup": {
+        "staticServerStopped": true,
+        "chromeClosed": true,
+        "temporaryProfileRemoved": true,
+        "cdpScriptRemoved": true,
+        "tempBuildRemoved": true
+    },
+    "repositorySideEffectAudit": {
+        "nodeModulesViteDepsPreexistingTimestamp": "2026-07-12T13:51:25+0800",
+        "nodeModulesViteDepsHashUnchanged": true,
+        "packageJsonChanged": false,
+        "pnpmLockChanged": false,
+        "tokenRegistryChanged": false,
+        "routerChanged": false,
+        "scannerSourceChanged": false,
+        "evidenceSourceModified": false,
+        "generatedOutputTracked": false
+    },
+    "tokenImpact": "No src/styles/tokens.css value changed; runtime consumes existing --bg and light/dark scopes.",
+    "themeImpact": "Theme preference engine, no-flash bootstrap, Pinia store, system/cross-tab sync, color-scheme, and meta theme-color implemented and validated.",
+    "uiFrameworkImpact": "No Naive UI provider, theme object, themeOverrides, discrete API, reusable UI adapter, icon, or product control implemented.",
+    "i18nImpact": "No i18n implementation or locale files changed.",
+    "persistenceImpact": "Only non-sensitive synchronous themeMode bootstrap preference adapter implemented; Dexie schema remains unimplemented.",
+    "apiBoundaryImpact": "No API, repository, transport, fetch, MQTT, write/admin endpoint, or env boundary changed.",
+    "securityImpact": "Browser stores only approved non-sensitive themeMode; no credentials, auth material, cookies, secret-bearing URLs, or environment files touched.",
+    "filesCreated": [
+        "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+        "src/bootstrap/preferences/themePreference.ts",
+        "src/stores/theme.ts",
+        "src/theme/constants.ts",
+        "src/theme/runtime.ts",
+        "src/theme/types.ts"
+    ],
+    "filesModified": [
+        "index.html",
+        "src/main.ts",
+        "src/stores/index.ts"
+    ],
+    "filesDeleted": [],
+    "implementationCommit": {
+        "sha": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+        "subject": "feat(theme): 建立 F3 主题偏好与无闪烁启动引擎",
+        "parent": "bc9247e9241d5e131e79496999d5b6cd28fa1714"
+    },
+    "implementationPush": {
+        "remote": "origin",
+        "branch": "main",
+        "sha": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+        "verifiedBy": [
+            "local origin/main",
+            "git ls-remote",
+            "gh api commits/main"
+        ]
+    },
+    "documentationUpdate": {
+        "status": "PREPARED_FOR_GOVERNANCE_CLOSURE_COMMIT",
+        "files": [
+            "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md"
+        ]
+    },
+    "readinessMatrixUpdate": {
+        "status": "PREPARED_FOR_GOVERNANCE_CLOSURE_COMMIT",
+        "files": [
+            "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+        ]
+    },
+    "closureCommitPlan": {
+        "subject": "docs(governance): 记录 F3C 主题引擎验收证据",
+        "files": [
+            ".ai/reports/F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION_REPORT.json",
+            "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+            "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+        ],
+        "push": "normal push to origin main after validation; no force push"
+    },
+    "gitStateAtReportCreation": {
+        "head": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+        "branch": "main",
+        "trackedWorktree": "only governance closure files modified after report creation",
+        "index": "empty before staging governance closure"
+    },
+    "warnings": [
+        "F3C uses synchronous localStorage only for non-sensitive themeMode bootstrap; Dexie structured preference ownership remains future work.",
+        "index.html duplicates existing --bg light/dark values only for pre-stylesheet meta theme-color; typed runtime derives from --bg."
+    ],
+    "blockers": [],
+    "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+    "finalVerdict": "F3C_THEME_ENGINE_PASS_READY_FOR_NAIVE_UI_PROVIDER_IMPLEMENTATION"
+}

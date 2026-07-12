@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "F3B_TOKEN_REGISTRY_IMPLEMENTED_PENDING_GIT_CLOSURE",
+    "overallStatus": "F3C_THEME_ENGINE_IMPLEMENTED_VALIDATED",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -43,14 +43,16 @@
             "neutral /pgnViewer/ bootstrap"
         ],
         "majorGaps": [
-            "theme bootstrap and persistence",
-            "Naive provider/adapters",
+            "Dexie structured preference ownership",
+            "Naive UI provider/adapters",
             "i18n",
-            "Dexie persistence",
             "TanStack Query client",
             "API/repository/env/security runtime boundaries",
             "global error/notification policy",
-            "full responsive panel/splitter/overlay foundation"
+            "full responsive panel/splitter/overlay foundation",
+            "board-theme runtime",
+            "display-theme runtime",
+            "product UI migration"
         ],
         "finalReason": "F0B resolved the active target Vite process, removed the authorized Vite deps cache side effect, reconciled forbidden metadata-category authority evidence without inventing historical filenames, revalidated the authorized empty remote, and preserved the original passing validation evidence without rerunning Vite.",
         "f0Closure": {
@@ -160,16 +162,56 @@
             "browserTokenLoading": "PASS",
             "missingDomainsRemainUnimplemented": true,
             "notImplemented": [
-                "theme preference",
-                "no-flash bootstrap",
-                "persistence",
-                "Pinia theme store",
-                "system mode",
-                "cross-tab behavior",
                 "Naive UI provider",
-                "theme overrides"
+                "theme overrides",
+                "Dexie structured preference schema",
+                "board-theme runtime",
+                "product UI"
             ],
-            "nextRequiredPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION"
+            "nextRequiredPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION_COMPLETED"
+        },
+        "f3cThemeEngine": {
+            "status": "F3C_THEME_ENGINE_IMPLEMENTED_VALIDATED",
+            "report": ".ai/reports/F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION_REPORT.json",
+            "baseline": "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+            "implementationCommit": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+            "implementationPush": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+            "preferenceIdentifiers": ["light", "dark", "system"],
+            "resolvedThemeIdentifiers": ["light", "dark"],
+            "storageKey": "themeMode",
+            "startupDefault": "system",
+            "markerContract": ["data-theme-mode", "data-theme"],
+            "implemented": [
+                "theme preference model",
+                "synchronous preference adapter",
+                "pre-Vue no-flash bootstrap",
+                "Pinia theme store",
+                "system listener",
+                "approved cross-tab synchronization",
+                "document markers",
+                "color-scheme synchronization",
+                "meta theme-color synchronization",
+                "failure fallback",
+                "real-browser validation"
+            ],
+            "notImplemented": [
+                "Naive UI provider composition",
+                "Naive UI theme selection",
+                "themeOverrides",
+                "reusable UI adapters",
+                "icons",
+                "i18n",
+                "Dexie structured persistence",
+                "QueryClient",
+                "repositories",
+                "APIs",
+                "accessibility implementation",
+                "responsive implementation",
+                "motion implementation",
+                "foundation preview",
+                "product UI"
+            ],
+            "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
         }
     },
     "capabilities": [
@@ -494,7 +536,7 @@
                 "tsconfig.json",
                 "vite.config.ts"
             ],
-            "runtimeFiles": ["src/stores/index.ts", "src/main.ts"],
+            "runtimeFiles": ["src/stores/index.ts", "src/stores/theme.ts", "src/main.ts"],
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
             "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
             "themeOwnership": "src/styles/tokens.css when applicable",
@@ -504,9 +546,10 @@
             "validationEvidence": [
                 "one createPinia singleton",
                 "one app.use(pinia)",
-                "no feature stores present"
+                "theme store initialized in existing Pinia graph before mount",
+                "no fake business stores present"
             ],
-            "browserEvidence": "PASS: no duplicate Pinia warnings",
+            "browserEvidence": "PASS: no duplicate Pinia warnings; theme listener inventory stable after repeated initialization",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
             "plannedPhase": "F1_LOCAL_GIT_BASELINE",
@@ -612,22 +655,37 @@
                 "tsconfig.json",
                 "vite.config.ts"
             ],
-            "runtimeFiles": ["src/styles/tokens.css"],
-            "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
-            "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
-            "themeOwnership": "src/styles/tokens.css when applicable",
+            "runtimeFiles": [
+                "index.html",
+                "src/theme/constants.ts",
+                "src/theme/types.ts",
+                "src/theme/runtime.ts",
+                "src/bootstrap/preferences/themePreference.ts",
+                "src/stores/theme.ts",
+                "src/main.ts"
+            ],
+            "providerOwnership": "NO_NAIVE_PROVIDER_IN_F3C",
+            "persistenceOwnership": "themeMode bootstrap preference only; Dexie remains future",
+            "themeOwnership": "src/styles/tokens.css remains sole visual-value authority; F3C runtime applies markers only",
             "userFacingImpact": "Foundation readiness only; product UI remains blocked",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
-                "F3B declares light and dark token scopes only",
-                "no theme preference engine, no no-flash bootstrap, no persistence, no Pinia theme store, no system mode listener, no cross-tab behavior, no runtime color-scheme or meta theme-color mutation"
+                "theme preference identifiers light/dark/system implemented",
+                "resolved light/dark runtime implemented",
+                "synchronous pre-Vue no-flash bootstrap implemented",
+                "Pinia theme store implemented in existing graph",
+                "system matchMedia listener implemented",
+                "storage-event cross-tab synchronization implemented",
+                "document markers/color-scheme/meta theme-color synchronized",
+                "storage failure and corruption fallback validated",
+                "all static validation, typecheck, temporary build, audits, and real-browser validation PASS"
             ],
-            "browserEvidence": "PASS confirms no theme preference control or runtime provider is present; F3C remains required",
+            "browserEvidence": "PASS: Google Chrome /pgnViewer/ validation covered clean, light, dark, system light/dark, runtime changes, storage failures, cross-tab sync, idempotency, and no-flash dark startup.",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
             "plannedPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "finalVerdict": "FOUNDATION_THEME_ENGINE_ACCEPTABLE_F3C_IMPLEMENTED"
         },
         {
             "identifier": "ui.naive_providers",
@@ -657,13 +715,14 @@
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "MISSING",
             "validationEvidence": [
-                "naive-ui installed but no Naive imports in target src",
-                "canonical pgnViewer-new App.vue has NConfigProvider/NMessageProvider/NDialogProvider only"
+                "naive-ui installed but no Naive provider or direct Naive imports in target src",
+                "F3C browser validation confirmed no .n-config-provider DOM",
+                "F3D remains responsible for provider/adapters and token-derived overrides"
             ],
             "browserEvidence": "NOT_PRESENT",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_PROVIDER_FOUNDATION",
+            "plannedPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
             "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
         },
         {
@@ -769,10 +828,11 @@
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "MISSING",
             "validationEvidence": [
-                "dexie and zod installed but not referenced in src",
-                "raw localStorage/sessionStorage/IndexedDB absent in target src"
+                "dexie and zod installed but no Dexie schema is implemented in src",
+                "F3C implements only synchronous non-sensitive themeMode bootstrap preference adapter",
+                "structured Dexie preference ownership remains future work"
             ],
-            "browserEvidence": "NOT_APPLICABLE",
+            "browserEvidence": "NOT_APPLICABLE_TO_DEXIE; F3C storage failure browser probes PASS for themeMode bootstrap adapter",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
             "plannedPhase": "F3_PERSISTENCE_FOUNDATION",
@@ -798,21 +858,30 @@
                 "tsconfig.json",
                 "vite.config.ts"
             ],
-            "runtimeFiles": [],
+            "runtimeFiles": [
+                "index.html",
+                "src/bootstrap/preferences/themePreference.ts",
+                "src/stores/theme.ts"
+            ],
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
-            "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+            "persistenceOwnership": "themeMode bootstrap preference adapter only; browser-storage denylist enforced by implementation boundary and scanners",
             "themeOwnership": "src/styles/tokens.css when applicable",
             "userFacingImpact": "Foundation readiness only; product UI remains blocked",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "MISSING",
+            "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
-                "no preference bootstrap script or storage allowlist/denylist exists"
+                "themeMode is the only persisted bootstrap key",
+                "only light/dark/system accepted",
+                "corrupted values fall back without overwriting storage",
+                "storage read/write failure does not block mount",
+                "check:architecture PASS confirms src localStorage access only in approved bootstrap-preference boundary",
+                "check:secrets PASS"
             ],
-            "browserEvidence": "NOT_APPLICABLE",
+            "browserEvidence": "PASS: storage read failure, write failure, corrupted value, and clean profile all mounted /pgnViewer/ without console errors",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_THEME_PREFERENCES_BOOTSTRAP",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "plannedPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
+            "finalVerdict": "FOUNDATION_SAFE_THEME_BOOTSTRAP_PREFERENCE_ACCEPTABLE_F3C_IMPLEMENTED"
         },
         {
             "identifier": "api.repository_boundaries",
@@ -1238,7 +1307,7 @@
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         }
     ],
-    "overallVerdict": "F3B_TOKEN_REGISTRY_PASS_READY_FOR_THEME_ENGINE_IMPLEMENTATION",
+    "overallVerdict": "F3C_THEME_ENGINE_PASS_READY_FOR_NAIVE_UI_PROVIDER_IMPLEMENTATION",
     "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
     "correctionHistory": [
         {
@@ -1506,6 +1575,27 @@
             "full audit PASS",
             "pnpm list --depth 0 PASS",
             "check:static PASS"
+        ],
+        "f3cReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION_REPORT.json",
+        "f3cImplementationCommit": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+        "f3cValidations": [
+            "check:deps PASS",
+            "check:architecture PASS",
+            "check:tokens PASS",
+            "check:mocks PASS",
+            "check:secrets PASS",
+            "format:check PASS",
+            "lint PASS",
+            "lint:style PASS",
+            "check:unused PASS",
+            "check:governance PASS",
+            "typecheck PASS",
+            "temporary outDir production build PASS",
+            "audit:prod PASS",
+            "pnpm audit PASS",
+            "pnpm list --depth 0 PASS",
+            "check:static PASS",
+            "Google Chrome real-browser no-flash/theme validation PASS"
         ]
     },
     "browserSideEffectStatus": {
@@ -1539,12 +1629,12 @@
     },
     "blockers": [],
     "warnings": [
-        "F3A remains design/evidence only; it implements no runtime token values, theme provider, preference persistence, routes, components, or product UI.",
-        "F3B_TOKEN_AUTHORITY_IMPLEMENTATION is a superseded local alias; active documents use F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION.",
-        "Inventory gaps for system behavior, meta theme-color, icon roles, geometry classification, and secondary evidence are documented review triggers and do not authorize invention."
+        "F3C implements only non-sensitive themeMode bootstrap persistence; Dexie structured preferences remain future work.",
+        "Naive UI provider composition, token-derived themeOverrides, reusable UI adapters, icons, and product UI remain unimplemented until F3D or later.",
+        "Board-theme and display-theme runtimes remain independent future slices; F3C did not implement board or product controls."
     ],
-    "plannedNextPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
-    "updatedAt": "2026-07-12T08:08:39.064Z",
+    "plannedNextPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+    "updatedAt": "2026-07-12T09:11:54Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -1879,7 +1969,7 @@
     },
     "f3aCanonicalTokenThemeInventoryAndTargetDesign": {
         "phase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
-        "status": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_COMPLETE",
+        "status": "F3C_THEME_ENGINE_IMPLEMENTED_VALIDATED",
         "report": ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json",
         "inventory": "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
         "baseline": "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
@@ -1896,31 +1986,21 @@
             "naiveUi": "Project-owned provider/adapters only; token-derived overrides only."
         },
         "currentGaps": [
-            "accent scale",
-            "hover/active state tokens",
-            "disabled text/icon tokens",
-            "inverse icon tokens",
-            "link token",
-            "overlay/dialog/tooltip/menu component tokens",
-            "safe-area tokens",
-            "breakpoint tokens with concrete values",
-            "board coordinate tokens",
-            "board overlay tokens",
-            "legal capture token",
-            "connection/analysis status tokens",
-            "white/black/inactive player states",
-            "line-height/font-weight tokens",
-            "z-index concrete scale",
-            "motion duration/easing concrete scale",
-            "meta theme-color values"
+            "Dexie structured preference ownership",
+            "Naive UI provider and token-derived overrides",
+            "board-theme runtime",
+            "display-theme runtime",
+            "icon/link/disabled/connection/analysis/player-state roles",
+            "motion/z-index/responsive/safe-area concrete scales",
+            "panel/splitter/scroll-surface/line-height/font-weight token domains"
         ],
         "futureOwners": {
             "tokenAuthority": "src/styles/tokens.css",
-            "themeBootstrap": "future src/bootstrap/preferences and src/app/providers/theme owner",
-            "appProvider": "future src/app/providers owner",
+            "themeBootstrap": "implemented in index.html, src/theme/*, src/bootstrap/preferences/themePreference.ts, src/stores/theme.ts, and src/main.ts",
+            "appProvider": "future F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
             "naiveAdapter": "future src/app/providers/NaiveThemeProvider.vue and src/ui adapters",
             "boardThemeRuntime": "future board/theme adapter slice",
-            "persistence": "future Dexie preferences table and typed preference repository",
+            "persistence": "future Dexie preferences table and typed preference repository; F3C owns only synchronous non-sensitive themeMode bootstrap adapter",
             "validation": "project-owned F2 scanners plus typecheck/build and narrow real-browser runtime evidence for visible theme changes"
         },
         "implementationSlices": [
@@ -1936,14 +2016,16 @@
             },
             {
                 "id": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
-                "owner": "future src/bootstrap/preferences and src/app/providers/theme owner",
+                "owner": "index.html, src/theme/*, src/bootstrap/preferences/themePreference.ts, src/stores/theme.ts, src/main.ts",
                 "scope": "Implement light/dark/system resolution, no-flash pre-Vue bootstrap, html markers, color-scheme, meta theme-color, preference fallback, system listeners, and cross-tab synchronization without Naive UI provider work.",
                 "validation": [
                     "mise exec -- pnpm run check:governance",
                     "mise exec -- pnpm run typecheck",
                     "temporary-output production build",
                     "narrow real-browser bootstrap/theme interaction validation"
-                ]
+                ],
+                "implementationStatus": "IMPLEMENTED_VALIDATED",
+                "report": ".ai/reports/F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION_REPORT.json"
             },
             {
                 "id": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
@@ -1955,7 +2037,8 @@
                     "mise exec -- pnpm run typecheck",
                     "temporary-output production build",
                     "narrow real-browser provider validation"
-                ]
+                ],
+                "implementationStatus": "NEXT_REQUIRED_PHASE"
             },
             {
                 "id": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
@@ -1976,7 +2059,7 @@
             "Visible UI/theme changes require one narrow real-browser runtime validation with nonblank DOM, no Vite overlay, no console-breaking errors, and an interaction/theme state change when applicable.",
             "No package manager mutation and no dependency changes in F3 token/theme implementation unless separately approved."
         ],
-        "nextRequiredPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+        "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
         "inventoryEntryCount": 86,
         "unresolvedEntryCount": 0,
         "phaseNameReconciliation": {
@@ -1990,7 +2073,18 @@
                 "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE"
             ]
         },
-        "finalVerdict": "F3A_TOKEN_THEME_DESIGN_PASS_READY_FOR_TOKEN_REGISTRY_IMPLEMENTATION",
-        "validatedAt": "2026-07-12T08:08:39.064Z"
+        "finalVerdict": "F3C_THEME_ENGINE_PASS_READY_FOR_NAIVE_UI_PROVIDER_IMPLEMENTATION",
+        "validatedAt": "2026-07-12T09:11:54Z",
+        "runtimeBaseline": "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+        "f3cImplementation": {
+            "report": ".ai/reports/F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION_REPORT.json",
+            "implementationCommit": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+            "implementationPush": "f5293e2de24806b55a33e4ae6dba66f66068617c",
+            "preferenceIdentifiers": ["light", "dark", "system"],
+            "resolvedThemeIdentifiers": ["light", "dark"],
+            "storageKey": "themeMode",
+            "startupDefault": "system",
+            "browserValidation": "PASS"
+        }
     }
 }

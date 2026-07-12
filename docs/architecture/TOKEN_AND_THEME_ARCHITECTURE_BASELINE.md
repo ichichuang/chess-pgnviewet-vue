@@ -1,7 +1,7 @@
 # Token And Theme Architecture Baseline
 
-Status: `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTED`
-Phase: `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`
+Status: `F3C_THEME_ENGINE_IMPLEMENTED_VALIDATED`
+Phase: `F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`
 Generated: `2026-07-12T07:47:56.192Z`
 
 ## Decision
@@ -27,7 +27,17 @@ Actual F3B registry status:
 
 Canonical parity passed with the temporary inventory-to-CSS reconciliation script stored outside the repository. Current target consumer migration is complete for the neutral bootstrap: `src/styles/base.css` now consumes `--state-focus-ring`; existing `--bg`, `--text`, `--font-sans`, and `--fs-base` consumers already resolve through the registry.
 
-There is still no implemented theme store, prepaint script, meta theme-color, system preference listener, cross-tab listener, Naive provider, board-theme runtime, or tokenized component adapter layer.
+F3C adds the project-owned theme preference engine without changing token values. Implemented runtime ownership:
+
+- `index.html`: synchronous pre-Vue bootstrap and initial meta theme-color.
+- `src/theme/constants.ts`: immutable preference, marker, media-query, and storage identifiers.
+- `src/theme/types.ts`: typed preference, resolved-theme, and bootstrap snapshot contracts.
+- `src/theme/runtime.ts`: validation, resolution, document marker synchronization, `color-scheme`, and token-derived meta theme-color synchronization.
+- `src/bootstrap/preferences/themePreference.ts`: the only typed runtime owner of raw `localStorage` access for the non-sensitive `themeMode` key.
+- `src/stores/theme.ts`: Pinia preference state, startup adoption, set/reset behavior, system listener, storage-event cross-tab listener, idempotency, and cleanup.
+- `src/main.ts`: theme store initialization in the existing Pinia graph before router installation and before Vue mount.
+
+There is still no Naive provider, Naive theme/themeOverrides, board-theme runtime, display-theme runtime, product theme control, reusable UI adapter layer, Dexie preference schema, query state, repository, API, or product UI migration.
 
 The existing scanner evidence is valid but narrow: `mise exec -- pnpm run check:tokens --json` returned zero findings. That proves governed forbidden values are absent outside accepted scope; it does not prove the theme system is complete.
 
@@ -78,22 +88,39 @@ The implemented domain counts are:
 
 Raw-value governance, typecheck, static validation, production build, production/full audit, installed dependency listing, aggregate static validation, and real-browser `/pgnViewer/` token-loading validation passed for F3B.
 
+## F3C Status
+
+F3C implements the light/dark/system theme engine with:
+
+- Preference identifiers: `light`, `dark`, `system`.
+- Resolved theme identifiers: `light`, `dark`.
+- Storage key: `themeMode`.
+- Startup default: `system`; when `matchMedia` is unavailable, resolved theme falls back to `light` to match the token registry's static `:root` light scope.
+- Marker contract: `html[data-theme-mode="light|dark|system"]` for intent and `html[data-theme="light|dark"]` for resolved runtime theme.
+- Bootstrap order: `index.html` inline bootstrap reads the safe preference, applies markers, `color-scheme`, meta theme-color, and a minimal bootstrap snapshot before Vue; `src/main.ts` installs the existing Pinia graph, initializes `src/stores/theme.ts`, then installs router and mounts.
+- System behavior: one `matchMedia('(prefers-color-scheme: dark)')` listener updates resolved theme only while preference is `system`; explicit modes ignore system changes.
+- Cross-tab behavior: one `storage` listener accepts only valid external `themeMode` changes, ignores unrelated or malformed events, and does not write feedback.
+- Failure behavior: corrupted values, denied storage reads/writes, missing meta element, and unavailable `matchMedia` do not block mount.
+- Theme metadata: `documentElement.style.colorScheme` follows the resolved theme; runtime meta theme-color is derived from `--bg` after CSS is available. The inline bootstrap duplicates only the existing light/dark `--bg` values for pre-stylesheet no-flash metadata.
+- Lifecycle: initialization is idempotent and `dispose()` removes owned listeners.
+
+F3C validation passed with project scanners, formatting, linting, Stylelint, unused-code check, governance aggregate, TypeScript checking, temporary-output production build, production and full audits, installed dependency listing, aggregate static validation, and real-browser Google Chrome validation of clean, explicit, system, corrupted-storage, storage-failure, unavailable-`matchMedia`, two-tab cross-tab, repeated-initialization, route-mount, no-console-error, no-failed-request, and no-flash dark-startup cases.
+
 ## Gaps
 
-Open gaps: system mode is not implemented in canonical or target runtime; Dexie preference bootstrap is missing; meta theme-color and no-flash startup are missing; icon/link/disabled/connection/analysis/player-state roles are incomplete; motion/z-index/responsive/safe-area concrete scales are incomplete; panel, splitter, scroll-surface, line-height, and font-weight token domains remain unimplemented without approved inventory entries.
+Open gaps: Dexie structured preference ownership is still missing; Naive UI provider composition and token-derived `themeOverrides` are still missing; board-theme runtime and display-theme runtime are still missing; icon/link/disabled/connection/analysis/player-state roles are incomplete; motion/z-index/responsive/safe-area concrete scales are incomplete; panel, splitter, scroll-surface, line-height, and font-weight token domains remain unimplemented without approved inventory entries.
 
-These gaps remain non-runtime findings. They do not claim any theme provider, preference store, prepaint script, persistence, document marker, Naive UI provider, browser behavior, route, component, or product UI implementation already exists.
+These gaps remain non-runtime findings. They do not claim any Naive UI provider, theme override, board-theme runtime, route, component, repository, API, Dexie schema, or product UI implementation already exists.
 
 ## Next Phase
 
-Next required phase: `F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`.
+Next required phase: `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`.
 
 Superseded local alias: `F3B_TOKEN_AUTHORITY_IMPLEMENTATION`. The canonical replacement is `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`.
 
-Completed F3B scope: token authority only. Product UI, routes, providers, stores, persistence, board runtime, Naive provider, API, auth, and feature components remain blocked until their own implementation slice is opened.
+Completed F3B scope: token authority only. Completed F3C scope: theme preference engine, synchronous no-flash bootstrap, Pinia theme store, document synchronization, system listener, approved cross-tab synchronization, and failure-safe non-sensitive bootstrap preference handling. Product UI, routes, Naive provider, Dexie schema, board runtime, API, auth, and feature components remain blocked until their own implementation slice is opened.
 
 Remaining canonical slices:
 
-1. `F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`
-2. `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
-3. `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE`
+1. `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
+2. `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE`
