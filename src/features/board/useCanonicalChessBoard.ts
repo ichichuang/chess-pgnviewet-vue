@@ -21,7 +21,9 @@ import {
 interface CanonicalBoardProps {
   position?: string
   orientation?: string
+  lastMove?: unknown
   interactive?: boolean
+  controlledMoves?: boolean
 }
 
 type CanonicalBoardEvent =
@@ -38,6 +40,14 @@ export function useCanonicalChessBoard(props: CanonicalBoardProps, emit: Canonic
   const dests = computed(() => computeDests(currentFen.value))
   const currentTurnColor = computed(() => turnColor(currentFen.value))
   const currentCheck = computed(() => isCheck(currentFen.value))
+  const displayedLastMove = computed(() =>
+    Array.isArray(props.lastMove) &&
+    props.lastMove.length === 2 &&
+    typeof props.lastMove[0] === 'string' &&
+    typeof props.lastMove[1] === 'string'
+      ? ([props.lastMove[0], props.lastMove[1]] as [string, string])
+      : lastMove.value
+  )
 
   watch(
     () => props.position,
@@ -85,8 +95,6 @@ export function useCanonicalChessBoard(props: CanonicalBoardProps, emit: Canonic
   }
 
   function handleMoveRequest(payload: BoardMoveRequest): void {
-    emit('move-request', payload)
-
     if (!payload.promotion && needsPromotion(currentFen.value, payload.from, payload.to)) {
       const pending: PendingPromotion = {
         from: payload.from,
@@ -95,6 +103,12 @@ export function useCanonicalChessBoard(props: CanonicalBoardProps, emit: Canonic
       }
       pendingPromotion.value = pending
       emit('promotion-request', pending)
+      return
+    }
+
+    emit('move-request', payload)
+
+    if (props.controlledMoves) {
       return
     }
 
@@ -122,6 +136,12 @@ export function useCanonicalChessBoard(props: CanonicalBoardProps, emit: Canonic
       return
     }
 
+    if (props.controlledMoves) {
+      pendingPromotion.value = null
+      emit('move-request', { from: pending.from, to: pending.to, promotion: piece })
+      return
+    }
+
     applyRequestedMove({ from: pending.from, to: pending.to, promotion: piece })
   }
 
@@ -139,7 +159,7 @@ export function useCanonicalChessBoard(props: CanonicalBoardProps, emit: Canonic
     getPosition,
     handleMoveRequest,
     interactionActive,
-    lastMove,
+    lastMove: displayedLastMove,
     orientationState,
     pendingPromotion,
     resolvePromotion,

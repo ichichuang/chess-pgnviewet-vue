@@ -9,9 +9,22 @@ Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 import { computed, ref } from 'vue'
 
 import CanonicalChessBoard from '@/features/board/CanonicalChessBoard.vue'
+import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
+import PgnNotationPanel from '@/features/pgn/components/PgnNotationPanel.vue'
+import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
 import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceModeContext'
 
 const workspaceModeContext = useWorkspaceModeContext()
+const {
+  boardInteractive,
+  boardPosition,
+  dragActive,
+  fileInput,
+  handlePgnAction,
+  onBoardMoveRequest,
+  onFiles,
+  pgn,
+} = usePgnWorkspaceRuntime()
 const showLeftSidebar = ref(true)
 const showAnalysisRegion = ref(false)
 const boardAlignment = ref('center')
@@ -30,10 +43,6 @@ const boardJustifyContent = computed(() => {
 
 function toggleLeftSidebar() {
   showLeftSidebar.value = !showLeftSidebar.value
-}
-
-function toggleAnalysisRegion() {
-  showAnalysisRegion.value = !showAnalysisRegion.value
 }
 
 defineExpose({
@@ -58,10 +67,7 @@ defineExpose({
         aria-label="左侧棋谱列表结构区域"
       >
         <div v-show="showLeftSidebar" class="list-inner">
-          <section class="shell-region" aria-labelledby="workspace-list-title">
-            <p class="region-kicker">结构区域</p>
-            <h2 id="workspace-list-title">棋谱与来源列表</h2>
-          </section>
+          <PgnGameList @action="handlePgnAction" />
         </div>
         <button
           class="list-handle"
@@ -78,7 +84,13 @@ defineExpose({
         <div class="board-stage" :style="{ justifyContent: boardJustifyContent }">
           <section class="board-align-frame" aria-labelledby="workspace-board-title">
             <h1 id="workspace-board-title" class="board-title">开赛了教学工作区</h1>
-            <CanonicalChessBoard />
+            <CanonicalChessBoard
+              :position="boardPosition"
+              :last-move="pgn.lastMove ?? []"
+              :interactive="boardInteractive"
+              controlled-moves
+              @move-request="onBoardMoveRequest"
+            />
           </section>
         </div>
       </section>
@@ -89,21 +101,8 @@ defineExpose({
         aria-label="右侧棋谱与分析结构区域"
       >
         <section class="panel-pgn" aria-labelledby="workspace-toolbar-title">
-          <header class="shell-toolbar" role="toolbar" aria-labelledby="workspace-toolbar-title">
-            <h2 id="workspace-toolbar-title">工作区工具栏</h2>
-            <button type="button" :aria-pressed="showLeftSidebar" @click="toggleLeftSidebar">
-              {{ showLeftSidebar ? '隐藏左栏' : '显示左栏' }}
-            </button>
-            <button type="button" :aria-pressed="showAnalysisRegion" @click="toggleAnalysisRegion">
-              {{ showAnalysisRegion ? '隐藏分析区' : '显示分析区' }}
-            </button>
-          </header>
-          <div class="panel-scroll">
-            <section class="shell-region" aria-labelledby="workspace-pgn-title">
-              <p class="region-kicker">结构区域</p>
-              <h2 id="workspace-pgn-title">棋谱、走法与注释面板</h2>
-            </section>
-          </div>
+          <h2 id="workspace-toolbar-title" class="sr-only">PGN 棋谱面板</h2>
+          <PgnNotationPanel @action="handlePgnAction" />
         </section>
 
         <button
@@ -129,6 +128,15 @@ defineExpose({
         </section>
       </aside>
     </main>
+
+    <input ref="fileInput" type="file" accept=".pgn" multiple hidden @change="onFiles" />
+
+    <div v-if="dragActive" class="drop-overlay" data-p1c-drop-overlay>
+      <div class="drop-card">
+        <strong>拖拽棋谱文件到此处导入</strong>
+        <span>支持 .pgn 文件</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -277,6 +285,42 @@ defineExpose({
   overflow: hidden;
   white-space: nowrap;
   clip-path: inset(50%);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--board-promotion-z);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--board-promotion-backdrop);
+}
+
+.drop-card {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-5);
+  border: var(--workspace-border-w) solid var(--accent-line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.drop-card span {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
 }
 
 .shell-region h2,

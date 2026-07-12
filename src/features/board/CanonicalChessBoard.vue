@@ -7,7 +7,9 @@ import { useCanonicalChessBoard } from './useCanonicalChessBoard'
 const props = defineProps({
   position: { type: String, default: undefined },
   orientation: { type: String, default: BOARD_ORIENTATION_WHITE },
+  lastMove: { type: Array, default: undefined },
   interactive: { type: Boolean, default: true },
+  controlledMoves: { type: Boolean, default: false },
 })
 
 const emit = defineEmits([
@@ -52,6 +54,7 @@ defineExpose({
     data-p1b-board
     :data-board-orientation="orientationState"
     :data-board-interaction-active="interactionActive"
+    :data-board-position="currentFen"
     aria-label="自研交互棋盘"
   >
     <BoardView
