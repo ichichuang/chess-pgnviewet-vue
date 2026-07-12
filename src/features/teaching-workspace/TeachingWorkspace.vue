@@ -8,6 +8,7 @@ Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import CanonicalChessBoard from '@/features/board/CanonicalChessBoard.vue'
 import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceModeContext'
 
 const workspaceModeContext = useWorkspaceModeContext()
@@ -27,23 +28,12 @@ const boardJustifyContent = computed(() => {
   return 'center'
 })
 
-const modeLabel = computed(() => workspaceModeContext.value.mode.replaceAll('_', ' '))
-const sourceLabel = computed(() => workspaceModeContext.value.source.replaceAll('_', ' '))
-
 function toggleLeftSidebar() {
   showLeftSidebar.value = !showLeftSidebar.value
 }
 
 function toggleAnalysisRegion() {
   showAnalysisRegion.value = !showAnalysisRegion.value
-}
-
-function setBoardAlignment(nextAlignment = 'center') {
-  if (nextAlignment !== 'left' && nextAlignment !== 'center' && nextAlignment !== 'right') {
-    return
-  }
-
-  boardAlignment.value = nextAlignment
 }
 
 defineExpose({
@@ -87,43 +77,8 @@ defineExpose({
       <section class="area-board" :class="`align-${boardAlignment}`" aria-label="棋盘舞台结构区域">
         <div class="board-stage" :style="{ justifyContent: boardJustifyContent }">
           <section class="board-align-frame" aria-labelledby="workspace-board-title">
-            <div class="board-structural-label">
-              <p class="region-kicker">规范棋盘舞台</p>
-              <h1 id="workspace-board-title">开赛了教学工作区</h1>
-              <dl class="context-list" aria-label="当前结构上下文">
-                <div>
-                  <dt>模式</dt>
-                  <dd>{{ modeLabel }}</dd>
-                </div>
-                <div>
-                  <dt>来源</dt>
-                  <dd>{{ sourceLabel }}</dd>
-                </div>
-              </dl>
-              <div class="alignment-controls" role="group" aria-label="棋盘区域对齐方式">
-                <button
-                  type="button"
-                  :aria-pressed="boardAlignment === 'left'"
-                  @click="setBoardAlignment('left')"
-                >
-                  左
-                </button>
-                <button
-                  type="button"
-                  :aria-pressed="boardAlignment === 'center'"
-                  @click="setBoardAlignment('center')"
-                >
-                  中
-                </button>
-                <button
-                  type="button"
-                  :aria-pressed="boardAlignment === 'right'"
-                  @click="setBoardAlignment('right')"
-                >
-                  右
-                </button>
-              </div>
-            </div>
+            <h1 id="workspace-board-title" class="board-title">开赛了教学工作区</h1>
+            <CanonicalChessBoard />
           </section>
         </div>
       </section>
@@ -315,34 +270,21 @@ defineExpose({
   min-height: 0;
 }
 
-.board-structural-label {
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  width: 100%;
-  aspect-ratio: 1;
-  padding: var(--s-6);
-  gap: var(--s-4);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-  color: var(--text);
-  text-align: center;
+.board-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
 }
 
-.board-structural-label h1,
 .shell-region h2,
 .shell-toolbar h2 {
   margin: 0;
   color: var(--text);
 }
 
-.board-structural-label h1 {
-  font-size: var(--fs-xl);
-}
-
-.board-structural-label p,
 .shell-region p {
   margin: 0;
   color: var(--text-muted);
@@ -354,44 +296,6 @@ defineExpose({
   font-size: var(--fs-xs);
 }
 
-.context-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: 100%;
-  margin: 0;
-  gap: var(--s-2);
-}
-
-.context-list div {
-  min-width: 0;
-  padding: var(--s-2);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface-2);
-}
-
-.context-list dt,
-.context-list dd {
-  margin: 0;
-}
-
-.context-list dt {
-  color: var(--text-muted);
-  font-size: var(--fs-xs);
-}
-
-.context-list dd {
-  overflow-wrap: anywhere;
-  color: var(--text);
-  font-size: var(--fs-sm);
-}
-
-.alignment-controls {
-  display: inline-flex;
-  gap: var(--s-2);
-}
-
-.alignment-controls button,
 .shell-toolbar button {
   min-height: var(--control-h-sm);
   padding: 0 var(--s-3);
@@ -402,7 +306,6 @@ defineExpose({
   cursor: pointer;
 }
 
-.alignment-controls button[aria-pressed='true'],
 .shell-toolbar button[aria-pressed='true'] {
   border-color: var(--accent-line);
   background: var(--accent-bg);
@@ -573,16 +476,22 @@ defineExpose({
     padding: var(--workspace-board-pad-y) var(--workspace-board-pad-x-mobile);
   }
 
-  .board-structural-label {
-    padding: var(--s-4);
-  }
-
-  .context-list {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .shell-toolbar {
     flex-wrap: wrap;
+  }
+}
+
+@media (width <= 900px) and (height <= 560px) {
+  .layout,
+  .layout.no-list {
+    grid-template:
+      'eval board panel' minmax(0, 1fr)
+      / var(--workspace-eval-w-tablet) minmax(0, 1fr) var(--workspace-panel-w-compact);
+  }
+
+  .area-panel {
+    border-top: 0;
+    border-left: var(--workspace-border-w) solid var(--border);
   }
 }
 </style>

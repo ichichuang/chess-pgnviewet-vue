@@ -104,7 +104,29 @@
   --cg-overlay-check: rgb(214 63 63 / 0.48);
   --cg-hint-fill: rgb(20 45 25 / 0.46);
   --cg-hint-stroke: rgb(255 255 255 / 0.72);
+  --cg-hint-capture-fill: rgb(20 45 25 / 0.1);
   --cg-select-ring: rgb(18 44 24 / 0.68);
+  --board-coordinate-gutter: clamp(38px, min(5.6cqw, 5.6cqh), 64px);
+  --board-coordinate-gap: clamp(6px, min(0.8cqw, 0.8cqh), 10px);
+  --board-coordinate-pad: clamp(6px, min(1cqw, 1cqh), 12px);
+  --board-coordinate-font-size: clamp(22px, min(3.4cqw, 3.4cqh), 36px);
+  --board-coordinate-font-weight: 800;
+  --board-coordinate-halo: 0 1px 0 var(--surface), 0 0 2px var(--surface);
+  --board-frame-radius: calc(var(--r-lg) + var(--board-coordinate-pad));
+  --board-square-radius: var(--r-lg);
+  --board-selected-ring-stroke: 0.055;
+  --board-focused-ring-stroke: 0.055;
+  --board-move-dot-stroke: 0.045;
+  --board-move-ring-outline-stroke: 0.12;
+  --board-move-ring-stroke: 0.085;
+  --board-piece-filter: drop-shadow(0 1.5px 1px rgb(0 0 0 / 0.25));
+  --board-ghost-filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.4));
+  --board-overlay-z: 6;
+  --board-ghost-z: 50;
+  --board-promotion-z: 70;
+  --board-touch-target-min: 44px;
+  --board-promotion-piece-size: 56px;
+  --board-promotion-backdrop: rgb(20 35 25 / 0.32);
 
   /* Annotation colors */
   /* prettier-ignore */
