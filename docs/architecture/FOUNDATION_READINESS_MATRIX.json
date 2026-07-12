@@ -226,9 +226,30 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION",
+            "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
-            "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY"
+            "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
+            "p1aCanonicalApplicationShell": {
+                "status": "IMPLEMENTED_BROWSER_VALIDATED",
+                "phase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION",
+                "report": ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json",
+                "baseline": "docs/architecture/P1A_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_BASELINE.md",
+                "implementationCommit": "bccfd01054575b9789e0559f4ca1aae897902767",
+                "implementationPush": "bccfd01054575b9789e0559f4ca1aae897902767",
+                "route": "/pgnViewer/",
+                "browserValidation": "PASS across desktop, large desktop, tablet portrait, tablet landscape, mobile portrait, and mobile landscape",
+                "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
+                "laterCapabilitiesRemainUnimplemented": [
+                    "board runtime",
+                    "PGN runtime",
+                    "annotations",
+                    "complete panels and splitters",
+                    "AI analysis",
+                    "authentication",
+                    "production APIs",
+                    "settings"
+                ]
+            }
         }
     },
     "capabilities": [
@@ -1340,9 +1361,10 @@
             "validationEvidence": [
                 "App shell uses 100dvh",
                 "html/body overflow hidden",
-                "no panels/splitters/overlays implemented"
+                "no panels/splitters/overlays implemented",
+                "P1A feature-owned viewport, body-scroll, local-scroll, shell panel, splitter visual, and responsive geometry passed browser validation."
             ],
-            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
+            "browserEvidence": "P1A narrow browser validation PASS; comprehensive generalized layout framework remains DEFERRED_UNTIL_PRODUCT_COMPLETE.",
             "blockers": [],
             "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
             "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
@@ -1365,7 +1387,7 @@
             "postProductReviewTrigger": "Review during POST_PRODUCT_FOUNDATION_HARDENING after PRODUCT_COMPLETE_USABLE.",
             "finalHardeningOwner": "post-product foundation hardening owner",
             "deferredCapability": "Generalized responsive, panel, splitter, safe-area, overlay, and ResizeObserver layout framework not required by the current product slice.",
-            "productRisk": "Canonical workspace geometry must still be migrated mechanically where a visible slice requires it."
+            "productRisk": "P1A shell geometry is implemented; P1B board rendering must fit the accepted shell and recorded mobile landscape compression risk."
         },
         {
             "identifier": "motion.ownership",
@@ -1455,9 +1477,10 @@
                 "original browser load/reload PASS on /pgnViewer/",
                 "no console warning/error and no Vite overlay in original evidence",
                 "F0B did not rerun browser validation because running Vite would regenerate node_modules/.vite/deps",
-                "F0B removed node_modules/.vite/deps side effect after terminating isolated target Vite process"
+                "F0B removed node_modules/.vite/deps side effect after terminating isolated target Vite process",
+                "P1A production-bundle browser validation PASS across 6 viewport classes and theme modes."
             ],
-            "browserEvidence": "NARROW_PER_PHASE_BROWSER_VALIDATION_REMAINS_MANDATORY; BROAD_FINAL_INTEGRATION_DEFERRED",
+            "browserEvidence": "P1A narrow browser validation PASS; broad final integration remains DEFERRED_UNTIL_PRODUCT_COMPLETE.",
             "blockers": [],
             "reviewTrigger": "After PRODUCT_COMPLETE_USABLE, or earlier only when a real product feature cannot operate without a narrow feature-owned boundary.",
             "plannedPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
@@ -1514,14 +1537,15 @@
                 "route count remains 1 neutral bootstrap",
                 "package scripts contain no test script",
                 "F3D provider and token mapping passed static, build, audit, and real-browser validation",
-                "no reusable UI adapter, icon adapter, i18n, Dexie, QueryClient, repository, generalized error, accessibility program, foundation preview, mock product data, automated test infrastructure, or product UI was added"
+                "no reusable UI adapter, icon adapter, i18n, Dexie, QueryClient, repository, generalized error, accessibility program, foundation preview, mock product data, automated test infrastructure, or product UI was added",
+                "P1A canonical application shell and workspace geometry implemented and browser validated on /pgnViewer/."
             ],
-            "browserEvidence": "PASS neutral bootstrap with F3D provider boundary; no product UI appeared.",
+            "browserEvidence": "P1A PASS on production bundle across desktop, large desktop, tablet portrait, tablet landscape, mobile portrait, and mobile landscape.",
             "blockers": [],
-            "reviewTrigger": "Next phase is P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION.",
-            "plannedPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
-            "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
-            "productGateImpact": "PRODUCT_UI_MIGRATION_READY is granted; P1A may begin in a later implementation phase without starting product implementation in this gate commit.",
+            "reviewTrigger": "Next phase is P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION.",
+            "plannedPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
+            "finalVerdict": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
+            "productGateImpact": "PRODUCT_UI_MIGRATION_READY remains active; P1A is implemented and the next required phase is P1B.",
             "ownerDecision": {
                 "objective": "PRODUCT_COMPLETE_USABLE",
                 "decisionDate": "2026-07-12",
@@ -1547,7 +1571,7 @@
                 "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
                 "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
             ],
-            "nextRequiredPhase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION"
+            "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION"
         },
         {
             "identifier": "git.remote_safety",
@@ -1628,6 +1652,49 @@
             "reviewTrigger": "Before PRODUCT_UI_MIGRATION_READY only if this capability is a minimum prerequisite; otherwise during its owning feature slice or post-product hardening.",
             "plannedPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
+        },
+        {
+            "identifier": "product.p1a_application_shell_workspace_geometry",
+            "domain": "product UI migration",
+            "requirement": "Canonical application shell and teaching-workspace geometry at /pgnViewer/ without board, PGN, annotation, AI, auth, API, settings, persistence, or later P1 runtime.",
+            "authority": [
+                "docs/architecture/P1A_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_BASELINE.md",
+                ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json",
+                "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+            ],
+            "implementationOwner": "P1A canonical shell migration owner",
+            "runtimeFiles": [
+                "src/App.vue",
+                "src/router/index.ts",
+                "src/views/HomeView.vue",
+                "src/features/workspace-mode/WorkspaceModeController.vue",
+                "src/features/workspace-mode/workspaceModeContext.ts",
+                "src/features/workspace-mode/workspaceModeQuery.ts",
+                "src/features/workspace-mode/workspaceModeTypes.ts",
+                "src/features/teaching-workspace/TeachingWorkspace.vue",
+                "src/styles/tokens.css"
+            ],
+            "implementationStatus": "IMPLEMENTED_BROWSER_VALIDATED",
+            "validationEvidence": [
+                "all required scanners PASS",
+                "format/lint/stylelint/knip/governance/typecheck PASS",
+                "temporary outDir production build PASS",
+                "audit:prod and full pnpm audit PASS",
+                "production-bundle browser validation PASS across 6 viewport classes"
+            ],
+            "browserEvidence": "Chromium-family browser 149.0.7827.197, route /pgnViewer/, 19 viewport/theme captures, clean console/network/page errors, no body overflow, expected interactions.",
+            "deferredLaterP1Capabilities": [
+                "P1B board runtime",
+                "P1C PGN runtime",
+                "P1D annotation runtime",
+                "P1E complete panels and splitters",
+                "P1F AI analysis",
+                "P1G auth and production API capabilities",
+                "P1H product integration"
+            ],
+            "blockers": [],
+            "finalVerdict": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
+            "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION"
         }
     ],
     "overallVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
@@ -1865,9 +1932,11 @@
         "authority": "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
         "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
         "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
-        "nextRequiredPhase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION",
+        "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
         "p1Authority": "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
-        "deferredPolicy": "Deferred comprehensive foundations remain DEFERRED_UNTIL_PRODUCT_COMPLETE with earlier trigger only for real feature-owned need."
+        "deferredPolicy": "Deferred comprehensive foundations remain DEFERRED_UNTIL_PRODUCT_COMPLETE with earlier trigger only for real feature-owned need.",
+        "p1aResult": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
+        "p1aReport": ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json"
     },
     "validationReferences": {
         "f0Report": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
@@ -1985,8 +2054,8 @@
         "Deferred generalized foundations remain tracked and may be triggered earlier only by real product-feature needs.",
         "PRODUCT_UI_MIGRATION_READY opens only P1A; this gate commit does not begin product UI, board, PGN, AI, auth, API, persistence, or settings implementation."
     ],
-    "plannedNextPhase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION",
-    "updatedAt": "2026-07-12T11:34:29Z",
+    "plannedNextPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
+    "updatedAt": "2026-07-12T12:36:19Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -2606,11 +2675,17 @@
             "no force push",
             "no source-project modification"
         ],
-        "nextRequiredPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+        "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
         "finalMilestones": [
             "PRODUCT_UI_MIGRATION_READY",
             "PRODUCT_COMPLETE_USABLE",
             "POST_PRODUCT_FOUNDATION_HARDENING_COMPLETE"
-        ]
+        ],
+        "p1aCanonicalApplicationShell": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED",
+            "implementationCommit": "bccfd01054575b9789e0559f4ca1aae897902767",
+            "report": ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json",
+            "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION"
+        }
     }
 }

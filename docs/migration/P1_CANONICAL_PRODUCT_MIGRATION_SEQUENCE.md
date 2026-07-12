@@ -127,6 +127,27 @@ Git closure:
   unauthorized untracked files, no temporary output, and no source-project
   modification.
 
+Implementation result:
+
+- Status:
+  `P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION`.
+- Report:
+  `.ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1A_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_BASELINE.md`.
+- Implementation commit:
+  `bccfd01054575b9789e0559f4ca1aae897902767`.
+- `/pgnViewer/` now renders the canonical application shell and structural
+  teaching-workspace geometry.
+- Static checks, typecheck, temporary-output production build, audits,
+  dependency listing, aggregate static check, and production-bundle browser
+  validation passed.
+- Board, PGN, annotations, complete panel/splitter behavior, AI analysis,
+  authentication, production APIs, settings, persistence, and later P1 runtime
+  remain unimplemented.
+- Next phase:
+  `P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION`.
+
 ## Later Phase Dependencies
 
 P1B depends on the P1A shell. It may migrate board rendering and interaction but

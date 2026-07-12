@@ -84,6 +84,21 @@ separate pre-product gate. Narrow theme browser validation remains mandatory
 inside F3C and F3D. Broad token-theme and cross-feature integration closure moves
 to post-product hardening.
 
+P1A is now implemented and browser validated:
+
+- Result:
+  `P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION`.
+- Report:
+  `.ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json`.
+- Implementation commit:
+  `bccfd01054575b9789e0559f4ca1aae897902767`.
+- `/pgnViewer/` renders the canonical application shell and structural
+  teaching-workspace geometry without board, PGN, annotations, AI analysis,
+  authentication, production APIs, settings, persistence, or later P1 runtime.
+- `PRODUCT_UI_MIGRATION_READY` remains active and unchanged.
+- The next required phase is
+  `P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION`.
+
 ## P1 Product Migration Program
 
 P1 is a vertical, usable, canonical-runtime migration program rather than
