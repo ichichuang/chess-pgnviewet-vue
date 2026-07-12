@@ -3,6 +3,77 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f6f4" />
+    <script>
+      ;(() => {
+        const storageKey = 'themeMode'
+        const defaultPreference = 'system'
+        const mediaQuery = '(prefers-color-scheme: dark)'
+        const themeColors = {
+          light: '#f4f6f4',
+          dark: '#0f1419',
+        }
+        const allowedPreferences = new Set(['light', 'dark', 'system'])
+
+        try {
+          let storageAvailable = true
+          let storageValueAccepted = true
+
+          const readPreference = () => {
+            try {
+              const value = window.localStorage.getItem(storageKey)
+
+              if (allowedPreferences.has(value)) {
+                return value
+              }
+
+              if (value !== null) {
+                storageValueAccepted = false
+              }
+            } catch {
+              storageAvailable = false
+              storageValueAccepted = false
+            }
+
+            return defaultPreference
+          }
+
+          const systemTheme = window.matchMedia?.(mediaQuery).matches ? 'dark' : 'light'
+          const preference = readPreference()
+          const resolvedTheme = preference === 'system' ? systemTheme : preference
+          const root = document.documentElement
+
+          root.setAttribute('data-theme-mode', preference)
+          root.setAttribute('data-theme', resolvedTheme)
+          root.style.colorScheme = resolvedTheme
+
+          const themeColor =
+            themeColors[resolvedTheme] ?? themeColors[systemTheme] ?? themeColors.light
+          let meta = document.querySelector('meta[name="theme-color"]')
+
+          if (!meta) {
+            meta = document.createElement('meta')
+            meta.name = 'theme-color'
+            document.head.append(meta)
+          }
+
+          meta.setAttribute('content', themeColor)
+
+          window.__KAISAILE_THEME_BOOTSTRAP__ = {
+            preference,
+            resolvedTheme,
+            systemTheme,
+            storageAvailable,
+            storageValueAccepted,
+          }
+        } catch {
+          const root = document.documentElement
+          root.setAttribute('data-theme-mode', defaultPreference)
+          root.setAttribute('data-theme', 'light')
+          root.style.colorScheme = 'light'
+        }
+      })()
+    </script>
     <title>Application bootstrap</title>
   </head>
   <body>
