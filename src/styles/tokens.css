@@ -80,6 +80,7 @@
   --workspace-motion-duration-fast: 0.12s;
   --workspace-motion-duration-base: 0.14s;
   --workspace-motion-ease-standard: ease;
+  --workspace-disabled-opacity: 0.5;
 
   /*
     Canonical responsive thresholds are recorded as tokens for documentation and

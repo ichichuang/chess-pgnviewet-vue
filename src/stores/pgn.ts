@@ -49,6 +49,12 @@ interface DrawSnapshot {
   squares: BoardAnnotation['squares']
 }
 
+interface DrawHistoryEntry {
+  nodeId: number
+  before: DrawSnapshot
+  after: DrawSnapshot
+}
+
 interface PgnState {
   items: PgnItem[]
   selectedIndex: number
@@ -60,6 +66,8 @@ interface PgnState {
   lastError: string | null
   pendingPromotion: PendingPromotion | null
   pendingBranch: PendingBranch | null
+  drawUndo: DrawHistoryEntry[]
+  drawRedo: DrawHistoryEntry[]
 }
 
 function defaultPgnState(): PgnState {
@@ -74,6 +82,8 @@ function defaultPgnState(): PgnState {
     lastError: null,
     pendingPromotion: null,
     pendingBranch: null,
+    drawUndo: [],
+    drawRedo: [],
   }
 }
 
@@ -133,6 +143,21 @@ export const usePgnStore = defineStore('pgn', {
     },
     currentAnnotation(): BoardAnnotation | null {
       return this.currentNode?.annotation ?? null
+    },
+    hasCurrentDrawing(): boolean {
+      const annotation = this.currentAnnotation
+
+      return Boolean(annotation && (annotation.arrows.length > 0 || annotation.squares.length > 0))
+    },
+    canUndoCurrentDrawing(): boolean {
+      const node = this.currentNode
+
+      return Boolean(node && this.drawUndo.some((entry) => entry.nodeId === node.id))
+    },
+    canRedoCurrentDrawing(): boolean {
+      const node = this.currentNode
+
+      return Boolean(node && this.drawRedo.some((entry) => entry.nodeId === node.id))
     },
     currentFen(): string {
       const node = this.currentNode
@@ -200,6 +225,8 @@ export const usePgnStore = defineStore('pgn', {
         this.searchKey = ''
         this.pendingPromotion = null
         this.pendingBranch = null
+        this.drawUndo = []
+        this.drawRedo = []
         this.selectItem(0)
         this.lastError = null
         return true
@@ -219,6 +246,8 @@ export const usePgnStore = defineStore('pgn', {
 
         this.pendingPromotion = null
         this.pendingBranch = null
+        this.drawUndo = []
+        this.drawRedo = []
         this.lastError = null
         return true
       } catch (error) {
@@ -235,6 +264,8 @@ export const usePgnStore = defineStore('pgn', {
       this.selectedNodeId = this.items[index]?.tree?.root.id ?? null
       this.pendingPromotion = null
       this.pendingBranch = null
+      this.drawUndo = []
+      this.drawRedo = []
     },
     selectNode(nodeId: number): void {
       const item = this.selectedItem
@@ -428,7 +459,7 @@ export const usePgnStore = defineStore('pgn', {
 
       node.annotation = { ...cloneAnnotation(node.annotation), squares }
       syncRawComments(node)
-      recordDrawChange(node, before)
+      this.recordDrawChange(node, before)
     },
     toggleDrawArrow(
       from: string,
@@ -453,7 +484,7 @@ export const usePgnStore = defineStore('pgn', {
 
       node.annotation = { ...cloneAnnotation(node.annotation), arrows }
       syncRawComments(node)
-      recordDrawChange(node, before)
+      this.recordDrawChange(node, before)
     },
     clearDrawing(): void {
       const node = this.currentNode
@@ -470,7 +501,75 @@ export const usePgnStore = defineStore('pgn', {
 
       node.annotation = { ...cloneAnnotation(node.annotation), arrows: [], squares: [] }
       syncRawComments(node)
-      recordDrawChange(node, before)
+      this.recordDrawChange(node, before)
+    },
+    recordDrawChange(node: MoveNode, before: DrawSnapshot): void {
+      const after = snapDrawings(node)
+
+      if (sameDrawSnapshot(before, after)) {
+        return
+      }
+
+      this.drawUndo.push({ nodeId: node.id, before, after })
+      this.drawRedo = []
+    },
+    undoCurrentDrawing(): boolean {
+      const node = this.currentNode
+
+      if (!node) {
+        return false
+      }
+
+      const index = findLastHistoryIndex(this.drawUndo, node.id)
+
+      if (index < 0) {
+        return false
+      }
+
+      const [entry] = this.drawUndo.splice(index, 1)
+
+      if (!entry) {
+        return false
+      }
+
+      node.annotation = {
+        ...cloneAnnotation(node.annotation),
+        arrows: cloneArrows(entry.before.arrows),
+        squares: cloneSquares(entry.before.squares),
+      }
+      syncRawComments(node)
+      this.drawRedo.push(entry)
+
+      return true
+    },
+    redoCurrentDrawing(): boolean {
+      const node = this.currentNode
+
+      if (!node) {
+        return false
+      }
+
+      const index = findLastHistoryIndex(this.drawRedo, node.id)
+
+      if (index < 0) {
+        return false
+      }
+
+      const [entry] = this.drawRedo.splice(index, 1)
+
+      if (!entry) {
+        return false
+      }
+
+      node.annotation = {
+        ...cloneAnnotation(node.annotation),
+        arrows: cloneArrows(entry.after.arrows),
+        squares: cloneSquares(entry.after.squares),
+      }
+      syncRawComments(node)
+      this.drawUndo.push(entry)
+
+      return true
     },
     setSearch(key: string): void {
       this.searchKey = key
@@ -489,15 +588,31 @@ function snapDrawings(node: MoveNode): DrawSnapshot {
   }
 }
 
-function recordDrawChange(node: MoveNode, before: DrawSnapshot): void {
-  if (
-    before.arrows.length === node.annotation.arrows.length &&
-    before.squares.length === node.annotation.squares.length
-  ) {
-    return
-  }
-}
-
 function syncRawComments(node: MoveNode): void {
   node.rawComments = serializeAnnotation(node.annotation)
+}
+
+function cloneArrows(arrows: DrawSnapshot['arrows']): DrawSnapshot['arrows'] {
+  return arrows.map((arrow) => ({ ...arrow }))
+}
+
+function cloneSquares(squares: DrawSnapshot['squares']): DrawSnapshot['squares'] {
+  return squares.map((square) => ({ ...square }))
+}
+
+function sameDrawSnapshot(left: DrawSnapshot, right: DrawSnapshot): boolean {
+  return (
+    JSON.stringify(left.arrows) === JSON.stringify(right.arrows) &&
+    JSON.stringify(left.squares) === JSON.stringify(right.squares)
+  )
+}
+
+function findLastHistoryIndex(entries: DrawHistoryEntry[], nodeId: number): number {
+  for (let index = entries.length - 1; index >= 0; index -= 1) {
+    if (entries[index]?.nodeId === nodeId) {
+      return index
+    }
+  }
+
+  return -1
 }

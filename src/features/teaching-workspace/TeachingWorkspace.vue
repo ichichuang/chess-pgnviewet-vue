@@ -6,17 +6,18 @@ Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 - Panels: left shell panel collapses; right shell panel remains visible for P1A geometry
 -->
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
-import {
-  ANNOTATION_COLORS,
-  annotationColorToken,
-} from '@/features/annotations/domain/annotationTypes'
 import CanonicalChessBoard from '@/features/board/CanonicalChessBoard.vue'
 import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
-import PgnNotationPanel from '@/features/pgn/components/PgnNotationPanel.vue'
 import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
+import { useWorkspaceStore } from '@/stores'
 import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceModeContext'
+
+import WorkspaceRightPanel from './WorkspaceRightPanel.vue'
+import WorkspaceSplitter from './WorkspaceSplitter.vue'
+import WorkspaceToolbar from './WorkspaceToolbar.vue'
+import { useWorkspaceSplitter } from './useWorkspaceSplitter'
 
 const workspaceModeContext = useWorkspaceModeContext()
 const {
@@ -29,47 +30,36 @@ const {
   onFiles,
   pgn,
 } = usePgnWorkspaceRuntime()
-const showLeftSidebar = ref(true)
-const showAnalysisRegion = ref(false)
-const boardAlignment = ref('center')
-const annotationTool = ref()
-const annotationColor = ref('draw-red')
+const workspace = useWorkspaceStore()
+const { onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
 
 const boardJustifyContent = computed(() => {
-  if (boardAlignment.value === 'left') {
+  if (workspace.boardAlignment === 'left') {
     return 'flex-start'
   }
 
-  if (boardAlignment.value === 'right') {
+  if (workspace.boardAlignment === 'right') {
     return 'flex-end'
   }
 
   return 'center'
 })
 
-function toggleLeftSidebar() {
-  showLeftSidebar.value = !showLeftSidebar.value
-}
-
-function setAnnotationTool(tool = '') {
-  annotationTool.value = annotationTool.value === tool ? null : tool
-}
-
-function setAnnotationColor(color = '') {
-  annotationColor.value = color || annotationColor.value
-}
-
 defineExpose({
   workspaceModeContext,
-  showLeftSidebar,
-  showAnalysisRegion,
-  boardAlignment,
+  workspace,
 })
 </script>
 
 <template>
   <div class="workspace" data-p1a-shell>
-    <main class="layout" :class="{ 'no-list': !showLeftSidebar }" aria-label="开赛了教学工作区">
+    <WorkspaceToolbar @action="handlePgnAction" />
+
+    <main
+      class="layout"
+      :class="{ 'no-list': !workspace.showLeftSidebar }"
+      aria-label="开赛了教学工作区"
+    >
       <aside class="area-eval" aria-label="评估栏结构区域">
         <span>评估</span>
         <small>结构</small>
@@ -77,111 +67,78 @@ defineExpose({
 
       <aside
         class="area-list"
-        :class="{ collapsed: !showLeftSidebar }"
+        :class="{ collapsed: !workspace.showLeftSidebar }"
         aria-label="左侧棋谱列表结构区域"
       >
-        <div v-show="showLeftSidebar" class="list-inner">
+        <div v-show="workspace.showLeftSidebar" class="list-inner">
           <PgnGameList @action="handlePgnAction" />
         </div>
         <button
           class="list-handle"
           type="button"
-          :aria-label="showLeftSidebar ? '收起棋谱列表结构区域' : '展开棋谱列表结构区域'"
-          :aria-pressed="showLeftSidebar"
-          @click="toggleLeftSidebar"
+          :aria-label="workspace.showLeftSidebar ? '收起棋谱列表结构区域' : '展开棋谱列表结构区域'"
+          :aria-pressed="workspace.showLeftSidebar"
+          @click="workspace.toggleLeftSidebar()"
         >
-          <span aria-hidden="true">{{ showLeftSidebar ? '‹' : '›' }}</span>
+          <span aria-hidden="true">{{ workspace.showLeftSidebar ? '‹' : '›' }}</span>
         </button>
       </aside>
 
-      <section class="area-board" :class="`align-${boardAlignment}`" aria-label="棋盘舞台结构区域">
+      <section
+        class="area-board"
+        :class="`align-${workspace.boardAlignment}`"
+        aria-label="棋盘舞台结构区域"
+      >
         <div class="board-stage" :style="{ justifyContent: boardJustifyContent }">
           <section class="board-align-frame" aria-labelledby="workspace-board-title">
             <h1 id="workspace-board-title" class="board-title">开赛了教学工作区</h1>
             <CanonicalChessBoard
               :position="boardPosition"
               :last-move="pgn.lastMove ?? []"
+              :orientation="workspace.boardOrientation"
               :interactive="boardInteractive"
-              :annotation-tool="annotationTool"
-              :annotation-color="annotationColor"
+              :annotation-tool="workspace.annotationTool ?? ''"
+              :annotation-color="workspace.annotationColor"
               :annotations="pgn.currentAnnotation ?? {}"
               controlled-moves
               @move-request="onBoardMoveRequest"
               @annotation-draw="pgn.drawAnnotation"
             />
-            <div class="annotation-controls" role="toolbar" aria-label="棋盘标注">
-              <button
-                class="annotation-control"
-                type="button"
-                :aria-pressed="annotationTool === 'arrow'"
-                :disabled="!pgn.hasGame"
-                @click="setAnnotationTool('arrow')"
-              >
-                箭头
-              </button>
-              <button
-                class="annotation-control"
-                type="button"
-                :aria-pressed="annotationTool === 'square'"
-                :disabled="!pgn.hasGame"
-                @click="setAnnotationTool('square')"
-              >
-                方框
-              </button>
-              <button
-                class="annotation-control"
-                type="button"
-                :aria-pressed="annotationTool === 'highlight'"
-                :disabled="!pgn.hasGame"
-                @click="setAnnotationTool('highlight')"
-              >
-                高亮
-              </button>
-              <button
-                v-for="color in ANNOTATION_COLORS"
-                :key="color"
-                class="annotation-swatch"
-                type="button"
-                :class="color"
-                :style="{ background: annotationColorToken(color) }"
-                :aria-label="`标注颜色 ${color}`"
-                :aria-pressed="annotationColor === color"
-                :disabled="!pgn.hasGame"
-                @click="setAnnotationColor(color)"
-              />
-            </div>
           </section>
         </div>
       </section>
 
       <aside
+        ref="rightStackEl"
         class="area-panel"
-        :class="{ 'has-analysis': showAnalysisRegion }"
+        :class="{
+          'has-analysis': workspace.showAnalysisRegion,
+          'is-splitting': workspace.splitterDragging,
+        }"
+        :style="rightStackStyle"
         aria-label="右侧棋谱与分析结构区域"
       >
         <section class="panel-pgn" aria-labelledby="workspace-toolbar-title">
-          <h2 id="workspace-toolbar-title" class="sr-only">PGN 棋谱面板</h2>
-          <PgnNotationPanel @action="handlePgnAction" />
+          <h2 id="workspace-toolbar-title" class="sr-only">工作区右侧面板</h2>
+          <WorkspaceRightPanel @action="handlePgnAction" />
         </section>
 
-        <button
-          v-if="showAnalysisRegion"
-          class="pp-split-handle-y"
-          type="button"
-          aria-label="棋谱与分析区域分割线结构位"
-        >
-          <span aria-hidden="true" />
-        </button>
+        <WorkspaceSplitter
+          v-if="workspace.showAnalysisRegion"
+          :dragging="workspace.splitterDragging"
+          label="调整棋谱与分析区域高度"
+          @pointer-down="onSplitterPointerDown"
+        />
 
         <section
-          v-if="showAnalysisRegion"
+          v-if="workspace.showAnalysisRegion"
           class="panel-analysis"
           aria-labelledby="workspace-analysis-title"
         >
           <div class="panel-scroll">
             <section class="shell-region">
-              <p class="region-kicker">结构区域</p>
               <h2 id="workspace-analysis-title">分析面板</h2>
+              <p>待 P1F 迁移</p>
             </section>
           </div>
         </section>
@@ -221,7 +178,7 @@ defineExpose({
     var(--workspace-list-current-w)
     minmax(0, 1fr)
     var(--workspace-panel-w);
-  height: 100%;
+  height: auto;
   min-height: 0;
   overflow: hidden;
 }
@@ -339,57 +296,6 @@ defineExpose({
   min-height: 0;
 }
 
-.annotation-controls {
-  position: absolute;
-  right: var(--s-3);
-  bottom: var(--s-3);
-  z-index: var(--workspace-shell-z-raised);
-  display: flex;
-  align-items: center;
-  gap: var(--s-1);
-  padding: var(--s-1);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-}
-
-.annotation-control,
-.annotation-swatch {
-  min-width: var(--control-h-sm);
-  height: var(--control-h-sm);
-  border: var(--workspace-border-w) solid var(--border-strong);
-  border-radius: var(--r-xs);
-  background: var(--surface-2);
-  color: var(--text);
-  font: inherit;
-  cursor: pointer;
-}
-
-.annotation-control {
-  padding: 0 var(--s-2);
-}
-
-.annotation-swatch {
-  width: var(--control-h-sm);
-  min-width: var(--control-h-sm);
-}
-
-.annotation-control:disabled,
-.annotation-swatch:disabled {
-  cursor: default;
-  opacity: 0.5;
-}
-
-.annotation-control[aria-pressed='true'],
-.annotation-swatch[aria-pressed='true'] {
-  border-color: var(--accent);
-  background: var(--accent-bg);
-  color: var(--accent-strong);
-}
-
-
-
 .board-title {
   position: absolute;
   width: 1px;
@@ -490,7 +396,7 @@ defineExpose({
 .area-panel.has-analysis .panel-pgn {
   flex: 0 0 clamp(
     var(--workspace-right-pane-min-h),
-    58%,
+    var(--workspace-right-pgn-h, 58%),
     calc(100% - var(--workspace-right-pane-min-h) - var(--workspace-splitter-h))
   );
   min-height: var(--workspace-right-pane-min-h);
@@ -523,45 +429,6 @@ defineExpose({
   display: grid;
   gap: var(--s-3);
   padding: var(--s-4);
-}
-
-.pp-split-handle-y {
-  position: relative;
-  flex: 0 0 var(--workspace-splitter-h);
-  width: 100%;
-  min-height: var(--workspace-splitter-h);
-  padding: var(--workspace-board-pad-y);
-  border: 0;
-  border-top: var(--workspace-border-w) solid var(--border);
-  border-bottom: var(--workspace-border-w) solid var(--border);
-  background: var(--surface-2);
-  cursor: row-resize;
-  touch-action: none;
-}
-
-.pp-split-handle-y::before {
-  position: absolute;
-  inset: var(--workspace-splitter-hit-offset) 0;
-  content: '';
-}
-
-.pp-split-handle-y span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--workspace-splitter-grip-w);
-  height: var(--workspace-splitter-grip-h);
-  border-radius: var(--r-full);
-  background: var(--text-muted);
-  transform: translate(-50%, -50%);
-  transition:
-    background var(--workspace-motion-duration-base) var(--workspace-motion-ease-standard),
-    width var(--workspace-motion-duration-base) var(--workspace-motion-ease-standard);
-}
-
-.pp-split-handle-y:hover span {
-  width: var(--workspace-splitter-grip-w-active);
-  background: var(--accent);
 }
 
 .panel-analysis {
