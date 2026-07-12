@@ -218,14 +218,15 @@
                 "foundation preview",
                 "product UI"
             ],
-            "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
+            "nextRequiredPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW"
         },
         "productFirstDelivery": {
             "ownerDecision": "PRODUCT_COMPLETE_USABLE",
             "supersededGate": "FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI",
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+            "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
+            "nextRequiredPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier."
         }
     },
@@ -759,14 +760,14 @@
         {
             "identifier": "ui.naive_providers",
             "domain": "Naive UI provider composition",
-            "requirement": "NConfigProvider, message/dialog/notification/loading-bar, discrete API, token-based overrides",
+            "requirement": "Single NConfigProvider, single NGlobalStyle, resolved light/dark mapping, token-based overrides; message/dialog/notification/loading-bar and discrete API remain deferred",
             "authority": [
                 "CLAUDE.md",
                 "AGENTS.md",
                 "docs/architecture/TECH_STACK_DECISION.md",
                 "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
             ],
-            "implementationOwner": "future foundation owner",
+            "implementationOwner": "src/app/providers",
             "packageOwner": "pnpm package graph; no dependency changes in F0",
             "configurationFiles": [
                 "package.json",
@@ -776,24 +777,35 @@
                 "tsconfig.json",
                 "vite.config.ts"
             ],
-            "runtimeFiles": [],
-            "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
-            "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
-            "themeOwnership": "src/styles/tokens.css when applicable",
-            "userFacingImpact": "Minimum pre-product prerequisite; no product UI migration opens until this provider slice passes.",
-            "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "REQUIRED_BEFORE_PRODUCT_UI",
-            "validationEvidence": [
-                "naive-ui installed but no Naive provider or direct Naive imports in target src",
-                "F3C browser validation confirmed no .n-config-provider DOM",
-                "F3D remains responsible for provider/adapters and token-derived overrides"
+            "runtimeFiles": [
+                "src/App.vue",
+                "src/app/providers/AppProviders.vue",
+                "src/app/providers/naiveTheme.ts",
+                "src/app/providers/naiveThemeOverrides.ts"
             ],
-            "browserEvidence": "NOT_PRESENT",
+            "providerOwnership": "IMPLEMENTED_ONCE_IN_SRC_APP_PROVIDERS",
+            "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+            "themeOwnership": "src/styles/tokens.css remains the sole visual-value authority; Naive UI consumes token references only",
+            "userFacingImpact": "Minimum pre-product prerequisite satisfied; no product UI migration opens until PRODUCT_UI_MIGRATION_GATE_REVIEW grants PRODUCT_UI_MIGRATION_READY.",
+            "securityImpact": "No browser secret owner introduced in P0 target",
+            "implementationStatus": "IMPLEMENTED_VALIDATED",
+            "validationEvidence": [
+                "single project-owned NConfigProvider implemented in src/app/providers/AppProviders.vue",
+                "single NGlobalStyle implemented inside the provider boundary",
+                "resolved light maps to Naive UI null theme; resolved dark maps to official darkTheme",
+                "GlobalThemeOverrides maps 53 common roles and 103 component roles through 156 var(...) references to 37 existing semantic tokens",
+                "no raw visual value, undefined token reference, alias cycle, duplicate provider, duplicate Vue root, duplicate Router, or duplicate Pinia owner detected",
+                "direct Naive UI imports remain within src/app/providers",
+                "layout-neutral abstract provider validated in real Chrome",
+                "no reusable UI adapter library, icon system, i18n, Dexie database, QueryClient, repository framework, generalized error system, accessibility program, foundation preview, or product UI was implemented",
+                "project scanners, formatting, linting, typecheck, temporary-output production build, audits, aggregate static validation, and real-browser validation passed"
+            ],
+            "browserEvidence": "PASS: Google Chrome 149 /pgnViewer/ validation covered clean system light, explicit light, explicit dark, system light/dark, runtime light/dark switching, runtime system-resolution switching, explicit modes ignoring system changes, two-tab sync, no-flash dark probes, provider/global-style counts, token mapping, console/network cleanliness, and layout neutrality.",
             "blockers": [],
-            "reviewTrigger": "F3D must pass before PRODUCT_UI_MIGRATION_READY can be set.",
+            "reviewTrigger": "PRODUCT_UI_MIGRATION_GATE_REVIEW must verify all minimum prerequisites before PRODUCT_UI_MIGRATION_READY can be set.",
             "plannedPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
-            "finalVerdict": "MINIMUM_PRE_PRODUCT_GATE_PENDING",
-            "productGateImpact": "Blocks PRODUCT_UI_MIGRATION_READY until F3D installs the single Naive UI root provider and project-token-based theme mapping.",
+            "finalVerdict": "F3D_NAIVE_UI_THEME_PROVIDER_PASS_READY_FOR_PRODUCT_UI_GATE_REVIEW",
+            "productGateImpact": "Minimum pre-product prerequisite satisfied by F3D; PRODUCT_UI_MIGRATION_READY is not granted until the dedicated gate review passes.",
             "ownerDecision": {
                 "objective": "PRODUCT_COMPLETE_USABLE",
                 "decisionDate": "2026-07-12",
@@ -1495,18 +1507,20 @@
             "themeOwnership": "src/styles/tokens.css when applicable",
             "userFacingImpact": "Product-first migration opens only after F3D and PRODUCT_UI_MIGRATION_READY review; broad generalized foundations are deferred.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "PRODUCT_UI_MIGRATION_READY_PENDING_F3D",
+            "implementationStatus": "PRODUCT_UI_MIGRATION_GATE_REVIEW_NEXT",
             "validationEvidence": [
                 "forbidden/premature architecture scan found no target src product implementation",
                 "route count remains 1 neutral bootstrap",
-                "package scripts contain no test script"
+                "package scripts contain no test script",
+                "F3D provider and token mapping passed static, build, audit, and real-browser validation",
+                "no reusable UI adapter, icon adapter, i18n, Dexie, QueryClient, repository, generalized error, accessibility program, foundation preview, mock product data, automated test infrastructure, or product UI was added"
             ],
-            "browserEvidence": "PASS neutral bootstrap only",
+            "browserEvidence": "PASS neutral bootstrap with F3D provider boundary; no product UI appeared.",
             "blockers": [],
-            "reviewTrigger": "After F3D passes and all PRODUCT_UI_MIGRATION_READY prerequisites are verified.",
+            "reviewTrigger": "Run PRODUCT_UI_MIGRATION_GATE_REVIEW to decide whether PRODUCT_UI_MIGRATION_READY can be set.",
             "plannedPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
-            "finalVerdict": "GATE_REDEFINED_BY_F3R",
-            "productGateImpact": "Replaces FOUNDATION_COMPLETE_READY_FOR_PRODUCT_UI as the active pre-product gate.",
+            "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_REVIEW_PENDING_AFTER_F3D",
+            "productGateImpact": "F3D is implemented and validated, but PRODUCT_UI_MIGRATION_READY remains pending the dedicated gate review.",
             "ownerDecision": {
                 "objective": "PRODUCT_COMPLETE_USABLE",
                 "decisionDate": "2026-07-12",
@@ -1945,14 +1959,14 @@
     "blockers": [],
     "warnings": [
         "F3C implements only non-sensitive themeMode bootstrap persistence; Dexie structured preferences remain future work.",
-        "Naive UI provider composition, token-derived themeOverrides, reusable UI adapters, icons, and product UI remain unimplemented until F3D or later.",
+        "F3D implements only the single Naive UI root provider, NGlobalStyle ownership, resolved light/dark mapping, and token-derived themeOverrides; reusable UI adapters, icons, locale/date-locale, discrete API, message/dialog/notification/loading-bar consumers, and product UI remain unimplemented.",
         "Board-theme and display-theme runtimes remain independent future slices; F3C did not implement board or product controls.",
         "F3R preserved accepted F3C live state although the owner prompt described an older F3B starting point.",
         "F3E is superseded as a separate pre-product gate; broad integration closure moves to post-product hardening.",
         "Deferred generalized foundations remain tracked and may be triggered earlier only by real product-feature needs."
     ],
-    "plannedNextPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
-    "updatedAt": "2026-07-12T09:33:05Z",
+    "plannedNextPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+    "updatedAt": "2026-07-12T10:27:42Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -2347,8 +2361,8 @@
             },
             {
                 "id": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
-                "owner": "future src/app/providers/NaiveThemeProvider.vue and src/ui adapters",
-                "scope": "Install project-owned Naive UI provider/adapters and token-derived theme overrides without duplicating raw values or beginning product UI migration.",
+                "owner": "src/app/providers/AppProviders.vue, src/app/providers/naiveTheme.ts, src/app/providers/naiveThemeOverrides.ts",
+                "scope": "Install the single project-owned Naive UI root provider, NGlobalStyle ownership, resolved light/dark Naive theme mapping, and token-derived themeOverrides without duplicating raw values or beginning product UI migration.",
                 "validation": [
                     "mise exec -- pnpm run check:architecture",
                     "mise exec -- pnpm run check:tokens",
@@ -2356,7 +2370,8 @@
                     "temporary-output production build",
                     "narrow real-browser provider validation"
                 ],
-                "implementationStatus": "NEXT_REQUIRED_PHASE"
+                "implementationStatus": "IMPLEMENTED_VALIDATED",
+                "report": ".ai/reports/F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION_REPORT.json"
             },
             {
                 "id": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
@@ -2379,7 +2394,7 @@
             "Visible UI/theme changes require one narrow real-browser runtime validation with nonblank DOM, no Vite overlay, no console-breaking errors, and an interaction/theme state change when applicable.",
             "No package manager mutation and no dependency changes in F3 token/theme implementation unless separately approved."
         ],
-        "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+        "nextRequiredPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
         "inventoryEntryCount": 86,
         "unresolvedEntryCount": 0,
         "phaseNameReconciliation": {
@@ -2400,7 +2415,7 @@
             "supersededPreProductGate": "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE",
             "replacementGate": "PRODUCT_UI_MIGRATION_READY"
         },
-        "finalVerdict": "F3C_THEME_ENGINE_PASS_READY_FOR_NAIVE_UI_PROVIDER_IMPLEMENTATION",
+        "finalVerdict": "F3D_NAIVE_UI_THEME_PROVIDER_PASS_READY_FOR_PRODUCT_UI_GATE_REVIEW",
         "validatedAt": "2026-07-12T09:11:54Z",
         "runtimeBaseline": "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
         "f3cImplementation": {
@@ -2411,6 +2426,21 @@
             "resolvedThemeIdentifiers": ["light", "dark"],
             "storageKey": "themeMode",
             "startupDefault": "system",
+            "browserValidation": "PASS"
+        },
+        "f3dImplementation": {
+            "report": ".ai/reports/F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION_REPORT.json",
+            "implementationCommit": "172f4ab78e49c8c1a2ce2f999ef6a50b0a680f26",
+            "implementationPush": "172f4ab78e49c8c1a2ce2f999ef6a50b0a680f26",
+            "provider": "src/app/providers/AppProviders.vue",
+            "themeMapping": "src/app/providers/naiveTheme.ts",
+            "themeOverrides": "src/app/providers/naiveThemeOverrides.ts",
+            "providerCount": 1,
+            "globalStyleCount": 1,
+            "resolvedThemeMapping": {
+                "light": "null",
+                "dark": "darkTheme"
+            },
             "browserValidation": "PASS"
         },
         "productFirstDeliveryRebase": {
@@ -2467,11 +2497,11 @@
             },
             {
                 "id": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
-                "liveStatus": "NEXT_REQUIRED_PHASE"
+                "liveStatus": "IMPLEMENTED_VALIDATED"
             },
             {
                 "id": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
-                "liveStatus": "PENDING_F3D"
+                "liveStatus": "NEXT_REQUIRED_PHASE"
             },
             {
                 "id": "P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION",
@@ -2556,7 +2586,7 @@
             "no force push",
             "no source-project modification"
         ],
-        "nextRequiredPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+        "nextRequiredPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
         "finalMilestones": [
             "PRODUCT_UI_MIGRATION_READY",
             "PRODUCT_COMPLETE_USABLE",

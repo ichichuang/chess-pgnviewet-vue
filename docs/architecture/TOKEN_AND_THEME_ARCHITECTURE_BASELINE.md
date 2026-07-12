@@ -1,7 +1,7 @@
 # Token And Theme Architecture Baseline
 
-Status: `F3C_THEME_ENGINE_IMPLEMENTED_VALIDATED`
-Phase: `F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`
+Status: `F3D_NAIVE_UI_THEME_PROVIDER_IMPLEMENTED_VALIDATED`
+Phase: `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
 Generated: `2026-07-12T07:47:56.192Z`
 
 ## Decision
@@ -37,7 +37,15 @@ F3C adds the project-owned theme preference engine without changing token values
 - `src/stores/theme.ts`: Pinia preference state, startup adoption, set/reset behavior, system listener, storage-event cross-tab listener, idempotency, and cleanup.
 - `src/main.ts`: theme store initialization in the existing Pinia graph before router installation and before Vue mount.
 
-There is still no Naive provider, Naive theme/themeOverrides, board-theme runtime, display-theme runtime, product theme control, reusable UI adapter layer, Dexie preference schema, query state, repository, API, or product UI migration.
+F3D adds the project-owned Naive UI provider boundary without changing token values. Implemented provider ownership:
+
+- `src/app/providers/AppProviders.vue`: the only runtime owner of `NConfigProvider` and `NGlobalStyle`; it uses Naive UI `abstract` provider behavior and wraps the existing neutral bootstrap slot.
+- `src/app/providers/naiveTheme.ts`: maps F3C resolved `light` to Naive UI's official `null` light behavior and resolved `dark` to `darkTheme`.
+- `src/app/providers/naiveThemeOverrides.ts`: owns the single `GlobalThemeOverrides` object, with every visual override value expressed as an existing `src/styles/tokens.css` semantic token reference.
+- `docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md`: records the active F3D provider contract, mapped roles, deliberately unmapped roles, validation contract, and next gate.
+- `src/App.vue`: imports only `AppProviders` and wraps the existing neutral bootstrap shell without changing route, copy, layout, or product behavior.
+
+There is still no board-theme runtime, display-theme runtime, product theme control, reusable UI adapter layer, Dexie preference schema, query state, repository, API, product UI migration, icon adapter, i18n, generalized error framework, accessibility hardening program, foundation preview, locale provider, date-locale provider, discrete API owner, or message/dialog/notification/loading-bar consumer.
 
 The existing scanner evidence is valid but narrow: `mise exec -- pnpm run check:tokens --json` returned zero findings. That proves governed forbidden values are absent outside accepted scope; it does not prove the theme system is complete.
 
@@ -68,7 +76,7 @@ F3B must register canonical values without redesign. Component-specific, board, 
 
 F3C owns light, dark, and system preference identifiers, applied light/dark resolution, truthful startup default, pre-Vue no-flash bootstrap, HTML marker synchronization, `color-scheme`, `meta[name="theme-color"]`, system `matchMedia`, runtime system-preference changes, persistence failure fallback, cross-tab synchronization, future synchronous non-sensitive bootstrap preference ownership, and the later Dexie relationship. Feature code must not own raw `localStorage`, `sessionStorage`, or `IndexedDB` preference behavior.
 
-F3C also owns future Pinia theme-store boundaries, reduced-motion behavior, and theme-transition behavior. F3D owns future Naive UI `NConfigProvider` installation, light/dark Naive theme selection, and project-token-based `themeOverrides`. Overlay and z-index relationships, accessibility/contrast validation, browser validation requirements, exact proposed implementation files, Git boundaries, review triggers, removal conditions, remaining unresolved decisions, and completion gates remain phase-gated and unimplemented in F3A.
+F3C also owns future Pinia theme-store boundaries, reduced-motion behavior, and theme-transition behavior. F3D owns Naive UI `NConfigProvider` installation, `NGlobalStyle` ownership, light/dark Naive theme selection, and project-token-based `themeOverrides`. Overlay and z-index relationships, accessibility/contrast hardening beyond the neutral bootstrap, locale/date-locale, discrete API, reusable UI adapters, remaining unresolved decisions, and completion gates remain phase-gated and unimplemented outside F3D.
 
 ## F3B Status
 
@@ -106,23 +114,62 @@ F3C implements the light/dark/system theme engine with:
 
 F3C validation passed with project scanners, formatting, linting, Stylelint, unused-code check, governance aggregate, TypeScript checking, temporary-output production build, production and full audits, installed dependency listing, aggregate static validation, and real-browser Google Chrome validation of clean, explicit, system, corrupted-storage, storage-failure, unavailable-`matchMedia`, two-tab cross-tab, repeated-initialization, route-mount, no-console-error, no-failed-request, and no-flash dark-startup cases.
 
+## F3D Status
+
+F3D implements the single project-owned Naive UI root provider and token-derived
+theme override mapping with:
+
+- Provider path: `src/app/providers/AppProviders.vue`.
+- Theme mapping path: `src/app/providers/naiveTheme.ts`.
+- Override mapping path: `src/app/providers/naiveThemeOverrides.ts`.
+- Baseline authority: `docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md`.
+- Root composition: exactly one `NConfigProvider`, exactly one `NGlobalStyle`,
+  then the default application slot.
+- Layout neutrality: `NConfigProvider` uses `abstract`; browser validation
+  confirmed the neutral bootstrap DOM remained wrapper-free and body/document
+  scroll was not introduced.
+- Theme store consumption: the provider reads the existing F3C Pinia
+  `resolvedTheme`; it owns no preference state, storage access, media listener,
+  storage listener, or document marker behavior.
+- Resolved mapping: `light -> null`; `dark -> darkTheme`.
+- Override inventory: 53 common override roles and 103 component override roles,
+  all using `var(--...)` references to 37 existing semantic tokens.
+- Component-specific mappings: Button, Card, Dialog, Dropdown, Input, Menu,
+  Modal, Popover, Slider, Switch, and Tabs, limited to canonical and
+  product-enabling roles that can be expressed through existing tokens.
+- Deliberately unmapped roles: message/dialog/notification/loading-bar
+  consumers, discrete API, locale/date-locale, tooltip-specific inverted token
+  pairing, full border shorthand values without border-width tokens, z-index,
+  motion, safe-area, splitter, responsive, scroll-surface, line-height,
+  font-weight, overlay stacking, focus-trap, and broad component theming.
+
+F3D validation passed with source reconciliation, project scanners, formatting,
+linting, Stylelint, unused-code check, governance aggregate, TypeScript checking,
+temporary-output production build, production and full audits, installed
+dependency listing, aggregate static validation, and real-browser Google Chrome
+validation of clean system light, explicit light, explicit dark, system-light,
+system-dark, runtime light/dark switching, runtime system-resolution switching,
+explicit modes ignoring system changes, two-tab synchronization, no-flash
+dark-startup probes, provider/global-style counts, semantic-token mapping,
+console/network cleanliness, and layout neutrality.
+
 ## Gaps
 
-Open gaps: Dexie structured preference ownership is still missing; Naive UI provider composition and token-derived `themeOverrides` are still missing; board-theme runtime and display-theme runtime are still missing; icon/link/disabled/connection/analysis/player-state roles are incomplete; motion/z-index/responsive/safe-area concrete scales are incomplete; panel, splitter, scroll-surface, line-height, and font-weight token domains remain unimplemented without approved inventory entries.
+Open gaps: Dexie structured preference ownership is still missing; board-theme runtime and display-theme runtime are still missing; icon/link/disabled/connection/analysis/player-state roles are incomplete; motion/z-index/responsive/safe-area concrete scales are incomplete; panel, splitter, scroll-surface, line-height, and font-weight token domains remain unimplemented without approved inventory entries.
 
-These gaps remain non-runtime findings. They do not claim any Naive UI provider, theme override, board-theme runtime, route, component, repository, API, Dexie schema, or product UI implementation already exists.
+These gaps remain non-runtime findings. They do not claim any board-theme runtime, route, component, repository, API, Dexie schema, reusable UI adapter, icon adapter, i18n, accessibility program, broad final integration system, or product UI implementation already exists.
 
 ## Next Phase
 
-Next required phase: `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`.
+Next required phase: `PRODUCT_UI_MIGRATION_GATE_REVIEW`.
 
 Superseded local alias: `F3B_TOKEN_AUTHORITY_IMPLEMENTATION`. The canonical replacement is `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`.
 
-Completed F3B scope: token authority only. Completed F3C scope: theme preference engine, synchronous no-flash bootstrap, Pinia theme store, document synchronization, system listener, approved cross-tab synchronization, and failure-safe non-sensitive bootstrap preference handling. Product UI, routes, Dexie schema, board runtime, API, auth, and feature components remain blocked until `PRODUCT_UI_MIGRATION_READY` is set and their own implementation slice is opened. Naive provider work remains the next required minimum pre-product slice.
+Completed F3B scope: token authority only. Completed F3C scope: theme preference engine, synchronous no-flash bootstrap, Pinia theme store, document synchronization, system listener, approved cross-tab synchronization, and failure-safe non-sensitive bootstrap preference handling. Completed F3D scope: single Naive UI root provider, `NGlobalStyle` ownership, resolved light/dark Naive theme mapping, and project-token-based `themeOverrides`. Product UI, routes, Dexie schema, board runtime, API, auth, feature components, reusable UI adapters, icon adapters, i18n, and broad final integration remain blocked until the dedicated gate review sets `PRODUCT_UI_MIGRATION_READY`.
 
 Remaining canonical slices:
 
-1. `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
+1. `PRODUCT_UI_MIGRATION_GATE_REVIEW`
 
 Superseded as a separate pre-product gate:
 `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE`.

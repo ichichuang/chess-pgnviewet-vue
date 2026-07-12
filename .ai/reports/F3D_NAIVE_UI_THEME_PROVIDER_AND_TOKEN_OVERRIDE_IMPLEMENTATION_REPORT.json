@@ -1,0 +1,725 @@
+{
+  "phase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+  "startedAt": "2026-07-12T09:33:05Z",
+  "completedAt": "2026-07-12T10:27:42Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "/Users/cc/Work/neobv/Chess/pgnViewer",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer"
+  ],
+  "authorityFilesRead": [
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    ".ai/reports/F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_REPORT.json",
+    ".ai/reports/F3A2_TOKEN_THEME_DESIGN_VALIDATION_AND_GIT_CLOSURE_REPORT.json",
+    ".ai/reports/F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json",
+    "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+    "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md",
+    "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+    "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/ui/THEME_SYSTEM_SPEC.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/PAGE_STYLE_SPEC.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    "src/main.ts",
+    "src/App.vue",
+    "src/stores/index.ts",
+    "src/stores/theme.ts",
+    "src/theme/types.ts",
+    "src/theme/constants.ts",
+    "src/theme/runtime.ts",
+    "src/bootstrap/preferences/themePreference.ts",
+    "src/styles/tokens.css",
+    "src/styles/base.css",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/App.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/theme.ts"
+  ],
+  "safetyGate": {
+    "result": "PASS",
+    "targetResolvedPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "targetIsSymlink": false,
+    "gitRoot": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "branch": "main",
+    "authorizedOrigin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "startingHead": "e96071b4ddc3f3e5c767f55d33cc1b84367434de",
+    "startingOriginMain": "e96071b4ddc3f3e5c767f55d33cc1b84367434de",
+    "startingLiveRemoteMain": "e96071b4ddc3f3e5c767f55d33cc1b84367434de",
+    "startingTrackedWorktree": "clean",
+    "startingIndex": "empty",
+    "unexplainedUntrackedPaths": [],
+    "evidenceSourceState": {
+      "pgnViewerNew": "not a Git repository; treated as read-only file evidence only",
+      "pgnViewer": "only known ambient .serena/ untracked path observed",
+      "chessPgnviewer": "not a Git repository; treated as read-only file evidence only"
+    },
+    "mutatingProcessAudit": "PASS: no active target Vite, preview, build, formatter, package-manager, or local writer process detected before implementation"
+  },
+  "prerequisiteVerdicts": {
+    "f3b": "F3B_TOKEN_REGISTRY_PASS_READY_FOR_THEME_ENGINE_IMPLEMENTATION",
+    "f3c": "F3C_THEME_ENGINE_PASS_READY_FOR_NAIVE_UI_PROVIDER_IMPLEMENTATION",
+    "f3r": "F3R_PRODUCT_FIRST_REBASE_PARTIAL accepted as non-blocking historical verdict under current authority"
+  },
+  "productFirstGovernanceState": {
+    "objective": "PRODUCT_COMPLETE_USABLE",
+    "activeGate": "PRODUCT_UI_MIGRATION_READY",
+    "currentPhaseBeforeF3D": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
+    "nextPhaseAfterF3D": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+    "productUiMigrationReadyGrantedByF3D": false
+  },
+  "prePhaseState": {
+    "head": "e96071b4ddc3f3e5c767f55d33cc1b84367434de",
+    "subject": "docs(governance): 重设产品优先交付门禁与延期架构范围",
+    "f3cImplementationCommitAncestor": true,
+    "f3cGovernanceCommitAncestor": true,
+    "f3bTokenRegistry": {
+      "acceptedInventoryEntries": 86,
+      "undefinedReferenceAudit": "PASS",
+      "aliasCycleAudit": "PASS"
+    },
+    "f3cThemeEngine": {
+      "preferences": [
+        "light",
+        "dark",
+        "system"
+      ],
+      "resolvedThemes": [
+        "light",
+        "dark"
+      ],
+      "startupRestoration": "PASS",
+      "piniaStore": "src/stores/theme.ts",
+      "rootMarkers": "PASS",
+      "colorScheme": "PASS",
+      "metaThemeColor": "PASS",
+      "storageFailureFallback": "PASS",
+      "systemSynchronization": "PASS",
+      "crossTabSynchronization": "PASS",
+      "noFlashBrowserEvidence": "PASS"
+    }
+  },
+  "remoteState": {
+    "authorizedRepository": "ichichuang/chess-pgnviewet-vue",
+    "origin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "prePushRemoteMain": "e96071b4ddc3f3e5c767f55d33cc1b84367434de",
+    "implementationRemoteMain": "172f4ab78e49c8c1a2ce2f999ef6a50b0a680f26",
+    "verifiedBy": [
+      "git rev-parse origin/main",
+      "git ls-remote origin refs/heads/main",
+      "gh api repos/ichichuang/chess-pgnviewet-vue/commits/main"
+    ]
+  },
+  "providerOwnership": {
+    "ownerDirectory": "src/app/providers",
+    "appVueImportBoundary": "src/App.vue imports AppProviders only",
+    "productFeatureOwnership": "none"
+  },
+  "providerFiles": [
+    "src/app/providers/AppProviders.vue",
+    "src/app/providers/naiveTheme.ts",
+    "src/app/providers/naiveThemeOverrides.ts"
+  ],
+  "providerComposition": [
+    "NConfigProvider",
+    "NGlobalStyle",
+    "default slot"
+  ],
+  "providerInstanceAudit": {
+    "sourceProviderCount": 1,
+    "browserProviderCount": 1,
+    "duplicateProviderComposition": "PASS"
+  },
+  "globalStyleOwnership": {
+    "owner": "src/app/providers/AppProviders.vue",
+    "placement": "inside NConfigProvider before default slot"
+  },
+  "globalStyleInstanceAudit": {
+    "sourceGlobalStyleCount": 1,
+    "browserGlobalStyleCount": 1
+  },
+  "themeStoreConsumption": {
+    "store": "src/stores/theme.ts",
+    "consumedState": "resolvedTheme",
+    "providerConsumesResolvedState": true,
+    "secondPreferenceOwnerDetected": false
+  },
+  "resolvedThemeMapping": {
+    "light": "naive light contract",
+    "dark": "naive dark theme object"
+  },
+  "naiveLightThemeMapping": {
+    "resolvedTheme": "light",
+    "naiveTheme": null
+  },
+  "naiveDarkThemeMapping": {
+    "resolvedTheme": "dark",
+    "naiveTheme": "darkTheme"
+  },
+  "themeOverridesOwnership": {
+    "owner": "src/app/providers/naiveThemeOverrides.ts",
+    "objectCount": 1,
+    "type": "GlobalThemeOverrides",
+    "allValuesTokenReferences": true
+  },
+  "commonOverrideInventory": [
+    "baseColor",
+    "primaryColor",
+    "primaryColorHover",
+    "primaryColorPressed",
+    "primaryColorSuppl",
+    "infoColor",
+    "successColor",
+    "warningColor",
+    "errorColor",
+    "textColorBase",
+    "textColor1",
+    "textColor2",
+    "textColor3",
+    "textColorDisabled",
+    "placeholderColor",
+    "placeholderColorDisabled",
+    "iconColor",
+    "iconColorHover",
+    "iconColorPressed",
+    "iconColorDisabled",
+    "dividerColor",
+    "borderColor",
+    "bodyColor",
+    "cardColor",
+    "modalColor",
+    "popoverColor",
+    "tableColor",
+    "inputColor",
+    "inputColorDisabled",
+    "actionColor",
+    "hoverColor",
+    "pressedColor",
+    "tableHeaderColor",
+    "tableColorHover",
+    "tableColorStriped",
+    "tagColor",
+    "avatarColor",
+    "buttonColor2",
+    "buttonColor2Hover",
+    "buttonColor2Pressed",
+    "boxShadow1",
+    "boxShadow2",
+    "boxShadow3",
+    "fontFamily",
+    "fontFamilyMono",
+    "fontSize",
+    "fontSizeSmall",
+    "fontSizeMedium",
+    "fontSizeLarge",
+    "borderRadius",
+    "borderRadiusSmall",
+    "heightSmall",
+    "heightMedium"
+  ],
+  "componentOverrideInventory": {
+    "Button": [
+      "textColorPrimary",
+      "textColorHoverPrimary",
+      "textColorPressedPrimary",
+      "textColorFocusPrimary",
+      "colorSecondary",
+      "colorSecondaryHover",
+      "colorSecondaryPressed",
+      "borderRadiusSmall",
+      "borderRadiusMedium",
+      "borderRadiusLarge",
+      "fontSizeSmall",
+      "fontSizeMedium",
+      "fontSizeLarge",
+      "heightSmall",
+      "heightMedium"
+    ],
+    "Card": [
+      "color",
+      "colorModal",
+      "colorPopover",
+      "textColor",
+      "titleTextColor",
+      "borderColor",
+      "actionColor",
+      "boxShadow",
+      "borderRadius",
+      "paddingMedium"
+    ],
+    "Dialog": [
+      "color",
+      "textColor",
+      "titleTextColor",
+      "iconColor",
+      "iconColorInfo",
+      "iconColorSuccess",
+      "iconColorWarning",
+      "iconColorError",
+      "borderRadius"
+    ],
+    "Dropdown": [
+      "color",
+      "dividerColor",
+      "optionColorHover",
+      "optionColorActive",
+      "optionTextColor",
+      "optionTextColorHover",
+      "optionTextColorActive",
+      "borderRadius"
+    ],
+    "Input": [
+      "color",
+      "colorFocus",
+      "colorDisabled",
+      "textColor",
+      "textColorDisabled",
+      "placeholderColor",
+      "placeholderColorDisabled",
+      "caretColor",
+      "loadingColor",
+      "boxShadowFocus"
+    ],
+    "Menu": [
+      "color",
+      "dividerColor",
+      "itemColorHover",
+      "itemColorActive",
+      "itemColorActiveHover",
+      "itemTextColor",
+      "itemTextColorHover",
+      "itemTextColorActive",
+      "itemTextColorActiveHover",
+      "itemIconColor",
+      "itemIconColorHover",
+      "itemIconColorActive",
+      "itemIconColorActiveHover",
+      "arrowColor",
+      "arrowColorHover",
+      "arrowColorActive",
+      "arrowColorActiveHover",
+      "groupTextColor",
+      "borderRadius",
+      "fontSize"
+    ],
+    "Modal": [
+      "color",
+      "textColor",
+      "boxShadow"
+    ],
+    "Popover": [
+      "color",
+      "dividerColor",
+      "textColor",
+      "boxShadow",
+      "borderRadius",
+      "fontSize"
+    ],
+    "Slider": [
+      "railColor",
+      "railColorHover",
+      "fillColor",
+      "fillColorHover",
+      "handleBoxShadowFocus"
+    ],
+    "Switch": [
+      "railColor",
+      "railColorActive",
+      "boxShadowFocus"
+    ],
+    "Tabs": [
+      "colorSegment",
+      "tabTextColorLine",
+      "tabTextColorActiveLine",
+      "tabTextColorHoverLine",
+      "tabTextColorDisabledLine",
+      "tabColor",
+      "tabColorSegment",
+      "tabBorderColor",
+      "tabBorderRadius",
+      "paneTextColor",
+      "barColor",
+      "closeColorHover",
+      "closeColorPressed",
+      "closeBorderRadius"
+    ]
+  },
+  "semanticTokenReferenceInventory": {
+    "totalReferences": 156,
+    "uniqueReferenceCount": 37,
+    "uniqueReferences": [
+      "--accent",
+      "--accent-bg",
+      "--accent-bg-2",
+      "--accent-press",
+      "--accent-strong",
+      "--bg",
+      "--border",
+      "--border-strong",
+      "--control-h",
+      "--control-h-sm",
+      "--danger",
+      "--font-mono",
+      "--font-sans",
+      "--fs-base",
+      "--fs-lg",
+      "--fs-sm",
+      "--info",
+      "--r-md",
+      "--r-sm",
+      "--r-xs",
+      "--s-4",
+      "--shadow-lg",
+      "--shadow-md",
+      "--shadow-sm",
+      "--state-active-bg",
+      "--state-focus-ring",
+      "--state-hover-bg",
+      "--success",
+      "--surface",
+      "--surface-2",
+      "--surface-3",
+      "--text",
+      "--text-2",
+      "--text-faint",
+      "--text-muted",
+      "--text-on-accent",
+      "--warning"
+    ]
+  },
+  "intentionallyUnmappedRoles": [
+    "message/dialog/notification/loading-bar consumers",
+    "discrete API owner",
+    "locale/date-locale provider",
+    "tooltip-specific inverted color pairing without target tooltip tokens",
+    "full border shorthand overrides without a border-width token",
+    "z-index, motion, safe-area, splitter, responsive, scroll-surface, line-height, font-weight, overlay stacking, focus-trap domains",
+    "broad component-by-component theming not required for F3D"
+  ],
+  "canonicalEvidence": {
+    "providerSource": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/App.vue",
+    "themeSource": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/theme.ts",
+    "translatedNotCopied": true
+  },
+  "layoutNeutrality": {
+    "abstractConfigProvider": true,
+    "noLayoutAffectingProviderWrapper": true,
+    "browserDomWrapper": "none; abstract provider rendered no wrapper element",
+    "bodyOverflow": "hidden",
+    "documentScrollIntroduced": false
+  },
+  "routerIntegrity": "PASS",
+  "piniaIntegrity": "PASS",
+  "vueRootIntegrity": "PASS",
+  "directNaiveImportAudit": {
+    "total": 4,
+    "unauthorized": []
+  },
+  "duplicateProviderAudit": "PASS",
+  "undefinedTokenReferenceAudit": {
+    "result": "PASS",
+    "undefinedTokenReferences": []
+  },
+  "rawVisualValueAudit": {
+    "result": "PASS",
+    "rawVisualValues": []
+  },
+  "overrideTypeValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run typecheck"
+  },
+  "dependencyReadiness": {
+    "result": "PASS",
+    "package": "naive-ui",
+    "version": "2.44.1",
+    "dependencyMutation": false
+  },
+  "dependenciesReviewed": [
+    "@tanstack/vue-query@5.101.2",
+    "chess.js@1.4.0",
+    "dexie@4.4.4",
+    "gsap@3.15.0",
+    "naive-ui@2.44.1",
+    "pinia@3.0.4",
+    "vue@3.5.39",
+    "vue-router@5.1.0",
+    "zod@4.4.3"
+  ],
+  "dependenciesAdded": [],
+  "dependenciesRemoved": [],
+  "automatedTestAudit": {
+    "result": "PASS",
+    "automatedTestsCreated": false,
+    "testScriptPresent": false
+  },
+  "mockDataAudit": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run check:mocks"
+  },
+  "secretRiskAudit": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run check:secrets"
+  },
+  "dependencyPolicyValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run check:deps"
+  },
+  "architectureValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run check:architecture"
+  },
+  "rawVisualValueValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run check:tokens"
+  },
+  "mockDataValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run check:mocks"
+  },
+  "secretPatternValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run check:secrets"
+  },
+  "prettierValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run format:check"
+  },
+  "eslintValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run lint"
+  },
+  "stylelintValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run lint:style"
+  },
+  "knipValidation": {
+    "result": "PASS_WITH_EXISTING_HINT",
+    "command": "mise exec -- pnpm run check:unused",
+    "hint": "naive-ui ignored dependency hint remains non-blocking and command exited 0"
+  },
+  "governanceValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run check:governance"
+  },
+  "typecheck": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run typecheck"
+  },
+  "build": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run typecheck:vue && mise exec -- pnpm exec vite build --outDir <tmp>/dist --emptyOutDir",
+    "temporaryBuildPath": "/tmp/f3d-build.ZcNEVK/dist"
+  },
+  "productionSecurityAudit": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm run audit:prod"
+  },
+  "fullSecurityAudit": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm audit"
+  },
+  "installedDependencyValidation": {
+    "result": "PASS",
+    "command": "mise exec -- pnpm list --depth 0",
+    "directPackageCount": 27
+  },
+  "staticAggregateValidation": {
+    "result": "PASS_WITH_EXISTING_KNIP_HINT",
+    "command": "mise exec -- pnpm run check:static"
+  },
+  "browserValidation": {
+    "result": "PASS",
+    "browser": "Chrome/149.0.7827.197",
+    "route": "http://127.0.0.1:60721/pgnViewer/",
+    "staticServerCommand": "node /tmp/f3d-static-server.mjs <tmp-build>/dist",
+    "scenarioCount": 5,
+    "consoleEntries": 0,
+    "failedAssetRequests": 0,
+    "providerCount": 1,
+    "globalStyleCount": 1,
+    "geometry": {
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 633
+    },
+    "tokenSamples": {
+      "--bg": "#f4f6f4",
+      "--text": "#161a17",
+      "--accent": "#1f9d57",
+      "--surface": "#fff",
+      "--border": "#e2e6e2",
+      "--state-focus-ring": "0 0 0 3px #1f9d5738"
+    }
+  },
+  "lightThemeBrowserValidation": {
+    "result": "PASS",
+    "scenario": "persisted explicit light",
+    "naiveTheme": null,
+    "resolvedTheme": "light"
+  },
+  "darkThemeBrowserValidation": {
+    "result": "PASS",
+    "scenario": "persisted explicit dark",
+    "naiveTheme": "dark",
+    "resolvedTheme": "dark"
+  },
+  "systemThemeBrowserValidation": {
+    "result": "PASS",
+    "scenarios": [
+      "clean system light",
+      "persisted system light",
+      "persisted system dark"
+    ]
+  },
+  "runtimeSwitchBrowserValidation": {
+    "result": "PASS",
+    "sameVueApp": true,
+    "afterDark": "dark",
+    "afterLight": "light",
+    "systemDark": "dark",
+    "systemLight": "light",
+    "explicitLightIgnoresSystem": "light",
+    "explicitDarkIgnoresSystem": "dark"
+  },
+  "crossTabBrowserValidation": {
+    "result": "PASS",
+    "before": "light",
+    "afterDark": "dark",
+    "afterLight": "light"
+  },
+  "noFlashBrowserValidation": {
+    "result": "PASS",
+    "explicitDarkFirstFrame": {
+      "theme": "dark",
+      "mode": "dark",
+      "bootstrapVisible": false,
+      "colorScheme": "dark"
+    },
+    "systemDarkFirstFrame": {
+      "theme": "dark",
+      "mode": "system",
+      "bootstrapVisible": false,
+      "colorScheme": "dark"
+    }
+  },
+  "providerMappingBrowserValidation": {
+    "result": "PASS",
+    "primaryOverride": "var(--accent)",
+    "mappedTokenSamplesNonEmpty": true
+  },
+  "globalStyleBrowserValidation": {
+    "result": "PASS",
+    "globalStyleCount": 1,
+    "bodyBackground": "rgb(244, 246, 244)",
+    "bodyColor": "rgb(45, 52, 47)"
+  },
+  "geometryRegressionAudit": {
+    "result": "PASS",
+    "bodyOverflow": "hidden",
+    "scrollIntroduced": false,
+    "shellRect": {
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 633
+    }
+  },
+  "processCleanup": {
+    "temporaryServerStopped": true,
+    "temporaryChromeStopped": true,
+    "remainingF3DProcesses": "none detected before report creation",
+    "temporaryFilesPendingDeletionAfterReport": true
+  },
+  "repositorySideEffectAudit": {
+    "result": "PASS",
+    "protectedHashChangesBeforeGovernance": [
+      "src/App.vue"
+    ],
+    "distPresent": false,
+    "viteDepsModified": false,
+    "packageChanged": false,
+    "lockfileChanged": false,
+    "tokenValuesChanged": false
+  },
+  "tokenImpact": "No token values changed; 37 existing semantic tokens consumed by Naive UI overrides.",
+  "themeImpact": "F3C resolved light/dark now controls Naive UI theme selection; no new preference owner.",
+  "uiFrameworkImpact": "Naive UI remains a consumer behind src/app/providers; no product feature direct theme ownership.",
+  "i18nImpact": "No i18n, locale, or date-locale provider implemented in F3D.",
+  "persistenceImpact": "No Dexie schema, storage key, localStorage owner, or preference behavior changed.",
+  "apiBoundaryImpact": "No API, repository, fetch, transport, or product route added.",
+  "securityImpact": "No browser secret owner, credentials, endpoint, mock data, or dependency mutation introduced.",
+  "filesCreated": [
+    "src/app/providers/AppProviders.vue",
+    "src/app/providers/naiveTheme.ts",
+    "src/app/providers/naiveThemeOverrides.ts",
+    "docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md",
+    ".ai/reports/F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION_REPORT.json"
+  ],
+  "filesModified": [
+    "src/App.vue",
+    "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+  ],
+  "filesDeleted": [],
+  "implementationCommit": {
+    "sha": "172f4ab78e49c8c1a2ce2f999ef6a50b0a680f26",
+    "subject": "feat(theme): 建立 F3 Naive UI 主题 Provider 与 Token 映射",
+    "parent": "e96071b4ddc3f3e5c767f55d33cc1b84367434de",
+    "tree": "12c606b9e5615978831bb213868949a50b542a2a"
+  },
+  "implementationPush": {
+    "result": "PASS",
+    "remote": "origin",
+    "branch": "main",
+    "sha": "172f4ab78e49c8c1a2ce2f999ef6a50b0a680f26"
+  },
+  "documentationUpdate": {
+    "result": "PENDING_GOVERNANCE_COMMIT",
+    "files": [
+      "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+      "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md"
+    ]
+  },
+  "productUiGateImpact": {
+    "productUiMigrationReadyGranted": false,
+    "nextDecision": "PRODUCT_UI_MIGRATION_GATE_REVIEW"
+  },
+  "readinessMatrixUpdate": {
+    "result": "PENDING_GOVERNANCE_COMMIT",
+    "file": "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "f3dStatus": "IMPLEMENTED_VALIDATED",
+    "nextPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW"
+  },
+  "closureCommitPlan": {
+    "subject": "docs(governance): 记录 F3D Naive UI 主题 Provider 验收证据",
+    "includes": [
+      "F3D report",
+      "TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+      "PRODUCT_FIRST_DELIVERY_REBASE.md",
+      "FOUNDATION_READINESS_MATRIX.json"
+    ]
+  },
+  "gitStateAtReportCreation": {
+    "head": "172f4ab78e49c8c1a2ce2f999ef6a50b0a680f26",
+    "branch": "main",
+    "statusShort": "M docs/architecture/FOUNDATION_READINESS_MATRIX.json\n M docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md\n M docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md"
+  },
+  "warnings": [
+    "F3D does not implement message/dialog/notification/loading-bar consumers or discrete API.",
+    "F3D does not implement locale/date-locale, product UI, reusable UI adapters, icons, i18n, Dexie, QueryClient, repositories, generalized error handling, accessibility hardening, or broad final integration.",
+    "check:unused passed with an existing knip hint for naive-ui ignoreDependencies."
+  ],
+  "blockers": [],
+  "nextRequiredPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
+  "finalVerdict": "F3D_NAIVE_UI_THEME_PROVIDER_PASS_READY_FOR_PRODUCT_UI_GATE_REVIEW"
+}

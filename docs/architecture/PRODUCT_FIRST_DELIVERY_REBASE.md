@@ -44,9 +44,9 @@ runtime from operating correctly:
 - typecheck, static checks, production build, and narrow real-browser
   validation for every visible runtime phase.
 
-The current live repository already records F3C as implemented and validated.
-Therefore the remaining active pre-product implementation phase is
-`F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`.
+The current live repository records F3C and F3D as implemented and validated.
+Therefore the remaining active pre-product decision point is
+`PRODUCT_UI_MIGRATION_GATE_REVIEW`.
 
 No full generalized server-state, repository, security-runtime, global-error,
 accessibility, or broad final integration program is required to open product UI
@@ -61,9 +61,10 @@ The owner-approved sequence is:
 3. `PRODUCT_UI_MIGRATION_GATE_REVIEW`
 4. `P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION`
 
-Because F3C is already accepted in the live target, F3D is the next required
-implementation phase. This document does not reopen F3C and does not authorize
-F3D, product UI migration, or P1 implementation during F3R.
+Because F3C and F3D are accepted in the live target, the next required phase is
+the dedicated gate review. This document does not itself mark
+`PRODUCT_UI_MIGRATION_READY`, reopen F3C or F3D, authorize product UI migration,
+or authorize P1 implementation during F3D closure.
 
 `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE` is superseded as a
 separate pre-product gate. Narrow theme browser validation remains mandatory
