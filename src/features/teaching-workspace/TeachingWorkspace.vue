@@ -8,6 +8,10 @@ Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import {
+  ANNOTATION_COLORS,
+  annotationColorToken,
+} from '@/features/annotations/domain/annotationTypes'
 import CanonicalChessBoard from '@/features/board/CanonicalChessBoard.vue'
 import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
 import PgnNotationPanel from '@/features/pgn/components/PgnNotationPanel.vue'
@@ -28,6 +32,8 @@ const {
 const showLeftSidebar = ref(true)
 const showAnalysisRegion = ref(false)
 const boardAlignment = ref('center')
+const annotationTool = ref()
+const annotationColor = ref('draw-red')
 
 const boardJustifyContent = computed(() => {
   if (boardAlignment.value === 'left') {
@@ -43,6 +49,14 @@ const boardJustifyContent = computed(() => {
 
 function toggleLeftSidebar() {
   showLeftSidebar.value = !showLeftSidebar.value
+}
+
+function setAnnotationTool(tool = '') {
+  annotationTool.value = annotationTool.value === tool ? null : tool
+}
+
+function setAnnotationColor(color = '') {
+  annotationColor.value = color || annotationColor.value
 }
 
 defineExpose({
@@ -88,9 +102,54 @@ defineExpose({
               :position="boardPosition"
               :last-move="pgn.lastMove ?? []"
               :interactive="boardInteractive"
+              :annotation-tool="annotationTool"
+              :annotation-color="annotationColor"
+              :annotations="pgn.currentAnnotation ?? {}"
               controlled-moves
               @move-request="onBoardMoveRequest"
+              @annotation-draw="pgn.drawAnnotation"
             />
+            <div class="annotation-controls" role="toolbar" aria-label="棋盘标注">
+              <button
+                class="annotation-control"
+                type="button"
+                :aria-pressed="annotationTool === 'arrow'"
+                :disabled="!pgn.hasGame"
+                @click="setAnnotationTool('arrow')"
+              >
+                箭头
+              </button>
+              <button
+                class="annotation-control"
+                type="button"
+                :aria-pressed="annotationTool === 'square'"
+                :disabled="!pgn.hasGame"
+                @click="setAnnotationTool('square')"
+              >
+                方框
+              </button>
+              <button
+                class="annotation-control"
+                type="button"
+                :aria-pressed="annotationTool === 'highlight'"
+                :disabled="!pgn.hasGame"
+                @click="setAnnotationTool('highlight')"
+              >
+                高亮
+              </button>
+              <button
+                v-for="color in ANNOTATION_COLORS"
+                :key="color"
+                class="annotation-swatch"
+                type="button"
+                :class="color"
+                :style="{ background: annotationColorToken(color) }"
+                :aria-label="`标注颜色 ${color}`"
+                :aria-pressed="annotationColor === color"
+                :disabled="!pgn.hasGame"
+                @click="setAnnotationColor(color)"
+              />
+            </div>
           </section>
         </div>
       </section>
@@ -270,13 +329,66 @@ defineExpose({
   position: relative;
   display: flex;
   flex: 0 1 min(100%, 100cqh);
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: var(--s-2);
   width: min(100%, 100cqh);
   height: 100%;
   min-width: 0;
   min-height: 0;
 }
+
+.annotation-controls {
+  position: absolute;
+  right: var(--s-3);
+  bottom: var(--s-3);
+  z-index: var(--workspace-shell-z-raised);
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: var(--s-1);
+  border: var(--workspace-border-w) solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.annotation-control,
+.annotation-swatch {
+  min-width: var(--control-h-sm);
+  height: var(--control-h-sm);
+  border: var(--workspace-border-w) solid var(--border-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.annotation-control {
+  padding: 0 var(--s-2);
+}
+
+.annotation-swatch {
+  width: var(--control-h-sm);
+  min-width: var(--control-h-sm);
+}
+
+.annotation-control:disabled,
+.annotation-swatch:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.annotation-control[aria-pressed='true'],
+.annotation-swatch[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent-strong);
+}
+
+
 
 .board-title {
   position: absolute;

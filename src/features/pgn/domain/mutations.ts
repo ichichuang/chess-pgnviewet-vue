@@ -1,5 +1,7 @@
 import { Chess, type Square } from 'chess.js'
 
+import { emptyAnnotation } from '@/features/annotations/domain/annotationTypes'
+
 import type { MoveNode } from './types'
 
 export type PromotionPiece = 'q' | 'r' | 'b' | 'n'
@@ -86,6 +88,7 @@ export function createNode(parent: MoveNode, move: AppliedMove): MoveNode {
     moveNumber: move.moveNumber,
     color: move.color,
     rawComments: [],
+    annotation: emptyAnnotation(),
     nags: [],
     parent,
     children: [],

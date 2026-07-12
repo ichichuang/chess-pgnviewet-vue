@@ -1,5 +1,19 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
+import {
+  annotationColorToken,
+  isAnnotationColorId,
+  modifierAnnotationColor,
+  type AnnotationColorId,
+  type AnnotationDrawPayload,
+  type AnnotationShapeKind,
+  type BoardAnnotation,
+} from '@/features/annotations/domain/annotationTypes'
+import {
+  arrowGeometry,
+  arrowGeometryFromPoints,
+  type AnnotationArrowGeometry,
+} from '@/features/annotations/domain/annotationGeometry'
 import { squareCenter, squareRect, squareToDisplay } from './domain/boardGeometry'
 import { buildBoardCells } from './domain/boardCells'
 import { fenToGrid } from './domain/fenBoard'
@@ -22,9 +36,12 @@ interface BoardViewRuntimeProps {
   dests?: unknown
   check?: boolean
   interactive?: boolean
+  annotationTool?: string | null
+  annotationColor?: string
+  annotations?: unknown
 }
 
-type BoardViewEvent = 'move' | 'interaction-active'
+type BoardViewEvent = 'move' | 'interaction-active' | 'annotation-draw'
 type BoardViewEmit = (event: BoardViewEvent, ...args: unknown[]) => void
 
 const BOARD_SIDE = 8
@@ -47,6 +64,9 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   const downX = ref(0)
   const downY = ref(0)
   const ghost = ref<{ letter: string; x: number; y: number } | null>(null)
+  const annotationStart = ref<string | null>(null)
+  const annotationPreview = ref<AnnotationDrawPayload | null>(null)
+  const annotationPointer = ref<[number, number] | null>(null)
   let resizeObserver: ResizeObserver | null = null
 
   const orientation = computed<BoardOrientation>(() =>
@@ -59,6 +79,18 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   )
   const legalDests = computed(() => normalizeDests(props.dests))
   const interactive = computed(() => props.interactive !== false)
+  const annotationTool = computed<AnnotationShapeKind | null>(() =>
+    props.annotationTool === 'arrow' ||
+    props.annotationTool === 'square' ||
+    props.annotationTool === 'highlight'
+      ? props.annotationTool
+      : null
+  )
+  const annotationColor = computed<AnnotationColorId>(() =>
+    props.annotationColor && isAnnotationColorId(props.annotationColor)
+      ? props.annotationColor
+      : 'draw-red'
+  )
 
   const files = computed(() => {
     const values = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
@@ -76,10 +108,14 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   const cells = computed(() => buildBoardCells(props.fen, orientation.value))
   const pieces = computed(() => cells.value.filter((cell) => cell.letter))
   const lastMoveSet = computed(() => new Set(Array.isArray(props.lastMove) ? props.lastMove : []))
-  const overlayOn = computed(() => interactive.value)
+  const overlayOn = computed(() => interactive.value || annotationTool.value !== null)
 
   const interactionActive = computed(
-    () => dragging.value || ghost.value !== null || dragStart.value !== null
+    () =>
+      dragging.value ||
+      ghost.value !== null ||
+      dragStart.value !== null ||
+      annotationStart.value !== null
   )
 
   watch(interactionActive, (active) => emit('interaction-active', active), { immediate: true })
@@ -173,11 +209,131 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     })
   })
 
+  const annotationHighlights = computed(() =>
+    annotationModel.value.squares
+      .filter((mark) => mark.kind === 'highlight')
+      .flatMap((mark, index) => {
+        const rect = squareRect(mark.square, orientation.value)
+
+        return rect
+          ? [
+              {
+                key: `${mark.square}-highlight-${index}`,
+                rect,
+                color: annotationColorToken(mark.color),
+              },
+            ]
+          : []
+      })
+  )
+
+  const annotationSquares = computed(() =>
+    annotationModel.value.squares
+      .filter((mark) => mark.kind === 'square')
+      .flatMap((mark, index) => {
+        const rect = squareRect(mark.square, orientation.value)
+
+        return rect
+          ? [
+              {
+                key: `${mark.square}-square-${index}`,
+                rect,
+                color: annotationColorToken(mark.color),
+              },
+            ]
+          : []
+      })
+  )
+
+  const annotationArrows = computed(() =>
+    annotationModel.value.arrows.flatMap((mark, index) => {
+      const geometry = arrowGeometry(mark.from, mark.to, orientation.value)
+
+      return geometry
+        ? [
+            {
+              key: `${mark.from}-${mark.to}-${index}`,
+              geometry,
+              color: annotationColorToken(mark.color),
+            },
+          ]
+        : []
+    })
+  )
+
+  const annotationPreviewHighlight = computed(() => {
+    const preview = annotationPreview.value
+
+    if (preview?.kind !== 'highlight') {
+      return null
+    }
+
+    const rect = squareRect(preview.from, orientation.value)
+
+    return rect ? { rect, color: annotationColorToken(preview.color) } : null
+  })
+
+  const annotationPreviewSquare = computed(() => {
+    const preview = annotationPreview.value
+
+    if (preview?.kind !== 'square') {
+      return null
+    }
+
+    const rect = squareRect(preview.from, orientation.value)
+
+    return rect ? { rect, color: annotationColorToken(preview.color) } : null
+  })
+
+  const annotationPreviewArrow = computed(
+    (): {
+      geometry: AnnotationArrowGeometry
+      color: string
+    } | null => {
+      const preview = annotationPreview.value
+
+      if (preview?.kind !== 'arrow' || !annotationPointer.value) {
+        return null
+      }
+
+      const start = squareCenter(preview.from, orientation.value)
+      const geometry = start ? arrowGeometryFromPoints(start, annotationPointer.value) : null
+
+      return geometry ? { geometry, color: annotationColorToken(preview.color) } : null
+    }
+  )
+
   const ariaLabel = computed(() => {
     const piece = pieceAt(focusedSquare.value)
     const occupant = piece ? pieceLabel(piece) : '空格'
 
     return `棋盘，当前焦点 ${focusedSquare.value}，${occupant}`
+  })
+
+  const annotationModel = computed<BoardAnnotation>(() => {
+    const value = props.annotations
+
+    if (!value || typeof value !== 'object') {
+      return {
+        arrows: [],
+        squares: [],
+        systemTexts: [],
+        userTexts: [],
+        unknownFields: [],
+        plainComments: [],
+      }
+    }
+
+    const candidate = value as Partial<BoardAnnotation>
+
+    return {
+      arrows: Array.isArray(candidate.arrows) ? candidate.arrows : [],
+      squares: Array.isArray(candidate.squares) ? candidate.squares : [],
+      systemTexts: Array.isArray(candidate.systemTexts) ? candidate.systemTexts : [],
+      userTexts: Array.isArray(candidate.userTexts) ? candidate.userTexts : [],
+      unknownFields: Array.isArray(candidate.unknownFields) ? candidate.unknownFields : [],
+      plainComments: Array.isArray(candidate.plainComments) ? candidate.plainComments : [],
+    }
   })
 
   function pieceAt(square: string): string {
@@ -276,12 +432,35 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     return String.fromCharCode(97 + (BOARD_SIDE - 1 - displayCol)) + (displayRow + 1)
   }
 
+  function pointerToBoardPoint(clientX: number, clientY: number): [number, number] | null {
+    const rect = wrap.value?.getBoundingClientRect()
+
+    if (!rect || rect.width === 0) {
+      return null
+    }
+
+    return [
+      ((clientX - rect.left) / rect.width) * BOARD_SIDE,
+      ((clientY - rect.top) / rect.height) * BOARD_SIDE,
+    ]
+  }
+
   function clearMoveDrag(): void {
     dragStart.value = null
     draggingFrom.value = null
     dragOverSquare.value = null
     dragging.value = false
     ghost.value = null
+  }
+
+  function clearAnnotationGesture(): void {
+    annotationStart.value = null
+    annotationPreview.value = null
+    annotationPointer.value = null
+  }
+
+  function colorForAnnotation(event: PointerEvent): AnnotationColorId {
+    return modifierAnnotationColor(event) ?? annotationColor.value
   }
 
   function armMovePointer(event: PointerEvent, square: string): void {
@@ -333,6 +512,37 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   }
 
   function onDown(event: PointerEvent): void {
+    if (annotationTool.value) {
+      if (event.button !== 0) {
+        return
+      }
+
+      const square = squareAt(event.clientX, event.clientY)
+
+      if (!square) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+      selected.value = null
+      clearMoveDrag()
+      annotationStart.value = square
+      annotationPreview.value = {
+        kind: annotationTool.value,
+        from: square,
+        color: colorForAnnotation(event),
+      }
+      annotationPointer.value = pointerToBoardPoint(event.clientX, event.clientY)
+
+      try {
+        ;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)
+      } catch {
+        // Pointer capture is optional in some embedded browser contexts.
+      }
+      return
+    }
+
     if (!interactive.value || event.button !== 0) {
       return
     }
@@ -360,6 +570,29 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   }
 
   function onMove(event: PointerEvent): void {
+    if (annotationTool.value && annotationStart.value) {
+      const square = squareAt(event.clientX, event.clientY)
+      const color = colorForAnnotation(event)
+
+      annotationPointer.value = pointerToBoardPoint(event.clientX, event.clientY)
+
+      if (square) {
+        const preview: AnnotationDrawPayload = {
+          kind: annotationTool.value,
+          from: annotationTool.value === 'arrow' ? annotationStart.value : square,
+          color,
+        }
+
+        if (annotationTool.value === 'arrow' && square !== annotationStart.value) {
+          preview.to = square
+        }
+
+        annotationPreview.value = preview
+      }
+
+      return
+    }
+
     if (!interactive.value) {
       return
     }
@@ -391,6 +624,47 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   }
 
   function onUp(event: PointerEvent): void {
+    if (annotationTool.value) {
+      if (!annotationStart.value) {
+        clearAnnotationGesture()
+        return
+      }
+
+      try {
+        ;(event.currentTarget as HTMLElement).releasePointerCapture(event.pointerId)
+      } catch {
+        // Pointer capture is optional in some embedded browser contexts.
+      }
+
+      const end = squareAt(event.clientX, event.clientY)
+      const color = colorForAnnotation(event)
+
+      if (end) {
+        if (annotationTool.value === 'arrow') {
+          const payload: AnnotationDrawPayload = {
+            kind: end === annotationStart.value ? 'square' : 'arrow',
+            from: annotationStart.value,
+            color,
+          }
+
+          if (end !== annotationStart.value) {
+            payload.to = end
+          }
+
+          emit('annotation-draw', payload)
+        } else {
+          emit('annotation-draw', {
+            kind: annotationTool.value,
+            from: end,
+            color,
+          } satisfies AnnotationDrawPayload)
+        }
+      }
+
+      clearAnnotationGesture()
+      return
+    }
+
     if (!interactive.value || !dragStart.value) {
       return
     }
@@ -415,6 +689,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
 
   function onCancel(): void {
     clearMoveDrag()
+    clearAnnotationGesture()
     hoverSquare.value = null
   }
 
@@ -480,6 +755,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
       selected.value = null
       hoverSquare.value = null
       clearMoveDrag()
+      clearAnnotationGesture()
     }
   )
 
@@ -495,9 +771,16 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   onBeforeUnmount(() => {
     resizeObserver?.disconnect()
     clearMoveDrag()
+    clearAnnotationGesture()
   })
 
   return {
+    annotationArrows,
+    annotationHighlights,
+    annotationPreviewArrow,
+    annotationPreviewHighlight,
+    annotationPreviewSquare,
+    annotationSquares,
     activeDestMarkers,
     ariaLabel,
     CAPTURE_OUTLINE_RADIUS,

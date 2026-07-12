@@ -10,6 +10,9 @@ const props = defineProps({
   lastMove: { type: Array, default: undefined },
   interactive: { type: Boolean, default: true },
   controlledMoves: { type: Boolean, default: false },
+  annotationTool: { type: String, default: null },
+  annotationColor: { type: String, default: 'draw-red' },
+  annotations: { type: Object, default: () => ({}) },
 })
 
 const emit = defineEmits([
@@ -17,6 +20,7 @@ const emit = defineEmits([
   'move-executed',
   'promotion-request',
   'position-change',
+  'annotation-draw',
 ])
 
 const {
@@ -65,8 +69,12 @@ defineExpose({
       :dests="dests"
       :check="currentCheck"
       :interactive="interactive"
+      :annotation-tool="annotationTool"
+      :annotation-color="annotationColor"
+      :annotations="annotations"
       @move="handleMoveRequest"
       @interaction-active="interactionActive = $event"
+      @annotation-draw="$emit('annotation-draw', $event)"
     />
     <PromotionChooser
       :pending="pendingPromotion ?? {}"

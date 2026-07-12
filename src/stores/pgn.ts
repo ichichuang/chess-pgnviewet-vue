@@ -2,6 +2,12 @@ import { Chess } from 'chess.js'
 import { defineStore } from 'pinia'
 
 import {
+  cloneAnnotation,
+  type AnnotationDrawPayload,
+  type BoardAnnotation,
+} from '@/features/annotations/domain/annotationTypes'
+import { serializeAnnotation } from '@/features/annotations/domain/ycdw'
+import {
   applyMove,
   computeDests,
   createNode,
@@ -36,6 +42,11 @@ interface PendingBranch {
   to: string
   promotion?: PromotionPiece | undefined
   san: string
+}
+
+interface DrawSnapshot {
+  arrows: BoardAnnotation['arrows']
+  squares: BoardAnnotation['squares']
 }
 
 interface PgnState {
@@ -119,6 +130,9 @@ export const usePgnStore = defineStore('pgn', {
       }
 
       return findNode(item.tree, state.selectedNodeId) ?? item.tree.root
+    },
+    currentAnnotation(): BoardAnnotation | null {
+      return this.currentNode?.annotation ?? null
     },
     currentFen(): string {
       const node = this.currentNode
@@ -381,6 +395,83 @@ export const usePgnStore = defineStore('pgn', {
     cancelBranch(): void {
       this.pendingBranch = null
     },
+    drawAnnotation(payload: AnnotationDrawPayload): void {
+      if (payload.kind === 'arrow' && payload.to) {
+        this.toggleDrawArrow(payload.from, payload.to, payload.color)
+        return
+      }
+
+      if (payload.kind === 'square' || payload.kind === 'highlight') {
+        this.toggleDrawSquare(payload.from, payload.color, payload.kind)
+      }
+    },
+    toggleDrawSquare(
+      square: string,
+      color: BoardAnnotation['squares'][number]['color'],
+      kind: BoardAnnotation['squares'][number]['kind']
+    ): void {
+      const node = this.currentNode
+
+      if (!node) {
+        return
+      }
+
+      const before = snapDrawings(node)
+      const squares = node.annotation.squares.slice()
+      const index = squares.findIndex((mark) => mark.square === square && mark.kind === kind)
+
+      if (index >= 0) {
+        squares.splice(index, 1)
+      } else {
+        squares.push({ square, color, kind })
+      }
+
+      node.annotation = { ...cloneAnnotation(node.annotation), squares }
+      syncRawComments(node)
+      recordDrawChange(node, before)
+    },
+    toggleDrawArrow(
+      from: string,
+      to: string,
+      color: BoardAnnotation['arrows'][number]['color']
+    ): void {
+      const node = this.currentNode
+
+      if (!node) {
+        return
+      }
+
+      const before = snapDrawings(node)
+      const arrows = node.annotation.arrows.slice()
+      const index = arrows.findIndex((arrow) => arrow.from === from && arrow.to === to)
+
+      if (index >= 0) {
+        arrows.splice(index, 1)
+      } else {
+        arrows.push({ from, to, color })
+      }
+
+      node.annotation = { ...cloneAnnotation(node.annotation), arrows }
+      syncRawComments(node)
+      recordDrawChange(node, before)
+    },
+    clearDrawing(): void {
+      const node = this.currentNode
+
+      if (!node) {
+        return
+      }
+
+      const before = snapDrawings(node)
+
+      if (before.arrows.length === 0 && before.squares.length === 0) {
+        return
+      }
+
+      node.annotation = { ...cloneAnnotation(node.annotation), arrows: [], squares: [] }
+      syncRawComments(node)
+      recordDrawChange(node, before)
+    },
     setSearch(key: string): void {
       this.searchKey = key
       this.page = 0
@@ -390,3 +481,23 @@ export const usePgnStore = defineStore('pgn', {
     },
   },
 })
+
+function snapDrawings(node: MoveNode): DrawSnapshot {
+  return {
+    arrows: node.annotation.arrows.map((arrow) => ({ ...arrow })),
+    squares: node.annotation.squares.map((square) => ({ ...square })),
+  }
+}
+
+function recordDrawChange(node: MoveNode, before: DrawSnapshot): void {
+  if (
+    before.arrows.length === node.annotation.arrows.length &&
+    before.squares.length === node.annotation.squares.length
+  ) {
+    return
+  }
+}
+
+function syncRawComments(node: MoveNode): void {
+  node.rawComments = serializeAnnotation(node.annotation)
+}

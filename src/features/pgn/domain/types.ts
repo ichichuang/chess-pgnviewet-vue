@@ -1,3 +1,5 @@
+import type { BoardAnnotation } from '@/features/annotations/domain/annotationTypes'
+
 type DataSourceType = 'FS' | 'manual' | 'null'
 
 export interface DataSource {
@@ -17,6 +19,7 @@ export interface MoveNode {
   moveNumber: number
   color: 'w' | 'b' | null
   rawComments: string[]
+  annotation: BoardAnnotation
   nags: string[]
   parent: MoveNode | null
   children: MoveNode[]

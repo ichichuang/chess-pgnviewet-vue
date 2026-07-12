@@ -10,11 +10,20 @@ const props = defineProps({
   dests: { type: Map, default: () => new Map() },
   check: { type: Boolean, default: false },
   interactive: { type: Boolean, default: true },
+  annotationTool: { type: String, default: null },
+  annotationColor: { type: String, default: 'draw-red' },
+  annotations: { type: Object, default: () => ({}) },
 })
 
-const emit = defineEmits(['move', 'interaction-active'])
+const emit = defineEmits(['move', 'interaction-active', 'annotation-draw'])
 
 const {
+  annotationArrows,
+  annotationHighlights,
+  annotationPreviewArrow,
+  annotationPreviewHighlight,
+  annotationPreviewSquare,
+  annotationSquares,
   activeDestMarkers,
   ariaLabel,
   CAPTURE_OUTLINE_RADIUS,
@@ -132,6 +141,46 @@ const {
             :height="checkMarker.h"
             class="state-overlay check"
           />
+          <rect
+            v-for="mark in annotationHighlights"
+            :key="`annotation-highlight-${mark.key}`"
+            :x="mark.rect.x"
+            :y="mark.rect.y"
+            :width="mark.rect.w"
+            :height="mark.rect.h"
+            class="annotation-highlight"
+            :fill="mark.color"
+          />
+          <rect
+            v-if="annotationPreviewHighlight"
+            :x="annotationPreviewHighlight.rect.x"
+            :y="annotationPreviewHighlight.rect.y"
+            :width="annotationPreviewHighlight.rect.w"
+            :height="annotationPreviewHighlight.rect.h"
+            class="annotation-highlight annotation-preview"
+            :fill="annotationPreviewHighlight.color"
+          />
+          <rect
+            v-for="mark in annotationSquares"
+            :key="`annotation-square-${mark.key}`"
+            :x="mark.rect.x + 0.04"
+            :y="mark.rect.y + 0.04"
+            width="0.92"
+            height="0.92"
+            rx="0.06"
+            class="annotation-square"
+            :stroke="mark.color"
+          />
+          <rect
+            v-if="annotationPreviewSquare"
+            :x="annotationPreviewSquare.rect.x + 0.04"
+            :y="annotationPreviewSquare.rect.y + 0.04"
+            width="0.92"
+            height="0.92"
+            rx="0.06"
+            class="annotation-square annotation-preview"
+            :stroke="annotationPreviewSquare.color"
+          />
           <template v-for="destination in activeDestMarkers" :key="`dst-${destination.key}`">
             <circle
               v-if="!destination.capture"
@@ -169,6 +218,40 @@ const {
             preserveAspectRatio="xMidYMid meet"
             @dragstart.prevent
           />
+          <template v-for="arrow in annotationArrows" :key="`annotation-arrow-${arrow.key}`">
+            <line
+              :x1="arrow.geometry.shaft.x1"
+              :y1="arrow.geometry.shaft.y1"
+              :x2="arrow.geometry.shaft.x2"
+              :y2="arrow.geometry.shaft.y2"
+              class="annotation-arrow-shaft"
+              :stroke="arrow.color"
+            />
+            <polygon
+              class="annotation-arrow-head"
+              :points="arrow.geometry.head.map((point) => `${point[0]},${point[1]}`).join(' ')"
+              :fill="arrow.color"
+            />
+          </template>
+          <template v-if="annotationPreviewArrow">
+            <line
+              :x1="annotationPreviewArrow.geometry.shaft.x1"
+              :y1="annotationPreviewArrow.geometry.shaft.y1"
+              :x2="annotationPreviewArrow.geometry.shaft.x2"
+              :y2="annotationPreviewArrow.geometry.shaft.y2"
+              class="annotation-arrow-shaft annotation-preview"
+              :stroke="annotationPreviewArrow.color"
+            />
+            <polygon
+              class="annotation-arrow-head annotation-preview"
+              :points="
+                annotationPreviewArrow.geometry.head
+                  .map((point) => `${point[0]},${point[1]}`)
+                  .join(' ')
+              "
+              :fill="annotationPreviewArrow.color"
+            />
+          </template>
         </svg>
 
         <div
@@ -179,6 +262,7 @@ const {
           @pointerup="onUp"
           @pointercancel="onCancel"
           @pointerleave="onLeave"
+          @contextmenu.prevent
         />
 
         <img
@@ -388,6 +472,39 @@ const {
   stroke: var(--cg-hint-fill);
   stroke-width: var(--board-move-ring-stroke);
   pointer-events: none;
+}
+
+.annotation-highlight {
+  opacity: var(--annotation-highlight-opacity);
+  pointer-events: none;
+}
+
+.annotation-square {
+  fill: none;
+  opacity: var(--annotation-square-opacity);
+  pointer-events: none;
+  stroke-linejoin: round;
+  stroke-width: var(--annotation-square-width);
+}
+
+.annotation-arrow-shaft {
+  fill: none;
+  opacity: var(--annotation-arrow-opacity);
+  pointer-events: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: var(--annotation-arrow-width);
+}
+
+.annotation-arrow-head {
+  opacity: var(--annotation-arrow-opacity);
+  pointer-events: none;
+  stroke: none;
+  stroke-linejoin: miter;
+}
+
+.annotation-preview {
+  opacity: var(--annotation-highlight-opacity);
 }
 
 .piece-img {

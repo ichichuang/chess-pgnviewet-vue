@@ -1,5 +1,8 @@
 import { Chess } from 'chess.js'
 
+import { emptyAnnotation } from '@/features/annotations/domain/annotationTypes'
+import { parseAnnotationComments } from '@/features/annotations/domain/ycdw'
+
 import type { GameTree, MoveNode, PgnItem } from './types'
 
 export const STANDARD_START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
@@ -40,6 +43,7 @@ function makeNode(partial: Partial<MoveNode>): MoveNode {
     moveNumber: 1,
     color: null,
     rawComments: [],
+    annotation: emptyAnnotation(),
     nags: [],
     parent: null,
     children: [],
@@ -363,6 +367,14 @@ function lastMainlineNode(tree: GameTree): MoveNode {
   return node
 }
 
+function finalizeAnnotations(node: MoveNode): void {
+  node.annotation = parseAnnotationComments(node.rawComments)
+
+  for (const child of node.children) {
+    finalizeAnnotations(child)
+  }
+}
+
 export function mainlineMoves(tree: GameTree): MoveNode[] {
   const out: MoveNode[] = []
   let node = tree.root
@@ -385,6 +397,7 @@ function parseGame(headerLines: string[], movetext: string): PgnItem {
   const { tags, headers } = parseHeaderLines(headerLines)
   const startFen = tags.FEN && tags.FEN.trim() !== '' ? tags.FEN.trim() : STANDARD_START_FEN
   const { tree, parseError } = buildGameTree(movetext, startFen)
+  finalizeAnnotations(tree.root)
   const last = lastMainlineNode(tree)
 
   return {

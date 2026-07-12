@@ -111,8 +111,8 @@ function nagLabel(nag = '') {
   }
 }
 
-function nodeComments(node = { rawComments: [''] }) {
-  return node.rawComments.filter((comment) => comment.trim() !== '')
+function nodeComments(node = { annotation: { plainComments: [''] } }) {
+  return node.annotation.plainComments.filter((comment) => comment.trim() !== '')
 }
 
 function openLocal() {
