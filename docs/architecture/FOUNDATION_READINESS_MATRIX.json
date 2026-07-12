@@ -2018,7 +2018,7 @@
         "authority": "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
         "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
         "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
-        "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
+        "nextRequiredPhase": "P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION",
         "p1Authority": "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
         "deferredPolicy": "Deferred comprehensive foundations remain DEFERRED_UNTIL_PRODUCT_COMPLETE with earlier trigger only for real feature-owned need.",
         "p1aResult": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
@@ -2789,7 +2789,7 @@
             "no force push",
             "no source-project modification"
         ],
-        "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
+        "nextRequiredPhase": "P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION",
         "finalMilestones": [
             "PRODUCT_UI_MIGRATION_READY",
             "PRODUCT_COMPLETE_USABLE",
@@ -2818,6 +2818,49 @@
             "result": "P1C_REAL_PGN_RUNTIME_PASS_READY_FOR_P1D_ANNOTATION_MIGRATION",
             "browserEvidence": "Production-bundle browser validation PASS for real PGN loading, navigation sync, illegal move rejection, branch creation, duplicate prevention, FEN-start games, comments, invalid PGN state preservation, and 18 viewport/theme combinations.",
             "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION"
+        },
+        "p1dCanonicalAnnotationRuntime": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "implementationCommit": "4d0860fb3bf4116c8e35f02258c66be7b145b405",
+            "report": ".ai/reports/P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION_REPORT.json",
+            "baseline": "docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md",
+            "result": "P1D_CANONICAL_ANNOTATION_PASS_READY_FOR_WORKSPACE_COMPLETION",
+            "browserEvidence": "Production-bundle browser validation PASS for canonical annotations, six semantic colors, node ownership, variation isolation, comments/NAG preservation, and black-orientation contract validation through the accepted board interface.",
+            "nextRequiredPhase": "P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION"
+        },
+        "p1eCanonicalWorkspacePanelsToolbarsSplitters": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "implementationCommit": "3e70e0bd990fe96a9d49b08bcf6d6f66e5d4373c",
+            "report": ".ai/reports/P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION_REPORT.json",
+            "baseline": "docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md",
+            "result": "P1E_CANONICAL_WORKSPACE_PASS_READY_FOR_AI_MIGRATION",
+            "implemented": [
+                "workspace toolbar hierarchy",
+                "production board orientation control",
+                "PGN navigation controls",
+                "annotation mode controls",
+                "six semantic annotation colors",
+                "current-node annotation undo and redo",
+                "current-node annotation clear",
+                "right panel tabs",
+                "panel visibility state",
+                "project-owned splitter behavior",
+                "responsive workspace validation"
+            ],
+            "notImplemented": [
+                "AI analysis",
+                "Web Workers",
+                "authentication",
+                "production APIs",
+                "generalized persistence",
+                "settings",
+                "final integration",
+                "later P1 capabilities"
+            ],
+            "browserEvidence": "Temporary production build browser validation PASS for /pgnViewer/ mount, desktop, large desktop, tablet portrait, tablet landscape, mobile portrait, 844x390 mobile landscape, accepted ycdw.pgn import, orientation flip white-black-white with FEN preservation, PGN navigation, six annotation colors, analysis visibility, splitter cleanup, no Vite overlay, no console/runtime/network failure, one app root, and no body overflow.",
+            "dependenciesAdded": [],
+            "dependenciesRemoved": [],
+            "nextRequiredPhase": "P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION"
         }
     }
 }

@@ -63,10 +63,10 @@ The owner-approved pre-product sequence was:
 4. `P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION`
 
 Because F3C, F3D, and the dedicated gate review are accepted in the live target,
-P1A, P1B, P1C, and P1D have now been implemented and browser validated. The
-next required phase is
-`P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`. This document
-does not reopen F3C or F3D.
+P1A, P1B, P1C, P1D, and P1E have now been implemented and browser validated.
+The next required phase is
+`P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`. This document does not reopen
+F3C or F3D.
 
 The active P1 sequence is:
 
@@ -168,6 +168,27 @@ P1D is now implemented and browser validated:
   unimplemented.
 - The next required phase is
   `P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`.
+
+P1E is now implemented and browser validated:
+
+- Result:
+  `P1E_CANONICAL_WORKSPACE_PASS_READY_FOR_AI_MIGRATION`.
+- Report:
+  `.ai/reports/P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `3e70e0bd990fe96a9d49b08bcf6d6f66e5d4373c`.
+- `/pgnViewer/` now includes the canonical workspace control layer over the
+  accepted board, PGN, and annotation runtimes: toolbar hierarchy, production
+  orientation control, PGN navigation, annotation mode/color/undo/redo/clear,
+  right-panel tabs, panel visibility, lower analysis structure, splitter
+  interaction, and responsive workspace behavior.
+- AI analysis, Web Workers, authentication, production APIs, generalized
+  persistence, settings, final integration, and later product capabilities
+  remain unimplemented.
+- The next required phase is
+  `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`.
 
 ## P1 Product Migration Program
 

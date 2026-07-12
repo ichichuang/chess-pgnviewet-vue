@@ -317,8 +317,29 @@ product behavior.
 
 P1D depends on P1C and owns canonical annotation runtime only.
 
-P1E completes canonical workspace panels, toolbars, splitters, and directly
-required responsive behavior after real board and PGN behavior exist.
+P1E is now implemented and browser validated:
+
+- Result:
+  `P1E_CANONICAL_WORKSPACE_PASS_READY_FOR_AI_MIGRATION`.
+- Report:
+  `.ai/reports/P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `3e70e0bd990fe96a9d49b08bcf6d6f66e5d4373c`.
+- `/pgnViewer/` now owns the canonical workspace toolbar layer, production
+  board-orientation control, PGN navigation controls, annotation mode and six
+  semantic color controls, current-node annotation undo/redo/clear behavior,
+  right panel tabs, panel visibility state, lower structural analysis region,
+  project-owned splitter pointer lifecycle, and responsive workspace behavior.
+- Static checks, typecheck, temporary-output production build, audits,
+  dependency listing, aggregate static check, and production-bundle Chrome CDP
+  browser validation passed.
+- AI analysis, Web Workers, authentication, production APIs, generalized
+  persistence, settings, live/replay import, final integration, and later P1
+  runtime remain unimplemented.
+- Next phase:
+  `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`.
 
 P1F owns canonical AI analysis and Web Worker behavior.
 
