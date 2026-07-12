@@ -1,0 +1,937 @@
+{
+  "phase": "F2BR2_PNPM_LOCKFILE_FORMAT_OWNERSHIP_AND_SCOPE_RECONCILIATION",
+  "startedAt": "2026-07-12T04:30:22Z",
+  "completedAt": "2026-07-12T05:47:45Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "authorityFilesRead": [
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    ".ai/reports/F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH_REPORT.json",
+    "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "package.json",
+    "pnpm-lock.yaml",
+    "prettier.config.mjs",
+    ".prettierignore"
+  ],
+  "safetyGate": {
+    "targetResolvedExactly": true,
+    "targetIsSymlink": false,
+    "gitRoot": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "branch": "main",
+    "authorizedOrigin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "localHead": "d9df97ce81077fba50b799fafe6a9de4f1195af9",
+    "originMain": "d9df97ce81077fba50b799fafe6a9de4f1195af9",
+    "liveRemoteMain": "d9df97ce81077fba50b799fafe6a9de4f1195af9",
+    "indexEmpty": true,
+    "expectedDirtyStateOnly": true,
+    "noAmbiguousProcessTerminated": true,
+    "activeWriterProcessAudit": "PASS_NO_TARGET_SCOPED_VITE_BUILD_FORMATTER_OR_PACKAGE_MANAGER_MUTATION_FOUND; ambient Codex MCP npm exec processes were observed but not classified as project writers.",
+    "evidenceSourceState": "No authored evidence-source drift inspected; /Users/cc/Work/neobv/Chess/pgnViewer has an untracked generated .serena/ cache and the other two sources are not Git repositories, so no evidence content was traversed or modified."
+  },
+  "prePhaseGitState": {
+    "modifiedTracked": [
+      "package.json",
+      "pnpm-lock.yaml"
+    ],
+    "untracked": [
+      ".prettierignore",
+      "eslint.config.mjs",
+      "knip.json",
+      "prettier.config.mjs",
+      "stylelint.config.mjs"
+    ],
+    "staged": []
+  },
+  "expectedDirtyStateVerification": {
+    "matchedExpectedF2BStateAtStart": true,
+    "noF2BReportAtStart": true,
+    "noF2BReadinessMatrixUpdateAtStart": true,
+    "previousF2BRAttemptCreatedNoF2BR2ReportOrDebtBaseline": true
+  },
+  "f2aAssumption": {
+    "knownFourLineFindingWasIncomplete": true,
+    "knownFourLineDebt": [
+      {
+        "path": "docs/architecture/API_BOUNDARY_ADR.md",
+        "line": 3,
+        "trailingTwoSpacesPresent": true,
+        "unchangedFromF2A": true
+      },
+      {
+        "path": "docs/architecture/PERSISTENCE_ADR.md",
+        "line": 3,
+        "trailingTwoSpacesPresent": true,
+        "unchangedFromF2A": true
+      },
+      {
+        "path": "docs/architecture/SOURCE_ADAPTER_ADR.md",
+        "line": 3,
+        "trailingTwoSpacesPresent": true,
+        "unchangedFromF2A": true
+      },
+      {
+        "path": "docs/architecture/TECH_STACK_DECISION.md",
+        "line": 3,
+        "trailingTwoSpacesPresent": true,
+        "unchangedFromF2A": true
+      }
+    ]
+  },
+  "f2bActualPrettierEvidence": {
+    "command": "mise exec -- pnpm exec prettier . --list-different",
+    "exitCode": 1,
+    "reportedFileCount": 45,
+    "reportFileCount": 15,
+    "activeNonReportFileCount": 30
+  },
+  "f2brBlockedEvidence": {
+    "command": "mise exec -- pnpm exec prettier pnpm-lock.yaml --check --ignore-path /dev/null",
+    "exitCode": 1,
+    "result": "pnpm-lock.yaml fails independent Prettier formatting, confirming it must be resolved by ownership rather than lockfile rewrite."
+  },
+  "lockfileOwnershipDecision": {
+    "path": "pnpm-lock.yaml",
+    "ownership": "pnpm-generated-lockfile",
+    "prettierOwnership": "permanently-excluded",
+    "decision": "pnpm-lock.yaml is generated and structurally owned exclusively by the project-pinned pnpm package manager. Prettier must never format, rewrite, normalize, or directly validate pnpm-lock.yaml. Manual editing remains forbidden; integrity is governed by pnpm version pinning, package-manager exclusivity checks, manifest-to-lockfile review, lockfile-diff review after authorized dependency operations, dependency audits, frozen-lockfile validation in later appropriate phases, and Git review.",
+    "manualEditing": "forbidden",
+    "otherLockfiles": [
+      "package-lock.json",
+      "yarn.lock",
+      "bun.lock",
+      "other non-pnpm lockfiles remain forbidden"
+    ]
+  },
+  "initialReportedFiles": [
+    {
+      "path": ".ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0B_CANONICAL_VUE_ARCHITECTURE_PNPM_AND_LATEST_STABLE_TOOLCHAIN_ALIGNMENT_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0B_CANONICAL_VUE_ARCHITECTURE_PNPM_AND_LATEST_STABLE_TOOLCHAIN_ALIGNMENT_RERUN_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0B_NODE_RUNTIME_PROVISIONING_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0C_TYPESCRIPT_7_AND_VUE_TSC_OFFICIAL_COMPATIBILITY_BRIDGE_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0D_OFFICIAL_VUE_TYPESCRIPT_6_ECOSYSTEM_COMPATIBLE_BASELINE_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0E_UI_FIRST_DELIVERY_AND_NO_AUTOMATED_TEST_GOVERNANCE_CLOSURE_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0F_ACTIVE_AUTHORITY_NO_TEST_AND_UI_FIRST_CONSISTENCY_CLOSURE_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": ".ai/reports/P0F_BROWSER_VALIDATION_AND_REPORT_INTEGRITY_CORRECTION_REPORT.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "historical-machine-report-json",
+      "ownership": "historical-machine-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "permanently-excluded"
+    },
+    {
+      "path": "docs/architecture/API_BOUNDARY_ADR.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "active-architecture-markdown",
+      "ownership": "active-architecture-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "active-governance-json",
+      "ownership": "active-architecture-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "active-architecture-markdown",
+      "ownership": "active-architecture-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/architecture/PERSISTENCE_ADR.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "active-architecture-markdown",
+      "ownership": "active-architecture-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/architecture/SOURCE_ADAPTER_ADR.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "active-architecture-markdown",
+      "ownership": "active-architecture-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/architecture/TECH_STACK_DECISION.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "active-architecture-markdown",
+      "ownership": "active-architecture-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "modified-by-authorized-f2br2-correction",
+      "partOfF2BImplementationSet": false,
+      "category": "active-architecture-markdown",
+      "ownership": "active-architecture-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "archived-evidence-json",
+      "ownership": "archived-source-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "archived-evidence-json",
+      "ownership": "archived-source-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "archived-evidence-json",
+      "ownership": "archived-source-evidence",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/API_AUTHORITY_MAP.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/ASSET_INVENTORY.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/CAPABILITY_MATRIX.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/DOCUMENT_INVENTORY.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "migration-authority-json",
+      "ownership": "migration-authority",
+      "dominantPrettierDifferenceType": "Prettier JSON indentation, wrapping, and comma normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/product/PRODUCT_DEFINITION.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "product-markdown",
+      "ownership": "product-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/product/WORKSPACE_MODES.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "product-markdown",
+      "ownership": "product-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/ACCESSIBILITY_SPEC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/I18N_SPEC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/PAGE_STYLE_SPEC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/THEME_SYSTEM_SPEC.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    },
+    {
+      "path": "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+      "existedAtF2ABaseline": true,
+      "tracked": true,
+      "currentState": "unchanged-relative-to-head",
+      "partOfF2BImplementationSet": false,
+      "category": "ui-markdown",
+      "ownership": "ui-authority",
+      "dominantPrettierDifferenceType": "Prettier Markdown prose, table/list wrapping, or trailing hard-break whitespace normalization.",
+      "disposition": "temporary-f2c-debt"
+    }
+  ],
+  "classificationSummary": {
+    "initialReportedFileCount": 45,
+    "permanentReportFiles": 15,
+    "permanentLockfileFiles": 1,
+    "temporaryDebtFileCount": 30,
+    "categorySummary": {
+      "historical-machine-report-json": 15,
+      "active-architecture-markdown": 6,
+      "active-governance-json": 1,
+      "archived-evidence-json": 3,
+      "migration-authority-json": 9,
+      "product-markdown": 2,
+      "ui-markdown": 9,
+      "pnpm-generated-lockfile": 1
+    }
+  },
+  "permanentExclusions": [
+    {
+      "path": ".ai/reports/",
+      "reason": "Historical machine reports are immutable evidence validated outside Prettier ownership.",
+      "validationOwner": "machine-report-governance"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "reason": "pnpm-lock.yaml is generated and structurally owned exclusively by the project-pinned pnpm package manager. Prettier must never format, rewrite, normalize, or directly validate pnpm-lock.yaml. Manual editing remains forbidden; integrity is governed by pnpm version pinning, package-manager exclusivity checks, manifest-to-lockfile review, lockfile-diff review after authorized dependency operations, dependency audits, frozen-lockfile validation in later appropriate phases, and Git review.",
+      "validationOwner": "package-manager-and-lockfile-governance"
+    }
+  ],
+  "temporaryDebtFiles": [
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    "docs/architecture/TECH_STACK_DECISION.md",
+    "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+    "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+    "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+    "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+    "docs/migration/API_AUTHORITY_MAP.json",
+    "docs/migration/ASSET_INVENTORY.json",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+    "docs/migration/DOCUMENT_INVENTORY.json",
+    "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+    "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/I18N_SPEC.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/PAGE_STYLE_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/ui/THEME_SYSTEM_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+  ],
+  "knownFourLineDebt": [
+    {
+      "path": "docs/architecture/API_BOUNDARY_ADR.md",
+      "line": 3,
+      "trailingTwoSpacesPresent": true,
+      "unchangedFromF2A": true
+    },
+    {
+      "path": "docs/architecture/PERSISTENCE_ADR.md",
+      "line": 3,
+      "trailingTwoSpacesPresent": true,
+      "unchangedFromF2A": true
+    },
+    {
+      "path": "docs/architecture/SOURCE_ADAPTER_ADR.md",
+      "line": 3,
+      "trailingTwoSpacesPresent": true,
+      "unchangedFromF2A": true
+    },
+    {
+      "path": "docs/architecture/TECH_STACK_DECISION.md",
+      "line": 3,
+      "trailingTwoSpacesPresent": true,
+      "unchangedFromF2A": true
+    }
+  ],
+  "additionalDebtDiscovered": {
+    "fileCount": 26,
+    "files": [
+      "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+      "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+      "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+      "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+      "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+      "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+      "docs/migration/API_AUTHORITY_MAP.json",
+      "docs/migration/ASSET_INVENTORY.json",
+      "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+      "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+      "docs/migration/CAPABILITY_MATRIX.json",
+      "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+      "docs/migration/DOCUMENT_INVENTORY.json",
+      "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+      "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+      "docs/product/PRODUCT_DEFINITION.md",
+      "docs/product/WORKSPACE_MODES.md",
+      "docs/ui/ACCESSIBILITY_SPEC.md",
+      "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+      "docs/ui/I18N_SPEC.md",
+      "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+      "docs/ui/PAGE_STYLE_SPEC.md",
+      "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+      "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+      "docs/ui/THEME_SYSTEM_SPEC.md",
+      "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+    ]
+  },
+  "prettierIgnoreBefore": [
+    ".git/",
+    "node_modules/",
+    ".pnpm-store/",
+    "dist/",
+    ".vite/",
+    "coverage/",
+    ".serena/",
+    ".DS_Store",
+    "*.log",
+    "pnpm-lock.yaml",
+    "*.local",
+    "*.sqlite",
+    "*.sqlite3",
+    "*.db",
+    "*.db-wal",
+    "*.db-shm",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer/"
+  ],
+  "prettierIgnoreAfter": [
+    ".git/",
+    "node_modules/",
+    ".pnpm-store/",
+    "dist/",
+    ".vite/",
+    "coverage/",
+    ".serena/",
+    ".DS_Store",
+    "*.log",
+    "*.local",
+    "*.sqlite",
+    "*.sqlite3",
+    "*.db",
+    "*.db-wal",
+    "*.db-shm",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer/",
+    "",
+    "# Permanent formatting ownership exclusions.",
+    "# Historical machine reports are immutable evidence validated by JSON/report governance, not Prettier.",
+    "# pnpm-lock.yaml is generated and validated by pnpm plus lockfile governance, not Prettier.",
+    ".ai/reports/",
+    "pnpm-lock.yaml",
+    "",
+    "# Temporary F2C formatting debt: exact paths only.",
+    "# Every path below must be removed by F2C_FORMATTING_DEBT_REMEDIATION.",
+    "# No new debt path may be added without an explicit governance decision.",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    "docs/architecture/TECH_STACK_DECISION.md",
+    "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+    "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+    "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+    "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+    "docs/migration/API_AUTHORITY_MAP.json",
+    "docs/migration/ASSET_INVENTORY.json",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+    "docs/migration/DOCUMENT_INVENTORY.json",
+    "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+    "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/I18N_SPEC.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/PAGE_STYLE_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/ui/THEME_SYSTEM_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+  ],
+  "fullFormatCheckAfterReconciliation": {
+    "command": "mise exec -- pnpm exec prettier . --check",
+    "exitCode": 0,
+    "result": "PASS"
+  },
+  "implementationFileFormattingValidation": {
+    "command": "mise exec -- pnpm exec prettier package.json eslint.config.mjs knip.json prettier.config.mjs stylelint.config.mjs --check",
+    "exitCode": 0,
+    "result": "PASS",
+    "excludedByOwnership": [
+      "pnpm-lock.yaml"
+    ],
+    "prettierignoreValidatedBy": [
+      "structural line checks",
+      "duplicate-entry checks",
+      "exact-path reconciliation",
+      "trailing-whitespace checks",
+      "git diff --check"
+    ]
+  },
+  "lockfileReadabilityValidation": {
+    "command": "mise exec -- pnpm list --depth 0",
+    "exitCode": 0,
+    "result": "PASS",
+    "directPackageCountReported": 27
+  },
+  "packageAndLockfileHashVerification": {
+    "initial": {
+      "package.json": "6c90e2088247ed349089bb2e494d0921e18a9b6201d40859bf4cc25b92b18d04",
+      "pnpm-lock.yaml": "e841cd28af30f92caf9af0ceed4c4982c033cd70a3d9df5bac94b183db893c88"
+    },
+    "current": {
+      "package.json": "6c90e2088247ed349089bb2e494d0921e18a9b6201d40859bf4cc25b92b18d04",
+      "pnpm-lock.yaml": "e841cd28af30f92caf9af0ceed4c4982c033cd70a3d9df5bac94b183db893c88"
+    },
+    "matchesPrePhaseHashes": {
+      "package.json": true,
+      "pnpm-lock.yaml": true
+    }
+  },
+  "configurationHashVerification": {
+    "initial": {
+      "package.json": "6c90e2088247ed349089bb2e494d0921e18a9b6201d40859bf4cc25b92b18d04",
+      "pnpm-lock.yaml": "e841cd28af30f92caf9af0ceed4c4982c033cd70a3d9df5bac94b183db893c88",
+      "eslint.config.mjs": "0d328ef29998c56db56f2a850b589054bde7da160ebe54f8fe0f50f726a13385",
+      "knip.json": "2c056384e2610cfe4d4dcdf2d1b15310bab8712bf996b29dfb9426e6830f1465",
+      "prettier.config.mjs": "f00d0ea667ef5958163b579cfdd5281ed87928b7c37196eca123315bd3bf8d03",
+      "stylelint.config.mjs": "e96d7865c0bd0fddbca761a85ec4641bb7328feb6e2108450ef08b7bf09137e0"
+    },
+    "current": {
+      "package.json": "6c90e2088247ed349089bb2e494d0921e18a9b6201d40859bf4cc25b92b18d04",
+      "pnpm-lock.yaml": "e841cd28af30f92caf9af0ceed4c4982c033cd70a3d9df5bac94b183db893c88",
+      "eslint.config.mjs": "0d328ef29998c56db56f2a850b589054bde7da160ebe54f8fe0f50f726a13385",
+      "knip.json": "2c056384e2610cfe4d4dcdf2d1b15310bab8712bf996b29dfb9426e6830f1465",
+      "prettier.config.mjs": "f00d0ea667ef5958163b579cfdd5281ed87928b7c37196eca123315bd3bf8d03",
+      "stylelint.config.mjs": "e96d7865c0bd0fddbca761a85ec4641bb7328feb6e2108450ef08b7bf09137e0"
+    },
+    "matchesPrePhaseHashes": {
+      "package.json": true,
+      "pnpm-lock.yaml": true,
+      "eslint.config.mjs": true,
+      "knip.json": true,
+      "prettier.config.mjs": true,
+      "stylelint.config.mjs": true
+    }
+  },
+  "debtMappingValidation": {
+    "everyTemporaryIgnoreEntryExists": true,
+    "everyTemporaryEntryTrackedAtF2ABaseline": true,
+    "everyTemporaryEntryAppearsOnceInDebtBaseline": true,
+    "everyTemporaryDebtEntryAppearsOnceInPrettierignore": true,
+    "noPermanentExclusionRecordedAsTemporaryDebt": true,
+    "noF2BImplementationFileTemporarilyExcluded": true,
+    "duplicateIgnoreEntries": [],
+    "trailingWhitespaceInPrettierignore": [],
+    "authorizedCorrectionOverlap": "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md is both an initial debt file and an authorized F2BR2 governance correction file; it was changed only for ownership correction text and remains exact-path temporary F2C debt."
+  },
+  "filesCreated": [
+    "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json",
+    ".ai/reports/F2BR2_PNPM_LOCKFILE_FORMAT_OWNERSHIP_AND_SCOPE_RECONCILIATION_REPORT.json"
+  ],
+  "filesModified": [
+    ".prettierignore",
+    "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md"
+  ],
+  "filesDeleted": [],
+  "gitState": {
+    "finalExpectedModifiedTracked": [
+      "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+      "package.json",
+      "pnpm-lock.yaml"
+    ],
+    "finalExpectedUntracked": [
+      ".prettierignore",
+      ".ai/reports/F2BR2_PNPM_LOCKFILE_FORMAT_OWNERSHIP_AND_SCOPE_RECONCILIATION_REPORT.json",
+      "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json",
+      "eslint.config.mjs",
+      "knip.json",
+      "prettier.config.mjs",
+      "stylelint.config.mjs"
+    ],
+    "staged": [],
+    "noCommit": true,
+    "noPush": true
+  },
+  "warnings": [
+    "The active architecture baseline is both an initial formatter-debt file and an authorized F2BR2 correction file; it remains temporarily excluded until F2C and was not formatted wholesale.",
+    "Ambient Codex MCP npm exec processes were visible with the target as cwd, but no target-scoped Vite/build/formatter/package-manager mutation process was found or terminated.",
+    "The pgnViewer evidence source contains an untracked generated .serena/ cache; generated evidence-source cache content was not traversed or modified."
+  ],
+  "blockers": [],
+  "nextRequiredPhase": "F2B2_TOOLCHAIN_VALIDATION_IMPLEMENTATION_COMMIT_AND_CLOSURE",
+  "finalVerdict": "F2BR2_FORMATTING_SCOPE_PASS_READY_TO_RESUME_F2B",
+  "postCreationValidation": {
+    "jsonParse": {
+      "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json": "PASS",
+      ".ai/reports/F2BR2_PNPM_LOCKFILE_FORMAT_OWNERSHIP_AND_SCOPE_RECONCILIATION_REPORT.json": "PASS"
+    },
+    "markdownAuthorityStructure": "PASS",
+    "secretPatternScan": {
+      "files": [
+        ".prettierignore",
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+        "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json",
+        ".ai/reports/F2BR2_PNPM_LOCKFILE_FORMAT_OWNERSHIP_AND_SCOPE_RECONCILIATION_REPORT.json"
+      ],
+      "result": "PASS_NO_FINDINGS"
+    },
+    "gitDiffCheck": {
+      "command": "git diff --check -- .prettierignore docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json .ai/reports/F2BR2_PNPM_LOCKFILE_FORMAT_OWNERSHIP_AND_SCOPE_RECONCILIATION_REPORT.json",
+      "result": "PASS"
+    },
+    "protectedHashesRechecked": "PASS",
+    "sourceRuntimeConfigChanges": "NONE",
+    "indexEmpty": true
+  }
+}

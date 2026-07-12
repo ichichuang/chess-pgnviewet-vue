@@ -85,6 +85,18 @@ Prettier owns whitespace and formatting for supported text files: `.ts`, `.vue`,
 
 Prettier check mode is read-only. Prettier write mode is explicit and never part of aggregate verification. Markdown governance documents remain in scope after the four-line legacy debt is either normalized in a dedicated F2C formatting commit or covered by a narrow time-limited ignore pattern that names the exact files and is removed in F2C. The preferred disposition is a dedicated F2C remediation commit.
 
+## F2BR2 Formatting Ownership Correction
+
+Correction date: `2026-07-12`
+
+The original four-line formatting finding was incomplete. It remains true that line 3 in `docs/architecture/API_BOUNDARY_ADR.md`, `docs/architecture/PERSISTENCE_ADR.md`, `docs/architecture/SOURCE_ADAPTER_ADR.md`, and `docs/architecture/TECH_STACK_DECISION.md` contains known trailing two-space Markdown hard-break debt, but that finding no longer defines the full formatting scope.
+
+The authoritative F2BR2 Prettier scan reported the exact count recorded in `docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json`. Historical `.ai/reports` files are permanently outside Prettier ownership because they are immutable machine evidence validated by strict JSON parsing, report-specific checks, redacted secret scanning, and Git review.
+
+`pnpm-lock.yaml` is permanently outside Prettier ownership because it is generated and structurally owned exclusively by the project-pinned pnpm package manager. Prettier must never format, rewrite, normalize, or directly validate `pnpm-lock.yaml`; manual editing of `pnpm-lock.yaml` remains forbidden. Lockfile integrity is governed by package-manager pinning, package-manager exclusivity checks, manifest and lockfile diff review after authorized dependency operations, security audit, frozen-lockfile validation where authorized, and Git review.
+
+Every other existing authored formatting violation is exact-path temporary debt. The temporary debt list expires in `F2C_FORMATTING_DEBT_REMEDIATION`; F2 remains incomplete until those paths are formatted, reviewed, removed from `.prettierignore`, and the active authored-file format check passes without temporary debt exclusions.
+
 ## Stylelint Ownership
 
 Future `stylelint.config.mjs` owns `src/**/*.css` and Vue style blocks via `postcss-html`. It extends `stylelint-config-standard`, applies Vue overrides only where needed, and ignores generated/external paths.
