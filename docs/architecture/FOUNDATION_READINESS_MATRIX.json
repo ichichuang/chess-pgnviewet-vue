@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "F2C_FORMATTING_DEBT_PASS_READY_FOR_STATIC_SCANNER_IMPLEMENTATION",
+    "overallStatus": "F2D_STATIC_GOVERNANCE_PASS_READY_FOR_F2_CLOSURE",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -246,7 +246,7 @@
                 "docs/architecture/TECH_STACK_DECISION.md",
                 "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
             ],
-            "implementationOwner": "F2B toolchain owner",
+            "implementationOwner": "F2D project-owned static-governance scanner owner",
             "packageOwner": "pnpm package graph with exact F2A-approved devDependencies",
             "configurationFiles": [
                 "package.json",
@@ -255,7 +255,12 @@
                 "prettier.config.mjs",
                 ".prettierignore",
                 "stylelint.config.mjs",
-                "knip.json"
+                "knip.json",
+                "scripts/governance/check-dependency-policy.mjs",
+                "scripts/governance/check-architecture-boundaries.mjs",
+                "scripts/governance/policy.mjs",
+                "scripts/governance/utils.mjs",
+                "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md"
             ],
             "runtimeFiles": [],
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
@@ -265,18 +270,18 @@
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
-                "knip.json added for Vite/Vue entrypoints",
-                "mise exec -- pnpm run check:unused PASS",
+                "dependency-policy scanner IMPLEMENTED_VALIDATED",
+                "architecture-boundary scanner IMPLEMENTED_VALIDATED",
+                "check:governance PASS",
+                "check:static PASS",
                 "mise exec -- pnpm list --depth 0 PASS",
-                "mise exec -- pnpm run audit:prod PASS",
-                "mise exec -- pnpm audit PASS",
-                "future architecture/mock/secret scanners NOT_IMPLEMENTED outside F2B"
+                "no dependency or lockfile mutation"
             ],
             "browserEvidence": "NOT_APPLICABLE",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
-            "finalVerdict": "FOUNDATION_TOOLCHAIN_ACCEPTABLE_F2B_SCOPE"
+            "plannedPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+            "finalVerdict": "FOUNDATION_TOOLCHAIN_ACCEPTABLE_F2D_SCOPE"
         },
         {
             "identifier": "tooling.security_static_scans",
@@ -288,15 +293,18 @@
                 "docs/architecture/TECH_STACK_DECISION.md",
                 "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
             ],
-            "implementationOwner": "security boundary owner",
+            "implementationOwner": "F2D project-owned static-governance scanner owner",
             "packageOwner": "pnpm package graph; no dependency changes in F0",
             "configurationFiles": [
                 "package.json",
-                "pnpm-lock.yaml",
-                "pnpm-workspace.yaml",
-                ".mise.toml",
-                "tsconfig.json",
-                "vite.config.ts"
+                "eslint.config.mjs",
+                "knip.json",
+                "scripts/governance/check-raw-visual-values.mjs",
+                "scripts/governance/check-forbidden-mock-data.mjs",
+                "scripts/governance/check-secret-patterns.mjs",
+                "scripts/governance/policy.mjs",
+                "scripts/governance/utils.mjs",
+                "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md"
             ],
             "runtimeFiles": [],
             "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
@@ -304,17 +312,22 @@
             "themeOwnership": "src/styles/tokens.css when applicable",
             "userFacingImpact": "Foundation readiness only; product UI remains blocked",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "PARTIAL_MANUAL_ONLY",
+            "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
-                "targeted redacted secret-pattern scan over F2B commit files PASS",
+                "raw-visual-value scanner IMPLEMENTED_VALIDATED",
+                "mock-data scanner IMPLEMENTED_VALIDATED",
+                "secret-pattern scanner IMPLEMENTED_VALIDATED with redaction",
+                "controlled negative probes PASS outside repository",
+                "controlled clean probes PASS outside repository",
                 "production and full pnpm audits PASS",
-                "project-owned architecture, raw-visual-value, mock-data, and secret scanners NOT_IMPLEMENTED outside F2B"
+                "check:governance PASS",
+                "check:static PASS"
             ],
             "browserEvidence": "NOT_APPLICABLE",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2D_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
-            "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+            "plannedPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+            "finalVerdict": "FOUNDATION_STATIC_GOVERNANCE_ACCEPTABLE_F2D_SCOPE"
         },
         {
             "identifier": "router.foundation",
@@ -1114,7 +1127,7 @@
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         }
     ],
-    "overallVerdict": "F2_IN_PROGRESS_F2B_VALIDATED_READY_FOR_F2C_FORMATTING_DEBT_REMEDIATION",
+    "overallVerdict": "F2_IN_PROGRESS_F2D_VALIDATED_READY_FOR_FINAL_STATIC_GOVERNANCE_CLOSURE",
     "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
     "correctionHistory": [
         {
@@ -1422,8 +1435,8 @@
         "The 30 temporary Prettier debt paths remain unresolved and exact-path ignored until F2C.",
         "F2C closes temporary formatting debt only; project-owned static-governance scanners remain unimplemented."
     ],
-    "plannedNextPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
-    "updatedAt": "2026-07-12T06:38:06.944Z",
+    "plannedNextPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+    "updatedAt": "2026-07-12T07:01:01Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -1470,12 +1483,12 @@
             "prettierConfig": "IMPLEMENTED_VALIDATED",
             "stylelintConfig": "IMPLEMENTED_VALIDATED",
             "knipConfig": "IMPLEMENTED_VALIDATED",
-            "governanceScanners": "NOT_IMPLEMENTED",
-            "packageScripts": "IMPLEMENTED_VALIDATED_CURRENT_F2B_SCOPE",
+            "governanceScanners": "IMPLEMENTED_VALIDATED",
+            "packageScripts": "IMPLEMENTED_VALIDATED_F2D_GOVERNANCE_SCOPE",
             "dependenciesInstalled": true,
             "automatedTestsAdded": false,
             "productUiWorkStarted": false,
-            "formattingDebtResolved": false
+            "formattingDebtResolved": true
         },
         "plannedImplementationSlices": [
             "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
@@ -1491,7 +1504,7 @@
             "npm registry metadata queried 2026-07-12",
             "Context7 official ESLint/typescript-eslint/Stylelint owner documentation"
         ],
-        "nextRequiredPhase": "F2C_FORMATTING_DEBT_REMEDIATION"
+        "nextRequiredPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE"
     },
     "f1Baseline": {
         "phase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
@@ -1646,5 +1659,58 @@
             "project-owned secret scanner",
             "project-owned dependency-policy scanner"
         ]
+    },
+    "f2dProjectOwnedStaticGovernanceScannerImplementation": {
+        "phase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+        "status": "F2D_STATIC_GOVERNANCE_PASS_READY_FOR_F2_CLOSURE",
+        "report": ".ai/reports/F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION_REPORT.json",
+        "implementationCommit": "f32097b1746b2a6c059c2160f50bda699787a1d6",
+        "implementationCommitSubject": "chore(governance): 建立 F2 项目静态治理扫描器",
+        "implementationPush": "f32097b1746b2a6c059c2160f50bda699787a1d6",
+        "scannersImplemented": {
+            "dependencyPolicy": "scripts/governance/check-dependency-policy.mjs",
+            "architectureBoundary": "scripts/governance/check-architecture-boundaries.mjs",
+            "rawVisualValue": "scripts/governance/check-raw-visual-values.mjs",
+            "mockData": "scripts/governance/check-forbidden-mock-data.mjs",
+            "secretPattern": "scripts/governance/check-secret-patterns.mjs"
+        },
+        "scannerAuthority": "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+        "scriptsAdded": [
+            "check:deps",
+            "check:architecture",
+            "check:tokens",
+            "check:mocks",
+            "check:secrets",
+            "check:governance"
+        ],
+        "aggregateUpdated": "check:static includes format:check and check:governance",
+        "validation": {
+            "dependencyPolicy": "PASS",
+            "architectureBoundary": "PASS",
+            "rawVisualValue": "PASS",
+            "mockData": "PASS",
+            "secretPattern": "PASS",
+            "redaction": "PASS",
+            "negativeProbes": "PASS",
+            "cleanProbes": "PASS",
+            "prettier": "PASS",
+            "eslint": "PASS",
+            "stylelint": "PASS",
+            "knip": "PASS",
+            "typecheck": "PASS",
+            "build": "PASS_TEMP_OUTDIR_OUTSIDE_REPO",
+            "productionAudit": "PASS",
+            "fullAudit": "PASS",
+            "checkGovernance": "PASS",
+            "checkStatic": "PASS"
+        },
+        "dependenciesAdded": [],
+        "dependenciesRemoved": [],
+        "lockfileChanged": false,
+        "automatedTestsAdded": false,
+        "runtimeSourceChanged": false,
+        "tokenValueChanged": false,
+        "productUiWorkStarted": false,
+        "nextRequiredPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE"
     }
 }
