@@ -1,0 +1,738 @@
+{
+    "phase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+    "startedAt": "2026-07-12T07:26:32.246Z",
+    "completedAt": "2026-07-12T07:26:32.246Z",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "sourceDirectories": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+        "/Users/cc/Work/neobv/Chess/pgnViewer",
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer"
+    ],
+    "authorityFilesRead": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/product/WORKSPACE_MODES.md",
+        "docs/ui/ACCESSIBILITY_SPEC.md",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+        "docs/ui/I18N_SPEC.md",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+        "docs/ui/PAGE_STYLE_SPEC.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+        "docs/ui/THEME_SYSTEM_SPEC.md",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/PERSISTENCE_ADR.md",
+        "docs/architecture/SOURCE_ADAPTER_ADR.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+        "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+        "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        ".ai/reports/F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH_REPORT.json",
+        ".ai/reports/F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION_REPORT.json",
+        ".ai/reports/F2C_FORMATTING_DEBT_REMEDIATION_REPORT.json",
+        ".ai/reports/F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION_REPORT.json",
+        "package.json",
+        "pnpm-lock.yaml",
+        "eslint.config.mjs",
+        "prettier.config.mjs",
+        ".prettierignore",
+        "stylelint.config.mjs",
+        "knip.json",
+        "scripts/governance/policy.mjs",
+        "scripts/governance/utils.mjs",
+        "scripts/governance/check-dependency-policy.mjs",
+        "scripts/governance/check-architecture-boundaries.mjs",
+        "scripts/governance/check-raw-visual-values.mjs",
+        "scripts/governance/check-forbidden-mock-data.mjs",
+        "scripts/governance/check-secret-patterns.mjs"
+    ],
+    "safetyGate": {
+        "result": "PASS",
+        "targetResolvedPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "targetIsSymlink": false,
+        "gitRoot": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "branch": "main",
+        "origin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+        "index": "EMPTY",
+        "trackedWorktree": "CLEAN",
+        "unexplainedUntrackedPaths": [],
+        "activeMutatingProcess": "NONE_DETECTED",
+        "evidenceSourceState": "PASS; only known pgnViewer/.serena local metadata observed; other evidence roots are not Git repositories"
+    },
+    "prerequisiteVerdicts": {
+        "f2a": "F2A_TOOLCHAIN_DESIGN_PASS_READY_FOR_IMPLEMENTATION",
+        "f2b": "F2B_TOOLCHAIN_CONFIG_PASS_READY_FOR_FORMATTING_DEBT_REMEDIATION",
+        "f2c": "F2C_FORMATTING_DEBT_PASS_READY_FOR_STATIC_SCANNER_IMPLEMENTATION",
+        "f2d": "F2D_STATIC_GOVERNANCE_PASS_READY_FOR_F2_CLOSURE"
+    },
+    "prePhaseState": {
+        "branch": "main",
+        "localHead": "5cd34b298f7d1bbf9cb8cd6e56a510cfe229f733",
+        "originMain": "5cd34b298f7d1bbf9cb8cd6e56a510cfe229f733",
+        "liveRemoteMain": "5cd34b298f7d1bbf9cb8cd6e56a510cfe229f733",
+        "subject": "docs(governance): 记录 F2D 静态治理扫描器验收证据"
+    },
+    "remoteState": {
+        "url": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+        "fullName": "ichichuang/chess-pgnviewet-vue",
+        "spellingPreserved": true,
+        "upstream": "origin/main",
+        "preClosureRemoteMain": "5cd34b298f7d1bbf9cb8cd6e56a510cfe229f733"
+    },
+    "authorityConsistencyAudit": {
+        "result": "PASS_RECONCILED",
+        "activeScannerAuthority": "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+        "finalClosureAuthority": "docs/architecture/F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_CLOSURE.md",
+        "olderToolchainPhaseTable": "SUPERSEDED_WITH_RATIONALE"
+    },
+    "phaseSequenceReconciliation": {
+        "result": "PASS",
+        "acceptedSequence": [
+            "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
+            "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
+            "F2C_FORMATTING_DEBT_REMEDIATION",
+            "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+            "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE"
+        ],
+        "finalDecision": "F2D already implemented scanner integration, failure remediation, package-script integration, controlled probes, and complete static validation; F2E is the single final F2 closure phase."
+    },
+    "supersededPhaseDecisions": [
+        {
+            "phase": "F2E_STATIC_CHECK_INTEGRATION_AND_FAILURE_REMEDIATION",
+            "supersededBy": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+            "date": "2026-07-12",
+            "rationale": "Accepted F2D evidence completed scanner integration and failure remediation."
+        },
+        {
+            "phase": "F2F_TOOLCHAIN_STATIC_GOVERNANCE_CLOSURE",
+            "supersededBy": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+            "date": "2026-07-12",
+            "rationale": "F2E is the single final closure phase after F2D validation."
+        }
+    ],
+    "dependencyExceptionOwnership": {
+        "result": "PASS",
+        "authority": "scripts/governance/policy.mjs",
+        "supersededPath": "docs/architecture/DEPENDENCY_VERSION_EXCEPTIONS.json",
+        "exceptions": [
+            {
+                "package": "typescript",
+                "selectedVersion": "6.0.3",
+                "fieldsPresent": [
+                    "authority",
+                    "rationale",
+                    "risk",
+                    "reviewTrigger",
+                    "removalCondition",
+                    "selectedVersion"
+                ],
+                "compatibilityEvidence": "typescript-eslint supports TypeScript >=4.8.4 <6.1.0 and Vue tooling gates TypeScript 7 adoption."
+            },
+            {
+                "package": "pnpm",
+                "selectedVersion": "11.11.0",
+                "fieldsPresent": [
+                    "authority",
+                    "rationale",
+                    "risk",
+                    "reviewTrigger",
+                    "removalCondition",
+                    "selectedVersion"
+                ],
+                "compatibilityEvidence": "F2A/F2B preserve existing mise and packageManager baseline until owner-approved update."
+            }
+        ]
+    },
+    "dependencyGraphAudit": {
+        "result": "PASS",
+        "dependencies": {
+            "@tanstack/vue-query": "5.101.2",
+            "chess.js": "1.4.0",
+            "dexie": "4.4.4",
+            "gsap": "3.15.0",
+            "naive-ui": "2.44.1",
+            "pinia": "3.0.4",
+            "vue": "3.5.39",
+            "vue-router": "5.1.0",
+            "zod": "4.4.3"
+        },
+        "devDependencies": {
+            "@eslint/js": "10.0.1",
+            "@types/node": "26.1.1",
+            "@vitejs/plugin-vue": "6.0.7",
+            "@vue/tsconfig": "0.9.1",
+            "eslint": "10.7.0",
+            "eslint-config-prettier": "10.1.8",
+            "eslint-plugin-vue": "10.9.2",
+            "knip": "6.26.0",
+            "npm-run-all2": "9.0.2",
+            "postcss-html": "1.8.1",
+            "prettier": "3.9.5",
+            "stylelint": "17.14.0",
+            "stylelint-config-standard": "40.0.0",
+            "typescript": "6.0.3",
+            "typescript-eslint": "8.63.0",
+            "vite": "8.1.4",
+            "vue-eslint-parser": "10.4.1",
+            "vue-tsc": "3.3.7"
+        },
+        "duplicateDirectDependencies": [],
+        "prereleaseDirectDependencies": [],
+        "forbiddenDirectDependencies": [],
+        "productionDependenciesChangedFromF2A": false
+    },
+    "packageManagerAudit": {
+        "result": "PASS",
+        "packageManager": "pnpm@11.11.0",
+        "engines": {
+            "node": "26.5.0",
+            "pnpm": "11.11.0"
+        },
+        "mise": {
+            "node": "26.5.0",
+            "pnpm": "11.11.0"
+        },
+        "solePackageManager": "pnpm",
+        "competingLockfiles": []
+    },
+    "lockfileOwnership": {
+        "result": "PASS",
+        "lockfile": "pnpm-lock.yaml",
+        "count": 1,
+        "owner": "pnpm",
+        "prettierOwnership": "EXCLUDED_PERMANENTLY"
+    },
+    "frozenLockfileValidation": {
+        "command": "mise exec -- pnpm --dir <tmp> install --frozen-lockfile --lockfile-only --ignore-scripts",
+        "exitCode": 0,
+        "result": "PASS",
+        "location": "operating-system temporary directory outside repository; removed after validation",
+        "copiedInputs": ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"],
+        "lockfileByteIdentical": true,
+        "note": "A prior temp-directory run without trusted mise metadata passed but produced a Node engine warning; the accepted run used trusted target mise execution with pnpm --dir <tmp>."
+    },
+    "toolOwnership": {
+        "eslint": "eslint.config.mjs",
+        "prettier": ["prettier.config.mjs", ".prettierignore"],
+        "stylelint": "stylelint.config.mjs",
+        "knip": "knip.json",
+        "scanners": "scripts/governance/",
+        "packageManager": "pnpm"
+    },
+    "configurationOwnership": {
+        "result": "PASS",
+        "files": [
+            "eslint.config.mjs",
+            "prettier.config.mjs",
+            ".prettierignore",
+            "stylelint.config.mjs",
+            "knip.json",
+            ".mise.toml",
+            "pnpm-workspace.yaml"
+        ],
+        "changedInF2E": false
+    },
+    "packageScriptAudit": {
+        "result": "PASS",
+        "scripts": {
+            "build": "pnpm run typecheck:vue && vite build",
+            "typecheck": "pnpm run typecheck:vue",
+            "lint": "eslint . --max-warnings=0",
+            "lint:style": "stylelint \"src/**/*.{css,vue}\"",
+            "format:check": "prettier . --check",
+            "format:write": "prettier . --write",
+            "check:deps": "node scripts/governance/check-dependency-policy.mjs",
+            "check:architecture": "node scripts/governance/check-architecture-boundaries.mjs",
+            "check:tokens": "node scripts/governance/check-raw-visual-values.mjs",
+            "check:mocks": "node scripts/governance/check-forbidden-mock-data.mjs",
+            "check:secrets": "node scripts/governance/check-secret-patterns.mjs",
+            "check:governance": "run-s check:deps check:architecture check:tokens check:mocks check:secrets",
+            "check:unused": "knip --no-progress",
+            "audit:prod": "pnpm audit --prod",
+            "check:static": "run-s lint lint:style format:check check:governance check:unused audit:prod"
+        },
+        "testScript": "ABSENT",
+        "checkGovernance": "Invokes each project-owned scanner exactly once.",
+        "checkStatic": "Read-only aggregate: lint, lint:style, format:check, check:governance, check:unused, audit:prod.",
+        "verifyFoundation": "NOT_PRESENT; normal build script writes dist unless temporary outDir is supplied manually."
+    },
+    "scannerInventory": {
+        "dependencyPolicy": {
+            "path": "scripts/governance/check-dependency-policy.mjs",
+            "script": "check:deps",
+            "ruleCount": 12
+        },
+        "architectureBoundary": {
+            "path": "scripts/governance/check-architecture-boundaries.mjs",
+            "script": "check:architecture",
+            "ruleCount": 19
+        },
+        "rawVisualValue": {
+            "path": "scripts/governance/check-raw-visual-values.mjs",
+            "script": "check:tokens",
+            "ruleCount": 10
+        },
+        "mockData": {
+            "path": "scripts/governance/check-forbidden-mock-data.mjs",
+            "script": "check:mocks",
+            "ruleCount": 9
+        },
+        "secretPattern": {
+            "path": "scripts/governance/check-secret-patterns.mjs",
+            "script": "check:secrets",
+            "ruleCount": 11
+        },
+        "sharedInvalidJson": {
+            "path": "scripts/governance/utils.mjs",
+            "ruleId": "GOVERNANCE_CONFIG_INVALID_JSON",
+            "ruleCount": 1
+        },
+        "totalBlockingRules": 62
+    },
+    "implementedRuleInventory": {
+        "dependencyPolicy": [
+            "DEP_APPROVED_VERSION_DRIFT",
+            "DEP_COMPETING_LOCKFILE_FORBIDDEN",
+            "DEP_DIRECT_VERSION_NOT_EXACT_STABLE",
+            "DEP_DUPLICATE_DIRECT_DEPENDENCY",
+            "DEP_ENGINE_PIN",
+            "DEP_FORBIDDEN_DIRECT_DEPENDENCY",
+            "DEP_PACKAGE_MANAGER_PIN",
+            "DEP_PNPM_LOCKFILE_REQUIRED",
+            "DEP_PRERELEASE_DIRECT_DEPENDENCY",
+            "DEP_REQUIRED_DIRECT_DEPENDENCY_MISSING",
+            "DEP_TEST_SCRIPT_FORBIDDEN",
+            "DEP_VERSION_EXCEPTION_INCOMPLETE"
+        ],
+        "architectureBoundary": [
+            "ARCH_BROWSER_SECRET_OWNERSHIP",
+            "ARCH_DIRECT_ICON_IMPORT",
+            "ARCH_DIRECT_NAIVE_UI_IMPORT",
+            "ARCH_DUPLICATE_PINIA_INSTALLATION",
+            "ARCH_DUPLICATE_PINIA_OWNER",
+            "ARCH_DUPLICATE_ROUTER_INSTALLATION",
+            "ARCH_DUPLICATE_ROUTER_OWNER",
+            "ARCH_DUPLICATE_VUE_ROOT",
+            "ARCH_EVIDENCE_SOURCE_IMPORT",
+            "ARCH_GENERIC_CALL_ENDPOINT",
+            "ARCH_IMPORT_META_ENV_OUTSIDE_CONFIG",
+            "ARCH_MQTT_PUBLISH",
+            "ARCH_PROXY_REQUEST_USAGE",
+            "ARCH_RAW_BROWSER_STORAGE",
+            "ARCH_RAW_FETCH_OUTSIDE_API",
+            "ARCH_RAW_HTTP_CLIENT",
+            "ARCH_RAW_XMLHTTPREQUEST_OUTSIDE_API",
+            "ARCH_REACT_RUNTIME_IMPORT",
+            "ARCH_WRITE_ADMIN_ENDPOINT"
+        ],
+        "rawVisualValue": [
+            "VISUAL_RAW_HEX_COLOR",
+            "VISUAL_RAW_HSL_COLOR",
+            "VISUAL_RAW_MODERN_COLOR",
+            "VISUAL_RAW_MOTION_DURATION",
+            "VISUAL_RAW_NAMED_COLOR",
+            "VISUAL_RAW_RADIUS",
+            "VISUAL_RAW_RGB_COLOR",
+            "VISUAL_RAW_SHADOW",
+            "VISUAL_RAW_SPACING",
+            "VISUAL_RAW_Z_INDEX"
+        ],
+        "mockData": [
+            "MOCK_API_MODE",
+            "MOCK_FAKE_DATA_GENERATOR",
+            "MOCK_FAKE_TRANSPORT_OR_ANALYSIS",
+            "MOCK_HARDCODED_PRODUCT_RECORD",
+            "MOCK_INVENTED_DTO_FIELD",
+            "MOCK_INVENTED_ENDPOINT",
+            "MOCK_PLACEHOLDER_SUCCESS",
+            "MOCK_RUNTIME_FIXTURE_FALLBACK",
+            "MOCK_SAMPLE_PRODUCT_RECORD"
+        ],
+        "secretPattern": [
+            "SECRET_ACCESS_TOKEN",
+            "SECRET_API_KEY",
+            "SECRET_AUTHORIZATION_HEADER",
+            "SECRET_BEARING_URL",
+            "SECRET_CLOUD_CREDENTIAL",
+            "SECRET_COOKIE",
+            "SECRET_PASSWORD_ASSIGNMENT",
+            "SECRET_PRIVATE_KEY",
+            "SECRET_REGISTRY_CREDENTIAL",
+            "SECRET_SIGNING_OR_HMAC_SECRET",
+            "SECRET_UNSAFE_VITE_EXPOSURE"
+        ],
+        "shared": ["GOVERNANCE_CONFIG_INVALID_JSON"]
+    },
+    "documentedRuleInventory": {
+        "dependencyPolicy": [
+            "DEP_APPROVED_VERSION_DRIFT",
+            "DEP_COMPETING_LOCKFILE_FORBIDDEN",
+            "DEP_DIRECT_VERSION_NOT_EXACT_STABLE",
+            "DEP_DUPLICATE_DIRECT_DEPENDENCY",
+            "DEP_ENGINE_PIN",
+            "DEP_FORBIDDEN_DIRECT_DEPENDENCY",
+            "DEP_PACKAGE_MANAGER_PIN",
+            "DEP_PNPM_LOCKFILE_REQUIRED",
+            "DEP_PRERELEASE_DIRECT_DEPENDENCY",
+            "DEP_REQUIRED_DIRECT_DEPENDENCY_MISSING",
+            "DEP_TEST_SCRIPT_FORBIDDEN",
+            "DEP_VERSION_EXCEPTION_INCOMPLETE"
+        ],
+        "architectureBoundary": [
+            "ARCH_BROWSER_SECRET_OWNERSHIP",
+            "ARCH_DIRECT_ICON_IMPORT",
+            "ARCH_DIRECT_NAIVE_UI_IMPORT",
+            "ARCH_DUPLICATE_PINIA_INSTALLATION",
+            "ARCH_DUPLICATE_PINIA_OWNER",
+            "ARCH_DUPLICATE_ROUTER_INSTALLATION",
+            "ARCH_DUPLICATE_ROUTER_OWNER",
+            "ARCH_DUPLICATE_VUE_ROOT",
+            "ARCH_EVIDENCE_SOURCE_IMPORT",
+            "ARCH_GENERIC_CALL_ENDPOINT",
+            "ARCH_IMPORT_META_ENV_OUTSIDE_CONFIG",
+            "ARCH_MQTT_PUBLISH",
+            "ARCH_PROXY_REQUEST_USAGE",
+            "ARCH_RAW_BROWSER_STORAGE",
+            "ARCH_RAW_FETCH_OUTSIDE_API",
+            "ARCH_RAW_HTTP_CLIENT",
+            "ARCH_RAW_XMLHTTPREQUEST_OUTSIDE_API",
+            "ARCH_REACT_RUNTIME_IMPORT",
+            "ARCH_WRITE_ADMIN_ENDPOINT"
+        ],
+        "rawVisualValue": [
+            "VISUAL_RAW_HEX_COLOR",
+            "VISUAL_RAW_HSL_COLOR",
+            "VISUAL_RAW_MODERN_COLOR",
+            "VISUAL_RAW_MOTION_DURATION",
+            "VISUAL_RAW_NAMED_COLOR",
+            "VISUAL_RAW_RADIUS",
+            "VISUAL_RAW_RGB_COLOR",
+            "VISUAL_RAW_SHADOW",
+            "VISUAL_RAW_SPACING",
+            "VISUAL_RAW_Z_INDEX"
+        ],
+        "mockData": [
+            "MOCK_API_MODE",
+            "MOCK_FAKE_DATA_GENERATOR",
+            "MOCK_FAKE_TRANSPORT_OR_ANALYSIS",
+            "MOCK_HARDCODED_PRODUCT_RECORD",
+            "MOCK_INVENTED_DTO_FIELD",
+            "MOCK_INVENTED_ENDPOINT",
+            "MOCK_PLACEHOLDER_SUCCESS",
+            "MOCK_RUNTIME_FIXTURE_FALLBACK",
+            "MOCK_SAMPLE_PRODUCT_RECORD"
+        ],
+        "secretPattern": [
+            "SECRET_ACCESS_TOKEN",
+            "SECRET_API_KEY",
+            "SECRET_AUTHORIZATION_HEADER",
+            "SECRET_BEARING_URL",
+            "SECRET_CLOUD_CREDENTIAL",
+            "SECRET_COOKIE",
+            "SECRET_PASSWORD_ASSIGNMENT",
+            "SECRET_PRIVATE_KEY",
+            "SECRET_REGISTRY_CREDENTIAL",
+            "SECRET_SIGNING_OR_HMAC_SECRET",
+            "SECRET_UNSAFE_VITE_EXPOSURE"
+        ],
+        "shared": ["GOVERNANCE_CONFIG_INVALID_JSON"]
+    },
+    "ruleInventoryReconciliation": {
+        "result": "PASS",
+        "implementedTotal": 62,
+        "documentedTotal": 62,
+        "missing": [],
+        "duplicated": [],
+        "undocumented": [],
+        "renamedWithoutAuthority": [],
+        "unreachable": []
+    },
+    "scopeInventory": {
+        "architecture": ["src", "vite.config.ts", "*.config.mjs"],
+        "rawVisualValues": ["src"],
+        "mockData": ["src"],
+        "secretPatterns": ["tracked project files"]
+    },
+    "exclusionInventory": {
+        "permanent": [
+            ".git",
+            "node_modules",
+            ".pnpm-store",
+            "dist",
+            ".vite",
+            "coverage",
+            ".serena",
+            "local logs",
+            "local databases",
+            "generated output",
+            "dependency stores",
+            "browser state",
+            "read-only evidence-source repositories"
+        ],
+        "secretAdditional": [
+            ".ai/reports/",
+            "docs/archive/",
+            "pnpm-lock.yaml",
+            "binary assets",
+            "approved placeholder-only .env.example patterns"
+        ]
+    },
+    "allowlistInventory": {
+        "naiveUi": ["src/ui/", "src/app/providers/", "src/providers/"],
+        "icons": ["src/ui/icons/"],
+        "api": ["src/api/", "src/repositories/"],
+        "persistence": ["src/persistence/", "src/bootstrap/preferences/"],
+        "runtimeConfig": ["src/runtime/config/"]
+    },
+    "exceptionInventory": {
+        "result": "PASS",
+        "versionExceptions": ["typescript@6.0.3", "pnpm@11.11.0"],
+        "broadRuleSuppressions": []
+    },
+    "redactionValidation": {
+        "result": "PASS",
+        "syntheticSecretProbe": "complete synthetic value absent from JSON output"
+    },
+    "negativeProbeValidation": {
+        "result": "PASS",
+        "location": "operating-system temporary directory outside repository; removed after validation",
+        "dependencyPolicy": {
+            "exitCode": 1,
+            "findingCount": 33,
+            "ruleIds": [
+                "DEP_APPROVED_VERSION_DRIFT",
+                "DEP_COMPETING_LOCKFILE_FORBIDDEN",
+                "DEP_DIRECT_VERSION_NOT_EXACT_STABLE",
+                "DEP_FORBIDDEN_DIRECT_DEPENDENCY",
+                "DEP_PNPM_LOCKFILE_REQUIRED",
+                "DEP_PRERELEASE_DIRECT_DEPENDENCY",
+                "DEP_REQUIRED_DIRECT_DEPENDENCY_MISSING"
+            ]
+        },
+        "sharedInvalidJson": {
+            "exitCode": 1,
+            "ruleIds": ["GOVERNANCE_CONFIG_INVALID_JSON", "DEP_PNPM_LOCKFILE_REQUIRED"]
+        },
+        "architectureBoundary": {
+            "exitCode": 1,
+            "findingCount": 2,
+            "ruleIds": ["ARCH_DUPLICATE_VUE_ROOT", "ARCH_RAW_FETCH_OUTSIDE_API"]
+        },
+        "rawVisualValue": {
+            "exitCode": 1,
+            "findingCount": 4,
+            "ruleIds": ["VISUAL_RAW_HEX_COLOR", "VISUAL_RAW_SHADOW", "VISUAL_RAW_SPACING"]
+        },
+        "mockData": {
+            "exitCode": 1,
+            "findingCount": 2,
+            "ruleIds": ["MOCK_HARDCODED_PRODUCT_RECORD", "MOCK_SAMPLE_PRODUCT_RECORD"]
+        },
+        "secretPattern": {
+            "exitCode": 1,
+            "findingCount": 1,
+            "ruleIds": ["SECRET_API_KEY"]
+        }
+    },
+    "cleanProbeValidation": {
+        "result": "PASS",
+        "location": "operating-system temporary directory outside repository; removed after validation",
+        "dependencyPolicy": "PASS_ZERO_FINDINGS",
+        "architectureBoundary": "PASS_ZERO_FINDINGS",
+        "rawVisualValue": "PASS_ZERO_FINDINGS",
+        "mockData": "PASS_ZERO_FINDINGS",
+        "secretPattern": "PASS_ZERO_FINDINGS"
+    },
+    "dependencyPolicyValidation": {
+        "command": "mise exec -- pnpm run check:deps",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "architectureBoundaryValidation": {
+        "command": "mise exec -- pnpm run check:architecture",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "rawVisualValueValidation": {
+        "command": "mise exec -- pnpm run check:tokens",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "mockDataValidation": {
+        "command": "mise exec -- pnpm run check:mocks",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "secretPatternValidation": {
+        "command": "mise exec -- pnpm run check:secrets",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "governanceAggregateValidation": {
+        "command": "mise exec -- pnpm run check:governance",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "prettierValidation": {
+        "command": "mise exec -- pnpm run format:check",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "eslintValidation": {
+        "command": "mise exec -- pnpm run lint",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "stylelintValidation": {
+        "command": "mise exec -- pnpm run lint:style",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "knipValidation": {
+        "command": "mise exec -- pnpm run check:unused",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "typecheck": {
+        "command": "mise exec -- pnpm run typecheck",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "build": {
+        "command": "mise exec -- pnpm exec vite build --outDir <tmp>/dist --emptyOutDir",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": "temporary output directory outside repository; removed after validation"
+    },
+    "productionSecurityAudit": {
+        "command": "mise exec -- pnpm run audit:prod",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": "No known vulnerabilities found."
+    },
+    "fullSecurityAudit": {
+        "command": "mise exec -- pnpm audit",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": "No known vulnerabilities found."
+    },
+    "installedDependencyValidation": {
+        "command": "mise exec -- pnpm list --depth 0",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": "27 direct packages listed."
+    },
+    "staticAggregateValidation": {
+        "command": "mise exec -- pnpm run check:static",
+        "exitCode": 0,
+        "result": "PASS",
+        "notes": ""
+    },
+    "automatedTestAudit": {
+        "result": "PASS_ABSENT",
+        "testScript": "ABSENT",
+        "directTestDependencies": [],
+        "trackedTestInfrastructure": []
+    },
+    "mockDataAudit": {
+        "result": "PASS",
+        "scanner": "mise exec -- pnpm run check:mocks",
+        "runtimeMockInfrastructure": "ABSENT"
+    },
+    "reactAndDuplicateRuntimeAudit": {
+        "result": "PASS",
+        "reactRuntime": "ABSENT",
+        "duplicateVueRoot": "ABSENT",
+        "duplicateRouterOwner": "ABSENT",
+        "duplicatePiniaOwner": "ABSENT"
+    },
+    "generatedOutputAudit": {
+        "result": "PASS",
+        "trackedGeneratedOutput": "ABSENT",
+        "ignoredDistPresentBeforeF2E": true
+    },
+    "secretRiskAudit": {
+        "result": "PASS",
+        "command": "mise exec -- pnpm run check:secrets",
+        "trackedSecretFindings": 0
+    },
+    "browserValidation": {
+        "result": "NOT_APPLICABLE",
+        "reason": "F2E changes only governance documents and reports and does not modify visible runtime behavior."
+    },
+    "remainingFoundationGaps": [
+        "F3 token/theme design and implementation remain open.",
+        "Project UI adapters and provider wiring remain open.",
+        "i18n remains open.",
+        "Dexie persistence and Pinia preference/session categories remain open.",
+        "TanStack Vue Query client and typed repository/API/runtime config boundaries remain open.",
+        "Accessibility, responsive layout, motion, and product UI migration gates remain open."
+    ],
+    "filesCreated": [
+        "docs/architecture/F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_CLOSURE.md",
+        ".ai/reports/F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE_REPORT.json"
+    ],
+    "filesModified": [
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+        "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+    ],
+    "filesDeleted": [],
+    "documentationReconciliation": {
+        "result": "PASS",
+        "toolchainBaseline": "Updated to implemented and validated final status, superseded phase planning, policy.mjs exception ownership, F2 completion, and F3A handoff.",
+        "scannerBaseline": "Updated to final validated status, final rule inventory verification, maintenance ownership, validation evidence, F2 closure, and F3A handoff.",
+        "closureAuthority": "Created final active F2 closure authority."
+    },
+    "readinessMatrixUpdate": {
+        "result": "PASS",
+        "updatedCapabilities": [
+            "tooling.eslint_flat",
+            "tooling.format_stylelint",
+            "tooling.dependency_unused_checks",
+            "tooling.security_static_scans"
+        ],
+        "nextPhase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN"
+    },
+    "closureCommit": {
+        "status": "PENDING_SELF_REFERENCE",
+        "subject": "docs(governance): 完成 F2 工具链与静态治理收口",
+        "note": "Final commit SHA and push SHA are recorded in the execution response after the report is committed and pushed."
+    },
+    "closurePush": {
+        "status": "PENDING_SELF_REFERENCE",
+        "remote": "origin main",
+        "note": "Final push result is recorded in the execution response."
+    },
+    "gitStateBeforeCommit": {
+        "status": "PENDING_FINAL_STAGE_REVIEW",
+        "allowedPathsOnly": true
+    },
+    "dependenciesAdded": [],
+    "dependenciesRemoved": [],
+    "warnings": [
+        "Initial scanner JSON harness invocation used an invalid mise argv shape and produced no scanner result; rerun with explicit node argv passed.",
+        "A temp-directory frozen-lockfile attempt without trusted mise metadata passed but warned about Node version; accepted frozen-lockfile validation used trusted target mise with pnpm --dir <tmp>.",
+        "Final closure commit SHA cannot be embedded in the committed report without rewriting history; it is a documented pending self-reference."
+    ],
+    "blockers": [],
+    "nextRequiredPhase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
+    "f2FinalStatus": "F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_COMPLETE",
+    "finalVerdict": "F2E_TOOLCHAIN_STATIC_GOVERNANCE_COMPLETE_READY_FOR_F3"
+}

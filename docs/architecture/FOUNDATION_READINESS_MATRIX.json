@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "F2D_STATIC_GOVERNANCE_PASS_READY_FOR_F2_CLOSURE",
+    "overallStatus": "F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_COMPLETE",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -43,7 +43,6 @@
             "neutral /pgnViewer/ bootstrap"
         ],
         "majorGaps": [
-            "lint/static-scan governance",
             "theme bootstrap and persistence",
             "Naive provider/adapters",
             "i18n",
@@ -73,6 +72,29 @@
                 "mise exec -- pnpm audit --prod PASS"
             ],
             "nextRequiredPhase": "F2_TOOLCHAIN_LINT_FORMAT_STATIC_GOVERNANCE_AND_PACKAGE_SCRIPT_CLOSURE"
+        },
+        "f2Closure": {
+            "status": "F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_COMPLETE",
+            "phase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+            "report": ".ai/reports/F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE_REPORT.json",
+            "closureAuthority": "docs/architecture/F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_CLOSURE.md",
+            "validationEvidence": [
+                "format:check PASS",
+                "lint PASS",
+                "lint:style PASS",
+                "check:unused PASS",
+                "check:governance PASS",
+                "typecheck PASS",
+                "temporary outDir production build PASS",
+                "audit:prod PASS",
+                "full pnpm audit PASS",
+                "pnpm list --depth 0 PASS",
+                "check:static PASS",
+                "frozen-lockfile lockfile-only validation PASS",
+                "controlled scanner probes PASS"
+            ],
+            "nextRequiredPhase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
+            "note": "F2 completion closes toolchain/static governance only and does not complete the overall foundation or authorize product UI migration."
         }
     },
     "capabilities": [
@@ -184,13 +206,16 @@
                 "eslint.config.mjs flat config added",
                 "mise exec -- pnpm exec eslint --print-config src/main.ts PASS",
                 "mise exec -- pnpm exec eslint --print-config src/App.vue PASS",
-                "mise exec -- pnpm run lint PASS"
+                "mise exec -- pnpm run lint PASS",
+                "F2E final closure validation PASS",
+                "check:static PASS",
+                "frozen-lockfile lockfile-only validation PASS"
             ],
             "browserEvidence": "NOT_APPLICABLE",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
-            "finalVerdict": "FOUNDATION_TOOLCHAIN_ACCEPTABLE_F2B_SCOPE"
+            "reviewTrigger": "Before changing toolchain, scanner policy, dependency graph, package scripts, or entering F3 implementation.",
+            "plannedPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+            "finalVerdict": "FOUNDATION_TOOLCHAIN_STATIC_GOVERNANCE_ACCEPTABLE_F2_CLOSED"
         },
         {
             "identifier": "tooling.format_stylelint",
@@ -219,7 +244,7 @@
             "themeOwnership": "src/styles/tokens.css when applicable",
             "userFacingImpact": "Foundation readiness only; product UI remains blocked",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "IMPLEMENTED_VALIDATED",
+            "implementationStatus": "IMPLEMENTED_VALIDATED_F2_CLOSED",
             "validationEvidence": [
                 "prettier.config.mjs and .prettierignore added",
                 "permanent Prettier exclusions: .ai/reports/ and pnpm-lock.yaml",
@@ -228,13 +253,16 @@
                 "owned implementation-file prettier check PASS",
                 "stylelint.config.mjs with stylelint-config-standard and postcss-html added",
                 "mise exec -- pnpm run lint:style PASS",
-                "raw visual-value scanner NOT_IMPLEMENTED outside F2B"
+                "raw visual-value scanner NOT_IMPLEMENTED outside F2B",
+                "F2E final closure validation PASS",
+                "check:static PASS",
+                "frozen-lockfile lockfile-only validation PASS"
             ],
             "browserEvidence": "NOT_APPLICABLE",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION",
-            "finalVerdict": "FOUNDATION_TOOLCHAIN_ACCEPTABLE_F2B_SCOPE"
+            "reviewTrigger": "Before changing toolchain, scanner policy, dependency graph, package scripts, or entering F3 implementation.",
+            "plannedPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+            "finalVerdict": "FOUNDATION_TOOLCHAIN_STATIC_GOVERNANCE_ACCEPTABLE_F2_CLOSED"
         },
         {
             "identifier": "tooling.dependency_unused_checks",
@@ -268,20 +296,22 @@
             "themeOwnership": "src/styles/tokens.css when applicable",
             "userFacingImpact": "Foundation readiness only; product UI remains blocked",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "IMPLEMENTED_VALIDATED",
+            "implementationStatus": "IMPLEMENTED_VALIDATED_F2_CLOSED",
             "validationEvidence": [
                 "dependency-policy scanner IMPLEMENTED_VALIDATED",
                 "architecture-boundary scanner IMPLEMENTED_VALIDATED",
                 "check:governance PASS",
                 "check:static PASS",
                 "mise exec -- pnpm list --depth 0 PASS",
-                "no dependency or lockfile mutation"
+                "no dependency or lockfile mutation",
+                "F2E final closure validation PASS",
+                "frozen-lockfile lockfile-only validation PASS"
             ],
             "browserEvidence": "NOT_APPLICABLE",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
-            "finalVerdict": "FOUNDATION_TOOLCHAIN_ACCEPTABLE_F2D_SCOPE"
+            "reviewTrigger": "Before changing toolchain, scanner policy, dependency graph, package scripts, or entering F3 implementation.",
+            "plannedPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+            "finalVerdict": "FOUNDATION_TOOLCHAIN_STATIC_GOVERNANCE_ACCEPTABLE_F2_CLOSED"
         },
         {
             "identifier": "tooling.security_static_scans",
@@ -312,7 +342,7 @@
             "themeOwnership": "src/styles/tokens.css when applicable",
             "userFacingImpact": "Foundation readiness only; product UI remains blocked",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "IMPLEMENTED_VALIDATED",
+            "implementationStatus": "IMPLEMENTED_VALIDATED_F2_CLOSED",
             "validationEvidence": [
                 "raw-visual-value scanner IMPLEMENTED_VALIDATED",
                 "mock-data scanner IMPLEMENTED_VALIDATED",
@@ -321,13 +351,15 @@
                 "controlled clean probes PASS outside repository",
                 "production and full pnpm audits PASS",
                 "check:governance PASS",
-                "check:static PASS"
+                "check:static PASS",
+                "F2E final closure validation PASS",
+                "frozen-lockfile lockfile-only validation PASS"
             ],
             "browserEvidence": "NOT_APPLICABLE",
             "blockers": [],
-            "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
-            "finalVerdict": "FOUNDATION_STATIC_GOVERNANCE_ACCEPTABLE_F2D_SCOPE"
+            "reviewTrigger": "Before changing toolchain, scanner policy, dependency graph, package scripts, or entering F3 implementation.",
+            "plannedPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+            "finalVerdict": "FOUNDATION_TOOLCHAIN_STATIC_GOVERNANCE_ACCEPTABLE_F2_CLOSED"
         },
         {
             "identifier": "router.foundation",
@@ -1435,8 +1467,8 @@
         "The 30 temporary Prettier debt paths remain unresolved and exact-path ignored until F2C.",
         "F2C closes temporary formatting debt only; project-owned static-governance scanners remain unimplemented."
     ],
-    "plannedNextPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
-    "updatedAt": "2026-07-12T07:01:01Z",
+    "plannedNextPhase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN",
+    "updatedAt": "2026-07-12T07:26:32.246Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -1712,5 +1744,61 @@
         "tokenValueChanged": false,
         "productUiWorkStarted": false,
         "nextRequiredPhase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE"
+    },
+    "f2eToolchainAndStaticGovernanceFinalClosure": {
+        "phase": "F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE",
+        "status": "F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_COMPLETE",
+        "report": ".ai/reports/F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE_REPORT.json",
+        "closureAuthority": "docs/architecture/F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_CLOSURE.md",
+        "validation": {
+            "prerequisiteVerdicts": {
+                "f2a": "F2A_TOOLCHAIN_DESIGN_PASS_READY_FOR_IMPLEMENTATION",
+                "f2b": "F2B_TOOLCHAIN_CONFIG_PASS_READY_FOR_FORMATTING_DEBT_REMEDIATION",
+                "f2c": "F2C_FORMATTING_DEBT_PASS_READY_FOR_STATIC_SCANNER_IMPLEMENTATION",
+                "f2d": "F2D_STATIC_GOVERNANCE_PASS_READY_FOR_F2_CLOSURE"
+            },
+            "scannerRuleInventory": {
+                "dependencyPolicy": 12,
+                "architectureBoundary": 19,
+                "rawVisualValue": 10,
+                "mockData": 9,
+                "secretPattern": 11,
+                "sharedInvalidJson": 1,
+                "totalBlockingRules": 62
+            },
+            "commands": {
+                "formatCheck": "PASS",
+                "eslint": "PASS",
+                "stylelint": "PASS",
+                "knip": "PASS",
+                "checkGovernance": "PASS",
+                "typecheck": "PASS",
+                "tempOutDirBuild": "PASS",
+                "auditProd": "PASS",
+                "auditFull": "PASS",
+                "pnpmListDepth0": "PASS",
+                "checkStatic": "PASS",
+                "frozenLockfile": "PASS"
+            },
+            "browserValidation": "NOT_APPLICABLE_NO_RUNTIME_BEHAVIOR_CHANGED"
+        },
+        "nonAdvancement": {
+            "themeTokenCompleteness": "NOT_ADVANCED",
+            "uiFramework": "NOT_ADVANCED",
+            "icon": "NOT_ADVANCED",
+            "i18n": "NOT_ADVANCED",
+            "persistence": "NOT_ADVANCED",
+            "piniaPreference": "NOT_ADVANCED",
+            "query": "NOT_ADVANCED",
+            "repository": "NOT_ADVANCED",
+            "api": "NOT_ADVANCED",
+            "environment": "NOT_ADVANCED",
+            "accessibility": "NOT_ADVANCED",
+            "responsive": "NOT_ADVANCED",
+            "motion": "NOT_ADVANCED",
+            "preview": "NOT_ADVANCED",
+            "productUi": "NOT_ADVANCED"
+        },
+        "nextRequiredPhase": "F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN"
     }
 }

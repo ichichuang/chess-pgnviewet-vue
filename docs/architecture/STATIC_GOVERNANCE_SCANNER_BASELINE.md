@@ -3,6 +3,7 @@
 Status: `ACTIVE_AUTHORITY`
 Phase: `F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION`
 Target: `/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue`
+Final F2 validation: `F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE`
 
 ## Ownership
 
@@ -50,6 +51,8 @@ Future ownership allowlists are exact paths or directories only. They authorize 
 - Runtime config: `src/runtime/config/`
 
 ## Rule Inventory
+
+Final verified inventory: 62 blocking rules. F2E derived the implemented rule identifiers from scanner source and reconciled them with this authority: dependency policy 12, architecture boundaries 19, raw visual values 10, mock product data 9, secret patterns 11, and shared invalid JSON handling 1.
 
 Dependency policy:
 
@@ -175,8 +178,12 @@ Controlled negative and clean scanner probes must be created only in an operatin
 
 Browser validation is not applicable to F2D because no runtime UI behavior changes.
 
+F2E final validation additionally confirmed JSON mode for all scanner entrypoints, deterministic sorted findings, zero real-repository findings, zero skipped paths, controlled negative and clean probes in operating-system temporary directories, redacted secret output, isolated frozen-lockfile validation, `check:governance`, `check:static`, typecheck, temporary-output production build, production audit, full audit, and no dependency, lockfile, scanner source, runtime source, token-value, automated-test, product UI, or evidence-source mutation.
+
+Maintenance ownership remains active in `scripts/governance/policy.mjs`, `scripts/governance/utils.mjs`, and the five scanner entrypoints. Future false-positive changes must be made only through the owning scanner, policy, package script, ESLint Node-context configuration, or this authority document.
+
 ## F2 Completion Gate
 
-F2D passes only when every scanner passes independently, negative and clean probes prove blocking and allowed behavior with redaction, `check:governance` and `check:static` pass, static tool validation passes, audits pass, no dependency or lockfile change occurs, no automated test infrastructure exists, no runtime source or token value changes, and the implementation and governance evidence commits are pushed normally.
+F2D passed when every scanner passed independently, negative and clean probes proved blocking and allowed behavior with redaction, `check:governance` and `check:static` passed, static tool validation passed, audits passed, no dependency or lockfile change occurred, no automated test infrastructure existed, no runtime source or token value changed, and the implementation and governance evidence commits were pushed normally.
 
-The next phase after a passing F2D is `F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE`.
+F2E final closure passed and closes F2 toolchain/static governance. The next phase after F2E is `F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN`.

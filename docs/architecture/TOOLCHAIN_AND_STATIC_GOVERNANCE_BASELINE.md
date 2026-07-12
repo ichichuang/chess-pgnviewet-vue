@@ -105,7 +105,7 @@ The blocked F2C attempt discovered that default Prettier embedded-language forma
 
 The exact 30-path temporary formatting debt recorded in `docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json` is remediated. The temporary exact-path `.prettierignore` allowlist is removed. Historical `.ai/reports/` and `pnpm-lock.yaml` retain permanent non-Prettier ownership.
 
-New authored files must pass formatting immediately. Project-owned architecture, raw-value, mock-data, secret, and dependency-policy scanners remain unimplemented and are deferred to `F2D_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION`.
+New authored files must pass formatting immediately. Project-owned architecture, raw-value, mock-data, secret, and dependency-policy scanners were implemented and validated in `F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION`; final F2 closure validation is recorded by `F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE`.
 
 ## Stylelint Ownership
 
@@ -115,7 +115,7 @@ Stylelint enforces CSS validity, duplicate properties, selector sanity, custom-p
 
 ## Static Governance Scanner Contracts
 
-Project-owned scanners live under `scripts/governance/` in later phases and must be read-only by default.
+Project-owned scanners live under `scripts/governance/` and run read-only by default.
 
 Architecture scanner:
 
@@ -147,7 +147,7 @@ Dependency-policy scanner:
 
 ## F2D Project-Owned Scanner Implementation
 
-Implementation status: `IMPLEMENTED_VALIDATION_PENDING`
+Implementation status: `IMPLEMENTED_VALIDATED_F2_CLOSED`
 
 The active scanner authority is `docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md`.
 
@@ -165,6 +165,8 @@ Implemented project-owned files:
 | Governance wrapper | all scanner entrypoints through `run-s check:*` composition | `check:governance`   |
 
 `check:static` includes `format:check`, `check:governance`, `check:unused`, `lint`, `lint:style`, and `audit:prod`. It remains read-only.
+
+Final F2E validation confirmed all five scanner domains, JSON mode, controlled negative and clean probes, redacted secret handling, `check:governance`, `check:static`, typecheck, temporary-output production build, production audit, full audit, and isolated frozen-lockfile validation.
 
 Permanent scanner exclusions are `.git`, `node_modules`, `.pnpm-store`, `dist`, `.vite`, `coverage`, `.serena`, local logs, local databases, generated output, dependency stores, browser state, and read-only evidence-source repositories. Secret scanning additionally excludes immutable historical reports, archived evidence, generated lockfile content, binary assets, and approved placeholder-only `.env.example` values.
 
@@ -211,16 +213,23 @@ No `test` script is permitted.
 | `scripts/governance/check-raw-visual-values.mjs`       | F2D        | token/raw-value scanner |
 | `scripts/governance/check-forbidden-mock-data.mjs`     | F2D        | mock-data scanner       |
 | `scripts/governance/check-secret-patterns.mjs`         | F2D        | secret scanner          |
-| `docs/architecture/DEPENDENCY_VERSION_EXCEPTIONS.json` | F2B        | dependency exceptions   |
+| `docs/architecture/DEPENDENCY_VERSION_EXCEPTIONS.json` | superseded | dependency exceptions   |
+
+The proposed `docs/architecture/DEPENDENCY_VERSION_EXCEPTIONS.json` path is superseded by the implemented `versionExceptions` authority in `scripts/governance/policy.mjs`. The active exceptions for `typescript@6.0.3` and `pnpm@11.11.0` record authority, rationale, risk, review trigger, removal condition, selected version, and compatibility evidence through `policy.mjs` and this baseline.
 
 ## Implementation Slices
 
 1. `F2B_TOOLCHAIN_DEPENDENCY_AND_CONFIGURATION_IMPLEMENTATION`: install selected dev dependencies, create standard configs, add scripts without product/runtime changes.
 2. `F2C_FORMATTING_DEBT_REMEDIATION`: remediate the exact 30-path temporary Prettier debt, disable embedded-language formatting for Markdown fenced-code preservation, and remove the temporary exact-path ignore allowlist.
-3. `F2D_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION`: implement read-only project scanners and dependency exception records.
-4. `F2E_STATIC_CHECK_INTEGRATION_AND_FAILURE_REMEDIATION`: run checks, fix scoped findings, keep no-test policy intact.
-5. `F2F_TOOLCHAIN_STATIC_GOVERNANCE_CLOSURE`: final typecheck/build/audit/static validation, report, and handoff.
+3. `F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION`: implement read-only project scanners, dependency exception records, package-script integration, controlled probes, failure remediation, and complete static validation.
+4. `F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE`: reconcile active authorities, rerun final read-only validation, record closure evidence, and hand off to F3A design.
+
+Superseded on `2026-07-12` by accepted F2D and F2E evidence: the older `F2E_STATIC_CHECK_INTEGRATION_AND_FAILURE_REMEDIATION` plus `F2F_TOOLCHAIN_STATIC_GOVERNANCE_CLOSURE` sequence. Rationale: scanner integration and failure remediation were completed during accepted F2D, leaving F2E as the single final closure phase. No F2F phase remains required unless a future F2E blocker requires a separately named correction phase.
 
 ## F2 Completion Gate
 
-F2 is complete only when selected dependencies are installed intentionally, configs and scripts exist, read-only static checks pass, typecheck passes, production build passes, production audit passes, Markdown debt disposition is resolved, no automated test infrastructure exists, no product UI/runtime migration occurred, only authorized files changed in each slice, and the final F2 report records evidence and next phase.
+F2 is complete: selected dependencies are installed intentionally, configs and scripts exist, read-only static checks pass, typecheck passes, temporary-output production build passes, production and full audits pass, frozen-lockfile validation passes, Markdown debt disposition is resolved, no automated test infrastructure exists, no product UI/runtime migration occurred, only authorized files changed in each slice, and `.ai/reports/F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE_REPORT.json` records final evidence.
+
+Final F2 status: `F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_COMPLETE`.
+
+Next required phase: `F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN`.
