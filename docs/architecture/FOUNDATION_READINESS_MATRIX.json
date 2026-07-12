@@ -59,6 +59,20 @@
       "f0bVerdict": "F0B_CLOSURE_PASS_F0_READY_FOR_GIT_BASELINE",
       "blockers": [],
       "nextRequiredPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH"
+    },
+    "f1Baseline": {
+      "status": "F1_BASELINE_PUSH_PASS_READY_FOR_TOOLCHAIN_CLOSURE",
+      "localGitRepository": "initialized on main in target only",
+      "gitignoreBoundary": "established and verified before staging",
+      "baselineCommit": "666c1e8590bc5412d2fe9e80d47bd1077ec10ff3",
+      "firstRemotePush": "666c1e8590bc5412d2fe9e80d47bd1077ec10ff3",
+      "activeWriterResolution": "target pnpm dev/Vite process terminated with SIGTERM to parent; Vite child exited; 127.0.0.1:5174 closed",
+      "validationEvidence": [
+        "mise exec -- pnpm run typecheck PASS",
+        "temporary outDir production build PASS",
+        "mise exec -- pnpm audit --prod PASS"
+      ],
+      "nextRequiredPhase": "F2_TOOLCHAIN_LINT_FORMAT_STATIC_GOVERNANCE_AND_PACKAGE_SCRIPT_CLOSURE"
     }
   },
   "capabilities": [
@@ -1419,10 +1433,49 @@
   },
   "blockers": [],
   "warnings": [
-    "Original browser validation was not rerun because running Vite would regenerate the removed dependency cache.",
-    "node_modules/.vite remains because it contains a pre-existing vitest cache outside the authorized deps deletion path.",
-    "No root .gitignore exists yet; F1 must handle generated/dependency/editor artifacts before baseline commit."
+    "Original browser validation was not rerun in F1 because F1 authorized no visible runtime changes and accepted the F0/F0B browser evidence.",
+    "node_modules/.vite remains because it contains a pre-existing vitest cache outside the authorized deps deletion path; node_modules/.vite/deps was removed in F1.",
+    "F1 established the root .gitignore boundary and verified dependency, generated, environment, editor, browser, database, and local-tool exclusions before staging."
   ],
-  "plannedNextPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
-  "updatedAt": "2026-07-12T03:51:04Z"
+  "plannedNextPhase": "F2_TOOLCHAIN_LINT_FORMAT_STATIC_GOVERNANCE_AND_PACKAGE_SCRIPT_CLOSURE",
+  "updatedAt": "2026-07-12T04:17:21.836Z",
+  "f1Baseline": {
+    "phase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
+    "finalVerdict": "F1_BASELINE_PUSH_PASS_READY_FOR_TOOLCHAIN_CLOSURE",
+    "completedAt": "2026-07-12T04:17:21.836Z",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "git": {
+      "initialized": true,
+      "branch": "main",
+      "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+      "baselineCommit": "666c1e8590bc5412d2fe9e80d47bd1077ec10ff3",
+      "firstPushRemoteMain": "666c1e8590bc5412d2fe9e80d47bd1077ec10ff3",
+      "upstream": "origin/main"
+    },
+    "safety": {
+      "activeWriterResolved": true,
+      "viteDepsCacheRemoved": true,
+      "ignoredPathVerification": "PASS",
+      "secretRiskAudit": "PASS_NO_PROBABLE_SECRET_TRACKED",
+      "generatedFileRiskAudit": "PASS_NO_GENERATED_OUTPUT_TRACKED",
+      "sourceDirectoriesModified": false,
+      "dependencyOperationOccurred": false,
+      "runtimeFoundationImplementationStarted": false,
+      "productUiMigrationStarted": false,
+      "automatedTestInfrastructureAdded": false,
+      "forcePushUsed": false
+    },
+    "validation": {
+      "typecheck": "PASS",
+      "build": "PASS_TEMP_OUTDIR_OUTSIDE_REPO",
+      "securityAudit": "PASS",
+      "browserValidation": "NOT_APPLICABLE_ACCEPTED_F0_BROWSER_EVIDENCE_REFERENCED",
+      "lint": "NOT_CONFIGURED"
+    },
+    "handoff": {
+      "nextRequiredPhase": "F2_TOOLCHAIN_LINT_FORMAT_STATIC_GOVERNANCE_AND_PACKAGE_SCRIPT_CLOSURE",
+      "note": "Foundation capability gaps remain as recorded; F1 only establishes Git baseline and governance evidence."
+    },
+    "report": ".ai/reports/F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH_REPORT.json"
+  }
 }
