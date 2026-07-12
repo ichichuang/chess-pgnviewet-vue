@@ -214,13 +214,76 @@ Implementation result:
 - Next phase:
   `P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`.
 
+## P1C
+
+Expected visible outcome:
+
+- `/pgnViewer/` renders the accepted P1A workspace shell and P1B board with real
+  local PGN loading, PGN list, notation navigation, FEN replay, comments, NAGs,
+  variation display, and board-driven branch creation.
+- The PGN owner is Pinia state. Board moves are controlled by the PGN move tree
+  and never mutate the board independently from the selected node.
+- Illegal PGN input is rejected without replacing the previous valid state.
+
+Canonical source areas:
+
+- `pgnViewer-new/src/domains/pgn/types.ts`
+- `pgnViewer-new/src/domains/pgn/parsePgn.ts`
+- `pgnViewer-new/src/domains/pgn/moveRows.ts`
+- `pgnViewer-new/src/domains/pgn/mutations.ts`
+- `pgnViewer-new/src/domains/pgn/pgnStorage.ts`
+- `pgnViewer-new/src/stores/pgnStore.ts`
+- `pgnViewer-new/src/features/pgn-panel/PgnPanel.vue`
+- `pgnViewer-new/src/features/pgn-library/PgnList.vue`
+- `pgnViewer-new/src/features/teaching-workspace/TeachingWorkspace.vue`
+
+Target ownership:
+
+- real PGN domain types, parser, move-row projection, legal move mutation, and
+  storage helpers;
+- Pinia PGN store for selected game, selected node, current FEN, errors,
+  promotion, and pending branch state;
+- PGN list, notation panel, file import, drag/drop, and controlled board handoff;
+- branch creation and duplicate prevention.
+
+Forbidden P1C scope:
+
+- annotation runtime, arrows, square drawing, free setup, board editor, complete
+  toolbars/splitters, AI analysis, Web Workers, authentication, production APIs,
+  settings, structured persistence, live/replay transport, mock data, fixtures,
+  automated tests, package changes, or dependency changes.
+
+Implementation result:
+
+- Status:
+  `P1C_REAL_PGN_RUNTIME_PASS_READY_FOR_P1D_ANNOTATION_MIGRATION`.
+- Report:
+  `.ai/reports/P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `7dd3c1e974c6b172e6fe3ca7887a4542f169c77c`.
+- `/pgnViewer/` now loads real local PGN files, rejects illegal PGNs without
+  state corruption, navigates the move tree, synchronizes board FEN to the
+  selected node, displays comments/NAGs/FEN-start games, and creates board-driven
+  variations with duplicate prevention.
+- Static checks, typecheck, temporary-output production build, audits,
+  dependency listing, aggregate static check, and production-bundle browser
+  validation passed.
+- Annotations, complete panels/toolbars/splitters, AI analysis, authentication,
+  production APIs, settings, persistence, live/replay import, and later P1
+  runtime remain unimplemented.
+- Next phase:
+  `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`.
+
 ## Later Phase Dependencies
 
 P1B depends on the P1A shell. It is implemented and must not be expanded in
 place to add PGN navigation, annotation, AI, authentication, or API behavior.
 
-P1C depends on P1B. It owns real PGN loading, parsing, navigation, variation,
-and replay behavior using real sources or truthful unavailable states.
+P1C depends on P1B. It is implemented and must not be expanded in place to add
+annotations, AI, authentication, production APIs, settings, persistence, or later
+product behavior.
 
 P1D depends on P1C and owns canonical annotation runtime only.
 

@@ -226,7 +226,7 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION",
+            "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
             "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
             "p1aCanonicalApplicationShell": {
@@ -256,6 +256,13 @@
             "implementationCommit": "48c99fd670d476437b17481c523d95a1f8120d42",
             "report": ".ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json",
             "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
+        },
+        "p1cRealPgnRuntime": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "implementationCommit": "7dd3c1e974c6b172e6fe3ca7887a4542f169c77c",
+            "report": ".ai/reports/P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION_REPORT.json",
+            "baseline": "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+            "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION"
         }
     },
     "capabilities": [
@@ -1986,13 +1993,15 @@
         "authority": "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
         "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
         "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
-        "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION",
+        "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
         "p1Authority": "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
         "deferredPolicy": "Deferred comprehensive foundations remain DEFERRED_UNTIL_PRODUCT_COMPLETE with earlier trigger only for real feature-owned need.",
         "p1aResult": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
         "p1aReport": ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json",
         "p1bResult": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
-        "p1bReport": ".ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json"
+        "p1bReport": ".ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json",
+        "p1cResult": "P1C_REAL_PGN_RUNTIME_PASS_READY_FOR_P1D_ANNOTATION_MIGRATION",
+        "p1cReport": ".ai/reports/P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION_REPORT.json"
     },
     "validationReferences": {
         "f0Report": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
@@ -2131,11 +2140,11 @@
         "F3R preserved accepted F3C live state although the owner prompt described an older F3B starting point.",
         "F3E is superseded as a separate pre-product gate; broad integration closure moves to post-product hardening.",
         "Deferred generalized foundations remain tracked and may be triggered earlier only by real product-feature needs.",
-        "PRODUCT_UI_MIGRATION_READY opens only P1A; this gate commit does not begin product UI, board, PGN, AI, auth, API, persistence, or settings implementation.",
-        "P1B implements only the canonical self-developed board runtime; PGN, annotations, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices."
+        "PRODUCT_UI_MIGRATION_READY has opened P1A through P1C; annotations, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices.",
+        "P1C implements only the real local PGN runtime on top of P1A/P1B; annotations, complete panels/toolbars/splitters, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices."
     ],
-    "plannedNextPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION",
-    "updatedAt": "2026-07-12T13:41:54Z",
+    "plannedNextPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
+    "updatedAt": "2026-07-12T14:50:00Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -2755,7 +2764,7 @@
             "no force push",
             "no source-project modification"
         ],
-        "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION",
+        "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
         "finalMilestones": [
             "PRODUCT_UI_MIGRATION_READY",
             "PRODUCT_COMPLETE_USABLE",
@@ -2775,6 +2784,15 @@
             "result": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
             "browserEvidence": "Production-bundle browser validation PASS for board rendering, click, drag, keyboard, invalid rejection, capture, check, promotion, and 6 responsive viewports.",
             "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
+        },
+        "p1cRealPgnLoadingNavigationVariation": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "implementationCommit": "7dd3c1e974c6b172e6fe3ca7887a4542f169c77c",
+            "report": ".ai/reports/P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION_REPORT.json",
+            "baseline": "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+            "result": "P1C_REAL_PGN_RUNTIME_PASS_READY_FOR_P1D_ANNOTATION_MIGRATION",
+            "browserEvidence": "Production-bundle browser validation PASS for real PGN loading, navigation sync, illegal move rejection, branch creation, duplicate prevention, FEN-start games, comments, invalid PGN state preservation, and 18 viewport/theme combinations.",
+            "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION"
         }
     }
 }

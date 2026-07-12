@@ -63,9 +63,9 @@ The owner-approved pre-product sequence was:
 4. `P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION`
 
 Because F3C, F3D, and the dedicated gate review are accepted in the live target,
-P1A and P1B have now been implemented and browser validated. The next required
-phase is `P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`. This
-document does not reopen F3C or F3D.
+P1A, P1B, and P1C have now been implemented and browser validated. The next
+required phase is `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`. This document
+does not reopen F3C or F3D.
 
 The active P1 sequence is:
 
@@ -118,6 +118,31 @@ P1B is now implemented and browser validated:
   runtime remain unimplemented.
 - The next required phase is
   `P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`.
+
+P1C is now implemented and browser validated:
+
+- Result:
+  `P1C_REAL_PGN_RUNTIME_PASS_READY_FOR_P1D_ANNOTATION_MIGRATION`.
+- Report:
+  `.ai/reports/P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `7dd3c1e974c6b172e6fe3ca7887a4542f169c77c`.
+- `/pgnViewer/` now loads real local PGN files, renders the PGN list and
+  notation panel, navigates the selected move tree, keeps board FEN synchronized
+  with the selected node, displays FEN-start games, comments, NAGs, and
+  variations, rejects illegal PGNs without state corruption, and creates
+  board-driven variations with duplicate prevention.
+- Navigation sync, illegal board move rejection, existing board move selection,
+  branch creation, duplicate branch prevention, FEN fixture loading, comment
+  fixture loading, invalid PGN state preservation, and 18 viewport/theme browser
+  checks passed against a temporary production build.
+- Annotations, complete panels/toolbars/splitters, AI analysis, authentication,
+  production APIs, settings, persistence, live/replay import, and later P1
+  runtime remain unimplemented.
+- The next required phase is
+  `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`.
 
 ## P1 Product Migration Program
 
@@ -273,9 +298,9 @@ push unless an explicit later owner instruction authorizes that operation.
 
 `PRODUCT_UI_MIGRATION_READY` means F3C and F3D have passed, theme and Naive UI
 provider ownership are stable, static checks pass, narrow browser checks pass,
-local `HEAD` equals remote `main`, and the worktree is clean. P1A and P1B have
-now passed; the active next phase is
-`P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`.
+local `HEAD` equals remote `main`, and the worktree is clean. P1A, P1B, and P1C
+have now passed; the active next phase is
+`P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`.
 
 `PRODUCT_COMPLETE_USABLE` means the canonical product runtime and user-facing
 product flows are implemented with real data and real APIs, the primary

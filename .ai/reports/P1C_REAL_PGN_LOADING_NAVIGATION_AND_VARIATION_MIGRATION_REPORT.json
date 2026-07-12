@@ -1,0 +1,187 @@
+{
+    "schemaVersion": 1,
+    "generatedAt": "2026-07-12T14:50:00Z",
+    "phase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION",
+    "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "sourceAuthorities": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+        "/Users/cc/Work/neobv/Chess/pgnViewer"
+    ],
+    "canonicalSource": {
+        "primaryRuntime": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+        "pgnFiles": [
+            "src/domains/pgn/types.ts",
+            "src/domains/pgn/parsePgn.ts",
+            "src/domains/pgn/moveRows.ts",
+            "src/domains/pgn/mutations.ts",
+            "src/domains/pgn/pgnStorage.ts",
+            "src/stores/pgnStore.ts",
+            "src/features/pgn-panel/PgnPanel.vue",
+            "src/features/pgn-library/PgnList.vue",
+            "src/features/teaching-workspace/TeachingWorkspace.vue"
+        ]
+    },
+    "prerequisiteVerdicts": {
+        "productUiMigrationGateReview": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
+        "p1a": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
+        "p1b": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
+        "verifiedNextPhaseBeforeImplementation": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
+    },
+    "implementationCommit": "7dd3c1e974c6b172e6fe3ca7887a4542f169c77c",
+    "pushed": {
+        "remote": "origin",
+        "branch": "main",
+        "status": "PUSHED_FAST_FORWARD",
+        "lsRemoteMain": "7dd3c1e974c6b172e6fe3ca7887a4542f169c77c",
+        "githubReadonlyVerification": {
+            "sha": "7dd3c1e974c6b172e6fe3ca7887a4542f169c77c",
+            "subject": "feat(pgn): 迁移 P1C 真实 PGN 加载导航与变例运行时"
+        }
+    },
+    "targetFiles": [
+        "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+        "src/features/pgn/domain/types.ts",
+        "src/features/pgn/domain/parsePgn.ts",
+        "src/features/pgn/domain/pgnStorage.ts",
+        "src/features/pgn/domain/moveRows.ts",
+        "src/features/pgn/domain/mutations.ts",
+        "src/features/pgn/usePgnWorkspaceRuntime.ts",
+        "src/features/pgn/components/PgnGameList.vue",
+        "src/features/pgn/components/PgnNotationPanel.vue",
+        "src/stores/pgn.ts",
+        "src/stores/index.ts",
+        "src/features/board/CanonicalChessBoard.vue",
+        "src/features/board/useCanonicalChessBoard.ts",
+        "src/features/teaching-workspace/TeachingWorkspace.vue"
+    ],
+    "implementedScope": [
+        "real local PGN file loading through hidden input and drag/drop",
+        "strict legal PGN parsing with full-batch rejection on illegal sequences",
+        "PGN header rendering including FEN-start games",
+        "rooted move tree with mainline children and sibling variations",
+        "comments, semicolon comments, numeric NAGs, and common glyph NAG preservation",
+        "Pinia-owned selected game, selected node, current FEN, last move, parse error, promotion, and pending branch state",
+        "notation navigation for start, previous, next, and end",
+        "board replay synchronization through controlled P1B board moves",
+        "board move follow-existing-child, append-at-leaf, branch-choice, and duplicate-branch prevention",
+        "active variation auto-expansion so the selected node remains visible in notation",
+        "P1C runtime baseline documentation"
+    ],
+    "explicitlyExcluded": [
+        "annotation drawing, arrows, square brush state, and YCDW annotation runtime",
+        "complete workspace toolbar, splitter, panel persistence, and settings behavior",
+        "AI analysis and Web Worker migration",
+        "authentication and production API product capabilities",
+        "TanStack Query/repository framework expansion",
+        "Dexie structured persistence",
+        "live spectator, tournament, replay import, or remote PGN transport",
+        "mock product data, fake PGNs, fixtures, automated tests, and test infrastructure",
+        "package, dependency, lockfile, and toolchain changes"
+    ],
+    "validation": [
+        {
+            "command": "mise exec -- pnpm run check:static",
+            "status": "PASS",
+            "note": "Includes lint, stylelint, format:check, check:governance, check:unused, audit:prod, check:deps, check:architecture, check:tokens, check:mocks, and check:secrets. Knip retained only existing configuration hints for chess.js and naive-ui at exit code 0."
+        },
+        {
+            "command": "mise exec -- pnpm run typecheck",
+            "status": "PASS"
+        },
+        {
+            "command": "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-p1c-final-build --emptyOutDir",
+            "status": "PASS_TEMP_OUTDIR"
+        },
+        {
+            "command": "mise exec -- pnpm audit",
+            "status": "PASS_NO_KNOWN_VULNERABILITIES"
+        },
+        {
+            "command": "mise exec -- pnpm list --depth 0",
+            "status": "PASS_27_PACKAGES_NO_DEPENDENCY_CHANGE"
+        },
+        {
+            "command": "git diff --check",
+            "status": "PASS"
+        },
+        {
+            "command": "git diff --cached --check",
+            "status": "PASS"
+        }
+    ],
+    "browserValidation": {
+        "route": "http://127.0.0.1:4188/pgnViewer/",
+        "source": "temporary production build served from /tmp; no project test files, fixtures, snapshots, screenshots, or test infrastructure were created",
+        "browser": "Headless Chrome 149.0.7827.197 through Chrome DevTools Protocol",
+        "viewportThemeMatrix": {
+            "viewportCount": 6,
+            "themeModes": [
+                "light",
+                "dark",
+                "system"
+            ],
+            "totalCombinations": 18,
+            "viewports": [
+                "1440x900 desktopTeachingBaseline",
+                "1920x1080 largeDesktop",
+                "768x1024 tabletPortrait",
+                "1024x768 tabletLandscape",
+                "390x844 mobilePortrait",
+                "844x390 mobileLandscape"
+            ]
+        },
+        "runtimeHealth": {
+            "consoleEntries": [],
+            "pageErrors": [],
+            "failedRequests": [],
+            "badResponses": [],
+            "viteOverlay": "ABSENT",
+            "nonBlankDom": "PASS"
+        },
+        "interactionEvidence": {
+            "navigationSync": {
+                "syncAfterNext": true,
+                "syncAfterEnd": true,
+                "syncAfterBack": true
+            },
+            "boardMoves": {
+                "illegalUnchanged": true,
+                "existingMoveSynced": true,
+                "branchCreated": true,
+                "duplicatePrevented": true
+            },
+            "branchFixture": {
+                "nodeCount": 14,
+                "variationToggleCount": 2,
+                "variationRowCount": 2
+            },
+            "fenFixture": {
+                "boardPosition": "8/8/8/4k3/8/4K3/4P3/8 w - - 0 1",
+                "headerCount": 6,
+                "nodeCount": 6
+            },
+            "commentsFixture": {
+                "commentCount": 4,
+                "nodeCount": 7
+            },
+            "invalidPgn": {
+                "previousStateIntact": true,
+                "errorText": "PGN 包含非法走法，未加载"
+            }
+        },
+        "temporaryArtifacts": "Generated browser screenshots and validation files under /tmp for evidence capture, then deleted before governance report commit."
+    },
+    "protectionEvidence": {
+        "dependencyChange": "No package.json or pnpm-lock.yaml change.",
+        "configurationChange": "No Vite, TypeScript, ESLint, stylelint, Knip, package-manager, or CI configuration change.",
+        "directEvidenceSourceImports": "No source-code import from pgnViewer-new, pgnViewer, chess-pgnviewer, or absolute evidence-source paths.",
+        "testInfrastructure": "No automated test file, fixture directory, snapshot, Playwright/Cypress/Jest/Vitest setup, or test script created.",
+        "viteDepsCache": "node_modules/.vite/deps absent after validation.",
+        "tempCleanup": "PASS: /tmp/chess-pgnviewer-vue-p1c-* removed; ports 4188 and 9223 not listening.",
+        "sourceProjectStatus": "No evidence source was modified; pgnViewer retained only the known ambient untracked .serena/ state when inspected."
+    },
+    "finalVerdict": "P1C_REAL_PGN_RUNTIME_PASS_READY_FOR_P1D_ANNOTATION_MIGRATION",
+    "nextRequiredPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION"
+}
