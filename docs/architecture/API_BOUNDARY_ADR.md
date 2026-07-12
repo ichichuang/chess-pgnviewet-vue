@@ -9,13 +9,13 @@ Browser code talks only to explicit same-origin handlers owned by a server/BFF b
 
 ## Confirmed read capabilities
 
-| Capability | Browser method/path | Confirmed identifier/request semantics |
-| --- | --- | --- |
-| Tournament list | `POST /api/liveproxy/getactlist` | body keys `actflag`, `max`, `search`, `start`, `type` |
-| Tournament groups | `POST /api/liveproxy/getactgroups` | body `{ hdid }` |
-| Tournament rounds | `POST /api/award/c-getmatchroundlist` | body `{ hdid, ticketid }`; round numeric constraints remain unresolved |
-| Pairings | `POST /api/award/c-getmatchpairlist` | `hdid`, `ticketid`, `round_id`, pagination/type fields; optional discovery fields require contract evidence |
-| Finished replay | `POST /api/gameapi/gamemgr/getgameinfo` | browser sends only `{ gameid }`; pairing row `id` is the high-confidence game identifier |
+| Capability        | Browser method/path                     | Confirmed identifier/request semantics                                                                      |
+| ----------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Tournament list   | `POST /api/liveproxy/getactlist`        | body keys `actflag`, `max`, `search`, `start`, `type`                                                       |
+| Tournament groups | `POST /api/liveproxy/getactgroups`      | body `{ hdid }`                                                                                             |
+| Tournament rounds | `POST /api/award/c-getmatchroundlist`   | body `{ hdid, ticketid }`; round numeric constraints remain unresolved                                      |
+| Pairings          | `POST /api/award/c-getmatchpairlist`    | `hdid`, `ticketid`, `round_id`, pagination/type fields; optional discovery fields require contract evidence |
+| Finished replay   | `POST /api/gameapi/gamemgr/getgameinfo` | browser sends only `{ gameid }`; pairing row `id` is the high-confidence game identifier                    |
 
 Identifier chain: `hdid` → `ticketid` → `round_id` → pairing `id` → replay `gameid`. Aggregate team-match records are never treated as individual game IDs.
 
@@ -52,4 +52,3 @@ The browser login body contains only `account` and `password`. The server perfor
 ## Unresolved
 
 Live online-game/electronic-board transport, MQTT, hardware history, handoff storage/resolution, match/share/cloud compatibility contracts, exhaustive schemas, round numeric constraints, auth end-to-end verification, replay token lifetime, server hosting/operations, and the side-effect-free guarantee for constrained `getgameinfo` remain blocked.
-

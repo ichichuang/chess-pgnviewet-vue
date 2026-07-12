@@ -7,21 +7,21 @@ Phase: `P0E_UI_FIRST_DELIVERY_AND_NO_AUTOMATED_TEST_GOVERNANCE_CLOSURE`
 
 The target is one Vue 3 application runtime. This decision supersedes the React-primary source decision at `/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/architecture/TECH_STACK_DECISION.md`, which is classified `DEPRECATED` for this target.
 
-| Layer | Selected technology | P0 status |
-| --- | --- | --- |
-| Language | TypeScript strict | configured |
-| Runtime | Vue 3 | one root |
-| Build | Vite | one root |
-| Routing | Vue Router | one foundation |
-| Client state | Pinia | one foundation |
-| Server state | TanStack Vue Query | sole approved boundary; not initialized in P0 |
-| UI adapters | Project-owned Vue components; Naive UI only where canonical behavior requires it | empty adapter boundary |
-| Motion | Vue transitions and GSAP | dependency only; no P0 motion |
-| Chess domain | chess.js plus reviewed canonical framework-free logic | dependency only |
-| Persistence | Dexie | dependency only |
-| Runtime validation | Zod | dependency only |
-| Automated tests | Not adopted | forbidden by P0E owner policy |
-| Browser runtime validation | Real browser load/reload smoke for rendered changes | narrow validation only; no test files |
+| Layer                      | Selected technology                                                              | P0 status                                     |
+| -------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------- |
+| Language                   | TypeScript strict                                                                | configured                                    |
+| Runtime                    | Vue 3                                                                            | one root                                      |
+| Build                      | Vite                                                                             | one root                                      |
+| Routing                    | Vue Router                                                                       | one foundation                                |
+| Client state               | Pinia                                                                            | one foundation                                |
+| Server state               | TanStack Vue Query                                                               | sole approved boundary; not initialized in P0 |
+| UI adapters                | Project-owned Vue components; Naive UI only where canonical behavior requires it | empty adapter boundary                        |
+| Motion                     | Vue transitions and GSAP                                                         | dependency only; no P0 motion                 |
+| Chess domain               | chess.js plus reviewed canonical framework-free logic                            | dependency only                               |
+| Persistence                | Dexie                                                                            | dependency only                               |
+| Runtime validation         | Zod                                                                              | dependency only                               |
+| Automated tests            | Not adopted                                                                      | forbidden by P0E owner policy                 |
+| Browser runtime validation | Real browser load/reload smoke for rendered changes                              | narrow validation only; no test files         |
 
 ## Package manager
 

@@ -804,5 +804,745 @@
     },
     "remediationPolicy": "F2C_FORMATTING_DEBT_REMEDIATION must format every temporary debt file, review each diff, remove every temporary exact-path ignore entry, and rerun active authored-file formatting checks without temporary exclusions. No new debt path may be added without explicit governance decision.",
     "removalGate": "Temporary debt is removed only when prettier . --check passes without the temporary F2C debt section and the changed files receive normal review.",
-    "nextRequiredPhase": "F2B2_TOOLCHAIN_VALIDATION_IMPLEMENTATION_COMMIT_AND_CLOSURE"
+    "nextRequiredPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+    "attemptHistory": [
+        {
+            "phase": "F2CR_EMBEDDED_CODE_FORMATTING_POLICY_CORRECTION_AND_F2C_CLOSURE",
+            "attemptedAt": "2026-07-12T06:33:46.889Z",
+            "blockedF2CAttempt": {
+                "result": "STOPPED_BEFORE_COMMIT",
+                "affectedMarkdownPaths": [
+                    "docs/product/WORKSPACE_MODES.md",
+                    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+                    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+                    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+                    "docs/ui/THEME_SYSTEM_SPEC.md"
+                ],
+                "mismatchCategory": "Prettier default embedded-language formatting changed governed fenced-code block contents."
+            },
+            "cleanContentRestoration": {
+                "method": "accepted HEAD object snapshot copied from external operating-system temporary directory",
+                "sourceCommit": "d9df97ce81077fba50b799fafe6a9de4f1195af9",
+                "restoredFileCount": 30,
+                "byteEqualToAcceptedHeadBeforeReformat": true
+            },
+            "policyCorrection": {
+                "prettierOption": "embeddedLanguageFormatting",
+                "configuredValue": "off",
+                "validation": "effective config resolved to off for blocked Markdown documents and representative Markdown documents"
+            }
+        }
+    ],
+    "embeddedCodeFormattingPolicy": {
+        "prettierOption": "embeddedLanguageFormatting",
+        "configuredValue": "off",
+        "markdownStructureOwner": "prettier",
+        "fencedCodeContentOwner": "document-and-domain-governance",
+        "validationRule": "byte-for-byte fenced-code preservation is required for Markdown formatting remediation",
+        "blockedAttemptFiles": [
+            "docs/product/WORKSPACE_MODES.md",
+            "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+            "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+            "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+            "docs/ui/THEME_SYSTEM_SPEC.md"
+        ]
+    },
+    "f2cPerFileResults": [
+        {
+            "path": "docs/architecture/API_BOUNDARY_ADR.md",
+            "fileType": "markdown",
+            "preFormatSha256": "5d1f27fc4c965069d6afb23f10484e2f6159f9bd90f7db25db4281a32e12e9e9",
+            "blockedAttemptSha256": "3ca860a719fb167a31fe2e029de1af5b263201076ad4c295cc754540d9b707b6",
+            "postFormatSha256": "3ca860a719fb167a31fe2e029de1af5b263201076ad4c295cc754540d9b707b6",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+            "fileType": "json",
+            "preFormatSha256": "734afc53b7b9fad5681e3d7c69b3c1c00723ec1938a995e1421d56a0a4be8476",
+            "blockedAttemptSha256": "6a9dec89c3e24ab4e2be223d50b8689703ee8cd27843352fbf55b204c7ebab20",
+            "postFormatSha256": "6a9dec89c3e24ab4e2be223d50b8689703ee8cd27843352fbf55b204c7ebab20",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "00f50cd5c28cb51cd07ddeff90a30e8fde4fa9a0e402b6cdd4f0ea6c973ad099",
+            "blockedAttemptSha256": "02dc4d6178a130c877cf28f06c766cf0221eb1fd63e7072c4b08c5a616f5b344",
+            "postFormatSha256": "02dc4d6178a130c877cf28f06c766cf0221eb1fd63e7072c4b08c5a616f5b344",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 1,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/architecture/PERSISTENCE_ADR.md",
+            "fileType": "markdown",
+            "preFormatSha256": "3acc927b791b73ec621ae8eac49a853c9c58e6c67458a03b59aadf269d6b2f70",
+            "blockedAttemptSha256": "b0bb5b3acc7d046a21877fe429b959fb60e8acc6854006d3d5bf64b0f5bce2c0",
+            "postFormatSha256": "b0bb5b3acc7d046a21877fe429b959fb60e8acc6854006d3d5bf64b0f5bce2c0",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/architecture/SOURCE_ADAPTER_ADR.md",
+            "fileType": "markdown",
+            "preFormatSha256": "d11d0d1cf1411822778a430931a550ce0de677942805f247bfb23026f6731320",
+            "blockedAttemptSha256": "bcb494cb39f67ba52897aed79c535053d0d77ac6463ff196f5c13ce6a917a39a",
+            "postFormatSha256": "bcb494cb39f67ba52897aed79c535053d0d77ac6463ff196f5c13ce6a917a39a",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/architecture/TECH_STACK_DECISION.md",
+            "fileType": "markdown",
+            "preFormatSha256": "af2f43451a0636cc15e8ddc6b583da5044c653069cd0b6b5089cbc3643e8cfd7",
+            "blockedAttemptSha256": "638b6c1f1eff36be434e99f47fd6a8575a0114f9503e3e546c8edce39d8e0460",
+            "postFormatSha256": "638b6c1f1eff36be434e99f47fd6a8575a0114f9503e3e546c8edce39d8e0460",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+            "fileType": "markdown",
+            "preFormatSha256": "aae6d8251a5c7701e27939f99de61946b413f61a1407c13f2dba349d82861792",
+            "blockedAttemptSha256": "89846e354b761c44ea953be587f9e5c6c872f76f5d3bcaf03ab723c27626a677",
+            "postFormatSha256": "cd17cbb8696cb6b2eb3c5db95e0f5a436a477dd2630e44c6c6c9f4facc0c26c6",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+            "fileType": "json",
+            "preFormatSha256": "8c1e6c5b6ae2d918beed5b4b023bd1acbb290912b756991383a05859636a779c",
+            "blockedAttemptSha256": "275066b175e1fb157c72bfaed5764cbafdf412f477d086865a81dbdc30716041",
+            "postFormatSha256": "275066b175e1fb157c72bfaed5764cbafdf412f477d086865a81dbdc30716041",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+            "fileType": "json",
+            "preFormatSha256": "745286ef4983e7bc6e9e3b9782a3141d8f2f0e7238e0ad3f8ea97e58ad6cfb87",
+            "blockedAttemptSha256": "cc49b0036468a42d8ed2fb9a20a52aa7b3326ba37e5d3a34f6994bfba0e3b2eb",
+            "postFormatSha256": "cc49b0036468a42d8ed2fb9a20a52aa7b3326ba37e5d3a34f6994bfba0e3b2eb",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+            "fileType": "json",
+            "preFormatSha256": "88b8234c5f39d5e72473553d3ae0735bd7f5f3b5f83027049f4f6f2c4b6a25bb",
+            "blockedAttemptSha256": "bd629f0247c8164d6a92d9ed14ab72aa02963e3b775ccdb4ca3ed839ea0968bd",
+            "postFormatSha256": "bd629f0247c8164d6a92d9ed14ab72aa02963e3b775ccdb4ca3ed839ea0968bd",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/API_AUTHORITY_MAP.json",
+            "fileType": "json",
+            "preFormatSha256": "6ab3392b058008da4c1311eb57f5c50e5f1bb1e680ac09e1f851efa79568ee69",
+            "blockedAttemptSha256": "37b20188292a7982bf8c7f502d301ff64f2a0b0b9d4f0216e4f5dbe40abe9bc0",
+            "postFormatSha256": "37b20188292a7982bf8c7f502d301ff64f2a0b0b9d4f0216e4f5dbe40abe9bc0",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/ASSET_INVENTORY.json",
+            "fileType": "json",
+            "preFormatSha256": "18f90bf504e04f52ed8e8b5896b817f451eab171dd41e4d09d83f1922f0639fc",
+            "blockedAttemptSha256": "904af08aaf25e4a750d3fe97620d3b66a8d2c1e17d01d3e76fddf43755388467",
+            "postFormatSha256": "904af08aaf25e4a750d3fe97620d3b66a8d2c1e17d01d3e76fddf43755388467",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+            "fileType": "json",
+            "preFormatSha256": "456d842d7422bc0bd5fff937fb407647951c502ea8bf6121cfe8ab1a42bef095",
+            "blockedAttemptSha256": "b8eaf63d56cb022dc600d892a448fc7df85823fcfe7c6529f9ac2bcece579c49",
+            "postFormatSha256": "b8eaf63d56cb022dc600d892a448fc7df85823fcfe7c6529f9ac2bcece579c49",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+            "fileType": "json",
+            "preFormatSha256": "3996437b33081a8ecdd72ab5af7db606fcef77e7b4209c07f64620aaa84b8eb0",
+            "blockedAttemptSha256": "92d7c78e996530815f4b2edd7d42706b30357bc98ca5052059811bd85803ad30",
+            "postFormatSha256": "92d7c78e996530815f4b2edd7d42706b30357bc98ca5052059811bd85803ad30",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/CAPABILITY_MATRIX.json",
+            "fileType": "json",
+            "preFormatSha256": "75d35ddb501b7ca0159f4e4fc03ef436bce32d71f87018f96e863febb2b4ee81",
+            "blockedAttemptSha256": "6118a9a8a1192d7be05df7e4923ffca67ec959c656470d8754bdee21c7d46950",
+            "postFormatSha256": "6118a9a8a1192d7be05df7e4923ffca67ec959c656470d8754bdee21c7d46950",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+            "fileType": "json",
+            "preFormatSha256": "de83f08ebb6ccb70d72a03d6e93293cbdda4d17089aad95f27fd37e5f149f7e9",
+            "blockedAttemptSha256": "d6f23579d8abdcfb7085d64159f80de9959b6e94454d5c33c768aaec3607cb8d",
+            "postFormatSha256": "d6f23579d8abdcfb7085d64159f80de9959b6e94454d5c33c768aaec3607cb8d",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/DOCUMENT_INVENTORY.json",
+            "fileType": "json",
+            "preFormatSha256": "8c1902e634bd33ac287971c01c091c0a71bc566fa08169392348cb0bedbda24c",
+            "blockedAttemptSha256": "ad41796e12d7c7757c2455e93c79cae99e50b4417218c8ed526479185f708353",
+            "postFormatSha256": "ad41796e12d7c7757c2455e93c79cae99e50b4417218c8ed526479185f708353",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+            "fileType": "json",
+            "preFormatSha256": "06ee53d68b4ac95556ee1959e223e03b32e04c659efd3d41627fd1fb69d2a43a",
+            "blockedAttemptSha256": "022dc256c0929238a636801f6dcbd897be373b3e17266757327b169bd78f78dd",
+            "postFormatSha256": "022dc256c0929238a636801f6dcbd897be373b3e17266757327b169bd78f78dd",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+            "fileType": "json",
+            "preFormatSha256": "485ab30667ae43c5c3702940ce23505bf42fbcb6533c1ec7a2e4c9c25f6e0fef",
+            "blockedAttemptSha256": "8d2e5043bdc82f3f7503026254e5117e716e434431c6c740a6ae856cd3172ab8",
+            "postFormatSha256": "8d2e5043bdc82f3f7503026254e5117e716e434431c6c740a6ae856cd3172ab8",
+            "jsonSemanticEqual": true,
+            "markdownSemanticPreserved": null,
+            "fencedCodeByteEqual": null,
+            "fencedCodeBlockCount": 0,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/product/PRODUCT_DEFINITION.md",
+            "fileType": "markdown",
+            "preFormatSha256": "a84601c31dcfe09f448e6540655d8ce023b20139f5e666cede6105cfe5ebf7d9",
+            "blockedAttemptSha256": "a175226baa670a7d542b07d267ed5df4b0cee51c7a528f14d417885fb7d1b44c",
+            "postFormatSha256": "a175226baa670a7d542b07d267ed5df4b0cee51c7a528f14d417885fb7d1b44c",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 1,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/product/WORKSPACE_MODES.md",
+            "fileType": "markdown",
+            "preFormatSha256": "3e9a3a810c907c7029898f82b99bcdd46cfb0a71e2e639fedb576efbcb5a66ae",
+            "blockedAttemptSha256": "efb69c33898cb0e48780027f99143d916c42615042312f3cc252d55f85d44fe6",
+            "postFormatSha256": "661dfe168c71dbc548ba028cf43ebb4e0564a81ef7cf39f01bf175cc1b43bea8",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 1,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/ACCESSIBILITY_SPEC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "b761e7ec674f3eab0889336ddf3ca8f428bac1424cbf9ff16c3f0cb07ff4f9fb",
+            "blockedAttemptSha256": "dfd966410ec6cd6f713e1a5568f8885c50654ba5d3ed818f46708600e3fecd6f",
+            "postFormatSha256": "dfd966410ec6cd6f713e1a5568f8885c50654ba5d3ed818f46708600e3fecd6f",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 1,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "3854398d82b064ff178b06f03ddafad10702406fdc125ad21ccd6dbbbea4cc85",
+            "blockedAttemptSha256": "8df161fa7b1568b9eba8f25615c236b5e974bcddd860424a2966e11493324dfb",
+            "postFormatSha256": "8df161fa7b1568b9eba8f25615c236b5e974bcddd860424a2966e11493324dfb",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 1,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/I18N_SPEC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "0d6c11a6c93ccf7d2a415522a255da66b65524bc214688d37f9d4892f3b6ec34",
+            "blockedAttemptSha256": "87b4d09f2357a8cac7876e545e040334c66a97171f54539e2c6e6b9df3c1cd89",
+            "postFormatSha256": "87b4d09f2357a8cac7876e545e040334c66a97171f54539e2c6e6b9df3c1cd89",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 3,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "45f8ffc89d230eba19737a3e32920d926ebfb7cfa0c557f9a6806faf7ccb356a",
+            "blockedAttemptSha256": "da78a09033fecdf75befa7b4aa46dab495a439f5533ced51dd7ccd5d567a66b0",
+            "postFormatSha256": "5f70adfb6f485efafe4c9a954d9836cd6e197e65ff3ab4abb80e08d8487df6b8",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 4,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/PAGE_STYLE_SPEC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "09bc4ca698d1f442c4e801e400749659be4d65e0ec4b80fe8342125b1d67f69b",
+            "blockedAttemptSha256": "6d9a8aa7b873ee99d3923fe451d1eafedeaba1ddcdbab917c8222f3404f64080",
+            "postFormatSha256": "6d9a8aa7b873ee99d3923fe451d1eafedeaba1ddcdbab917c8222f3404f64080",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 1,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "674987c712de96315eb56e1ae2e075a61bfc1c1aa4464b9311d84d55843a4270",
+            "blockedAttemptSha256": "55365e2c9edb4b86102206de6274e5b89978887fd2a2d621ad0d8039f18fd92d",
+            "postFormatSha256": "4a1fb73d034a1fd598a12a1c3d3ad9198f00c0008efca38aaa72a9621f8e37c4",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 2,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "fe23bdf470dfb1dd81f00bdff2f3aa8e2fa263e4bbddeb1de4be3e78974a925c",
+            "blockedAttemptSha256": "f557108c372a2ba68a072cf60461a98496c3414cb4c49eda1114c6c28f573f21",
+            "postFormatSha256": "ebc7ad1e79549d78a9fd2a54b7317e00623362f735c4ddb03a1590343d4f7e4a",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 4,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/THEME_SYSTEM_SPEC.md",
+            "fileType": "markdown",
+            "preFormatSha256": "c6608b0e85181bc187cf5916b3fdd3713d02d80e4e19ac593fb8a38461dc76c9",
+            "blockedAttemptSha256": "7a31c8a5a3de0f6a3ad959655ec2b1fcd8c706d44c5a6da5fa1ba2bb38eb4f85",
+            "postFormatSha256": "5ac25b29a1ec432fb7616f57a5cbfe929dcc363f49f1665814600dbf702860b6",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 1,
+            "finalPrettierResult": "PASS"
+        },
+        {
+            "path": "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+            "fileType": "markdown",
+            "preFormatSha256": "073342b37545e29c93cb1d7dda0663d55c8d3cef2e04c675c6fe9aa9fa7f597a",
+            "blockedAttemptSha256": "d9271ccbda0d22d2f412d278fb31af21299acd994a9b2a9d393e54413cb3d180",
+            "postFormatSha256": "d9271ccbda0d22d2f412d278fb31af21299acd994a9b2a9d393e54413cb3d180",
+            "jsonSemanticEqual": null,
+            "markdownSemanticPreserved": true,
+            "fencedCodeByteEqual": true,
+            "fencedCodeBlockCount": 1,
+            "finalPrettierResult": "PASS"
+        }
+    ],
+    "f2cPostFormatHashes": {
+        "docs/architecture/API_BOUNDARY_ADR.md": "3ca860a719fb167a31fe2e029de1af5b263201076ad4c295cc754540d9b707b6",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json": "6a9dec89c3e24ab4e2be223d50b8689703ee8cd27843352fbf55b204c7ebab20",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md": "02dc4d6178a130c877cf28f06c766cf0221eb1fd63e7072c4b08c5a616f5b344",
+        "docs/architecture/PERSISTENCE_ADR.md": "b0bb5b3acc7d046a21877fe429b959fb60e8acc6854006d3d5bf64b0f5bce2c0",
+        "docs/architecture/SOURCE_ADAPTER_ADR.md": "bcb494cb39f67ba52897aed79c535053d0d77ac6463ff196f5c13ce6a917a39a",
+        "docs/architecture/TECH_STACK_DECISION.md": "638b6c1f1eff36be434e99f47fd6a8575a0114f9503e3e546c8edce39d8e0460",
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md": "cd17cbb8696cb6b2eb3c5db95e0f5a436a477dd2630e44c6c6c9f4facc0c26c6",
+        "docs/archive/historical-evidence/API_MASTER_SUMMARY.json": "275066b175e1fb157c72bfaed5764cbafdf412f477d086865a81dbdc30716041",
+        "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json": "cc49b0036468a42d8ed2fb9a20a52aa7b3326ba37e5d3a34f6994bfba0e3b2eb",
+        "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json": "bd629f0247c8164d6a92d9ed14ab72aa02963e3b775ccdb4ca3ed839ea0968bd",
+        "docs/migration/API_AUTHORITY_MAP.json": "37b20188292a7982bf8c7f502d301ff64f2a0b0b9d4f0216e4f5dbe40abe9bc0",
+        "docs/migration/ASSET_INVENTORY.json": "904af08aaf25e4a750d3fe97620d3b66a8d2c1e17d01d3e76fddf43755388467",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json": "b8eaf63d56cb022dc600d892a448fc7df85823fcfe7c6529f9ac2bcece579c49",
+        "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json": "92d7c78e996530815f4b2edd7d42706b30357bc98ca5052059811bd85803ad30",
+        "docs/migration/CAPABILITY_MATRIX.json": "6118a9a8a1192d7be05df7e4923ffca67ec959c656470d8754bdee21c7d46950",
+        "docs/migration/DEPENDENCY_VERSION_BASELINE.json": "d6f23579d8abdcfb7085d64159f80de9959b6e94454d5c33c768aaec3607cb8d",
+        "docs/migration/DOCUMENT_INVENTORY.json": "ad41796e12d7c7757c2455e93c79cae99e50b4417218c8ed526479185f708353",
+        "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json": "022dc256c0929238a636801f6dcbd897be373b3e17266757327b169bd78f78dd",
+        "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json": "8d2e5043bdc82f3f7503026254e5117e716e434431c6c740a6ae856cd3172ab8",
+        "docs/product/PRODUCT_DEFINITION.md": "a175226baa670a7d542b07d267ed5df4b0cee51c7a528f14d417885fb7d1b44c",
+        "docs/product/WORKSPACE_MODES.md": "661dfe168c71dbc548ba028cf43ebb4e0564a81ef7cf39f01bf175cc1b43bea8",
+        "docs/ui/ACCESSIBILITY_SPEC.md": "dfd966410ec6cd6f713e1a5568f8885c50654ba5d3ed818f46708600e3fecd6f",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md": "8df161fa7b1568b9eba8f25615c236b5e974bcddd860424a2966e11493324dfb",
+        "docs/ui/I18N_SPEC.md": "87b4d09f2357a8cac7876e545e040334c66a97171f54539e2c6e6b9df3c1cd89",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md": "5f70adfb6f485efafe4c9a954d9836cd6e197e65ff3ab4abb80e08d8487df6b8",
+        "docs/ui/PAGE_STYLE_SPEC.md": "6d9a8aa7b873ee99d3923fe451d1eafedeaba1ddcdbab917c8222f3404f64080",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md": "4a1fb73d034a1fd598a12a1c3d3ad9198f00c0008efca38aaa72a9621f8e37c4",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md": "ebc7ad1e79549d78a9fd2a54b7317e00623362f735c4ddb03a1590343d4f7e4a",
+        "docs/ui/THEME_SYSTEM_SPEC.md": "5ac25b29a1ec432fb7616f57a5cbfe929dcc363f49f1665814600dbf702860b6",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md": "d9271ccbda0d22d2f412d278fb31af21299acd994a9b2a9d393e54413cb3d180"
+    },
+    "f2cSemanticValidation": {
+        "jsonFileCount": 13,
+        "markdownFileCount": 17,
+        "jsonSemanticEqualityResult": "PASS",
+        "markdownSemanticPreservationResult": "PASS",
+        "fencedCodeByteEqualityResult": "PASS",
+        "previouslyBlockedFilesValidation": {
+            "docs/product/WORKSPACE_MODES.md": {
+                "blockCount": 1,
+                "equal": true,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "82b78e41a96c0e27d8185a87a605a74be9c0bb16445990217f01c256536afa22"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "82b78e41a96c0e27d8185a87a605a74be9c0bb16445990217f01c256536afa22"
+                    }
+                ]
+            },
+            "docs/ui/LAYOUT_SYSTEM_SPEC.md": {
+                "blockCount": 4,
+                "equal": true,
+                "before": [
+                    {
+                        "language": "css",
+                        "sha256": "5170d80c46509563e4d710504f02a3ddf509ea39d987f59b3c20b704b0c06cba"
+                    },
+                    {
+                        "language": "",
+                        "sha256": "e3244d2f28d0043e0e661c7899a6ed204dccb468faefbdfaa4452f22ef56c3dc"
+                    },
+                    {
+                        "language": "vue",
+                        "sha256": "19a3bd4ea074d489bc598c5ff36069f855877a3c3e54431007b01bb334d83c56"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "583d12e4d1ec6dc9f1b5afda5638a2144d541cbf34f1430270545bc03528393a"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "css",
+                        "sha256": "5170d80c46509563e4d710504f02a3ddf509ea39d987f59b3c20b704b0c06cba"
+                    },
+                    {
+                        "language": "",
+                        "sha256": "e3244d2f28d0043e0e661c7899a6ed204dccb468faefbdfaa4452f22ef56c3dc"
+                    },
+                    {
+                        "language": "vue",
+                        "sha256": "19a3bd4ea074d489bc598c5ff36069f855877a3c3e54431007b01bb334d83c56"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "583d12e4d1ec6dc9f1b5afda5638a2144d541cbf34f1430270545bc03528393a"
+                    }
+                ]
+            },
+            "docs/ui/PERSISTENCE_RECOVERY_SPEC.md": {
+                "blockCount": 2,
+                "equal": true,
+                "before": [
+                    {
+                        "language": "ts",
+                        "sha256": "9367cea06555f011af8da6946ef1bb9310d1c4364684cacd233511dd7d90972b"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "159172947a91cb3c452d2f34900cf47a67bc3549242551bfa2f52abf45348569"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "ts",
+                        "sha256": "9367cea06555f011af8da6946ef1bb9310d1c4364684cacd233511dd7d90972b"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "159172947a91cb3c452d2f34900cf47a67bc3549242551bfa2f52abf45348569"
+                    }
+                ]
+            },
+            "docs/ui/RESPONSIVE_SCREEN_SPEC.md": {
+                "blockCount": 4,
+                "equal": true,
+                "before": [
+                    {
+                        "language": "css",
+                        "sha256": "f79676bcdfbb09a71a68793356ab6047270bc257864f6eeb2ff1f4daf4950d2a"
+                    },
+                    {
+                        "language": "css",
+                        "sha256": "93924f843caae7ad6f84be036f14bc6d141fec6a23f75132b5c12d0de456eca7"
+                    },
+                    {
+                        "language": "",
+                        "sha256": "c9e02f37d6764cde507bd9c1baba9889d0351450cb209f75c9f7c7cd9d32bda8"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "0ef94f5a1c903d2c787406bf4ac248831acc5b0cc39455accefe3393c7ebe44a"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "css",
+                        "sha256": "f79676bcdfbb09a71a68793356ab6047270bc257864f6eeb2ff1f4daf4950d2a"
+                    },
+                    {
+                        "language": "css",
+                        "sha256": "93924f843caae7ad6f84be036f14bc6d141fec6a23f75132b5c12d0de456eca7"
+                    },
+                    {
+                        "language": "",
+                        "sha256": "c9e02f37d6764cde507bd9c1baba9889d0351450cb209f75c9f7c7cd9d32bda8"
+                    },
+                    {
+                        "language": "json",
+                        "sha256": "0ef94f5a1c903d2c787406bf4ac248831acc5b0cc39455accefe3393c7ebe44a"
+                    }
+                ]
+            },
+            "docs/ui/THEME_SYSTEM_SPEC.md": {
+                "blockCount": 1,
+                "equal": true,
+                "before": [
+                    {
+                        "language": "json",
+                        "sha256": "a7eb33847cbd60f3a54b5df76dab5f0d22ef707660016bbf06805e14e1b9f7f7"
+                    }
+                ],
+                "after": [
+                    {
+                        "language": "json",
+                        "sha256": "a7eb33847cbd60f3a54b5df76dab5f0d22ef707660016bbf06805e14e1b9f7f7"
+                    }
+                ]
+            }
+        },
+        "knownFourLineDebtResult": {
+            "docs/architecture/API_BOUNDARY_ADR.md": {
+                "before": [
+                    {
+                        "line": 3,
+                        "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                    }
+                ],
+                "after": [
+                    {
+                        "line": 3,
+                        "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                    }
+                ],
+                "proseEqual": true,
+                "headingsEqual": true
+            },
+            "docs/architecture/PERSISTENCE_ADR.md": {
+                "before": [
+                    {
+                        "line": 3,
+                        "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                    }
+                ],
+                "after": [
+                    {
+                        "line": 3,
+                        "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                    }
+                ],
+                "proseEqual": true,
+                "headingsEqual": true
+            },
+            "docs/architecture/SOURCE_ADAPTER_ADR.md": {
+                "before": [
+                    {
+                        "line": 3,
+                        "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                    }
+                ],
+                "after": [
+                    {
+                        "line": 3,
+                        "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                    }
+                ],
+                "proseEqual": true,
+                "headingsEqual": true
+            },
+            "docs/architecture/TECH_STACK_DECISION.md": {
+                "before": [
+                    {
+                        "line": 3,
+                        "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                    }
+                ],
+                "after": [
+                    {
+                        "line": 3,
+                        "textWithoutBreak": "Status: `ACTIVE_AUTHORITY`"
+                    }
+                ],
+                "proseEqual": true,
+                "headingsEqual": true
+            }
+        }
+    },
+    "closure": {
+        "status": "CLOSED",
+        "remediatedAt": "2026-07-12T06:33:46.889Z",
+        "remediatedFileCount": 30,
+        "remediatedFiles": [
+            "docs/architecture/API_BOUNDARY_ADR.md",
+            "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+            "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+            "docs/architecture/PERSISTENCE_ADR.md",
+            "docs/architecture/SOURCE_ADAPTER_ADR.md",
+            "docs/architecture/TECH_STACK_DECISION.md",
+            "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+            "docs/archive/historical-evidence/API_MASTER_SUMMARY.json",
+            "docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+            "docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+            "docs/migration/API_AUTHORITY_MAP.json",
+            "docs/migration/ASSET_INVENTORY.json",
+            "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+            "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+            "docs/migration/CAPABILITY_MATRIX.json",
+            "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+            "docs/migration/DOCUMENT_INVENTORY.json",
+            "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+            "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+            "docs/product/PRODUCT_DEFINITION.md",
+            "docs/product/WORKSPACE_MODES.md",
+            "docs/ui/ACCESSIBILITY_SPEC.md",
+            "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+            "docs/ui/I18N_SPEC.md",
+            "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+            "docs/ui/PAGE_STYLE_SPEC.md",
+            "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+            "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+            "docs/ui/THEME_SYSTEM_SPEC.md",
+            "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+        ],
+        "remainingTemporaryDebtFileCount": 0,
+        "remainingTemporaryDebtFiles": [],
+        "temporaryIgnoreEntriesRemoved": true,
+        "permanentExclusionsRetained": [".ai/reports/", "pnpm-lock.yaml"],
+        "semanticValidationSummary": {
+            "jsonSemanticEqualityResult": "PASS",
+            "markdownSemanticPreservationResult": "PASS",
+            "fencedCodeByteEqualityResult": "PASS",
+            "knownFourLineDebtResult": "PASS"
+        },
+        "jsonSemanticEqualityResult": "PASS",
+        "markdownSemanticPreservationResult": "PASS",
+        "fencedCodeByteEqualityResult": "PASS",
+        "knownFourLineDebtResult": "PASS",
+        "fullPrettierCheckResult": "PASS",
+        "implementationCommit": "PENDING",
+        "reviewTrigger": "Reopen if Prettier embedded-language formatting is re-enabled, Markdown fenced-code byte equality fails, temporary exact-path exclusions return, or new authored files bypass formatting.",
+        "reopenConditions": [
+            "embeddedLanguageFormatting is not off",
+            "fenced-code content changes during Markdown formatting",
+            "temporary F2C debt entries reappear in .prettierignore",
+            "full authored-file Prettier check fails"
+        ],
+        "nextRequiredPhase": "F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION",
+        "validationResults": {
+            "fullPrettierCheckResult": "PASS",
+            "independentDebtFileFormattingValidation": "PASS",
+            "toolchainImplementationFormattingValidation": "PASS",
+            "eslintValidation": "PASS",
+            "stylelintValidation": "PASS",
+            "knipValidation": "PASS",
+            "typecheck": "PASS",
+            "build": "PASS",
+            "productionSecurityAudit": "PASS",
+            "fullSecurityAudit": "PASS",
+            "installedDependencyValidation": "PASS",
+            "aggregateValidation": "PASS",
+            "browserValidation": "NOT_APPLICABLE",
+            "automatedTests": "NOT_RUN_BY_POLICY"
+        }
+    },
+    "f2cValidationResults": {
+        "fullPrettierCheckResult": "PASS",
+        "independentDebtFileFormattingValidation": "PASS",
+        "toolchainImplementationFormattingValidation": "PASS",
+        "eslintValidation": "PASS",
+        "stylelintValidation": "PASS",
+        "knipValidation": "PASS",
+        "typecheck": "PASS",
+        "build": "PASS",
+        "productionSecurityAudit": "PASS",
+        "fullSecurityAudit": "PASS",
+        "installedDependencyValidation": "PASS",
+        "aggregateValidation": "PASS",
+        "browserValidation": "NOT_APPLICABLE",
+        "automatedTests": "NOT_RUN_BY_POLICY"
+    }
 }

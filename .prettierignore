@@ -22,37 +22,3 @@ coverage/
 # pnpm-lock.yaml is generated and validated by pnpm plus lockfile governance, not Prettier.
 .ai/reports/
 pnpm-lock.yaml
-
-# Temporary F2C formatting debt: exact paths only.
-# Every path below must be removed by F2C_FORMATTING_DEBT_REMEDIATION.
-# No new debt path may be added without an explicit governance decision.
-docs/architecture/API_BOUNDARY_ADR.md
-docs/architecture/FOUNDATION_READINESS_MATRIX.json
-docs/architecture/FRONTEND_ARCHITECTURE_RFC.md
-docs/architecture/PERSISTENCE_ADR.md
-docs/architecture/SOURCE_ADAPTER_ADR.md
-docs/architecture/TECH_STACK_DECISION.md
-docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md
-docs/archive/historical-evidence/API_MASTER_SUMMARY.json
-docs/archive/historical-evidence/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json
-docs/archive/historical-evidence/SERVER_ONLY_HMAC_SMOKE.redacted.json
-docs/migration/API_AUTHORITY_MAP.json
-docs/migration/ASSET_INVENTORY.json
-docs/migration/CANONICAL_RUNTIME_CLOSURE.json
-docs/migration/CANONICAL_TOOLCHAIN_PARITY.json
-docs/migration/CAPABILITY_MATRIX.json
-docs/migration/DEPENDENCY_VERSION_BASELINE.json
-docs/migration/DOCUMENT_INVENTORY.json
-docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json
-docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json
-docs/product/PRODUCT_DEFINITION.md
-docs/product/WORKSPACE_MODES.md
-docs/ui/ACCESSIBILITY_SPEC.md
-docs/ui/COMPONENT_SYSTEM_SPEC.md
-docs/ui/I18N_SPEC.md
-docs/ui/LAYOUT_SYSTEM_SPEC.md
-docs/ui/PAGE_STYLE_SPEC.md
-docs/ui/PERSISTENCE_RECOVERY_SPEC.md
-docs/ui/RESPONSIVE_SCREEN_SPEC.md
-docs/ui/THEME_SYSTEM_SPEC.md
-docs/ui/UI_ACCEPTANCE_CHECKLIST.md

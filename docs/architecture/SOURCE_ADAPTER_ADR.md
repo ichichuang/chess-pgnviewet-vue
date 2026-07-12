@@ -43,4 +43,3 @@ Tournament pages create a sanitized, versioned handoff and navigate into `/pgnVi
 ## Rejection rules
 
 Reject adapters that require generic proxying, unconfirmed endpoints, browser credentials, fake data, duplicated domain implementations, unlicensed assets, or a second application/component/token system.
-

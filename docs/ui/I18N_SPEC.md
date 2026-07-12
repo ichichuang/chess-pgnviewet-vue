@@ -22,10 +22,10 @@ This document governs:
 
 ## Supported languages
 
-| Language | Code | Status |
-| --- | --- | --- |
-| Simplified Chinese | `zh-CN` | Primary |
-| English | `en` | Required fallback |
+| Language           | Code    | Status            |
+| ------------------ | ------- | ----------------- |
+| Simplified Chinese | `zh-CN` | Primary           |
+| English            | `en`    | Required fallback |
 
 Additional languages may be added without changing the key structure.
 

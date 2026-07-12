@@ -28,70 +28,70 @@ All colors, shadows, borders, radii, spacing, and typography must come from the 
 
 Semantic tokens describe the meaning of a value, not its concrete color.
 
-| Token family | Examples |
-| --- | --- |
-| Background | `--bg`, `--surface`, `--surface-2`, `--surface-3` |
-| Text | `--text`, `--text-2`, `--text-muted`, `--text-faint`, `--text-on-accent` |
-| Border | `--border`, `--border-strong`, `--border-focus` |
-| Accent | `--accent`, `--accent-strong`, `--accent-press`, `--accent-soft`, `--accent-bg` |
-| State | `--success`, `--warning`, `--danger`, `--info` and their `-bg` variants |
-| Shadow | `--shadow-xs`, `--shadow-sm`, `--shadow-md`, `--shadow-lg`, `--ring-accent` |
-| Radius | `--r-xs`, `--r-sm`, `--r-md`, `--r-lg`, `--r-xl`, `--r-full` |
-| Spacing | `--s-1`, `--s-2`, `--s-3`, `--s-4`, `--s-5`, `--s-6`, `--s-8`, `--s-10` |
-| Typography | `--font-sans`, `--font-mono`, `--fs-xs`...`--fs-2xl` |
+| Token family | Examples                                                                        |
+| ------------ | ------------------------------------------------------------------------------- |
+| Background   | `--bg`, `--surface`, `--surface-2`, `--surface-3`                               |
+| Text         | `--text`, `--text-2`, `--text-muted`, `--text-faint`, `--text-on-accent`        |
+| Border       | `--border`, `--border-strong`, `--border-focus`                                 |
+| Accent       | `--accent`, `--accent-strong`, `--accent-press`, `--accent-soft`, `--accent-bg` |
+| State        | `--success`, `--warning`, `--danger`, `--info` and their `-bg` variants         |
+| Shadow       | `--shadow-xs`, `--shadow-sm`, `--shadow-md`, `--shadow-lg`, `--ring-accent`     |
+| Radius       | `--r-xs`, `--r-sm`, `--r-md`, `--r-lg`, `--r-xl`, `--r-full`                    |
+| Spacing      | `--s-1`, `--s-2`, `--s-3`, `--s-4`, `--s-5`, `--s-6`, `--s-8`, `--s-10`         |
+| Typography   | `--font-sans`, `--font-mono`, `--fs-xs`...`--fs-2xl`                            |
 
 ### Component tokens
 
 Component tokens map semantic tokens to specific components. They are optional aliases that make component code more readable and allow per-component theming without forking semantic tokens.
 
-| Token family | Examples |
-| --- | --- |
-| Button | `--button-primary-bg`, `--button-primary-text`, `--button-secondary-bg` |
-| Input | `--input-bg`, `--input-border`, `--input-focus-ring` |
-| Card | `--card-bg`, `--card-border`, `--card-radius` |
-| Dialog | `--dialog-bg`, `--dialog-backdrop`, `--dialog-shadow` |
-| Tooltip | `--tooltip-bg`, `--tooltip-text` |
+| Token family | Examples                                                                |
+| ------------ | ----------------------------------------------------------------------- |
+| Button       | `--button-primary-bg`, `--button-primary-text`, `--button-secondary-bg` |
+| Input        | `--input-bg`, `--input-border`, `--input-focus-ring`                    |
+| Card         | `--card-bg`, `--card-border`, `--card-radius`                           |
+| Dialog       | `--dialog-bg`, `--dialog-backdrop`, `--dialog-shadow`                   |
+| Tooltip      | `--tooltip-bg`, `--tooltip-text`                                        |
 
 ### Chessboard tokens
 
 Chessboard tokens are scoped under `--cg-*` and are independent of the UI chrome theme so a board can keep its style in light or dark mode.
 
-| Token family | Examples |
-| --- | --- |
-| Squares | `--cg-square-light`, `--cg-square-dark` |
-| Highlights | `--cg-last-move`, `--cg-selected`, `--cg-check`, `--cg-premove` |
-| Annotations | `--cg-arrow-red`, `--cg-arrow-green`, `--cg-arrow-yellow`, `--cg-arrow-orange`, `--cg-arrow-purple`, `--cg-arrow-black` |
-| Pieces | `--cg-piece-set` (identifier), `--cg-piece-outline` |
-| Coordinates | `--cg-coord-light`, `--cg-coord-dark` |
+| Token family | Examples                                                                                                                |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Squares      | `--cg-square-light`, `--cg-square-dark`                                                                                 |
+| Highlights   | `--cg-last-move`, `--cg-selected`, `--cg-check`, `--cg-premove`                                                         |
+| Annotations  | `--cg-arrow-red`, `--cg-arrow-green`, `--cg-arrow-yellow`, `--cg-arrow-orange`, `--cg-arrow-purple`, `--cg-arrow-black` |
+| Pieces       | `--cg-piece-set` (identifier), `--cg-piece-outline`                                                                     |
+| Coordinates  | `--cg-coord-light`, `--cg-coord-dark`                                                                                   |
 
 ### State tokens
 
 State tokens describe interactive and feedback states.
 
-| Token family | Examples |
-| --- | --- |
-| Hover | `--state-hover`, `--state-hover-bg` |
-| Active/pressed | `--state-active`, `--state-active-bg` |
-| Focus | `--state-focus-ring`, `--state-focus-border` |
-| Disabled | `--state-disabled-bg`, `--state-disabled-text` |
-| Loading | `--state-loading-bg`, `--state-loading-text` |
+| Token family   | Examples                                       |
+| -------------- | ---------------------------------------------- |
+| Hover          | `--state-hover`, `--state-hover-bg`            |
+| Active/pressed | `--state-active`, `--state-active-bg`          |
+| Focus          | `--state-focus-ring`, `--state-focus-border`   |
+| Disabled       | `--state-disabled-bg`, `--state-disabled-text` |
+| Loading        | `--state-loading-bg`, `--state-loading-text`   |
 
 ### Data visualization tokens
 
 Data visualization tokens are used for evaluation charts, classification bars, and statistics.
 
-| Token family | Examples |
-| --- | --- |
-| Evaluation | `--eval-white`, `--eval-black`, `--eval-advantage-line` |
+| Token family | Examples                                                                                                                                  |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Evaluation   | `--eval-white`, `--eval-black`, `--eval-advantage-line`                                                                                   |
 | Move quality | `--eval-blunder`, `--eval-mistake`, `--eval-inaccuracy`, `--eval-good`, `--eval-excellent`, `--eval-best`, `--eval-book`, `--eval-forced` |
-| Charts | categorical palette tokens `--chart-1`...`--chart-8` |
+| Charts       | categorical palette tokens `--chart-1`...`--chart-8`                                                                                      |
 
 ## Theme modes
 
-| Mode | Behavior |
-| --- | --- |
-| `light` | Forces light semantic tokens |
-| `dark` | Forces dark semantic tokens |
+| Mode     | Behavior                                  |
+| -------- | ----------------------------------------- |
+| `light`  | Forces light semantic tokens              |
+| `dark`   | Forces dark semantic tokens               |
 | `system` | Matches `prefers-color-scheme` at runtime |
 
 The active mode is stored as a durable user preference. The `html` element receives a `data-theme="light|dark"` attribute; `system` is resolved to the actual applied mode.
@@ -100,13 +100,13 @@ The active mode is stored as a durable user preference. The `html` element recei
 
 Users may select an accent color from a curated palette. The default is **Kaisaile Green**.
 
-| Accent name | Token prefix | Default role |
-| --- | --- | --- |
-| Kaisaile Green | `--accent-green-*` | Default product accent |
-| Royal Blue | `--accent-blue-*` | Alternative |
-| Deep Purple | `--accent-purple-*` | Alternative |
-| Warm Orange | `--accent-orange-*` | Alternative |
-| Neutral Slate | `--accent-slate-*` | Accessible/gray |
+| Accent name    | Token prefix        | Default role           |
+| -------------- | ------------------- | ---------------------- |
+| Kaisaile Green | `--accent-green-*`  | Default product accent |
+| Royal Blue     | `--accent-blue-*`   | Alternative            |
+| Deep Purple    | `--accent-purple-*` | Alternative            |
+| Warm Orange    | `--accent-orange-*` | Alternative            |
+| Neutral Slate  | `--accent-slate-*`  | Accessible/gray        |
 
 When an accent is selected, the semantic `--accent` family is remapped to the chosen scale. Feature code always reads `--accent` and never the accent-specific prefix.
 

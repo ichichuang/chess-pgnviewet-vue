@@ -1,137 +1,131 @@
 {
-  "schemaVersion": 1,
-  "status": "ACTIVE_AUTHORITY",
-  "generatedAt": "2026-07-11T21:47:59.553Z",
-  "phase": "P0D_OFFICIAL_VUE_TYPESCRIPT_6_ECOSYSTEM_COMPATIBLE_BASELINE",
-  "decision": "Use real official typescript@6.0.3 as the authoritative Vue compiler with vue-tsc@3.3.7; remove TypeScript 7 and @typescript/typescript6 from the active graph.",
-  "officialGuidance": {
-    "source": "https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/",
-    "retrievedAt": "2026-07-11T21:39:55.064Z",
-    "facts": [
-      "TypeScript 7.0 is the current native TypeScript compiler generation.",
-      "TypeScript 7.0 does not ship with the stable programmatic API needed by embedded-language tooling.",
-      "Microsoft states Vue, MDX, Astro, Svelte, and similar workflows need to continue using TypeScript 6.0 for now.",
-      "Microsoft published @typescript/typescript6 as transition compatibility package, but P0C proved the current stable Volar/vue-tsc stack cannot consume that shim."
-    ]
-  },
-  "typescript7Status": {
-    "currentNativeCompiler": "typescript@7.0.2",
-    "activeProjectDependency": false,
-    "reasonInactive": "TypeScript 7.0 lacks stable programmatic API support required by current stable Vue embedded-language tooling."
-  },
-  "vueLanguageToolsStatus": {
-    "package": "@vue/language-core",
-    "latestStable": "3.3.7",
-    "typeScript7SupportIssue": {
-      "url": "https://github.com/vuejs/language-tools/issues/5381",
-      "state": "open",
-      "labels": [
-        "upstream: volar",
-        "upstream: typescript"
-      ],
-      "retrievedAt": "2026-07-11T21:45:26.020Z",
-      "updatedAt": "2026-07-11T16:40:03Z"
+    "schemaVersion": 1,
+    "status": "ACTIVE_AUTHORITY",
+    "generatedAt": "2026-07-11T21:47:59.553Z",
+    "phase": "P0D_OFFICIAL_VUE_TYPESCRIPT_6_ECOSYSTEM_COMPATIBLE_BASELINE",
+    "decision": "Use real official typescript@6.0.3 as the authoritative Vue compiler with vue-tsc@3.3.7; remove TypeScript 7 and @typescript/typescript6 from the active graph.",
+    "officialGuidance": {
+        "source": "https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/",
+        "retrievedAt": "2026-07-11T21:39:55.064Z",
+        "facts": [
+            "TypeScript 7.0 is the current native TypeScript compiler generation.",
+            "TypeScript 7.0 does not ship with the stable programmatic API needed by embedded-language tooling.",
+            "Microsoft states Vue, MDX, Astro, Svelte, and similar workflows need to continue using TypeScript 6.0 for now.",
+            "Microsoft published @typescript/typescript6 as transition compatibility package, but P0C proved the current stable Volar/vue-tsc stack cannot consume that shim."
+        ]
     },
-    "stableTypeScript7SupportReleased": false
-  },
-  "vueTscStatus": {
-    "package": "vue-tsc",
-    "latestStable": "3.3.7",
-    "peerDependencies": {
-      "typescript": ">=5.0.0"
+    "typescript7Status": {
+        "currentNativeCompiler": "typescript@7.0.2",
+        "activeProjectDependency": false,
+        "reasonInactive": "TypeScript 7.0 lacks stable programmatic API support required by current stable Vue embedded-language tooling."
     },
-    "dependencies": {
-      "@volar/typescript": "2.4.28",
-      "@vue/language-core": "3.3.7"
+    "vueLanguageToolsStatus": {
+        "package": "@vue/language-core",
+        "latestStable": "3.3.7",
+        "typeScript7SupportIssue": {
+            "url": "https://github.com/vuejs/language-tools/issues/5381",
+            "state": "open",
+            "labels": ["upstream: volar", "upstream: typescript"],
+            "retrievedAt": "2026-07-11T21:45:26.020Z",
+            "updatedAt": "2026-07-11T16:40:03Z"
+        },
+        "stableTypeScript7SupportReleased": false
     },
-    "selected": true
-  },
-  "selectedTypeScriptPackage": "typescript",
-  "selectedTypeScriptVersion": "6.0.3",
-  "versionResolutionMethod": "Fetched official npm registry metadata for typescript, filtered stable versions whose major version is exactly 6, excluded prerelease/dev/next/rc/beta builds, and selected the highest semantic version.",
-  "whyTypeScript6IsRequired": "Official TypeScript guidance states Vue and similar embedded-language workflows need TypeScript 6 for now because TypeScript 7.0 does not expose the stable programmatic API that Volar-like tools require.",
-  "whyCompatibilityShimWasRejected": "P0C showed @typescript/typescript6@6.0.2 cannot be consumed by current vue-tsc@3.3.7/@volar/typescript@2.4.28 because the shim fails Volar tsc path detection.",
-  "dependencyGraph": {
-    "activeDirectPackageCount": 18,
-    "activeCompiler": "typescript@6.0.3",
-    "activeVueTypechecker": "vue-tsc@3.3.7",
-    "removed": [
-      "typescript-7 alias",
-      "@typescript/typescript6 compatibility shim"
+    "vueTscStatus": {
+        "package": "vue-tsc",
+        "latestStable": "3.3.7",
+        "peerDependencies": {
+            "typescript": ">=5.0.0"
+        },
+        "dependencies": {
+            "@volar/typescript": "2.4.28",
+            "@vue/language-core": "3.3.7"
+        },
+        "selected": true
+    },
+    "selectedTypeScriptPackage": "typescript",
+    "selectedTypeScriptVersion": "6.0.3",
+    "versionResolutionMethod": "Fetched official npm registry metadata for typescript, filtered stable versions whose major version is exactly 6, excluded prerelease/dev/next/rc/beta builds, and selected the highest semantic version.",
+    "whyTypeScript6IsRequired": "Official TypeScript guidance states Vue and similar embedded-language workflows need TypeScript 6 for now because TypeScript 7.0 does not expose the stable programmatic API that Volar-like tools require.",
+    "whyCompatibilityShimWasRejected": "P0C showed @typescript/typescript6@6.0.2 cannot be consumed by current vue-tsc@3.3.7/@volar/typescript@2.4.28 because the shim fails Volar tsc path detection.",
+    "dependencyGraph": {
+        "activeDirectPackageCount": 18,
+        "activeCompiler": "typescript@6.0.3",
+        "activeVueTypechecker": "vue-tsc@3.3.7",
+        "removed": ["typescript-7 alias", "@typescript/typescript6 compatibility shim"],
+        "unchangedRuntimeDependencies": [
+            "vue@3.5.39",
+            "vue-router@5.1.0",
+            "pinia@3.0.4",
+            "@tanstack/vue-query@5.101.2",
+            "naive-ui@2.44.1",
+            "gsap@3.15.0",
+            "chess.js@1.4.0",
+            "dexie@4.4.4",
+            "zod@4.4.3"
+        ]
+    },
+    "authoritativeTypecheck": {
+        "command": "pnpm run typecheck",
+        "implementation": "vue-tsc --noEmit",
+        "status": "PASS"
+    },
+    "buildGate": {
+        "command": "pnpm run build",
+        "typecheckBeforeViteBuild": true,
+        "status": "PASS"
+    },
+    "prohibitedWorkarounds": [
+        "node_modules edits",
+        "package export patches",
+        "vue-tsc patches",
+        "Volar patches",
+        "patched dependencies",
+        "patch-package",
+        "plain tsc replacing Vue SFC typecheck",
+        "skipLibCheck workaround",
+        "custom compiler launcher"
     ],
-    "unchangedRuntimeDependencies": [
-      "vue@3.5.39",
-      "vue-router@5.1.0",
-      "pinia@3.0.4",
-      "@tanstack/vue-query@5.101.2",
-      "naive-ui@2.44.1",
-      "gsap@3.15.0",
-      "chess.js@1.4.0",
-      "dexie@4.4.4",
-      "zod@4.4.3"
+    "validation": {
+        "frozenInstall": "PASS",
+        "strictPeerDependencies": "PASS",
+        "compilerIdentity": "PASS",
+        "typecheck": "PASS",
+        "automatedTests": "NOT_APPLICABLE_REMOVED_BY_P0E_POLICY",
+        "build": "PASS",
+        "productionAudit": "PASS",
+        "browserSmoke": "PASS_WITH_NON_BREAKING_FAVICON_404_ON_FIRST_LOAD_THEN_CLEAN_RELOAD"
+    },
+    "reviewTriggers": [
+        "stable TypeScript programmatic API support required by Vue tooling exists",
+        "stable Vue Language Tools support is released",
+        "stable vue-tsc supports that integration",
+        "complete Vue SFC typecheck passes",
+        "no automated-test infrastructure is present",
+        "production build passes",
+        "browser validation passes",
+        "project owner accepts the upgrade"
+    ],
+    "typescript7AdoptionConditions": [
+        "stable TypeScript programmatic API support required by Vue tooling exists",
+        "stable Vue Language Tools support is released",
+        "stable vue-tsc supports that integration",
+        "complete Vue SFC typecheck passes",
+        "no automated-test infrastructure is present",
+        "production build passes",
+        "browser validation passes",
+        "project owner accepts the upgrade"
+    ],
+    "ownerDecision": "P0D supersedes P0C dual/compiler shim configuration with a clean official stable TypeScript 6 Vue toolchain.",
+    "authorityFiles": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/migration/SOURCE_PROVENANCE.md",
+        "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+        "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+        "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json"
     ]
-  },
-  "authoritativeTypecheck": {
-    "command": "pnpm run typecheck",
-    "implementation": "vue-tsc --noEmit",
-    "status": "PASS"
-  },
-  "buildGate": {
-    "command": "pnpm run build",
-    "typecheckBeforeViteBuild": true,
-    "status": "PASS"
-  },
-  "prohibitedWorkarounds": [
-    "node_modules edits",
-    "package export patches",
-    "vue-tsc patches",
-    "Volar patches",
-    "patched dependencies",
-    "patch-package",
-    "plain tsc replacing Vue SFC typecheck",
-    "skipLibCheck workaround",
-    "custom compiler launcher"
-  ],
-  "validation": {
-    "frozenInstall": "PASS",
-    "strictPeerDependencies": "PASS",
-    "compilerIdentity": "PASS",
-    "typecheck": "PASS",
-    "automatedTests": "NOT_APPLICABLE_REMOVED_BY_P0E_POLICY",
-    "build": "PASS",
-    "productionAudit": "PASS",
-    "browserSmoke": "PASS_WITH_NON_BREAKING_FAVICON_404_ON_FIRST_LOAD_THEN_CLEAN_RELOAD"
-  },
-  "reviewTriggers": [
-    "stable TypeScript programmatic API support required by Vue tooling exists",
-    "stable Vue Language Tools support is released",
-    "stable vue-tsc supports that integration",
-    "complete Vue SFC typecheck passes",
-    "no automated-test infrastructure is present",
-    "production build passes",
-    "browser validation passes",
-    "project owner accepts the upgrade"
-  ],
-  "typescript7AdoptionConditions": [
-    "stable TypeScript programmatic API support required by Vue tooling exists",
-    "stable Vue Language Tools support is released",
-    "stable vue-tsc supports that integration",
-    "complete Vue SFC typecheck passes",
-    "no automated-test infrastructure is present",
-    "production build passes",
-    "browser validation passes",
-    "project owner accepts the upgrade"
-  ],
-  "ownerDecision": "P0D supersedes P0C dual/compiler shim configuration with a clean official stable TypeScript 6 Vue toolchain.",
-  "authorityFiles": [
-    "AGENTS.md",
-    "CLAUDE.md",
-    ".ai/skills/project-ui/SKILL.md",
-    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
-    "docs/architecture/TECH_STACK_DECISION.md",
-    "docs/migration/SOURCE_PROVENANCE.md",
-    "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
-    "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
-    "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json"
-  ]
 }

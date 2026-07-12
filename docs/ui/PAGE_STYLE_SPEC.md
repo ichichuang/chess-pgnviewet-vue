@@ -26,14 +26,14 @@ This document governs:
 
 The type scale is fluid so the UI remains usable on large classroom screens and projectors.
 
-| Token | Minimum | Viewport growth | Maximum |
-| --- | --- | --- | --- |
-| `--fs-xs` | 11px | 0.33vw + 7.4px | 16px |
-| `--fs-sm` | 12px | 0.42vw + 7.2px | 18px |
-| `--fs-md` | 13px | 0.50vw + 7.2px | 20px |
-| `--fs-lg` | 15px | 0.67vw + 6.9px | 24px |
-| `--fs-xl` | 18px | 0.84vw + 8.5px | 30px |
-| `--fs-2xl` | 22px | 1.15vw + 10px | 38px |
+| Token      | Minimum | Viewport growth | Maximum |
+| ---------- | ------- | --------------- | ------- |
+| `--fs-xs`  | 11px    | 0.33vw + 7.4px  | 16px    |
+| `--fs-sm`  | 12px    | 0.42vw + 7.2px  | 18px    |
+| `--fs-md`  | 13px    | 0.50vw + 7.2px  | 20px    |
+| `--fs-lg`  | 15px    | 0.67vw + 6.9px  | 24px    |
+| `--fs-xl`  | 18px    | 0.84vw + 8.5px  | 30px    |
+| `--fs-2xl` | 22px    | 1.15vw + 10px   | 38px    |
 
 Body text uses `--fs-md`. Headings use `--fs-xl` and `--fs-2xl`. Captions, coordinates, and metadata use `--fs-xs` or `--fs-sm`.
 
@@ -41,26 +41,26 @@ Body text uses `--fs-md`. Headings use `--fs-xl` and `--fs-2xl`. Captions, coord
 
 Spacing is based on a 4px grid.
 
-| Token | Value |
-| --- | --- |
-| `--s-1` | 4px |
-| `--s-2` | 8px |
-| `--s-3` | 12px |
-| `--s-4` | 16px |
-| `--s-5` | 20px |
-| `--s-6` | 24px |
-| `--s-8` | 32px |
-| `--s-10` | 40px |
+| Token    | Value |
+| -------- | ----- |
+| `--s-1`  | 4px   |
+| `--s-2`  | 8px   |
+| `--s-3`  | 12px  |
+| `--s-4`  | 16px  |
+| `--s-5`  | 20px  |
+| `--s-6`  | 24px  |
+| `--s-8`  | 32px  |
+| `--s-10` | 40px  |
 
 Radii:
 
-| Token | Value |
-| --- | --- |
-| `--r-xs` | 6px |
-| `--r-sm` | 8px |
-| `--r-md` | 12px |
-| `--r-lg` | 16px |
-| `--r-xl` | 24px |
+| Token      | Value |
+| ---------- | ----- |
+| `--r-xs`   | 6px   |
+| `--r-sm`   | 8px   |
+| `--r-md`   | 12px  |
+| `--r-lg`   | 16px  |
+| `--r-xl`   | 24px  |
 | `--r-full` | 999px |
 
 Shadows are restricted to four elevations (`--shadow-xs` to `--shadow-lg`). Floating surfaces use `--shadow-md` or `--shadow-lg`; inline controls use `--shadow-xs` or none.

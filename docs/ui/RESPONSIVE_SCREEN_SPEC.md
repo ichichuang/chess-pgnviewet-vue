@@ -23,13 +23,13 @@ This document governs:
 
 ## Screen profiles
 
-| Profile | Typical viewport | Primary input | Use case |
-| --- | --- | --- | --- |
-| `mobile` | < 640px | Touch | Quick review, share links |
-| `tablet` | 640px – 1024px | Touch + pointer | Coaching on portable devices |
-| `laptop` | 1024px – 1440px | Pointer | Teacher desk, personal study |
-| `desktop` | 1440px – 2560px | Pointer | Classroom presentation |
-| `big-screen` | > 1920px or projection | Pointer/remote | Venue/projector display |
+| Profile      | Typical viewport       | Primary input   | Use case                     |
+| ------------ | ---------------------- | --------------- | ---------------------------- |
+| `mobile`     | < 640px                | Touch           | Quick review, share links    |
+| `tablet`     | 640px – 1024px         | Touch + pointer | Coaching on portable devices |
+| `laptop`     | 1024px – 1440px        | Pointer         | Teacher desk, personal study |
+| `desktop`    | 1440px – 2560px        | Pointer         | Classroom presentation       |
+| `big-screen` | > 1920px or projection | Pointer/remote  | Venue/projector display      |
 
 Breakpoints are minimum-width. The layout adapts upward using container queries where possible.
 
@@ -59,13 +59,13 @@ The board container uses container queries to determine board size:
 boardSize = min(availableWidth, availableHeight) - coordinateGutter
 ```
 
-| Profile | Minimum board size | Panel default behavior |
-| --- | --- | --- |
-| `mobile` | 280px | Single column; side panels become bottom sheets or drawers |
-| `tablet` | 420px | One side panel visible by default; second panel collapses |
-| `laptop` | 520px | Two side panels visible with default widths |
-| `desktop` | 640px | Two side panels visible; board scales with viewport |
-| `big-screen` | 800px+ | Side panels may collapse; board maximized for distance viewing |
+| Profile      | Minimum board size | Panel default behavior                                         |
+| ------------ | ------------------ | -------------------------------------------------------------- |
+| `mobile`     | 280px              | Single column; side panels become bottom sheets or drawers     |
+| `tablet`     | 420px              | One side panel visible by default; second panel collapses      |
+| `laptop`     | 520px              | Two side panels visible with default widths                    |
+| `desktop`    | 640px              | Two side panels visible; board scales with viewport            |
+| `big-screen` | 800px+             | Side panels may collapse; board maximized for distance viewing |
 
 The board must never be clipped by the viewport or by a panel.
 
@@ -104,13 +104,13 @@ Collapsed panels on touch profiles reopen as drawers or sheets with a visible sc
 
 ## Touch vs. pointer
 
-| Interaction | Pointer | Touch |
-| --- | --- | --- |
-| Piece move | Drag or click-to-move | Drag or tap-to-move |
-| Arrows/shapes | Click-drag | Two-finger or long-press gesture |
-| Context menu | Right-click | Long-press |
-| Panel resize | Drag handle | Swipe edge or button toggle |
-| Toolbar | Hover tooltips | No hover; icons self-evident or labeled |
+| Interaction   | Pointer               | Touch                                   |
+| ------------- | --------------------- | --------------------------------------- |
+| Piece move    | Drag or click-to-move | Drag or tap-to-move                     |
+| Arrows/shapes | Click-drag            | Two-finger or long-press gesture        |
+| Context menu  | Right-click           | Long-press                              |
+| Panel resize  | Drag handle           | Swipe edge or button toggle             |
+| Toolbar       | Hover tooltips        | No hover; icons self-evident or labeled |
 
 Touch targets must be at least 44×44 CSS pixels.
 

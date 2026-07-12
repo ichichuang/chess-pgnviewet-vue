@@ -35,36 +35,36 @@ There must not be `AnalysisPage`, `LivePage`, `ReplayPage`, `BigScreenPage`, or 
 
 ## Component catalog
 
-| Component | Responsibility | Coupling rules |
-| --- | --- | --- |
-| `WorkspaceShell` | App chrome: header, toolbar, content grid, footer/status | Owns layout geometry, no domain logic |
-| `BoardContainer` | Measures available space and renders `BoardViewAdapter` square | Layout-only |
-| `BoardViewAdapter` | Project-owned Vue wrapper around the reusable board domain; handles input mode | Reads `BoardStatePort`, emits moves/shapes |
-| `PgnPanel` | Move list, annotations, branch tree, coach notes | Reads PGN domain, dispatches move selection |
-| `AnalysisPanel` | Evaluation chart, classification, engine output | Reads analysis state, dispatches analysis actions |
-| `EvalBar` | Current evaluation bar | Pure presentational |
-| `WorkspaceToolbar` | Mode-aware toolbar with tools, visibility toggles, file actions | Reads workspace mode and permissions |
-| `CompetitionNavigator` | Tournament group/round/pairing/board tree | Consumes `CompetitionPort` |
-| `LiveInfoPanel` | Connection status, player info, last move clock | Consumes `LiveBoardPort` |
-| `ReplayPanel` | Replay controls and import-to-analysis action | Reads replay buffer |
-| `DisplayLayout` | Big-screen chrome: board, player names, status | Uses same components, token overrides |
-| `AnnotationLayer` | Renders arrows/square highlights on the board | Reads brush/annotation state |
-| `MoveList` | Virtualized move list sub-component | Pure presentational |
+| Component              | Responsibility                                                                 | Coupling rules                                    |
+| ---------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------- |
+| `WorkspaceShell`       | App chrome: header, toolbar, content grid, footer/status                       | Owns layout geometry, no domain logic             |
+| `BoardContainer`       | Measures available space and renders `BoardViewAdapter` square                 | Layout-only                                       |
+| `BoardViewAdapter`     | Project-owned Vue wrapper around the reusable board domain; handles input mode | Reads `BoardStatePort`, emits moves/shapes        |
+| `PgnPanel`             | Move list, annotations, branch tree, coach notes                               | Reads PGN domain, dispatches move selection       |
+| `AnalysisPanel`        | Evaluation chart, classification, engine output                                | Reads analysis state, dispatches analysis actions |
+| `EvalBar`              | Current evaluation bar                                                         | Pure presentational                               |
+| `WorkspaceToolbar`     | Mode-aware toolbar with tools, visibility toggles, file actions                | Reads workspace mode and permissions              |
+| `CompetitionNavigator` | Tournament group/round/pairing/board tree                                      | Consumes `CompetitionPort`                        |
+| `LiveInfoPanel`        | Connection status, player info, last move clock                                | Consumes `LiveBoardPort`                          |
+| `ReplayPanel`          | Replay controls and import-to-analysis action                                  | Reads replay buffer                               |
+| `DisplayLayout`        | Big-screen chrome: board, player names, status                                 | Uses same components, token overrides             |
+| `AnnotationLayer`      | Renders arrows/square highlights on the board                                  | Reads brush/annotation state                      |
+| `MoveList`             | Virtualized move list sub-component                                            | Pure presentational                               |
 
 ## Conditional rendering matrix
 
 The matrix maps `mode × source × lifecycle × permission × screenProfile` to the visible regions and enabled actions.
 
-| Mode | Source | Left panel | Right top | Right middle | Right bottom | Toolbar extras |
-| --- | --- | --- | --- | --- | --- | --- |
-| `analysis` | `manual_pgn` | PGN library | Game info | Move list | Analysis | Full editing |
-| `analysis` | `cloud_pgn` | PGN library | Game info + cloud path | Move list | Analysis | Save/Save-as |
-| `analysis` | `backend_handoff_pgn` | PGN library | Game info | Move list | Analysis | Share |
-| `competition_commentary` | `competition_pairing` | Competition navigator | Pairing/players | Move list | Analysis (if allowed) | Commentary tools |
-| `competition_commentary` | `electronic_board_live` | Competition navigator | Live status/players | Live move list | Minimal eval | Live pause/follow |
-| `live_spectator` | `electronic_board_live` | Live board list | Live status/players | Live move list | Minimal eval | Spectator-only |
-| `live_spectator` | `online_game_live` | Game list | Live status/players | Live move list | Minimal eval | Spectator-only |
-| `replay` | `replay_only` | Replay navigator | Replay metadata | Move list | Analysis | Import to analysis |
+| Mode                     | Source                  | Left panel            | Right top              | Right middle   | Right bottom          | Toolbar extras     |
+| ------------------------ | ----------------------- | --------------------- | ---------------------- | -------------- | --------------------- | ------------------ |
+| `analysis`               | `manual_pgn`            | PGN library           | Game info              | Move list      | Analysis              | Full editing       |
+| `analysis`               | `cloud_pgn`             | PGN library           | Game info + cloud path | Move list      | Analysis              | Save/Save-as       |
+| `analysis`               | `backend_handoff_pgn`   | PGN library           | Game info              | Move list      | Analysis              | Share              |
+| `competition_commentary` | `competition_pairing`   | Competition navigator | Pairing/players        | Move list      | Analysis (if allowed) | Commentary tools   |
+| `competition_commentary` | `electronic_board_live` | Competition navigator | Live status/players    | Live move list | Minimal eval          | Live pause/follow  |
+| `live_spectator`         | `electronic_board_live` | Live board list       | Live status/players    | Live move list | Minimal eval          | Spectator-only     |
+| `live_spectator`         | `online_game_live`      | Game list             | Live status/players    | Live move list | Minimal eval          | Spectator-only     |
+| `replay`                 | `replay_only`           | Replay navigator      | Replay metadata        | Move list      | Analysis              | Import to analysis |
 
 Permission gates:
 
@@ -87,15 +87,15 @@ Screen profile gates:
 
 Source adapters translate external data into the domain models consumed by the workspace. They are repository-port consumers, not UI components.
 
-| Adapter | Input | Output domain model |
-| --- | --- | --- |
-| `pgnFileAdapter` | File/string PGN | `PgnGame` |
-| `cloudPgnAdapter` | Cloudreve file DTO | `PgnGame` + cloud metadata |
-| `sharePgnAdapter` | Share UUID backend response | `PgnGame` |
-| `competitionPairingAdapter` | Pairing DTO | `CompetitionPairing` |
-| `liveBoardAdapter` | Live board stream/HTTP | `LiveBoardSnapshot` |
-| `onlineGameAdapter` | Online game info/moves | `OnlineGameSnapshot` |
-| `replayAdapter` | Historical game DTO | `ReplayGame` |
+| Adapter                     | Input                       | Output domain model        |
+| --------------------------- | --------------------------- | -------------------------- |
+| `pgnFileAdapter`            | File/string PGN             | `PgnGame`                  |
+| `cloudPgnAdapter`           | Cloudreve file DTO          | `PgnGame` + cloud metadata |
+| `sharePgnAdapter`           | Share UUID backend response | `PgnGame`                  |
+| `competitionPairingAdapter` | Pairing DTO                 | `CompetitionPairing`       |
+| `liveBoardAdapter`          | Live board stream/HTTP      | `LiveBoardSnapshot`        |
+| `onlineGameAdapter`         | Online game info/moves      | `OnlineGameSnapshot`       |
+| `replayAdapter`             | Historical game DTO         | `ReplayGame`               |
 
 Adapters return plain domain objects. Vue container components expose those objects through the owning Pinia store or the approved TanStack Vue Query repository boundary.
 

@@ -28,14 +28,14 @@ The entire page must never scroll. `html` and `body` must have `overflow: hidden
 
 Every full-screen surface is divided into explicit modules:
 
-| Module | Typical height | Scroll allowed | Example |
-| --- | --- | --- | --- |
-| Header | Fixed | No | App title, account menu |
-| Toolbar | Fixed | No | Workspace tools, mode switcher |
-| Filter/search | Fixed or collapsible | No | Tournament filters |
-| Content | Flexible | Yes | Board + side panels |
-| Side panel | Flexible | Yes | Move list, analysis, navigator |
-| Footer/status | Fixed | No | Connection status, current move |
+| Module        | Typical height       | Scroll allowed | Example                         |
+| ------------- | -------------------- | -------------- | ------------------------------- |
+| Header        | Fixed                | No             | App title, account menu         |
+| Toolbar       | Fixed                | No             | Workspace tools, mode switcher  |
+| Filter/search | Fixed or collapsible | No             | Tournament filters              |
+| Content       | Flexible             | Yes            | Board + side panels             |
+| Side panel    | Flexible             | Yes            | Move list, analysis, navigator  |
+| Footer/status | Fixed                | No             | Connection status, current move |
 
 Each root component must document which modules it contains and which module owns scrolling.
 
@@ -75,13 +75,13 @@ To prevent layout jumps when scrollbars appear:
 
 The workspace uses project-owned Vue layout adapters. A resizable-panel dependency may be selected only after an implementation gate proves it preserves this contract; it must never own product state or tokens.
 
-| Requirement | Rule |
-| --- | --- |
-| Panel sizes | Persisted in Dexie as workspace session state |
-| Collapsed panels | Restore collapsed state after refresh |
-| Min/max sizes | Enforced by adapter; never allow zero-width panels silently |
-| Keyboard resize | Resize handles are keyboard focusable and operable |
-| Touch | Collapse/expand handles work with pointer and touch |
+| Requirement      | Rule                                                        |
+| ---------------- | ----------------------------------------------------------- |
+| Panel sizes      | Persisted in Dexie as workspace session state               |
+| Collapsed panels | Restore collapsed state after refresh                       |
+| Min/max sizes    | Enforced by adapter; never allow zero-width panels silently |
+| Keyboard resize  | Resize handles are keyboard focusable and operable          |
+| Touch            | Collapse/expand handles work with pointer and touch         |
 
 ### Layout adapter contract
 

@@ -6,6 +6,7 @@ export default {
   semi: false,
   singleQuote: true,
   trailingComma: 'es5',
+  embeddedLanguageFormatting: 'off',
   overrides: [
     {
       files: ['.ai/reports/*.json', 'docs/**/*.json'],

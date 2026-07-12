@@ -31,13 +31,13 @@ src/
 
 ## State boundaries
 
-| State | Owner | Persistence |
-| --- | --- | --- |
-| Client interaction/session | feature-owned Pinia store | categorized Dexie record when approved |
-| Server reads | typed repository + TanStack Vue Query | re-fetch by default; sensitive cache never persists |
-| Live transport | explicit service/composable | memory only |
-| Auth | server session; minimal derived Pinia status | opaque HttpOnly cookie only |
-| Chess/PGN/annotation/analysis | framework-free domain | explicit versioned persistence adapter |
+| State                         | Owner                                        | Persistence                                         |
+| ----------------------------- | -------------------------------------------- | --------------------------------------------------- |
+| Client interaction/session    | feature-owned Pinia store                    | categorized Dexie record when approved              |
+| Server reads                  | typed repository + TanStack Vue Query        | re-fetch by default; sensitive cache never persists |
+| Live transport                | explicit service/composable                  | memory only                                         |
+| Auth                          | server session; minimal derived Pinia status | opaque HttpOnly cookie only                         |
+| Chess/PGN/annotation/analysis | framework-free domain                        | explicit versioned persistence adapter              |
 
 ## I/O boundary
 

@@ -33,4 +33,3 @@ Every new field must name exactly one category, owner, schema version, expiratio
 ## Migration gate
 
 Any legacy storage import requires an explicit allowlist, versioned parser, Zod schema, dry-run evidence, rollback behavior, and tests. Raw browser databases and profiles are never migration sources.
-

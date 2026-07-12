@@ -24,13 +24,13 @@ This document governs:
 
 `WorkspaceMode` is a discriminated union. Each mode determines which adapters render inside the unified workspace shell.
 
-| Mode | Purpose | Allowed sources |
-| --- | --- | --- |
-| `analysis` | Manual/cloud/share PGN analysis and teaching | `manual_pgn`, `cloud_pgn`, `backend_handoff_pgn` |
-| `competition_commentary` | Teacher commentary anchored to a tournament pairing | `competition_pairing`, `electronic_board_live` |
-| `live_spectator` | Read-only live viewing of a board or online game | `electronic_board_live`, `online_game_live` |
-| `replay` | Historical game replay without live tie | `replay_only` |
-| `future_extension` | Planned extension point for new sources or layouts | Owner-approved sources only |
+| Mode                     | Purpose                                             | Allowed sources                                  |
+| ------------------------ | --------------------------------------------------- | ------------------------------------------------ |
+| `analysis`               | Manual/cloud/share PGN analysis and teaching        | `manual_pgn`, `cloud_pgn`, `backend_handoff_pgn` |
+| `competition_commentary` | Teacher commentary anchored to a tournament pairing | `competition_pairing`, `electronic_board_live`   |
+| `live_spectator`         | Read-only live viewing of a board or online game    | `electronic_board_live`, `online_game_live`      |
+| `replay`                 | Historical game replay without live tie             | `replay_only`                                    |
+| `future_extension`       | Planned extension point for new sources or layouts  | Owner-approved sources only                      |
 
 `pairing_only` is allowed as a lightweight source state inside `competition_commentary` but is not a standalone product surface or mode.
 
@@ -38,43 +38,43 @@ This document governs:
 
 The core business modes from `docs/product/PRODUCT_DEFINITION.md` map to canonical modes and routes as follows:
 
-| Business mode | Canonical mode(s) | Route / note |
-| --- | --- | --- |
-| `imported_pgn` teaching and analysis | `analysis` | `/pgnViewer/` with `manual_pgn`, `cloud_pgn`, or `backend_handoff_pgn` source. |
-| `finished_online_game` replay and analysis | `replay`, then `analysis` on import | `/pgnViewer/?handoff=<id>`; explicit import-to-analysis action. |
-| `live_online_game` viewing and explanation | `live_spectator` | `/pgnViewer/?handoff=<id>` with `online_game_live` source (owner confirmation required). |
-| `live_hardware_board` viewing and explanation | `live_spectator` or `competition_commentary` | `/pgnViewer/?handoff=<id>` with `electronic_board_live` source. |
-| `tournament_browser` | none (list/detail surface) | `/competitions`, `/competitions/:hdid`; hands off to `/pgnViewer/`. |
-| `teacher_workspace` | `analysis` / `competition_commentary` | Permission-gated teaching toolbar and annotation editing. |
-| `replay_workspace` | `replay` | `/pgnViewer/?handoff=<id>` with `replay_only` source. |
-| `big_screen_display` | none (screen profile) | `/competitions/:hdid/display` using the `big-screen` profile. |
-| `future_extension` mode | `future_extension` | Requires spec update and owner approval before implementation. |
-| `read_only_internal_inspection` mode | any mode | Permission-gated diagnostic view; no write/admin endpoints. |
+| Business mode                                 | Canonical mode(s)                            | Route / note                                                                             |
+| --------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `imported_pgn` teaching and analysis          | `analysis`                                   | `/pgnViewer/` with `manual_pgn`, `cloud_pgn`, or `backend_handoff_pgn` source.           |
+| `finished_online_game` replay and analysis    | `replay`, then `analysis` on import          | `/pgnViewer/?handoff=<id>`; explicit import-to-analysis action.                          |
+| `live_online_game` viewing and explanation    | `live_spectator`                             | `/pgnViewer/?handoff=<id>` with `online_game_live` source (owner confirmation required). |
+| `live_hardware_board` viewing and explanation | `live_spectator` or `competition_commentary` | `/pgnViewer/?handoff=<id>` with `electronic_board_live` source.                          |
+| `tournament_browser`                          | none (list/detail surface)                   | `/competitions`, `/competitions/:hdid`; hands off to `/pgnViewer/`.                      |
+| `teacher_workspace`                           | `analysis` / `competition_commentary`        | Permission-gated teaching toolbar and annotation editing.                                |
+| `replay_workspace`                            | `replay`                                     | `/pgnViewer/?handoff=<id>` with `replay_only` source.                                    |
+| `big_screen_display`                          | none (screen profile)                        | `/competitions/:hdid/display` using the `big-screen` profile.                            |
+| `future_extension` mode                       | `future_extension`                           | Requires spec update and owner approval before implementation.                           |
+| `read_only_internal_inspection` mode          | any mode                                     | Permission-gated diagnostic view; no write/admin endpoints.                              |
 
 ## Mode lifecycle
 
-| Transition | Trigger | Behavior |
-| --- | --- | --- |
-| Default | User opens bare `/pgnViewer/` | `analysis` mode with `manual_pgn` source |
-| Handoff | Tournament detail selects pairing/board | Navigate to `/pgnViewer/?handoff=<id>`; resolved mode is `competition_commentary` or `live_spectator` |
-| Source switch | User picks a different source in the same mode | Preserve mode, swap source adapter, keep layout geometry |
-| Mode switch | User explicitly changes mode | Re-render adapters, preserve user layout if compatible, reset source-specific transient state |
-| Replay import | User imports a replay into analysis | Requires explicit user action; creates a new `analysis` session |
-| Future extension | Owner-approved new source or layout | Requires spec update; starts in `future_extension` mode with restricted adapters |
-| Internal inspection | Internal staff enables diagnostic view | Permission-aware overlay; does not change mode or source |
+| Transition          | Trigger                                        | Behavior                                                                                              |
+| ------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Default             | User opens bare `/pgnViewer/`                  | `analysis` mode with `manual_pgn` source                                                              |
+| Handoff             | Tournament detail selects pairing/board        | Navigate to `/pgnViewer/?handoff=<id>`; resolved mode is `competition_commentary` or `live_spectator` |
+| Source switch       | User picks a different source in the same mode | Preserve mode, swap source adapter, keep layout geometry                                              |
+| Mode switch         | User explicitly changes mode                   | Re-render adapters, preserve user layout if compatible, reset source-specific transient state         |
+| Replay import       | User imports a replay into analysis            | Requires explicit user action; creates a new `analysis` session                                       |
+| Future extension    | Owner-approved new source or layout            | Requires spec update; starts in `future_extension` mode with restricted adapters                      |
+| Internal inspection | Internal staff enables diagnostic view         | Permission-aware overlay; does not change mode or source                                              |
 
 ## Conditional rendering matrix
 
 The workspace shell renders the same structural components for every mode. The content of each region is selected by a `WorkspaceAdapterResolver`.
 
-| Region | `analysis` | `competition_commentary` | `live_spectator` | `replay` |
-| --- | --- | --- | --- | --- |
-| Left panel | PGN list / file library | Competition navigator | Live board list / game list | Replay navigator |
-| Center | Board | Board | Board | Board |
-| Right top | PGN info / headers | Player / pairing info | Live status / players | Replay metadata |
-| Right middle | Move list / annotations | Move list / annotations (read-only or annotated) | Move list (live) | Move list |
-| Right bottom | Analysis panel | Analysis panel (if enabled) | Minimal eval / status | Analysis panel |
-| Toolbar | Full teaching toolbar | Commentary toolbar | Spectator toolbar | Replay toolbar |
+| Region       | `analysis`              | `competition_commentary`                         | `live_spectator`            | `replay`         |
+| ------------ | ----------------------- | ------------------------------------------------ | --------------------------- | ---------------- |
+| Left panel   | PGN list / file library | Competition navigator                            | Live board list / game list | Replay navigator |
+| Center       | Board                   | Board                                            | Board                       | Board            |
+| Right top    | PGN info / headers      | Player / pairing info                            | Live status / players       | Replay metadata  |
+| Right middle | Move list / annotations | Move list / annotations (read-only or annotated) | Move list (live)            | Move list        |
+| Right bottom | Analysis panel          | Analysis panel (if enabled)                      | Minimal eval / status       | Analysis panel   |
+| Toolbar      | Full teaching toolbar   | Commentary toolbar                               | Spectator toolbar           | Replay toolbar   |
 
 Specific visibility is further gated by:
 

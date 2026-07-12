@@ -1,161 +1,343 @@
 {
-  "schemaVersion": 1,
-  "policy": "Only explicitly documented contracts and redacted real-response evidence are mapped. Missing fields remain unresolved.",
-  "preservedRules": [
-    "Aggregate team-match records are not individual game IDs.",
-    "Only confirmed ongoing and completed tournaments appear.",
-    "Finished games use real replay data.",
-    "Ongoing games require confirmed live transport.",
-    "AI is disabled during ongoing games.",
-    "Browser code never stores upstream credentials.",
-    "Browser code never owns HMAC secrets.",
-    "Upstream credentials are injected server-side.",
-    "Generic legacy /CALL transport is forbidden.",
-    "proxyRequest restoration is forbidden.",
-    "Write or admin endpoints require explicit project-owner approval.",
-    "MQTT is read-only and blocked until its contract is confirmed; MQTT publish remains forbidden."
-  ],
-  "identifierChain": ["hdid", "ticketid", "round_id", "pairing.id", "gameid"],
-  "capabilities": [
-    {
-      "capabilityIdentifier": "api.tournament_list",
-      "authorityDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/API_BOUNDARY_ADR.md", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_API_GATEWAY_SLICE_1.md"],
-      "evidenceDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/SERVER_ONLY_HMAC_SMOKE.redacted.json", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json"],
-      "confirmedEndpointPath": "/api/liveproxy/getactlist",
-      "httpMethod": "POST",
-      "requestSchemaEvidence": {"explicitKeys": ["actflag", "max", "search", "start", "type"], "additionalProperties": "UNRESOLVED"},
-      "responseSchemaEvidence": {"envelope": ["resp", "content"], "contentKeys": ["Total", "Details"], "observedDetailKeys": ["hdid", "title", "act_starttime", "act_endtime", "sign_endtime", "poster", "act_sign", "ext_catgory", "sponsor", "delaymatchtime", "actflag", "sponsorLogo"]},
-      "authenticationRequirement": "Public from browser user-session perspective; upstream HMAC is server-only.",
-      "sameOriginGatewayRequirement": "REQUIRED",
-      "typedRepositoryOwner": "TournamentRepository.list",
-      "zodValidationRequirement": "REQUIRED_AT_GATEWAY_RESPONSE_BOUNDARY",
-      "readOrWriteClassification": "READ_VIA_POST",
-      "liveOrReplayClassification": "TOURNAMENT_DISCOVERY",
-      "aggregateOrIndividualGameIdentifierSemantics": "hdid identifies tournament/event context, never an individual game.",
-      "implementationPhase": "P4_TOURNAMENT_READS",
-      "contractConfidence": "REAL_HTTP_200_PARTIAL_SCHEMA",
-      "unresolvedQuestions": ["Named backend owner", "Exhaustive request/response schema", "Exact ongoing/completed filter semantics"],
-      "prohibitedAssumptions": ["Do not display unconfirmed tournament states.", "Do not expose upstream route or signing material to browser code."]
-    },
-    {
-      "capabilityIdentifier": "api.tournament_groups",
-      "authorityDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_API_GATEWAY_SLICE_1.md"],
-      "evidenceDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/SERVER_ONLY_HMAC_SMOKE.redacted.json", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json"],
-      "confirmedEndpointPath": "/api/liveproxy/getactgroups",
-      "httpMethod": "POST",
-      "requestSchemaEvidence": {"explicitKeys": ["hdid"], "additionalProperties": "FORBIDDEN_UNLESS_CONFIRMED"},
-      "responseSchemaEvidence": {"envelope": ["resp", "content"], "contentType": "array", "observedKeys": ["ticketid", "ticketname", "hdid", "signcount", "cur_state"]},
-      "authenticationRequirement": "Public browser read; server-only upstream HMAC.",
-      "sameOriginGatewayRequirement": "REQUIRED",
-      "typedRepositoryOwner": "TournamentRepository.groups",
-      "zodValidationRequirement": "REQUIRED_AT_GATEWAY_RESPONSE_BOUNDARY",
-      "readOrWriteClassification": "READ_VIA_POST",
-      "liveOrReplayClassification": "TOURNAMENT_DISCOVERY",
-      "aggregateOrIndividualGameIdentifierSemantics": "ticketid identifies a tournament group; hdid remains tournament context.",
-      "implementationPhase": "P4_TOURNAMENT_READS",
-      "contractConfidence": "REAL_HTTP_200_PARTIAL_SCHEMA",
-      "unresolvedQuestions": ["Exhaustive group schema", "Backend owner"],
-      "prohibitedAssumptions": ["Do not treat ticketid as gameid.", "Do not call upstream directly from browser code."]
-    },
-    {
-      "capabilityIdentifier": "api.tournament_rounds",
-      "authorityDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/AUTH2_GATEWAY_AUTH_DECISION.md", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_API_GATEWAY_SLICE_1.md"],
-      "evidenceDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/SERVER_ONLY_HMAC_SMOKE.redacted.json", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/AUTH5_DIRECT_PRODUCTION_API_LOGIN_REPAIR_REPORT.json"],
-      "confirmedEndpointPath": "/api/award/c-getmatchroundlist",
-      "httpMethod": "POST",
-      "requestSchemaEvidence": {"explicitKeys": ["hdid", "ticketid"], "additionalProperties": "FORBIDDEN_UNLESS_CONFIRMED"},
-      "responseSchemaEvidence": {"envelope": ["resp", "content"], "contentKeys": ["roundfinish", "cur_round", "roundinfo"], "roundInfoObservedKeys": ["round_id", "starttime"]},
-      "authenticationRequirement": "Public browser read; server-only upstream HMAC.",
-      "sameOriginGatewayRequirement": "REQUIRED",
-      "typedRepositoryOwner": "TournamentRepository.rounds",
-      "zodValidationRequirement": "REQUIRED_WITH_NON_COERCIVE_ROUND_FIELD_AUDIT",
-      "readOrWriteClassification": "READ_VIA_POST",
-      "liveOrReplayClassification": "TOURNAMENT_DISCOVERY",
-      "aggregateOrIndividualGameIdentifierSemantics": "round_id is scoped by hdid and ticketid; it is not gameid.",
-      "implementationPhase": "P4_TOURNAMENT_READS",
-      "contractConfidence": "REAL_HTTP_200_WITH_KNOWN_CLIENT_SCHEMA_MISMATCH",
-      "unresolvedQuestions": ["Stable numeric/string constraints for round fields", "Exhaustive schema"],
-      "prohibitedAssumptions": ["Do not coerce mismatched round values without owner-backed schema evidence."]
-    },
-    {
-      "capabilityIdentifier": "api.tournament_pairings",
-      "authorityDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_API_GATEWAY_SLICE_1.md", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_REPLAY_DATA_SOURCE_SLICE.md"],
-      "evidenceDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/SERVER_ONLY_HMAC_SMOKE.redacted.json", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json"],
-      "confirmedEndpointPath": "/api/award/c-getmatchpairlist",
-      "httpMethod": "POST",
-      "requestSchemaEvidence": {"baseKeys": ["hdid", "ticketid", "round_id", "st", "plen", "type"], "replayDiscoveryObservedKeys": ["jgid"], "additionalProperties": "FORBIDDEN_UNLESS_CONFIRMED"},
-      "responseSchemaEvidence": {"envelope": ["resp", "content"], "contentType": "array", "observedKeys": ["id", "white", "black", "status", "sort_id", "welo", "belo", "wjgname", "bjgname", "wfieldid", "bfieldid", "wfaceimg"]},
-      "authenticationRequirement": "Public browser read; server-only upstream HMAC.",
-      "sameOriginGatewayRequirement": "REQUIRED",
-      "typedRepositoryOwner": "TournamentRepository.pairings",
-      "zodValidationRequirement": "REQUIRED_AT_GATEWAY_RESPONSE_BOUNDARY",
-      "readOrWriteClassification": "READ_VIA_POST",
-      "liveOrReplayClassification": "TOURNAMENT_DISCOVERY_AND_REPLAY_SELECTION",
-      "aggregateOrIndividualGameIdentifierSemantics": "Pairing row id is high-confidence gameid for replay; aggregate team-match records and hdid are not individual game IDs.",
-      "implementationPhase": "P4_TOURNAMENT_READS",
-      "contractConfidence": "REAL_HTTP_200_PARTIAL_SCHEMA",
-      "unresolvedQuestions": ["When type/jgid are required", "Exhaustive pairing schema", "Aggregate/team pairing variants"],
-      "prohibitedAssumptions": ["Do not use hdid, ticketid, round_id, or aggregate match records as gameid.", "Do not invent player/image fields."]
-    },
-    {
-      "capabilityIdentifier": "api.finished_game_replay",
-      "authorityDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/AUTH2_GATEWAY_AUTH_DECISION.md", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_REPLAY_DATA_SOURCE_SLICE.md"],
-      "evidenceDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/backend-contract/chess-api.backend-contract.json"],
-      "confirmedEndpointPath": "/api/gameapi/gamemgr/getgameinfo",
-      "httpMethod": "POST",
-      "requestSchemaEvidence": {"browserKeys": ["gameid"], "serverInjectedFields": ["token"], "explicitlyForbiddenWithoutConfirmation": ["kaisaileuid", "newAtNotExist"]},
-      "responseSchemaEvidence": {"envelope": "raw game object", "observedTopLevelKeys": ["id", "name", "desc", "updateflag", "status", "stateM", "result", "times", "players", "mqtt", "gametype", "gameserverinfoid", "datas"], "observedDatasKeys": ["pgn", "fen", "moves", "sanidx", "threefolds", "stopclock"]},
-      "authenticationRequirement": "Server-held session token is injected into the upstream body; browser never receives or sends it directly.",
-      "sameOriginGatewayRequirement": "REQUIRED",
-      "typedRepositoryOwner": "ReplayRepository.getFinishedGame",
-      "zodValidationRequirement": "REQUIRED_WITH_REAL_REPLAY_VARIANTS",
-      "readOrWriteClassification": "READ_VIA_POST_WITH_POTENTIAL_BACKEND_SIDE_EFFECT_RISK",
-      "liveOrReplayClassification": "FINISHED_REPLAY_ONLY",
-      "aggregateOrIndividualGameIdentifierSemantics": "gameid is pairing row id. Aggregate team-match identifiers are prohibited.",
-      "implementationPhase": "P4_REPLAY",
-      "contractConfidence": "REAL_HTTP_200_PARTIAL_SCHEMA_AUTH_GATED",
-      "unresolvedQuestions": ["Side-effect-free guarantee for gameid-only request", "Token lifetime/refresh", "Empty PGN versus moves/FEN normalization", "Production login E2E"],
-      "prohibitedAssumptions": ["Do not expose or use mqtt response material.", "Do not add kaisaileuid/newAtNotExist.", "Do not fabricate PGN when only moves/FEN exist."]
-    },
-    {
-      "capabilityIdentifier": "api.same_origin_auth_session",
-      "authorityDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/AUTH2_GATEWAY_AUTH_DECISION.md"],
-      "evidenceDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/AUTH5_DIRECT_PRODUCTION_API_LOGIN_REPAIR_REPORT.json"],
-      "confirmedEndpointPath": ["/api/auth/login", "/api/auth/session", "/api/auth/logout"],
-      "httpMethod": ["POST", "GET", "POST"],
-      "requestSchemaEvidence": {"loginBrowserKeys": ["account", "password"], "sessionRequestBody": "UNRESOLVED", "logoutRequestBody": "UNRESOLVED"},
-      "responseSchemaEvidence": {"browserVisibleFields": ["authenticated"], "browserVisibleSemantics": ["non-personal signed-in label code; exact response field name unresolved"], "serverOnlyFields": ["upstream token", "uid", "compatibility aliases"]},
-      "authenticationRequirement": "Login establishes opaque local session; session/logout use opaque HttpOnly cookie.",
-      "sameOriginGatewayRequirement": "REQUIRED_DEDICATED_HANDLERS_ONLY",
-      "typedRepositoryOwner": "AuthRepository",
-      "zodValidationRequirement": "REQUIRED_FOR_BROWSER_AND_UPSTREAM_BOUNDARIES",
-      "readOrWriteClassification": "DEDICATED_AUTH_SESSION_CONTROL; NOT_ADMIN_OR_GENERIC_WRITE",
-      "liveOrReplayClassification": "AUTH_INFRASTRUCTURE",
-      "aggregateOrIndividualGameIdentifierSemantics": "Not applicable; upstream uid remains server-side.",
-      "implementationPhase": "POST_AUTH_E2E_GATE",
-      "contractConfidence": "OWNER_CONFIRMED_CONTRACT_RUNTIME_PARTIAL",
-      "unresolvedQuestions": ["Successful real production credential flow", "Refresh restoration", "Protected replay through session", "Logout E2E", "Upstream refresh/logout semantics"],
-      "prohibitedAssumptions": ["api-1572 is not generally approved; only the dedicated handler is allowed.", "Guest login is not production auth authority.", "Browser code must not hash for upstream or receive token/uid."]
-    },
-    {
-      "capabilityIdentifier": "api.live_transport_guard",
-      "authorityDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/API_BOUNDARY_ADR.md", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/AUTH2_GATEWAY_AUTH_DECISION.md", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/API_MASTER_SUMMARY.json"],
-      "evidenceDocumentPaths": ["/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/API_MASTER_SUMMARY.json", "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/API_TRANSPORT_DECISIONS.md"],
-      "confirmedEndpointPath": null,
-      "httpMethod": null,
-      "requestSchemaEvidence": null,
-      "responseSchemaEvidence": null,
-      "authenticationRequirement": "UNCONFIRMED",
-      "sameOriginGatewayRequirement": "REQUIRED_IF_LATER_APPROVED",
-      "typedRepositoryOwner": "UNASSIGNED_BLOCKED",
-      "zodValidationRequirement": "REQUIRED_BEFORE_ANY_IMPLEMENTATION",
-      "readOrWriteClassification": "READ_ONLY_INTENT; IMPLEMENTATION_BLOCKED; PUBLISH_FORBIDDEN",
-      "liveOrReplayClassification": "LIVE_TRANSPORT_UNCONFIRMED",
-      "aggregateOrIndividualGameIdentifierSemantics": "UNRESOLVED",
-      "implementationPhase": "POST_OWNER_CONFIRMED_CONTRACT",
-      "contractConfidence": "BLOCKED_NO_CONFIRMED_CONTRACT",
-      "unresolvedQuestions": ["Transport", "topic and identifier semantics", "credentials", "authorization", "snapshot/reconnect", "stale detection", "hosting"],
-      "prohibitedAssumptions": ["Tournament discovery endpoints do not prove live transport.", "An mqtt field in replay data does not authorize MQTT.", "No browser MQTT credentials or topics.", "No MQTT publish.", "AI remains disabled during ongoing games."]
-    }
-  ]
+    "schemaVersion": 1,
+    "policy": "Only explicitly documented contracts and redacted real-response evidence are mapped. Missing fields remain unresolved.",
+    "preservedRules": [
+        "Aggregate team-match records are not individual game IDs.",
+        "Only confirmed ongoing and completed tournaments appear.",
+        "Finished games use real replay data.",
+        "Ongoing games require confirmed live transport.",
+        "AI is disabled during ongoing games.",
+        "Browser code never stores upstream credentials.",
+        "Browser code never owns HMAC secrets.",
+        "Upstream credentials are injected server-side.",
+        "Generic legacy /CALL transport is forbidden.",
+        "proxyRequest restoration is forbidden.",
+        "Write or admin endpoints require explicit project-owner approval.",
+        "MQTT is read-only and blocked until its contract is confirmed; MQTT publish remains forbidden."
+    ],
+    "identifierChain": ["hdid", "ticketid", "round_id", "pairing.id", "gameid"],
+    "capabilities": [
+        {
+            "capabilityIdentifier": "api.tournament_list",
+            "authorityDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/API_BOUNDARY_ADR.md",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_API_GATEWAY_SLICE_1.md"
+            ],
+            "evidenceDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json"
+            ],
+            "confirmedEndpointPath": "/api/liveproxy/getactlist",
+            "httpMethod": "POST",
+            "requestSchemaEvidence": {
+                "explicitKeys": ["actflag", "max", "search", "start", "type"],
+                "additionalProperties": "UNRESOLVED"
+            },
+            "responseSchemaEvidence": {
+                "envelope": ["resp", "content"],
+                "contentKeys": ["Total", "Details"],
+                "observedDetailKeys": [
+                    "hdid",
+                    "title",
+                    "act_starttime",
+                    "act_endtime",
+                    "sign_endtime",
+                    "poster",
+                    "act_sign",
+                    "ext_catgory",
+                    "sponsor",
+                    "delaymatchtime",
+                    "actflag",
+                    "sponsorLogo"
+                ]
+            },
+            "authenticationRequirement": "Public from browser user-session perspective; upstream HMAC is server-only.",
+            "sameOriginGatewayRequirement": "REQUIRED",
+            "typedRepositoryOwner": "TournamentRepository.list",
+            "zodValidationRequirement": "REQUIRED_AT_GATEWAY_RESPONSE_BOUNDARY",
+            "readOrWriteClassification": "READ_VIA_POST",
+            "liveOrReplayClassification": "TOURNAMENT_DISCOVERY",
+            "aggregateOrIndividualGameIdentifierSemantics": "hdid identifies tournament/event context, never an individual game.",
+            "implementationPhase": "P4_TOURNAMENT_READS",
+            "contractConfidence": "REAL_HTTP_200_PARTIAL_SCHEMA",
+            "unresolvedQuestions": [
+                "Named backend owner",
+                "Exhaustive request/response schema",
+                "Exact ongoing/completed filter semantics"
+            ],
+            "prohibitedAssumptions": [
+                "Do not display unconfirmed tournament states.",
+                "Do not expose upstream route or signing material to browser code."
+            ]
+        },
+        {
+            "capabilityIdentifier": "api.tournament_groups",
+            "authorityDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_API_GATEWAY_SLICE_1.md"
+            ],
+            "evidenceDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json"
+            ],
+            "confirmedEndpointPath": "/api/liveproxy/getactgroups",
+            "httpMethod": "POST",
+            "requestSchemaEvidence": {
+                "explicitKeys": ["hdid"],
+                "additionalProperties": "FORBIDDEN_UNLESS_CONFIRMED"
+            },
+            "responseSchemaEvidence": {
+                "envelope": ["resp", "content"],
+                "contentType": "array",
+                "observedKeys": ["ticketid", "ticketname", "hdid", "signcount", "cur_state"]
+            },
+            "authenticationRequirement": "Public browser read; server-only upstream HMAC.",
+            "sameOriginGatewayRequirement": "REQUIRED",
+            "typedRepositoryOwner": "TournamentRepository.groups",
+            "zodValidationRequirement": "REQUIRED_AT_GATEWAY_RESPONSE_BOUNDARY",
+            "readOrWriteClassification": "READ_VIA_POST",
+            "liveOrReplayClassification": "TOURNAMENT_DISCOVERY",
+            "aggregateOrIndividualGameIdentifierSemantics": "ticketid identifies a tournament group; hdid remains tournament context.",
+            "implementationPhase": "P4_TOURNAMENT_READS",
+            "contractConfidence": "REAL_HTTP_200_PARTIAL_SCHEMA",
+            "unresolvedQuestions": ["Exhaustive group schema", "Backend owner"],
+            "prohibitedAssumptions": [
+                "Do not treat ticketid as gameid.",
+                "Do not call upstream directly from browser code."
+            ]
+        },
+        {
+            "capabilityIdentifier": "api.tournament_rounds",
+            "authorityDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/AUTH2_GATEWAY_AUTH_DECISION.md",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_API_GATEWAY_SLICE_1.md"
+            ],
+            "evidenceDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/AUTH5_DIRECT_PRODUCTION_API_LOGIN_REPAIR_REPORT.json"
+            ],
+            "confirmedEndpointPath": "/api/award/c-getmatchroundlist",
+            "httpMethod": "POST",
+            "requestSchemaEvidence": {
+                "explicitKeys": ["hdid", "ticketid"],
+                "additionalProperties": "FORBIDDEN_UNLESS_CONFIRMED"
+            },
+            "responseSchemaEvidence": {
+                "envelope": ["resp", "content"],
+                "contentKeys": ["roundfinish", "cur_round", "roundinfo"],
+                "roundInfoObservedKeys": ["round_id", "starttime"]
+            },
+            "authenticationRequirement": "Public browser read; server-only upstream HMAC.",
+            "sameOriginGatewayRequirement": "REQUIRED",
+            "typedRepositoryOwner": "TournamentRepository.rounds",
+            "zodValidationRequirement": "REQUIRED_WITH_NON_COERCIVE_ROUND_FIELD_AUDIT",
+            "readOrWriteClassification": "READ_VIA_POST",
+            "liveOrReplayClassification": "TOURNAMENT_DISCOVERY",
+            "aggregateOrIndividualGameIdentifierSemantics": "round_id is scoped by hdid and ticketid; it is not gameid.",
+            "implementationPhase": "P4_TOURNAMENT_READS",
+            "contractConfidence": "REAL_HTTP_200_WITH_KNOWN_CLIENT_SCHEMA_MISMATCH",
+            "unresolvedQuestions": [
+                "Stable numeric/string constraints for round fields",
+                "Exhaustive schema"
+            ],
+            "prohibitedAssumptions": [
+                "Do not coerce mismatched round values without owner-backed schema evidence."
+            ]
+        },
+        {
+            "capabilityIdentifier": "api.tournament_pairings",
+            "authorityDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_API_GATEWAY_SLICE_1.md",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_REPLAY_DATA_SOURCE_SLICE.md"
+            ],
+            "evidenceDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/SERVER_ONLY_HMAC_SMOKE.redacted.json",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json"
+            ],
+            "confirmedEndpointPath": "/api/award/c-getmatchpairlist",
+            "httpMethod": "POST",
+            "requestSchemaEvidence": {
+                "baseKeys": ["hdid", "ticketid", "round_id", "st", "plen", "type"],
+                "replayDiscoveryObservedKeys": ["jgid"],
+                "additionalProperties": "FORBIDDEN_UNLESS_CONFIRMED"
+            },
+            "responseSchemaEvidence": {
+                "envelope": ["resp", "content"],
+                "contentType": "array",
+                "observedKeys": [
+                    "id",
+                    "white",
+                    "black",
+                    "status",
+                    "sort_id",
+                    "welo",
+                    "belo",
+                    "wjgname",
+                    "bjgname",
+                    "wfieldid",
+                    "bfieldid",
+                    "wfaceimg"
+                ]
+            },
+            "authenticationRequirement": "Public browser read; server-only upstream HMAC.",
+            "sameOriginGatewayRequirement": "REQUIRED",
+            "typedRepositoryOwner": "TournamentRepository.pairings",
+            "zodValidationRequirement": "REQUIRED_AT_GATEWAY_RESPONSE_BOUNDARY",
+            "readOrWriteClassification": "READ_VIA_POST",
+            "liveOrReplayClassification": "TOURNAMENT_DISCOVERY_AND_REPLAY_SELECTION",
+            "aggregateOrIndividualGameIdentifierSemantics": "Pairing row id is high-confidence gameid for replay; aggregate team-match records and hdid are not individual game IDs.",
+            "implementationPhase": "P4_TOURNAMENT_READS",
+            "contractConfidence": "REAL_HTTP_200_PARTIAL_SCHEMA",
+            "unresolvedQuestions": [
+                "When type/jgid are required",
+                "Exhaustive pairing schema",
+                "Aggregate/team pairing variants"
+            ],
+            "prohibitedAssumptions": [
+                "Do not use hdid, ticketid, round_id, or aggregate match records as gameid.",
+                "Do not invent player/image fields."
+            ]
+        },
+        {
+            "capabilityIdentifier": "api.finished_game_replay",
+            "authorityDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/AUTH2_GATEWAY_AUTH_DECISION.md",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/implementation/REAL_REPLAY_DATA_SOURCE_SLICE.md"
+            ],
+            "evidenceDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/urgent-mvp/REAL_REPLAY_DATA_SOURCE_SMOKE.redacted.json",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/backend-contract/chess-api.backend-contract.json"
+            ],
+            "confirmedEndpointPath": "/api/gameapi/gamemgr/getgameinfo",
+            "httpMethod": "POST",
+            "requestSchemaEvidence": {
+                "browserKeys": ["gameid"],
+                "serverInjectedFields": ["token"],
+                "explicitlyForbiddenWithoutConfirmation": ["kaisaileuid", "newAtNotExist"]
+            },
+            "responseSchemaEvidence": {
+                "envelope": "raw game object",
+                "observedTopLevelKeys": [
+                    "id",
+                    "name",
+                    "desc",
+                    "updateflag",
+                    "status",
+                    "stateM",
+                    "result",
+                    "times",
+                    "players",
+                    "mqtt",
+                    "gametype",
+                    "gameserverinfoid",
+                    "datas"
+                ],
+                "observedDatasKeys": ["pgn", "fen", "moves", "sanidx", "threefolds", "stopclock"]
+            },
+            "authenticationRequirement": "Server-held session token is injected into the upstream body; browser never receives or sends it directly.",
+            "sameOriginGatewayRequirement": "REQUIRED",
+            "typedRepositoryOwner": "ReplayRepository.getFinishedGame",
+            "zodValidationRequirement": "REQUIRED_WITH_REAL_REPLAY_VARIANTS",
+            "readOrWriteClassification": "READ_VIA_POST_WITH_POTENTIAL_BACKEND_SIDE_EFFECT_RISK",
+            "liveOrReplayClassification": "FINISHED_REPLAY_ONLY",
+            "aggregateOrIndividualGameIdentifierSemantics": "gameid is pairing row id. Aggregate team-match identifiers are prohibited.",
+            "implementationPhase": "P4_REPLAY",
+            "contractConfidence": "REAL_HTTP_200_PARTIAL_SCHEMA_AUTH_GATED",
+            "unresolvedQuestions": [
+                "Side-effect-free guarantee for gameid-only request",
+                "Token lifetime/refresh",
+                "Empty PGN versus moves/FEN normalization",
+                "Production login E2E"
+            ],
+            "prohibitedAssumptions": [
+                "Do not expose or use mqtt response material.",
+                "Do not add kaisaileuid/newAtNotExist.",
+                "Do not fabricate PGN when only moves/FEN exist."
+            ]
+        },
+        {
+            "capabilityIdentifier": "api.same_origin_auth_session",
+            "authorityDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/AUTH2_GATEWAY_AUTH_DECISION.md"
+            ],
+            "evidenceDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/.ai/reports/AUTH5_DIRECT_PRODUCTION_API_LOGIN_REPAIR_REPORT.json"
+            ],
+            "confirmedEndpointPath": ["/api/auth/login", "/api/auth/session", "/api/auth/logout"],
+            "httpMethod": ["POST", "GET", "POST"],
+            "requestSchemaEvidence": {
+                "loginBrowserKeys": ["account", "password"],
+                "sessionRequestBody": "UNRESOLVED",
+                "logoutRequestBody": "UNRESOLVED"
+            },
+            "responseSchemaEvidence": {
+                "browserVisibleFields": ["authenticated"],
+                "browserVisibleSemantics": [
+                    "non-personal signed-in label code; exact response field name unresolved"
+                ],
+                "serverOnlyFields": ["upstream token", "uid", "compatibility aliases"]
+            },
+            "authenticationRequirement": "Login establishes opaque local session; session/logout use opaque HttpOnly cookie.",
+            "sameOriginGatewayRequirement": "REQUIRED_DEDICATED_HANDLERS_ONLY",
+            "typedRepositoryOwner": "AuthRepository",
+            "zodValidationRequirement": "REQUIRED_FOR_BROWSER_AND_UPSTREAM_BOUNDARIES",
+            "readOrWriteClassification": "DEDICATED_AUTH_SESSION_CONTROL; NOT_ADMIN_OR_GENERIC_WRITE",
+            "liveOrReplayClassification": "AUTH_INFRASTRUCTURE",
+            "aggregateOrIndividualGameIdentifierSemantics": "Not applicable; upstream uid remains server-side.",
+            "implementationPhase": "POST_AUTH_E2E_GATE",
+            "contractConfidence": "OWNER_CONFIRMED_CONTRACT_RUNTIME_PARTIAL",
+            "unresolvedQuestions": [
+                "Successful real production credential flow",
+                "Refresh restoration",
+                "Protected replay through session",
+                "Logout E2E",
+                "Upstream refresh/logout semantics"
+            ],
+            "prohibitedAssumptions": [
+                "api-1572 is not generally approved; only the dedicated handler is allowed.",
+                "Guest login is not production auth authority.",
+                "Browser code must not hash for upstream or receive token/uid."
+            ]
+        },
+        {
+            "capabilityIdentifier": "api.live_transport_guard",
+            "authorityDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/API_BOUNDARY_ADR.md",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/AUTH2_GATEWAY_AUTH_DECISION.md",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/API_MASTER_SUMMARY.json"
+            ],
+            "evidenceDocumentPaths": [
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/API_MASTER_SUMMARY.json",
+                "/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/api/API_TRANSPORT_DECISIONS.md"
+            ],
+            "confirmedEndpointPath": null,
+            "httpMethod": null,
+            "requestSchemaEvidence": null,
+            "responseSchemaEvidence": null,
+            "authenticationRequirement": "UNCONFIRMED",
+            "sameOriginGatewayRequirement": "REQUIRED_IF_LATER_APPROVED",
+            "typedRepositoryOwner": "UNASSIGNED_BLOCKED",
+            "zodValidationRequirement": "REQUIRED_BEFORE_ANY_IMPLEMENTATION",
+            "readOrWriteClassification": "READ_ONLY_INTENT; IMPLEMENTATION_BLOCKED; PUBLISH_FORBIDDEN",
+            "liveOrReplayClassification": "LIVE_TRANSPORT_UNCONFIRMED",
+            "aggregateOrIndividualGameIdentifierSemantics": "UNRESOLVED",
+            "implementationPhase": "POST_OWNER_CONFIRMED_CONTRACT",
+            "contractConfidence": "BLOCKED_NO_CONFIRMED_CONTRACT",
+            "unresolvedQuestions": [
+                "Transport",
+                "topic and identifier semantics",
+                "credentials",
+                "authorization",
+                "snapshot/reconnect",
+                "stale detection",
+                "hosting"
+            ],
+            "prohibitedAssumptions": [
+                "Tournament discovery endpoints do not prove live transport.",
+                "An mqtt field in replay data does not authorize MQTT.",
+                "No browser MQTT credentials or topics.",
+                "No MQTT publish.",
+                "AI remains disabled during ongoing games."
+            ]
+        }
+    ]
 }
