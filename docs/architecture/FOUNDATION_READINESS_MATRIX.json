@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "F3R_PRODUCT_FIRST_DELIVERY_REBASE_RECORDED",
+    "overallStatus": "PRODUCT_UI_MIGRATION_READY",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -226,8 +226,9 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
-            "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier."
+            "nextRequiredPhase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION",
+            "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
+            "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY"
         }
     },
     "capabilities": [
@@ -805,7 +806,7 @@
             "reviewTrigger": "PRODUCT_UI_MIGRATION_GATE_REVIEW must verify all minimum prerequisites before PRODUCT_UI_MIGRATION_READY can be set.",
             "plannedPhase": "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION",
             "finalVerdict": "F3D_NAIVE_UI_THEME_PROVIDER_PASS_READY_FOR_PRODUCT_UI_GATE_REVIEW",
-            "productGateImpact": "Minimum pre-product prerequisite satisfied by F3D; PRODUCT_UI_MIGRATION_READY is not granted until the dedicated gate review passes.",
+            "productGateImpact": "Minimum pre-product prerequisite satisfied by accepted F3D and verified by PRODUCT_UI_MIGRATION_GATE_REVIEW_AFTER_ACTIVE_WRITER_RESOLUTION.",
             "ownerDecision": {
                 "objective": "PRODUCT_COMPLETE_USABLE",
                 "decisionDate": "2026-07-12",
@@ -1507,7 +1508,7 @@
             "themeOwnership": "src/styles/tokens.css when applicable",
             "userFacingImpact": "Product-first migration opens only after F3D and PRODUCT_UI_MIGRATION_READY review; broad generalized foundations are deferred.",
             "securityImpact": "No browser secret owner introduced in P0 target",
-            "implementationStatus": "PRODUCT_UI_MIGRATION_GATE_REVIEW_NEXT",
+            "implementationStatus": "PRODUCT_UI_MIGRATION_READY",
             "validationEvidence": [
                 "forbidden/premature architecture scan found no target src product implementation",
                 "route count remains 1 neutral bootstrap",
@@ -1517,10 +1518,10 @@
             ],
             "browserEvidence": "PASS neutral bootstrap with F3D provider boundary; no product UI appeared.",
             "blockers": [],
-            "reviewTrigger": "Run PRODUCT_UI_MIGRATION_GATE_REVIEW to decide whether PRODUCT_UI_MIGRATION_READY can be set.",
+            "reviewTrigger": "Next phase is P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION.",
             "plannedPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
-            "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_REVIEW_PENDING_AFTER_F3D",
-            "productGateImpact": "F3D is implemented and validated, but PRODUCT_UI_MIGRATION_READY remains pending the dedicated gate review.",
+            "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
+            "productGateImpact": "PRODUCT_UI_MIGRATION_READY is granted; P1A may begin in a later implementation phase without starting product implementation in this gate commit.",
             "ownerDecision": {
                 "objective": "PRODUCT_COMPLETE_USABLE",
                 "decisionDate": "2026-07-12",
@@ -1545,7 +1546,8 @@
             "dependencies": [
                 "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
                 "F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION"
-            ]
+            ],
+            "nextRequiredPhase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION"
         },
         {
             "identifier": "git.remote_safety",
@@ -1628,7 +1630,7 @@
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         }
     ],
-    "overallVerdict": "F3R_PRODUCT_FIRST_REBASE_RECORDED_READY_FOR_F3D_FROM_LIVE_F3C",
+    "overallVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
     "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
     "correctionHistory": [
         {
@@ -1848,8 +1850,25 @@
             "authority": "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
             "report": ".ai/reports/F3R_PRODUCT_FIRST_DELIVERY_REBASE_AND_PRODUCT_UI_GATE_REDEFINITION_REPORT.json",
             "summary": "Replaced the full-foundation pre-product gate with PRODUCT_UI_MIGRATION_READY, preserved accepted F3C live state, kept F3D as next required phase, and deferred comprehensive generalized foundations until PRODUCT_COMPLETE_USABLE."
+        },
+        {
+            "phase": "PRODUCT_UI_MIGRATION_GATE_REVIEW_AFTER_ACTIVE_WRITER_RESOLUTION",
+            "recordedAt": "2026-07-12T19:17:00+08:00",
+            "authority": "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
+            "report": ".ai/reports/PRODUCT_UI_MIGRATION_GATE_REVIEW_REPORT.json",
+            "summary": "Resolved the active target pnpm dev/Vite writer, removed only the generated Vite deps cache, independently verified F2/F3B/F3C/F3D prerequisites, granted PRODUCT_UI_MIGRATION_READY, retained deferred foundations, and set P1A as the next required phase."
         }
     ],
+    "productUiMigrationGateReview": {
+        "phase": "PRODUCT_UI_MIGRATION_GATE_REVIEW_AFTER_ACTIVE_WRITER_RESOLUTION",
+        "report": ".ai/reports/PRODUCT_UI_MIGRATION_GATE_REVIEW_REPORT.json",
+        "authority": "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
+        "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
+        "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
+        "nextRequiredPhase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION",
+        "p1Authority": "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+        "deferredPolicy": "Deferred comprehensive foundations remain DEFERRED_UNTIL_PRODUCT_COMPLETE with earlier trigger only for real feature-owned need."
+    },
     "validationReferences": {
         "f0Report": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
         "f0aReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json",
@@ -1963,10 +1982,11 @@
         "Board-theme and display-theme runtimes remain independent future slices; F3C did not implement board or product controls.",
         "F3R preserved accepted F3C live state although the owner prompt described an older F3B starting point.",
         "F3E is superseded as a separate pre-product gate; broad integration closure moves to post-product hardening.",
-        "Deferred generalized foundations remain tracked and may be triggered earlier only by real product-feature needs."
+        "Deferred generalized foundations remain tracked and may be triggered earlier only by real product-feature needs.",
+        "PRODUCT_UI_MIGRATION_READY opens only P1A; this gate commit does not begin product UI, board, PGN, AI, auth, API, persistence, or settings implementation."
     ],
-    "plannedNextPhase": "PRODUCT_UI_MIGRATION_GATE_REVIEW",
-    "updatedAt": "2026-07-12T10:27:42Z",
+    "plannedNextPhase": "P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION",
+    "updatedAt": "2026-07-12T11:34:29Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",

@@ -45,8 +45,9 @@ runtime from operating correctly:
   validation for every visible runtime phase.
 
 The current live repository records F3C and F3D as implemented and validated.
-Therefore the remaining active pre-product decision point is
-`PRODUCT_UI_MIGRATION_GATE_REVIEW`.
+`PRODUCT_UI_MIGRATION_GATE_REVIEW_AFTER_ACTIVE_WRITER_RESOLUTION` independently
+verified the minimum pre-product requirements and granted
+`PRODUCT_UI_MIGRATION_READY`.
 
 No full generalized server-state, repository, security-runtime, global-error,
 accessibility, or broad final integration program is required to open product UI
@@ -54,17 +55,29 @@ migration.
 
 ## Immediate Sequence
 
-The owner-approved sequence is:
+The owner-approved pre-product sequence was:
 
 1. `F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`
 2. `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
 3. `PRODUCT_UI_MIGRATION_GATE_REVIEW`
 4. `P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION`
 
-Because F3C and F3D are accepted in the live target, the next required phase is
-the dedicated gate review. This document does not itself mark
-`PRODUCT_UI_MIGRATION_READY`, reopen F3C or F3D, authorize product UI migration,
-or authorize P1 implementation during F3D closure.
+Because F3C, F3D, and the dedicated gate review are accepted in the live target,
+the next required phase is
+`P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION`. This
+document does not reopen F3C or F3D and does not authorize implementing P1A
+inside the gate-review commit.
+
+The active P1 sequence is:
+
+1. `P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION`
+2. `P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION`
+3. `P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION`
+4. `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`
+5. `P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`
+6. `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`
+7. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
+8. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
 
 `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE` is superseded as a
 separate pre-product gate. Narrow theme browser validation remains mandatory
@@ -198,8 +211,9 @@ ladder:
 
 Dependency-changing phases also require the full dependency and audit evidence
 owned by the phase. Visible runtime phases require narrow real-browser
-validation of the implemented feature. F3R itself changes only governance
-documents and reports, so browser validation is not applicable.
+validation of the implemented feature. The product UI migration gate changes
+only governance documents and reports, but it still records a narrow production
+browser smoke for the neutral `/pgnViewer/` runtime before opening P1A.
 
 ## Git And Source Policy
 
@@ -224,7 +238,8 @@ push unless an explicit later owner instruction authorizes that operation.
 
 `PRODUCT_UI_MIGRATION_READY` means F3C and F3D have passed, theme and Naive UI
 provider ownership are stable, static checks pass, narrow browser checks pass,
-local `HEAD` equals remote `main`, and the worktree is clean.
+local `HEAD` equals remote `main`, and the worktree is clean. The active next
+phase is `P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION`.
 
 `PRODUCT_COMPLETE_USABLE` means the canonical product runtime and user-facing
 product flows are implemented with real data and real APIs, the primary
