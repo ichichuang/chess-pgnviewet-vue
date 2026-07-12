@@ -156,6 +156,7 @@ export default tseslint.config(
       'eslint.config.mjs',
       'prettier.config.mjs',
       'stylelint.config.mjs',
+      'scripts/governance/**/*.mjs',
     ],
     languageOptions: {
       globals: nodeGlobals,

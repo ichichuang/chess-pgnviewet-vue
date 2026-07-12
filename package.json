@@ -18,9 +18,15 @@
     "lint:style": "stylelint \"src/**/*.{css,vue}\"",
     "format:check": "prettier . --check",
     "format:write": "prettier . --write",
+    "check:deps": "node scripts/governance/check-dependency-policy.mjs",
+    "check:architecture": "node scripts/governance/check-architecture-boundaries.mjs",
+    "check:tokens": "node scripts/governance/check-raw-visual-values.mjs",
+    "check:mocks": "node scripts/governance/check-forbidden-mock-data.mjs",
+    "check:secrets": "node scripts/governance/check-secret-patterns.mjs",
+    "check:governance": "run-s check:deps check:architecture check:tokens check:mocks check:secrets",
     "check:unused": "knip --no-progress",
     "audit:prod": "pnpm audit --prod",
-    "check:static": "run-s lint lint:style check:unused audit:prod"
+    "check:static": "run-s lint lint:style format:check check:governance check:unused audit:prod"
   },
   "dependencies": {
     "@tanstack/vue-query": "5.101.2",

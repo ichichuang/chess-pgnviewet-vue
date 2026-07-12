@@ -1,7 +1,13 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "entry": ["index.html", "src/router/index.ts"],
-  "project": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "*.config.{js,mjs,cjs,ts}"],
+  "project": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "*.config.{js,mjs,cjs,ts}",
+    "scripts/governance/**/*.mjs"
+  ],
   "ignore": ["src/types/index.ts", "src/ui/index.ts"],
   "rules": {
     "duplicates": "off"

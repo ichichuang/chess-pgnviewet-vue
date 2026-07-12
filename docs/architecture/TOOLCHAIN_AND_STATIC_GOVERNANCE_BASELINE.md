@@ -145,6 +145,33 @@ Dependency-policy scanner:
 - Owns package-manager exclusivity, lockfile integrity, prerelease detection, forbidden dependencies, dependency version exceptions, package-manager lockfile duplicates, dependency audit command ownership, and compatibility review triggers.
 - It never runs automatic audit fixes.
 
+## F2D Project-Owned Scanner Implementation
+
+Implementation status: `IMPLEMENTED_VALIDATION_PENDING`
+
+The active scanner authority is `docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md`.
+
+Implemented project-owned files:
+
+| Domain             | Path                                                        | Script               |
+| ------------------ | ----------------------------------------------------------- | -------------------- |
+| Dependency policy  | `scripts/governance/check-dependency-policy.mjs`            | `check:deps`         |
+| Architecture       | `scripts/governance/check-architecture-boundaries.mjs`      | `check:architecture` |
+| Raw visual values  | `scripts/governance/check-raw-visual-values.mjs`            | `check:tokens`       |
+| Mock product data  | `scripts/governance/check-forbidden-mock-data.mjs`          | `check:mocks`        |
+| Secret patterns    | `scripts/governance/check-secret-patterns.mjs`              | `check:secrets`      |
+| Shared policy      | `scripts/governance/policy.mjs`                             | n/a                  |
+| Shared utilities   | `scripts/governance/utils.mjs`                              | n/a                  |
+| Governance wrapper | all scanner entrypoints through `run-s check:*` composition | `check:governance`   |
+
+`check:static` includes `format:check`, `check:governance`, `check:unused`, `lint`, `lint:style`, and `audit:prod`. It remains read-only.
+
+Permanent scanner exclusions are `.git`, `node_modules`, `.pnpm-store`, `dist`, `.vite`, `coverage`, `.serena`, local logs, local databases, generated output, dependency stores, browser state, and read-only evidence-source repositories. Secret scanning additionally excludes immutable historical reports, archived evidence, generated lockfile content, binary assets, and approved placeholder-only `.env.example` values.
+
+Future allowlists are exact paths or directories only and do not create placeholder runtime files. The current future ownership paths are `src/ui/`, `src/app/providers/`, `src/providers/`, `src/ui/icons/`, `src/api/`, `src/repositories/`, `src/persistence/`, `src/bootstrap/preferences/`, and `src/runtime/config/`.
+
+All scanner findings are blocking and include a stable rule id, file, line when available, redacted excerpt, reason, and remediation owner. JSON mode emits to stdout and creates no repository artifact. Secret findings include redacted fingerprints only.
+
 ## Future Package Scripts
 
 | Script               | Responsibility                           | Expected Command Shape                                                                                                            | Read-only                                                                                                                                                        |
