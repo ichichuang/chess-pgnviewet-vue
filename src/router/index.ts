@@ -5,8 +5,12 @@ export const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'workspace',
       component: () => import('@/views/HomeView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/'
     }
   ]
 })

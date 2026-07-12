@@ -43,6 +43,53 @@
   --toolbar-h: 0px;
   --brand-h: clamp(60px, 1.8vh + 48px, 92px);
 
+  /*
+    P1A canonical workspace shell geometry.
+    Source: pgnViewer-new/src/features/teaching-workspace/TeachingWorkspace.vue.
+    Owner: P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION.
+  */
+  --workspace-viewport-h: 100dvh;
+  --workspace-eval-w: clamp(42px, 2.6vw, 64px);
+  --workspace-eval-w-compact: 40px;
+  --workspace-eval-w-tablet: 34px;
+  --workspace-eval-w-mobile: 30px;
+  --workspace-list-w: clamp(248px, 18vw, 380px);
+  --workspace-list-w-compact: clamp(208px, 17vw, 264px);
+  --workspace-list-collapsed-w: 0px;
+  --workspace-panel-w: clamp(336px, 24vw, 520px);
+  --workspace-panel-w-compact: clamp(300px, 23vw, 360px);
+  --workspace-board-pad-x: clamp(6px, 0.7vw, 12px);
+  --workspace-board-pad-x-tablet: 6px;
+  --workspace-board-pad-x-mobile: 4px;
+  --workspace-board-pad-y: 0px;
+  --workspace-panel-row-min-tablet: 370px;
+  --workspace-panel-row-fluid-tablet: 42vh;
+  --workspace-panel-row-min-mobile: 360px;
+  --workspace-panel-row-fluid-mobile: 44vh;
+  --workspace-right-pane-min-h: 180px;
+  --workspace-splitter-h: 12px;
+  --workspace-splitter-hit-offset: -5px;
+  --workspace-splitter-grip-w: 44px;
+  --workspace-splitter-grip-w-active: 64px;
+  --workspace-splitter-grip-h: 3px;
+  --workspace-list-handle-w: 16px;
+  --workspace-list-handle-h: 48px;
+  --workspace-list-handle-offset: -16px;
+  --workspace-border-w: 1px;
+  --workspace-shell-z-raised: 6;
+  --workspace-motion-duration-fast: 0.12s;
+  --workspace-motion-duration-base: 0.14s;
+  --workspace-motion-ease-standard: ease;
+
+  /*
+    Canonical responsive thresholds are recorded as tokens for documentation and
+    runtime inspection. CSS media queries repeat the same values because custom
+    properties are not valid media-query operands.
+  */
+  --workspace-bp-compact: 1200px;
+  --workspace-bp-tablet: 900px;
+  --workspace-bp-mobile: 560px;
+
   /* Board and move-state roles */
   --cg-square-light: #e9efd6;
   --cg-square-dark: #7eb95e;
