@@ -1,0 +1,344 @@
+{
+  "phase": "F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION",
+  "startedAt": "2026-07-12T03:36:47.660Z",
+  "completedAt": "2026-07-12T03:39:41.276Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "/Users/cc/Work/neobv/Chess/pgnViewer",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer"
+  ],
+  "filesRead": [
+    "/Users/cc/.codex/attachments/5d53b323-3829-47e1-84b8-e886c7fc5711/pasted-text.txt",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/CLAUDE.md",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/skills/project-ui/SKILL.md",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/_metadata.json"
+  ],
+  "safetyGate": {
+    "targetExists": true,
+    "targetIsSymlink": false,
+    "targetGitMetadata": "ABSENT",
+    "targetInsideParentGitWorktree": false,
+    "sourceDirectoriesNestedInsideTarget": false,
+    "authorizedWritesForF0A": [
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite"
+    ],
+    "gateResult": "BLOCKED_BY_ACTIVE_TARGET_VITE_PROCESS"
+  },
+  "originalF0Verdict": "F0_FOUNDATION_AUDIT_FAIL",
+  "originalF0EvidenceAssessment": {
+    "f0ReportHashBeforeF0A": "50ef1ba1c1bdbf570fbfbd877cee4b069fcd84c655d0ca9ca5659a18d04fed31",
+    "readinessMatrixHashBeforeF0A": "5960cc09c46e8ad3c5a06d34652056a91552471645e929f751bdab9c9a292b4c",
+    "f0StartedAt": "2026-07-12T02:28:00.000Z",
+    "f0CompletedAt": "2026-07-12T02:34:22.133Z",
+    "reportedPhaseWindow": "2026-07-12T02:28:00.000Z/2026-07-12T02:34:22.133Z",
+    "reportedAuthorizedWrites": [
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+    ],
+    "reportedSideEffects": [
+      "Vite re-optimized dependencies and modified node_modules/.vite/deps cache files",
+      "secondary-source pgnViewer file listing included forbidden generated/dependency/Git metadata filenames"
+    ],
+    "validReusableEvidence": [
+      "typecheck PASS with exact command and exit code recorded",
+      "temporary outDir production build PASS with exact command and exit code recorded",
+      "pnpm audit --prod PASS with exact command and exit code recorded",
+      "real-browser validation PASS recorded with route, server command, port, DOM, overlay, console, and reload evidence"
+    ],
+    "assessment": "Original F0 evidence is sufficient for correction review, but F0A cannot complete while an unrelated active Vite process owns the target directory."
+  },
+  "activeProcessAudit": {
+    "status": "BLOCKING",
+    "command": "ps -axo pid,ppid,comm,args | rg -F '/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue'",
+    "processes": [
+      {
+        "pid": 64753,
+        "ppid": 64711,
+        "startedLocal": "Sun Jul 12 09:56:39 2026",
+        "elapsedAtInspection": "01:39:18",
+        "command": "node",
+        "args": "node /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.bin/../vite/bin/vite.js",
+        "cwd": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "listening": [
+          "127.0.0.1:5174"
+        ],
+        "classification": "ACTIVE_TARGET_VITE_PROCESS_NOT_PROVEN_F0_AUDIT_PROCESS",
+        "reason": "The F0 report states the F0 browser server used 127.0.0.1:5176 because 5174 and 5175 were already occupied. This active process listens on 5174, so it cannot be proven to belong to the completed F0 audit."
+      }
+    ],
+    "actionTaken": "No process was terminated."
+  },
+  "viteCacheAssessment": {
+    "status": "PRESENT_BUT_CLEANUP_BLOCKED",
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+    "confirmedViteGeneratedDependencyCache": true,
+    "containsUserAuthoredSourceOrConfiguration": false,
+    "evidence": {
+      "metadata": {
+        "hash": "04a1f267",
+        "configHash": "eb198413",
+        "lockfileHash": "2266d73b",
+        "browserHash": "aef4c76f",
+        "optimized": [
+          "pinia",
+          "vue",
+          "vue-router"
+        ],
+        "chunks": [
+          "dist-C_xL6f4V",
+          "vue.runtime.esm-bundler-BxAFZNd8"
+        ]
+      },
+      "subdirectories": []
+    },
+    "cleanupSafety": "Unsafe to delete while PID 64753 may continue to read or regenerate the cache."
+  },
+  "viteCacheFilesBeforeCleanup": [
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/_metadata.json",
+      "sizeBytes": 1117,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "b7e3b551ff6d18596aeb926bb063a0da7cc451b0d32e7d61a457b252cf427640"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/dist-C_xL6f4V.js",
+      "sizeBytes": 5387,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "e97fb6499f2ad3c60d8ae49cfc30b43ee280301211d15e76ac374176b148307e"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/dist-C_xL6f4V.js.map",
+      "sizeBytes": 21660,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "ba249d77cac55de7891cea847527816924fb321d40f40871a13b4fc1d2d97097"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/package.json",
+      "sizeBytes": 23,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/pinia.js",
+      "sizeBytes": 146533,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "a8683b6cf68c362b336ad565d178dd7222949186615d494dd6b417084397961c"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/pinia.js.map",
+      "sizeBytes": 407936,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "edd8ad9c9db51be812d7da31da4ea85751e7765103860424bf7301c3db484ccf"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/vue-router.js",
+      "sizeBytes": 201292,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "70d272085b6145edbfc94a5cc9866903a9fdcb79ca4a66b0439e2f03eba01500"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/vue-router.js.map",
+      "sizeBytes": 440674,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "db54ba68f139bb5feeaf4e1ffdf07a4eb5ff19628bb736e3ca3dabad01bde09c"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/vue.js",
+      "sizeBytes": 5886,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "0b5a18d35be92c6a8a802cc6657d0685447903b295d1b14208be7c900ca74589"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/vue.runtime.esm-bundler-BxAFZNd8.js",
+      "sizeBytes": 325387,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "82937bf1f4804ccfd2c73004eaa609c2415457f3add36276a63f5ec5f56d9e8a"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/vue.runtime.esm-bundler-BxAFZNd8.js.map",
+      "sizeBytes": 637551,
+      "mtimeEpoch": 1783823416,
+      "mtimeLocal": "Jul 12 10:30:16 2026",
+      "sha256": "eb3cb7b2b94abbb8c0502f43a37895ccd69fb563a618f8bc6daaaeb82bd3ee51"
+    }
+  ],
+  "cleanupActions": [
+    {
+      "action": "DELETE /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+      "status": "SKIPPED_BLOCKED",
+      "reason": "Active target Vite process could regenerate or depend on the cache."
+    },
+    {
+      "action": "REMOVE /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite if empty",
+      "status": "SKIPPED_BLOCKED",
+      "reason": "Parent cache directory was not inspected for deletion after skipped deps cleanup."
+    }
+  ],
+  "filesCreated": [
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json"
+  ],
+  "filesModified": [],
+  "filesDeleted": [],
+  "unexpectedChangesAudit": {
+    "status": "PASS_NO_UNEXPLAINED_TARGET_FILE_CHANGES_FOUND_BEFORE_F0A_REPORT_WRITE",
+    "method": "find . -maxdepth 3 with node_modules, dist, and .serena pruned; files newer than F0 completedAt excluded normal access-time changes",
+    "f0CompletedAt": "2026-07-12T02:34:22.133Z",
+    "unexpectedFiles": [],
+    "note": "F0A report creation is the only intended file creation in this blocked correction run."
+  },
+  "sourceMetadataTraversalCorrection": {
+    "status": "NOT_APPLIED_DUE_ACTIVE_PROCESS_BLOCKER",
+    "historicalFactPreserved": true,
+    "excludedMetadataPaths": [
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps/*",
+      "/Users/cc/Work/neobv/Chess/pgnViewer generated/dependency/Git metadata filenames from the prior secondary-source listing; exact filenames were not preserved in the existing F0 report or readiness matrix"
+    ],
+    "reasonForExclusion": "Generated, dependency, and Git metadata paths are not authoritative source evidence.",
+    "originalAuditImpact": "The metadata traversal caused F0_FOUNDATION_AUDIT_FAIL and prevents F1 approval until corrected.",
+    "sourceProjectModificationStatus": "No source-project file modification was reported by F0 or observed during F0A targeted checks."
+  },
+  "authorityEvidenceReconciliation": {
+    "status": "NOT_APPLIED_DUE_ACTIVE_PROCESS_BLOCKER",
+    "authorityFilesReadCurrentAssessment": "Current authorityFilesRead entries in the F0 report are explicit project/source files and do not list source .git, source node_modules, build output, or cache metadata paths.",
+    "readinessMatrixAssessment": "The readiness matrix still records F0 failure and the scope.read_only_integrity contradiction; it was not changed in blocked F0A.",
+    "architectureDecisionDependencyOnForbiddenMetadata": "No corrected architecture approval was issued; no architecture decision was promoted from forbidden metadata evidence."
+  },
+  "typecheckEvidenceReused": {
+    "command": "mise exec -- pnpm run typecheck",
+    "exitCode": 0,
+    "status": "PASS",
+    "rerun": false,
+    "rerunReason": "F0A is blocked before cleanup; rerun is forbidden because it can create side effects and is not needed to document the blocker."
+  },
+  "buildEvidenceReused": {
+    "command": "tmpdir=$(mktemp -d /tmp/f0-vite-build.XXXXXX) && mise exec -- pnpm exec vue-tsc --noEmit && mise exec -- pnpm exec vite build --outDir \"$tmpdir/dist\" --emptyOutDir && rm -rf \"$tmpdir\"",
+    "exitCode": 0,
+    "status": "PASS_TEMP_OUTDIR",
+    "rerun": false,
+    "rerunReason": "F0A is blocked before cleanup; build rerun is forbidden by this correction scope."
+  },
+  "securityAuditEvidenceReused": {
+    "command": "mise exec -- pnpm audit --prod",
+    "exitCode": 0,
+    "status": "PASS",
+    "rerun": false,
+    "rerunReason": "F0A did not change dependencies and dependency operations are forbidden."
+  },
+  "browserEvidenceReused": {
+    "status": "PASS_WITH_CACHE_SIDE_EFFECT",
+    "serverCommand": "mise exec -- pnpm run dev -- --host 127.0.0.1",
+    "serverPort": "5176 because 5174 and 5175 were occupied",
+    "route": "http://127.0.0.1:5176/pgnViewer/",
+    "sideEffectCorrected": false,
+    "rerun": false,
+    "rerunReason": "Browser validation was not rerun to avoid regenerating Vite cache and because active PID 64753 already blocks safe cleanup."
+  },
+  "browserRerun": {
+    "performed": false,
+    "reason": "Forbidden by F0A scope and would risk regenerating node_modules/.vite/deps."
+  },
+  "localGitState": {
+    "targetGitMetadata": "ABSENT",
+    "targetInsideParentGitWorktree": false,
+    "gitStatusResult": "fatal: not a git repository (or any of the parent directories): .git",
+    "gitInitializationPerformed": false,
+    "commitPerformed": false,
+    "pushPerformed": false
+  },
+  "remoteState": {
+    "status": "VERIFIED_EMPTY",
+    "url": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "fullName": "ichichuang/chess-pgnviewet-vue",
+    "spellingPreserved": true,
+    "visibility": "PUBLIC",
+    "viewerPermission": "ADMIN",
+    "defaultBranchRef": {
+      "name": ""
+    },
+    "isEmpty": true,
+    "heads": [],
+    "commands": [
+      "gh repo view ichichuang/chess-pgnviewet-vue --json nameWithOwner,visibility,defaultBranchRef,isEmpty,viewerPermission,url",
+      "git ls-remote --symref --heads https://github.com/ichichuang/chess-pgnviewet-vue.git"
+    ],
+    "readOnly": true
+  },
+  "secretRiskAudit": {
+    "status": "PASS_NO_SECRET_VALUES_OBSERVED_IN_TARGETED_F0A_EVIDENCE",
+    "method": "Targeted JSON/report and command-output inspection only; no secrets or env files were opened.",
+    "secretValuesPrinted": false
+  },
+  "generatedFileRiskAudit": {
+    "status": "BLOCKING_GENERATED_CACHE_STILL_PRESENT",
+    "findings": [
+      "node_modules/.vite/deps remains present because cleanup was blocked by active PID 64753.",
+      "pre-existing dist and node_modules remain documented F0 generated/dependency risks before Git baseline.",
+      "No package manager, Vite, build, preview, typecheck, lint, formatter, audit, or browser command was executed by F0A."
+    ]
+  },
+  "jsonValidation": {
+    "preWriteValidation": {
+      "f0ReportParsed": true,
+      "readinessMatrixParsed": true
+    },
+    "postWriteValidation": {
+      "status": "PASS",
+      "filesParsed": [
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json"
+      ]
+    },
+    "secretScanPostWrite": "PASS_NO_SECRET_VALUES_MATCHED_TARGETED_PATTERNS",
+    "finalHashes": {
+      "f0Report": "50ef1ba1c1bdbf570fbfbd877cee4b069fcd84c655d0ca9ca5659a18d04fed31",
+      "readinessMatrix": "5960cc09c46e8ad3c5a06d34652056a91552471645e929f751bdab9c9a292b4c",
+      "f0aReport": "SELF_HASH_REPORTED_IN_FINAL_CONTROLLER_OUTPUT_AFTER_FINAL_WRITE"
+    },
+    "selfHashNote": "A JSON file cannot contain its own final whole-file hash without changing that hash; the F0A file hash is reported after final write in the controller output."
+  },
+  "finalFilesystemVerification": {
+    "status": "PASS_ONLY_F0A_REPORT_CREATED_CLEANUP_BLOCKED",
+    "expectedF0AChanges": [
+      "create /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json"
+    ],
+    "expectedUnchangedBecauseBlocked": [
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps"
+    ]
+  },
+  "blockers": [
+    {
+      "id": "ACTIVE_TARGET_VITE_PROCESS",
+      "severity": "blocking",
+      "evidence": "PID 64753 is node /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.bin/../vite/bin/vite.js with cwd in target and listener 127.0.0.1:5174.",
+      "reason": "The active process prevents safe deletion of node_modules/.vite/deps and cannot be proven to belong to the completed F0 audit."
+    }
+  ],
+  "warnings": [
+    "F0 report and readiness matrix were not reconciled because correction is blocked.",
+    "Vite cache side effect remains present.",
+    "Original F0 final verdict remains F0_FOUNDATION_AUDIT_FAIL.",
+    "Remote is verified empty, but F1 remains blocked until cleanup and evidence reconciliation can complete."
+  ],
+  "nextRequiredPhase": "RESOLVE_ACTIVE_TARGET_VITE_PROCESS_THEN_RERUN_F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION",
+  "finalVerdict": "F0A_CORRECTION_BLOCKED"
+}

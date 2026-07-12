@@ -1,0 +1,501 @@
+{
+  "phase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
+  "startedAt": "2026-07-12T03:44:00Z",
+  "completedAt": "2026-07-12T03:51:04Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "/Users/cc/Work/neobv/Chess/pgnViewer",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer"
+  ],
+  "filesRead": [
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/CLAUDE.md",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/skills/project-ui/SKILL.md",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/package.json"
+  ],
+  "initialFileEvidence": {
+    "hashes": {
+      "f0": "50ef1ba1c1bdbf570fbfbd877cee4b069fcd84c655d0ca9ca5659a18d04fed31",
+      "f0a": "cf1843fc5635352e1adf2621dfc08d1edad53cb344e8e57f7edbcf348cc26935",
+      "matrix": "5960cc09c46e8ad3c5a06d34652056a91552471645e929f751bdab9c9a292b4c"
+    },
+    "stats": {
+      "f0": {
+        "size": 36564,
+        "mtime": "2026-07-12T02:34:22Z"
+      },
+      "f0a": {
+        "size": 17243,
+        "mtime": "2026-07-12T03:39:51Z"
+      },
+      "matrix": {
+        "size": 46072,
+        "mtime": "2026-07-12T02:34:22Z"
+      }
+    },
+    "parsedSuccessfully": true
+  },
+  "safetyGate": {
+    "status": "PASS",
+    "targetPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "resolvedTargetPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "targetExists": true,
+    "targetIsSymlink": false,
+    "localGitMetadata": "ABSENT",
+    "parentGitWorktree": false,
+    "sourceDirectoriesSeparate": true,
+    "sourceDirectoriesReadOnly": true,
+    "authorizedWritePaths": [
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE_REPORT.json"
+    ],
+    "authorizedDeletePaths": [
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+      "node_modules/.vite only if empty after deps removal"
+    ],
+    "evidence": [
+      "pwd -P resolved exactly to target",
+      "test ! -L target passed",
+      "target .git absent",
+      "parent directory walk found no .git metadata",
+      "all three source directories resolved outside target"
+    ]
+  },
+  "originalF0Verdict": "F0_FOUNDATION_AUDIT_FAIL",
+  "originalF0AVerdict": "F0A_CORRECTION_BLOCKED",
+  "processAudit": {
+    "inspectedAt": "2026-07-12T03:46:05Z",
+    "method": [
+      "ps process scan for target path, vite, 5174, and PID 64753",
+      "lsof PID 64753 for cwd, executable/open files, and TCP listeners",
+      "lsof TCP listener check for 127.0.0.1:5174",
+      "pgrep child checks for PID 64753 and parent PID 64711"
+    ],
+    "associatedProcessesBeforeTermination": [
+      {
+        "pid": 64753,
+        "owner": "cc",
+        "effectiveUser": "cc",
+        "uid": 501,
+        "effectiveUid": 501,
+        "executable": "/Users/cc/.local/share/mise/installs/node/26.5.0/bin/node",
+        "commandLineRedacted": "node /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.bin/../vite/bin/vite.js",
+        "currentWorkingDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "startTime": "Sun Jul 12 09:56:39 2026 Asia/Shanghai",
+        "elapsedAtInspection": "01:49:41",
+        "parentPid": 64711,
+        "parentCommandRedacted": "/Users/cc/.local/share/mise/installs/pnpm/11.11.0/pnpm dev",
+        "processGroup": 64711,
+        "sessionIdentifier": 0,
+        "descendants": [],
+        "listeningAddresses": [
+          "127.0.0.1"
+        ],
+        "listeningPorts": [
+          5174
+        ],
+        "classification": "TARGET_PROJECT_VITE_DEVELOPMENT_SERVER"
+      },
+      {
+        "pid": 64711,
+        "owner": "cc",
+        "effectiveUser": "cc",
+        "commandLineRedacted": "/Users/cc/.local/share/mise/installs/pnpm/11.11.0/pnpm dev",
+        "currentWorkingDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "classification": "PARENT_PACKAGE_SCRIPT_NOT_SIGNALED"
+      }
+    ],
+    "unrelatedProcessesObserved": [
+      {
+        "pid": 33313,
+        "commandLineRedacted": "node /Users/cc/.ai/AIOS/frontend/node_modules/.bin/../vite/bin/vite.js --host 127.0.0.1 --port 5175",
+        "currentWorkingDirectory": "/Users/cc/.ai/AIOS/frontend",
+        "listener": "127.0.0.1:5175",
+        "action": "ignored"
+      }
+    ]
+  },
+  "targetViteProcessesFound": [
+    {
+      "pid": 64753,
+      "owner": "cc",
+      "effectiveUser": "cc",
+      "uid": 501,
+      "effectiveUid": 501,
+      "executable": "/Users/cc/.local/share/mise/installs/node/26.5.0/bin/node",
+      "commandLineRedacted": "node /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.bin/../vite/bin/vite.js",
+      "currentWorkingDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+      "startTime": "Sun Jul 12 09:56:39 2026 Asia/Shanghai",
+      "elapsedAtInspection": "01:49:41",
+      "parentPid": 64711,
+      "parentCommandRedacted": "/Users/cc/.local/share/mise/installs/pnpm/11.11.0/pnpm dev",
+      "processGroup": 64711,
+      "sessionIdentifier": 0,
+      "descendants": [],
+      "listeningAddresses": [
+        "127.0.0.1"
+      ],
+      "listeningPorts": [
+        5174
+      ],
+      "classification": "TARGET_PROJECT_VITE_DEVELOPMENT_SERVER"
+    }
+  ],
+  "processTerminationDecision": {
+    "status": "TERMINATION_ALLOWED_AND_COMPLETED",
+    "targetPid": 64753,
+    "conditionsProven": {
+      "belongsToCurrentUser": true,
+      "cwdExactlyTargetDirectory": true,
+      "commandIsTargetViteDevServer": true,
+      "descendantsExclusivelyOwnedByVite": true,
+      "notShellEditorTerminalAiInstallBuildDbOrUnrelatedProcess": true,
+      "parentProcessNotRequiredForTermination": true
+    },
+    "parentSignal": "NONE",
+    "processGroupSignal": "NONE"
+  },
+  "signalsSent": [
+    {
+      "signal": "SIGTERM",
+      "pid": 64753,
+      "target": "exact Vite node process only",
+      "result": "EXITED_WITHIN_2_SECONDS"
+    }
+  ],
+  "processExitVerification": {
+    "status": "PASS",
+    "pid64753": "ABSENT_AFTER_SIGTERM",
+    "descendants": "NONE",
+    "targetPathProcessScanAfterTermination": "NO_TARGET_VITE_PROCESS_FOUND"
+  },
+  "portClosureVerification": {
+    "status": "PASS",
+    "address": "127.0.0.1",
+    "port": 5174,
+    "listenerAfterTermination": "ABSENT"
+  },
+  "viteCacheAssessment": {
+    "status": "PRESENT_SAFE_TO_DELETE_THEN_DELETED",
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+    "generatedViteDependencyCacheOnly": true,
+    "containedUserAuthoredSource": false,
+    "containedAuthoritativePackageConfigOrLockfile": false,
+    "note": "node_modules/.vite/deps/package.json is the generated Vite optimized-deps package marker, not the project package.json."
+  },
+  "viteCacheFilesBeforeDeletion": [
+    {
+      "relativePath": "node_modules/.vite/deps/_metadata.json",
+      "size": 1117,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "b7e3b551ff6d18596aeb926bb063a0da7cc451b0d32e7d61a457b252cf427640"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/dist-C_xL6f4V.js",
+      "size": 5387,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "e97fb6499f2ad3c60d8ae49cfc30b43ee280301211d15e76ac374176b148307e"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/dist-C_xL6f4V.js.map",
+      "size": 21660,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "ba249d77cac55de7891cea847527816924fb321d40f40871a13b4fc1d2d97097"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/package.json",
+      "size": 23,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/pinia.js",
+      "size": 146533,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "a8683b6cf68c362b336ad565d178dd7222949186615d494dd6b417084397961c"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/pinia.js.map",
+      "size": 407936,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "edd8ad9c9db51be812d7da31da4ea85751e7765103860424bf7301c3db484ccf"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/vue-router.js",
+      "size": 201292,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "70d272085b6145edbfc94a5cc9866903a9fdcb79ca4a66b0439e2f03eba01500"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/vue-router.js.map",
+      "size": 440674,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "db54ba68f139bb5feeaf4e1ffdf07a4eb5ff19628bb736e3ca3dabad01bde09c"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/vue.js",
+      "size": 5886,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "0b5a18d35be92c6a8a802cc6657d0685447903b295d1b14208be7c900ca74589"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/vue.runtime.esm-bundler-BxAFZNd8.js",
+      "size": 325387,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "82937bf1f4804ccfd2c73004eaa609c2415457f3add36276a63f5ec5f56d9e8a"
+    },
+    {
+      "relativePath": "node_modules/.vite/deps/vue.runtime.esm-bundler-BxAFZNd8.js.map",
+      "size": 637551,
+      "mtime": "2026-07-12T02:30:16Z",
+      "sha256": "eb3cb7b2b94abbb8c0502f43a37895ccd69fb563a618f8bc6daaaeb82bd3ee51"
+    }
+  ],
+  "cacheDeletionActions": [
+    {
+      "action": "rm -rf exact authorized path",
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+      "result": "DELETED"
+    },
+    {
+      "action": "rmdir node_modules/.vite if empty",
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite",
+      "result": "NOT_DELETED_NOT_EMPTY",
+      "remainingEntries": [
+        "node_modules/.vite/vitest"
+      ]
+    },
+    {
+      "action": "verify deps absence",
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+      "result": "ABSENT"
+    }
+  ],
+  "unexpectedChangesAudit": {
+    "status": "PASS_NO_UNEXPLAINED_PROJECT_CHANGES",
+    "method": "Targeted hash/path audit excluding node_modules, dist, and .serena; node_modules/.vite/deps deletion handled separately as authorized generated-cache deletion.",
+    "allowedChanges": [
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps"
+    ],
+    "unauthorizedChangesFound": [],
+    "f0aChanges": {
+      "filesCreated": [
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json"
+      ],
+      "filesModified": [],
+      "filesDeleted": []
+    },
+    "f0bChanges": {
+      "filesCreated": [
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE_REPORT.json"
+      ],
+      "filesModified": [
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+      ],
+      "filesDeleted": [
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps"
+      ]
+    },
+    "sourceProjectChangesFound": false,
+    "note": "Filesystem access-time changes ignored; no automatic repair of unrelated files performed."
+  },
+  "authorityEvidenceReconciliation": {
+    "status": "APPLIED",
+    "f0AuthorityFilesCurrentAssessment": "Current F0 authorityFilesRead entries are explicit project/source files and do not list source .git, source node_modules, build output, cache metadata, or generated output paths.",
+    "historicalIssuePreserved": "Original F0 secondary-source listing entered forbidden generated/dependency/Git metadata areas.",
+    "affectedSourceRoot": "/Users/cc/Work/neobv/Chess/pgnViewer",
+    "excludedPathCategories": [
+      "source .git metadata",
+      "source node_modules/dependency directories",
+      "generated output",
+      "cache files",
+      "build output"
+    ],
+    "reasonForExclusion": "Generated, dependency, cache, build-output, and Git metadata paths are not architecture or validation authority.",
+    "exactHistoricalFilenamesPreserved": false,
+    "exactHistoricalFilenamesNote": "The prior F0 report did not preserve exact secondary metadata filenames; F0B does not invent them.",
+    "sourceFilesModified": false,
+    "architectureConclusionDependsOnExcludedPaths": false
+  },
+  "metadataTraversalCorrection": {
+    "status": "CORRECTED_BY_EXCLUSION",
+    "noSourceProjectModified": true,
+    "noArchitectureRequirementChanged": true,
+    "noCanonicalValueChanged": true,
+    "correctionScope": "Evidence authority classification only; historical scope violation remains recorded."
+  },
+  "typecheckEvidenceReused": {
+    "reused": true,
+    "rerun": false,
+    "command": "mise exec -- pnpm run typecheck",
+    "originalExitCode": 0,
+    "originalStatus": "PASS",
+    "originalTimestamp": "2026-07-12T02:34:22.133Z"
+  },
+  "buildEvidenceReused": {
+    "reused": true,
+    "rerun": false,
+    "command": "tmpdir=$(mktemp -d /tmp/f0-vite-build.XXXXXX) && mise exec -- pnpm exec vue-tsc --noEmit && mise exec -- pnpm exec vite build --outDir \"$tmpdir/dist\" --emptyOutDir && rm -rf \"$tmpdir\"",
+    "originalExitCode": 0,
+    "originalStatus": "PASS_TEMP_OUTDIR",
+    "originalTimestamp": "2026-07-12T02:34:22.133Z"
+  },
+  "securityAuditEvidenceReused": {
+    "reused": true,
+    "rerun": false,
+    "command": "mise exec -- pnpm audit --prod",
+    "originalExitCode": 0,
+    "originalStatus": "PASS",
+    "originalTimestamp": "2026-07-12T02:34:22.133Z"
+  },
+  "browserEvidenceReused": {
+    "reused": true,
+    "rerun": false,
+    "originalStatus": "PASS_WITH_CACHE_SIDE_EFFECT",
+    "correctedStatus": "PASS_SIDE_EFFECT_CORRECTED",
+    "route": "http://127.0.0.1:5176/pgnViewer/",
+    "reasonNotRerun": "Rerunning Vite would regenerate the corrected dependency cache."
+  },
+  "browserRerun": {
+    "rerun": false,
+    "reason": "Rerunning Vite would regenerate node_modules/.vite/deps after F0B removed it.",
+    "originalBrowserEvidencePreserved": true,
+    "sideEffectCorrected": true
+  },
+  "localGitState": {
+    "status": "NO_LOCAL_GIT_REPOSITORY",
+    "gitStatusAttempt": "fatal: not a git repository (or any of the parent directories): .git",
+    "localGitMetadata": "ABSENT",
+    "parentGitMetadata": "ABSENT_BY_PARENT_DIRECTORY_WALK",
+    "gitInitializedByF0B": false,
+    "remoteConfiguredByF0B": false,
+    "gitOperationsPerformed": [
+      "read-only git ls-remote against authorized URL only"
+    ]
+  },
+  "remoteState": {
+    "status": "VERIFIED_EMPTY",
+    "url": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "fullName": "ichichuang/chess-pgnviewet-vue",
+    "spellingPreserved": true,
+    "visibility": "PUBLIC",
+    "viewerPermission": "ADMIN",
+    "defaultBranchRef": {
+      "name": ""
+    },
+    "isEmpty": true,
+    "heads": [],
+    "remoteHeadState": "EMPTY_OUTPUT_EXIT_0",
+    "branchHeads": [],
+    "containsCommits": false,
+    "differsFromAuthorizedRepository": false,
+    "readOnlyCommands": [
+      "gh repo view ichichuang/chess-pgnviewet-vue --json nameWithOwner,visibility,defaultBranchRef,isEmpty,viewerPermission,url",
+      "git ls-remote --symref --heads https://github.com/ichichuang/chess-pgnviewet-vue.git"
+    ],
+    "remoteStateModified": false,
+    "gitBaselineApproved": true
+  },
+  "secretRiskAudit": {
+    "status": "PASS_NO_SECRET_VALUES_EXPOSED",
+    "method": "Strict JSON parse plus targeted secret-pattern inspection of F0, F0A, readiness matrix, and F0B report; no env files, auth files, certificates, keys, databases, browser state, or logs opened.",
+    "secretValuesPrinted": false
+  },
+  "generatedFileRiskAudit": {
+    "status": "PASS_AUTHORIZED_CACHE_SIDE_EFFECT_REMOVED",
+    "deletedGeneratedCache": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+    "remainingGeneratedDependencyDirectoriesNotModified": [
+      "node_modules/.vite/vitest",
+      "node_modules",
+      "dist",
+      ".serena"
+    ],
+    "note": "Remaining generated/dependency directories predate F0B and are for F1 .gitignore/baseline handling; F0B did not delete unauthorized generated state."
+  },
+  "filesCreated": [
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE_REPORT.json"
+  ],
+  "filesModified": [
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+  ],
+  "filesDeleted": [
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps"
+  ],
+  "jsonValidation": {
+    "status": "PASS",
+    "validatedAt": "2026-07-12T03:51:59Z",
+    "files": [
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE_REPORT.json"
+    ],
+    "parser": "jq -e .",
+    "commentsOrTrailingCommas": "ABSENT_BY_STRICT_JSON_PARSE",
+    "invalidValues": "NONE_FOUND_BY_STRICT_JSON_PARSE",
+    "secretExposure": "PASS_NO_TARGETED_SECRET_VALUE_PATTERNS_MATCHED",
+    "authorityEvidenceForbiddenPathDependency": "PASS_NOT_RELIANT_ON_SOURCE_GIT_NODE_MODULES_GENERATED_CACHE_OR_BUILD_OUTPUT"
+  },
+  "finalHashes": {
+    "files": {
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json": "c39756d5805618e57ceb781ce932b12e3041c74ebe778a49889bc4052c0d8bee",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json": "cf1843fc5635352e1adf2621dfc08d1edad53cb344e8e57f7edbcf348cc26935",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/docs/architecture/FOUNDATION_READINESS_MATRIX.json": "7217279a5eace76d4d684bd1af9c6aa8107bcf07fc62b014f57541f5f7e4b2ed",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE_REPORT.json": "2405767669264c79b92df7cc6775948556d8d8e78b105210e5c9b107d7b8b629"
+    },
+    "computedAt": "2026-07-12T03:52:51Z",
+    "selfHashSemantics": "The F0B value is the sha256 of this report immediately before updating finalHashes. A JSON file cannot contain its own final on-disk cryptographic hash without changing that hash; the final controller response records the final on-disk F0B sha256 after this write.",
+    "finalOnDiskHashRecordedInControllerResponse": true
+  },
+  "finalFilesystemVerification": {
+    "status": "PASS",
+    "verifiedAt": "2026-07-12T03:51:59Z",
+    "targetViteServerRemaining": false,
+    "port5174Closed": true,
+    "viteDepsAbsent": true,
+    "unauthorizedProjectChanges": false,
+    "unauthorizedProjectChangesEvidence": "Only F0 report, readiness matrix, new F0B report, and authorized node_modules/.vite/deps deletion changed during F0B.",
+    "sourceProjectChanges": false,
+    "sourceDirectoryStatsUnchangedDuringF0B": {
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new": {
+        "type": "Directory",
+        "mtime": "Jul 7 17:00:29 2026",
+        "size": 1824
+      },
+      "/Users/cc/Work/neobv/Chess/pgnViewer": {
+        "type": "Directory",
+        "mtime": "Jul 3 15:50:13 2026",
+        "size": 640
+      },
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer": {
+        "type": "Directory",
+        "mtime": "Jul 11 15:43:17 2026",
+        "size": 832
+      }
+    },
+    "gitMetadataCreated": false,
+    "remoteStateModified": false,
+    "dependencyOperationRun": false,
+    "viteOrBuildOrTypecheckOrAuditOrBrowserValidationRun": false,
+    "foundationImplementationOrProductUiWorkPerformed": false,
+    "gitInitCommitPushFetchPullOrRemoteMutationPerformed": false
+  },
+  "blockers": [],
+  "warnings": [
+    "Original browser validation was not rerun because running Vite would regenerate the removed dependency cache.",
+    "node_modules/.vite remains because it contains a pre-existing vitest cache outside the authorized deps deletion path.",
+    "No root .gitignore exists yet; F1 must handle generated/dependency/editor artifacts before baseline commit."
+  ],
+  "nextRequiredPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
+  "correctedF0Verdict": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE",
+  "finalVerdict": "F0B_CLOSURE_PASS_F0_READY_FOR_GIT_BASELINE"
+}

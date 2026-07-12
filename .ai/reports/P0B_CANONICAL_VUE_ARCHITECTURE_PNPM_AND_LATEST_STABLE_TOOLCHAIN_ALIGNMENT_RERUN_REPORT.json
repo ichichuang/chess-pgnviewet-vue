@@ -1,0 +1,853 @@
+{
+  "phase": "P0B_CANONICAL_VUE_ARCHITECTURE_PNPM_AND_LATEST_STABLE_TOOLCHAIN_ALIGNMENT_RERUN",
+  "startedAt": "2026-07-11T20:49:00Z",
+  "completedAt": "2026-07-11T21:12:21.616Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+      "role": "canonical Vue architecture and active runtime evidence",
+      "readable": true,
+      "modifiedByThisExecution": false
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+      "role": "legacy secondary evidence",
+      "readable": true,
+      "modifiedByThisExecution": false
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+      "role": "product/UI/API evidence",
+      "readable": true,
+      "modifiedByThisExecution": false
+    }
+  ],
+  "ownerDecisions": {
+    "pnpmSolePackageManager": true,
+    "canonicalVueArchitectureFromPgnViewerNew": true,
+    "latestStableDirectDependencies": true,
+    "prereleasesRequireExplicitApproval": true,
+    "silentDowngradesForbidden": true,
+    "sourceProjectsReadOnly": true,
+    "p1MustNotStart": true
+  },
+  "safetyGate": {
+    "targetDirectoryConfirmed": true,
+    "sourceDirectoriesExistAndReadable": true,
+    "sourceDirectoriesTreatedReadOnlyByPolicy": true,
+    "sourceDirectoryFilesystemModes": [
+      {
+        "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+        "readable": true,
+        "mtime": "2026-07-07T09:00:29.194Z",
+        "mode": "755"
+      },
+      {
+        "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+        "readable": true,
+        "mtime": "2026-07-03T07:50:13.162Z",
+        "mode": "755"
+      },
+      {
+        "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+        "readable": true,
+        "mtime": "2026-07-11T07:43:17.680Z",
+        "mode": "755"
+      }
+    ],
+    "miseTomlPinsNode26_5_0": true,
+    "projectScopedNodeIsV26_5_0": true,
+    "projectScopedNodeExecutable": "/Users/cc/.local/share/mise/installs/node/26.5.0/bin/node",
+    "noP1ImplementationBeforeWrites": true,
+    "forbiddenFeatureAuditBeforeWrites": "rg over src/tests/config found only annotation token names and /pgnViewer/ base path; no teaching workspace, chessboard, PGN runtime, AI, tournament, login, API, persistence, or spectator implementation.",
+    "preWriteHashes": {
+      ".mise.toml": "7352b6a2b16d10657d4abc02d3f710d472436bfd279f02cb75b26970cdc98fba",
+      "package.json": "c5c31bd3203a26df25b2f638106bc60b38c699d58397c1ba977bfbe54ce0f41e",
+      "package-lock.json": "f271431146afcf7f9a952fcdbd77810a1e86741af43b86e1ec438ed45ed0a61c",
+      "vite.config.ts": "11bcf7e0875be5ad6af52cba57f2c7a47840bd5ffa1bed9c83abf62b19669aa2",
+      "vitest.config.ts": "dadbf724d4e7a57fc696aed924e48958d24139b37e95310b90e0f439d1a8f659",
+      "tsconfig.json": "8df29b9aa1b4ca1b95f0358b8d23b31f45ebcba6a94b67a268d60f0a4173e662",
+      "src/main.ts": "7d23fe05d33eebbf0435e742dca510c0475199b330f0f051ffa024788a1d8d81",
+      "src/App.vue": "1d59d83aa455a777661121868c876ec68e85125a3f4a98c6ad6e87582c9a8a2f",
+      "src/router/index.ts": "2c884d5db56becc2326ce34f0676eb5f650b72cc7df4ecb71fe856abdd4ad623",
+      "src/stores/index.ts": "487e2027859fefefea762d7b7f936e2174c47ecbe92db44626b3ef4544611b78",
+      "src/styles/tokens.css": "c610e1d05901e2f702fc14458f5854b05e667d67560fcf0c46eb4cd22ed38250",
+      "AGENTS.md": "00279d1b02b028d2c5a672a91683c40c44e2b634a4b3eae40c1357ebdbfee333",
+      "CLAUDE.md": "79ec35de2bee1d8d1d775ce18a4009f096dc2a1326918000ba07f737bfe2f830",
+      ".ai/skills/project-ui/SKILL.md": "4ddd365e7b8180c8bc46659c68e570132e1016d850687f662604dd8ba2f566ac",
+      "docs/architecture/TECH_STACK_DECISION.md": "989ac0d512839249a5b023698b95484ef80323be5d39a0aeab0dca7583f4513a",
+      "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md": "7766780583264ffc0a4b52b0fee774baaa77aa1e4655e37411235a7514fe9491",
+      "docs/migration/SOURCE_PROVENANCE.md": "0f42e885578c609e182d788fd9d068fc07739d6d0a9a6e2f03d4deea6b78b803",
+      ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json": "ae9ef89f4a9e6843e1e5feec4908daee784f9bd0c02300e891660e1c167bbf49",
+      ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json": "b3c7ddb549efcaca33a5424d4784932384d6e63f8cd6ef27cb7ed649ffdfbcfd"
+    },
+    "existingPackageManagerFilesBeforeWrites": [
+      "package.json",
+      "package-lock.json"
+    ],
+    "gitCommandsRun": false,
+    "secretFilesInspected": false
+  },
+  "nodeProvisioningBaseline": {
+    "nodeProvisioningReport": ".ai/reports/P0B_NODE_RUNTIME_PROVISIONING_REPORT.json",
+    "previousVerdict": "P0B_NODE_RUNTIME_PROVISIONING_PASS",
+    "npmSuppliedByNode": "11.17.0"
+  },
+  "projectScopedNode": {
+    "version": "v26.5.0",
+    "executable": "/Users/cc/.local/share/mise/installs/node/26.5.0/bin/node",
+    "validationCommand": "mise exec -- node --version",
+    "status": "PASS"
+  },
+  "pnpmLatestStableResolution": {
+    "packageName": "pnpm",
+    "resolvedLatestStableVersion": "11.11.0",
+    "metadataAuthority": "https://registry.npmjs.org/pnpm",
+    "resolutionTimestamp": "2026-07-11T20:57:06.177Z",
+    "prerelease": false,
+    "engineRequirements": {
+      "node": ">=22.13"
+    }
+  },
+  "projectScopedPnpm": {
+    "version": "11.11.0",
+    "executable": "/Users/cc/.local/share/mise/installs/pnpm/11.11.0/pnpm",
+    "validationCommand": "mise exec -- pnpm --version",
+    "status": "PASS"
+  },
+  "previousPackageManager": {
+    "packageManager": "npm@11.13.0",
+    "lockfiles": [
+      "package-lock.json"
+    ]
+  },
+  "finalPackageManager": {
+    "packageManager": "pnpm@11.11.0",
+    "engines": {
+      "node": "26.5.0",
+      "pnpm": "11.11.0"
+    },
+    "lockfiles": [
+      "pnpm-lock.yaml"
+    ],
+    "buildPolicyFile": "pnpm-workspace.yaml"
+  },
+  "lockfileMigration": {
+    "packageLockDeleted": true,
+    "pnpmLockCreated": true,
+    "onlyRootPackageManagerLockfile": true,
+    "pnpmWorkspaceYamlReason": "pnpm 11 created allowBuilds policy for vue-demi; no workspace packages declared."
+  },
+  "canonicalArchitectureEvidence": {
+    "inspectedSource": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "filesInspected": [
+      "package.json",
+      "pnpm-lock.yaml",
+      "vite.config.ts",
+      "vitest.config.ts",
+      "tsconfig.json",
+      "index.html",
+      "src/env.d.ts",
+      "src/app/main.ts",
+      "src/app/App.vue",
+      "src/app/router/index.ts",
+      "src/app/styles.css",
+      "src/styles/board.css",
+      "src/domains/analysis/searchEngine.ts",
+      "src/domains/board/pieces.ts",
+      "tests/setup.ts"
+    ],
+    "summary": "Canonical source has one Vite root, one Vue bootstrap, Pinia-before-Router mount order, createWebHistory(import.meta.env.BASE_URL), /pgnViewer/ base, @ alias, Vite module worker pattern, ?inline image typing, and Vitest jsdom setup. P0B copied no feature code."
+  },
+  "canonicalToolchainParity": {
+    "path": "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+    "blockedAreas": [
+      "Vue type checking",
+      "browser smoke strategy",
+      "dependency categories"
+    ],
+    "entries": 18
+  },
+  "dependencyVersionBaseline": {
+    "path": "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+    "dependencies": 18,
+    "blockerPackages": [
+      "typescript",
+      "vue-tsc"
+    ]
+  },
+  "registryMetadataEvidence": {
+    "authority": "https://registry.npmjs.org/",
+    "resolutionTimestamp": "2026-07-11T20:58:41.908Z",
+    "packages": [
+      {
+        "packageName": "vue",
+        "metadataAuthority": "https://registry.npmjs.org/vue",
+        "distTag": "latest",
+        "registryLatestStableVersion": "3.5.39",
+        "prerelease": false,
+        "versionPublishedAt": "2026-06-25T09:44:00.706Z",
+        "engineRequirements": null,
+        "peerRequirements": {
+          "typescript": "*"
+        },
+        "peerDependenciesMeta": {
+          "typescript": {
+            "optional": true
+          }
+        }
+      },
+      {
+        "packageName": "vue-router",
+        "metadataAuthority": "https://registry.npmjs.org/vue-router",
+        "distTag": "latest",
+        "registryLatestStableVersion": "5.1.0",
+        "prerelease": false,
+        "versionPublishedAt": "2026-05-28T14:32:47.343Z",
+        "engineRequirements": null,
+        "peerRequirements": {
+          "@pinia/colada": ">=0.21.2",
+          "@vue/compiler-sfc": "^3.5.34",
+          "pinia": "^3.0.4",
+          "vite": "^7.0.0 || ^8.0.0",
+          "vue": "^3.5.34"
+        },
+        "peerDependenciesMeta": {
+          "@vue/compiler-sfc": {
+            "optional": true
+          },
+          "pinia": {
+            "optional": true
+          },
+          "@pinia/colada": {
+            "optional": true
+          },
+          "vite": {
+            "optional": true
+          }
+        }
+      },
+      {
+        "packageName": "pinia",
+        "metadataAuthority": "https://registry.npmjs.org/pinia",
+        "distTag": "latest",
+        "registryLatestStableVersion": "3.0.4",
+        "prerelease": false,
+        "versionPublishedAt": "2025-11-05T09:25:13.853Z",
+        "engineRequirements": null,
+        "peerRequirements": {
+          "typescript": ">=4.5.0",
+          "vue": "^3.5.11"
+        },
+        "peerDependenciesMeta": {
+          "typescript": {
+            "optional": true
+          }
+        }
+      },
+      {
+        "packageName": "naive-ui",
+        "metadataAuthority": "https://registry.npmjs.org/naive-ui",
+        "distTag": "latest",
+        "registryLatestStableVersion": "2.44.1",
+        "prerelease": false,
+        "versionPublishedAt": "2026-03-08T16:11:07.491Z",
+        "engineRequirements": {
+          "node": ">=20"
+        },
+        "peerRequirements": {
+          "vue": "^3.0.0"
+        },
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "gsap",
+        "metadataAuthority": "https://registry.npmjs.org/gsap",
+        "distTag": "latest",
+        "registryLatestStableVersion": "3.15.0",
+        "prerelease": false,
+        "versionPublishedAt": "2026-04-13T13:15:35.800Z",
+        "engineRequirements": null,
+        "peerRequirements": null,
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "chess.js",
+        "metadataAuthority": "https://registry.npmjs.org/chess.js",
+        "distTag": "latest",
+        "registryLatestStableVersion": "1.4.0",
+        "prerelease": false,
+        "versionPublishedAt": "2025-06-14T16:52:29.970Z",
+        "engineRequirements": null,
+        "peerRequirements": null,
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "dexie",
+        "metadataAuthority": "https://registry.npmjs.org/dexie",
+        "distTag": "latest",
+        "registryLatestStableVersion": "4.4.4",
+        "prerelease": false,
+        "versionPublishedAt": "2026-06-16T13:11:50.969Z",
+        "engineRequirements": null,
+        "peerRequirements": null,
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "zod",
+        "metadataAuthority": "https://registry.npmjs.org/zod",
+        "distTag": "latest",
+        "registryLatestStableVersion": "4.4.3",
+        "prerelease": false,
+        "versionPublishedAt": "2026-05-04T07:06:40.819Z",
+        "engineRequirements": null,
+        "peerRequirements": null,
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "@tanstack/vue-query",
+        "metadataAuthority": "https://registry.npmjs.org/%40tanstack/vue-query",
+        "distTag": "latest",
+        "registryLatestStableVersion": "5.101.2",
+        "prerelease": false,
+        "versionPublishedAt": "2026-06-27T20:31:47.430Z",
+        "engineRequirements": null,
+        "peerRequirements": {
+          "vue": "^2.6.0 || ^3.3.0",
+          "@vue/composition-api": "^1.1.2"
+        },
+        "peerDependenciesMeta": {
+          "@vue/composition-api": {
+            "optional": true
+          }
+        }
+      },
+      {
+        "packageName": "vite",
+        "metadataAuthority": "https://registry.npmjs.org/vite",
+        "distTag": "latest",
+        "registryLatestStableVersion": "8.1.4",
+        "prerelease": false,
+        "versionPublishedAt": "2026-07-09T04:44:45.017Z",
+        "engineRequirements": {
+          "node": "^20.19.0 || >=22.12.0"
+        },
+        "peerRequirements": {
+          "@types/node": "^20.19.0 || >=22.12.0",
+          "@vitejs/devtools": "^0.3.0",
+          "esbuild": "^0.27.0 || ^0.28.0",
+          "jiti": ">=1.21.0",
+          "less": "^4.0.0",
+          "sass": "^1.70.0",
+          "sass-embedded": "^1.70.0",
+          "stylus": ">=0.54.8",
+          "sugarss": "^5.0.0",
+          "terser": "^5.16.0",
+          "tsx": "^4.8.1",
+          "yaml": "^2.4.2"
+        },
+        "peerDependenciesMeta": {
+          "@types/node": {
+            "optional": true
+          },
+          "@vitejs/devtools": {
+            "optional": true
+          },
+          "esbuild": {
+            "optional": true
+          },
+          "jiti": {
+            "optional": true
+          },
+          "sass": {
+            "optional": true
+          },
+          "sass-embedded": {
+            "optional": true
+          },
+          "stylus": {
+            "optional": true
+          },
+          "less": {
+            "optional": true
+          },
+          "sugarss": {
+            "optional": true
+          },
+          "terser": {
+            "optional": true
+          },
+          "tsx": {
+            "optional": true
+          },
+          "yaml": {
+            "optional": true
+          }
+        }
+      },
+      {
+        "packageName": "@vitejs/plugin-vue",
+        "metadataAuthority": "https://registry.npmjs.org/%40vitejs/plugin-vue",
+        "distTag": "latest",
+        "registryLatestStableVersion": "6.0.7",
+        "prerelease": false,
+        "versionPublishedAt": "2026-05-15T04:07:59.852Z",
+        "engineRequirements": {
+          "node": "^20.19.0 || >=22.12.0"
+        },
+        "peerRequirements": {
+          "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0",
+          "vue": "^3.2.25"
+        },
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "typescript",
+        "metadataAuthority": "https://registry.npmjs.org/typescript",
+        "distTag": "latest",
+        "registryLatestStableVersion": "7.0.2",
+        "prerelease": false,
+        "versionPublishedAt": "2026-07-08T15:55:18.431Z",
+        "engineRequirements": {
+          "node": ">=16.20.0"
+        },
+        "peerRequirements": null,
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "vue-tsc",
+        "metadataAuthority": "https://registry.npmjs.org/vue-tsc",
+        "distTag": "latest",
+        "registryLatestStableVersion": "3.3.7",
+        "prerelease": false,
+        "versionPublishedAt": "2026-07-08T03:44:57.611Z",
+        "engineRequirements": null,
+        "peerRequirements": {
+          "typescript": ">=5.0.0"
+        },
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "@types/node",
+        "metadataAuthority": "https://registry.npmjs.org/%40types/node",
+        "distTag": "latest",
+        "registryLatestStableVersion": "26.1.1",
+        "prerelease": false,
+        "versionPublishedAt": "2026-07-08T06:47:46.733Z",
+        "engineRequirements": null,
+        "peerRequirements": {},
+        "peerDependenciesMeta": null
+      },
+      {
+        "packageName": "vitest",
+        "metadataAuthority": "https://registry.npmjs.org/vitest",
+        "distTag": "latest",
+        "registryLatestStableVersion": "4.1.10",
+        "prerelease": false,
+        "versionPublishedAt": "2026-07-06T06:44:42.684Z",
+        "engineRequirements": {
+          "node": "^20.0.0 || ^22.0.0 || >=24.0.0"
+        },
+        "peerRequirements": {
+          "vite": "^6.0.0 || ^7.0.0 || ^8.0.0",
+          "jsdom": "*",
+          "happy-dom": "*",
+          "@vitest/ui": "4.1.10",
+          "@types/node": "^20.0.0 || ^22.0.0 || >=24.0.0",
+          "@edge-runtime/vm": "*",
+          "@opentelemetry/api": "^1.9.0",
+          "@vitest/coverage-v8": "4.1.10",
+          "@vitest/browser-preview": "4.1.10",
+          "@vitest/coverage-istanbul": "4.1.10",
+          "@vitest/browser-playwright": "4.1.10",
+          "@vitest/browser-webdriverio": "4.1.10"
+        },
+        "peerDependenciesMeta": {
+          "vite": {
+            "optional": false
+          },
+          "jsdom": {
+            "optional": true
+          },
+          "happy-dom": {
+            "optional": true
+          },
+          "@vitest/ui": {
+            "optional": true
+          },
+          "@types/node": {
+            "optional": true
+          },
+          "@edge-runtime/vm": {
+            "optional": true
+          },
+          "@opentelemetry/api": {
+            "optional": true
+          },
+          "@vitest/coverage-v8": {
+            "optional": true
+          },
+          "@vitest/browser-preview": {
+            "optional": true
+          },
+          "@vitest/coverage-istanbul": {
+            "optional": true
+          },
+          "@vitest/browser-playwright": {
+            "optional": true
+          },
+          "@vitest/browser-webdriverio": {
+            "optional": true
+          }
+        }
+      },
+      {
+        "packageName": "@vue/test-utils",
+        "metadataAuthority": "https://registry.npmjs.org/%40vue/test-utils",
+        "distTag": "latest",
+        "registryLatestStableVersion": "2.4.11",
+        "prerelease": false,
+        "versionPublishedAt": "2026-06-04T15:26:17.785Z",
+        "engineRequirements": null,
+        "peerRequirements": {
+          "@vue/compiler-dom": "3.x",
+          "@vue/server-renderer": "3.x",
+          "vue": "3.x"
+        },
+        "peerDependenciesMeta": {
+          "@vue/server-renderer": {
+            "optional": true
+          }
+        }
+      },
+      {
+        "packageName": "jsdom",
+        "metadataAuthority": "https://registry.npmjs.org/jsdom",
+        "distTag": "latest",
+        "registryLatestStableVersion": "29.1.1",
+        "prerelease": false,
+        "versionPublishedAt": "2026-04-30T08:52:48.353Z",
+        "engineRequirements": {
+          "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
+        },
+        "peerRequirements": {
+          "canvas": "^3.0.0"
+        },
+        "peerDependenciesMeta": {
+          "canvas": {
+            "optional": true
+          }
+        }
+      },
+      {
+        "packageName": "@vue/tsconfig",
+        "metadataAuthority": "https://registry.npmjs.org/%40vue/tsconfig",
+        "distTag": "latest",
+        "registryLatestStableVersion": "0.9.1",
+        "prerelease": false,
+        "versionPublishedAt": "2026-03-24T01:43:34.778Z",
+        "engineRequirements": null,
+        "peerRequirements": {
+          "typescript": ">= 5.8",
+          "vue": "^3.4.0"
+        },
+        "peerDependenciesMeta": {
+          "typescript": {
+            "optional": true
+          },
+          "vue": {
+            "optional": true
+          }
+        }
+      }
+    ]
+  },
+  "prereleaseAudit": {
+    "status": "PASS",
+    "selectedPrereleasePackages": []
+  },
+  "engineCompatibility": {
+    "status": "PASS",
+    "node": "v26.5.0",
+    "evidence": "All selected packages with engine requirements accept Node 26.5.0."
+  },
+  "peerDependencyCompatibility": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm install --frozen-lockfile --strict-peer-dependencies",
+    "evidence": "Already up to date; exit code 0."
+  },
+  "filesCreated": [
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "e800c3a435987e42bab7fc9ae8a807ef5cc17ccfd4a3dea0ef6f6ec65ea7c64b"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "f662e7ebaa5611d0f78956162167de8ce37aff6e12f54f5dae5c70f53202ce95"
+    },
+    {
+      "path": "src/env.d.ts",
+      "sha256": "ea98a503bd7026058ef3d505f759d5a483b3338e1f0b9a1ff8ef81ff5857a036"
+    },
+    {
+      "path": "tests/setup.ts",
+      "sha256": "261fbdaafd3a207c10ddc334d226ce69124d3f772e385a80960b573fc6ac67ff"
+    },
+    {
+      "path": "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+      "sha256": "ee040f81017634392fe7b609b13e2389c7eee5caa951593faea06f56b0140beb"
+    },
+    {
+      "path": "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+      "sha256": "25ca65ff63b2f223ab9ab74bdd16e4c4cad9122d09d64c1a4594bbca69bcaf5c"
+    },
+    {
+      "path": ".ai/reports/P0B_CANONICAL_VUE_ARCHITECTURE_PNPM_AND_LATEST_STABLE_TOOLCHAIN_ALIGNMENT_RERUN_REPORT.json",
+      "sha256": null
+    }
+  ],
+  "filesModified": [
+    {
+      "path": ".mise.toml",
+      "beforeSha256": "7352b6a2b16d10657d4abc02d3f710d472436bfd279f02cb75b26970cdc98fba",
+      "afterSha256": "df567441df0ae4945a4101e895ea56587c6ee7dad7cde1409418cbb73821c9ea"
+    },
+    {
+      "path": "package.json",
+      "beforeSha256": "c5c31bd3203a26df25b2f638106bc60b38c699d58397c1ba977bfbe54ce0f41e",
+      "afterSha256": "fdf3bc7b5a9bc9648efd9bc68bac4320bde563ffd5ab828a26eb5542244513fa"
+    },
+    {
+      "path": "vite.config.ts",
+      "beforeSha256": "11bcf7e0875be5ad6af52cba57f2c7a47840bd5ffa1bed9c83abf62b19669aa2",
+      "afterSha256": "215b178752629cf0013e714fc83d4f183046b16d1ffa95f3e5a5f7b2c97f7550"
+    },
+    {
+      "path": "vitest.config.ts",
+      "beforeSha256": "dadbf724d4e7a57fc696aed924e48958d24139b37e95310b90e0f439d1a8f659",
+      "afterSha256": "3af1a20902db93d165c20994b480f1a791d0acb89be8a02c012409da0ff467c2"
+    },
+    {
+      "path": "tsconfig.json",
+      "beforeSha256": "8df29b9aa1b4ca1b95f0358b8d23b31f45ebcba6a94b67a268d60f0a4173e662",
+      "afterSha256": "eec27f0d5cf2667c5ab600a8bc96c426fc4ca704a32153c942fd380699db524b"
+    },
+    {
+      "path": "AGENTS.md",
+      "beforeSha256": "00279d1b02b028d2c5a672a91683c40c44e2b634a4b3eae40c1357ebdbfee333",
+      "afterSha256": "48eb8c5f108337c65e15b4996d7ffc360de13289694586a592e126a056c3e82d"
+    },
+    {
+      "path": "CLAUDE.md",
+      "beforeSha256": "79ec35de2bee1d8d1d775ce18a4009f096dc2a1326918000ba07f737bfe2f830",
+      "afterSha256": "546558426fa74066a4e4773a864198d2bb7ac734998069f8240fc7154a3a810a"
+    },
+    {
+      "path": ".ai/skills/project-ui/SKILL.md",
+      "beforeSha256": "4ddd365e7b8180c8bc46659c68e570132e1016d850687f662604dd8ba2f566ac",
+      "afterSha256": "6cda0e93571cdcd3b3f4dc77188b3568c54d59893eb08464fef54eba2e2fc682"
+    },
+    {
+      "path": "docs/architecture/TECH_STACK_DECISION.md",
+      "beforeSha256": "989ac0d512839249a5b023698b95484ef80323be5d39a0aeab0dca7583f4513a",
+      "afterSha256": "b7138f8f649ca5392d0c2102be94929ab49d296d896f95527f07e96f874f6501"
+    },
+    {
+      "path": "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+      "beforeSha256": "7766780583264ffc0a4b52b0fee774baaa77aa1e4655e37411235a7514fe9491",
+      "afterSha256": "4b961c192d12efb68082617e8b9efdc861efcec3a88cc9d2c4cb9777ca4dfd2c"
+    },
+    {
+      "path": "docs/migration/SOURCE_PROVENANCE.md",
+      "beforeSha256": "0f42e885578c609e182d788fd9d068fc07739d6d0a9a6e2f03d4deea6b78b803",
+      "afterSha256": "97d2603fc69fc2a38f08d9dd3c28c6d05278e9cc78a1dae65166b9e7234e6133"
+    },
+    {
+      "path": ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json",
+      "beforeSha256": "ae9ef89f4a9e6843e1e5feec4908daee784f9bd0c02300e891660e1c167bbf49",
+      "afterSha256": "2887739b4b5bf9fc2afb174a515b32d5eaee8dfe714482006a318fd1dc2384df"
+    },
+    {
+      "path": ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json",
+      "beforeSha256": "b3c7ddb549efcaca33a5424d4784932384d6e63f8cd6ef27cb7ed649ffdfbcfd",
+      "afterSha256": "8fac4824247def79bfc1c06d6938f0889d68638556443e3443bfd8c1410b9c7f"
+    }
+  ],
+  "filesDeleted": [
+    "package-lock.json"
+  ],
+  "governanceUpdates": {
+    "status": "UPDATED",
+    "files": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".ai/skills/project-ui/SKILL.md",
+      "docs/architecture/TECH_STACK_DECISION.md",
+      "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+      "docs/migration/SOURCE_PROVENANCE.md"
+    ]
+  },
+  "featureImplementationAudit": {
+    "status": "PASS",
+    "evidence": "No new teaching, board, PGN, AI, tournament, auth, API, persistence, spectator, replay, live, or settings runtime was added. Only env typing and test setup were added under src/tests."
+  },
+  "reactRuntimeAudit": {
+    "status": "PASS",
+    "evidence": "package.json and pnpm-lock.yaml contain no React, React Router, TanStack Router, Zustand, Redux, Nuxt, Radix React, React Aria, or MQTT direct/runtime dependency. Search hits were false positives for @vue/reactivity and @vitest/mocker."
+  },
+  "mockDataAudit": {
+    "status": "PASS",
+    "evidence": "No mock/fake/fixture product data runtime added. Search hits were Vitest internal @vitest/mocker only."
+  },
+  "securityAudit": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm audit --prod",
+    "evidence": "No known vulnerabilities found."
+  },
+  "frozenInstall": {
+    "status": "PASS_AFTER_PROJECT_LOCAL_BUILD_APPROVAL",
+    "command": "mise exec -- pnpm install --frozen-lockfile",
+    "evidence": "Initial run blocked vue-demi build approval; pnpm-workspace.yaml allowBuilds.vue-demi=true was added; rerun exited 0."
+  },
+  "dependencyAudit": {
+    "status": "PASS",
+    "commands": [
+      "mise exec -- pnpm ls --depth 0",
+      "mise exec -- pnpm install --frozen-lockfile --strict-peer-dependencies"
+    ],
+    "evidence": "All 18 direct dependencies match selected versions; strict peer validation passes.",
+    "directDependencyBaselineCheck": {
+      "status": "PASS",
+      "command": "node check comparing package.json direct dependencies to docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+      "evidence": "18 package.json direct dependencies, 18 baseline entries, no selected/latest mismatches, no extra direct dependencies, no prereleases."
+    }
+  },
+  "typecheck": {
+    "status": "FAIL",
+    "command": "mise exec -- pnpm run typecheck",
+    "blocker": {
+      "code": "P0B_RERUN_BLOCKED_LATEST_STABLE_COMPATIBILITY_CONFLICT",
+      "summary": "The execution-time registry latest-stable set installs and passes strict peer validation, but Vue type checking fails because vue-tsc@3.3.7 resolves typescript/lib/tsc and typescript@7.0.2 does not export that package subpath.",
+      "failingCommand": "mise exec -- pnpm run typecheck",
+      "failingError": "Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './lib/tsc' is not defined by \"exports\" in node_modules/.pnpm/vue-tsc@3.3.7_typescript@7.0.2/node_modules/typescript/package.json",
+      "packages": [
+        {
+          "packageName": "typescript",
+          "selectedVersion": "7.0.2",
+          "distTag": "latest",
+          "engineRequirements": {
+            "node": ">=16.20.0"
+          },
+          "peerRequirements": null,
+          "compatibilityEvidence": "typescript@7.0.2 package exports omit ./lib/tsc; inspected installed package.json exports."
+        },
+        {
+          "packageName": "vue-tsc",
+          "selectedVersion": "3.3.7",
+          "distTag": "latest",
+          "engineRequirements": null,
+          "peerRequirements": {
+            "typescript": ">=5.0.0"
+          },
+          "compatibilityEvidence": "vue-tsc@3.3.7 index.js calls require.resolve('typescript/lib/tsc') at runtime."
+        }
+      ],
+      "attemptedResolution": "Selected both registry latest stable versions as required; did not downgrade. Re-ran typecheck after pnpm prune and reproduced the same error. Production build fails at the same vue-tsc step."
+    }
+  },
+  "unitTests": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm test",
+    "evidence": "1 test file passed, 1 test passed. Node emitted an experimental localStorage warning from test environment."
+  },
+  "productionBuild": {
+    "status": "FAIL",
+    "command": "mise exec -- pnpm run build",
+    "evidence": "Fails at vue-tsc with the same ERR_PACKAGE_PATH_NOT_EXPORTED blocker before vite build runs."
+  },
+  "browserSmokeValidation": {
+    "status": "NOT_RUN",
+    "reason": "Required typecheck and production build failed; PASS is forbidden and browser smoke would not clear the latest-stable compatibility blocker."
+  },
+  "jsonValidation": {
+    "status": "PASS",
+    "commands": [
+      "for f in docs/migration/*.json; do jq empty \"$f\" || exit 1; done",
+      "for f in .ai/reports/*.json; do jq empty \"$f\" || exit 1; done"
+    ],
+    "evidence": "All docs/migration/*.json and .ai/reports/*.json parsed successfully after updates."
+  },
+  "sourceIntegrityEvidence": {
+    "sourceProjectWritesAttempted": false,
+    "sourceRootMetadataAfter": [
+      {
+        "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+        "readable": true,
+        "mtime": "2026-07-07T09:00:29.194Z",
+        "mode": "755"
+      },
+      {
+        "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+        "readable": true,
+        "mtime": "2026-07-03T07:50:13.162Z",
+        "mode": "755"
+      },
+      {
+        "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+        "readable": true,
+        "mtime": "2026-07-11T07:43:17.680Z",
+        "mode": "755"
+      }
+    ],
+    "inspectedSourceFilesOnly": true
+  },
+  "sourceIntegrityLimitations": "No Git commands were allowed. Source roots are writable at filesystem-permission level but were treated as read-only by policy. Integrity verification is limited to no write commands targeting source roots and root metadata evidence.",
+  "warnings": [
+    "pnpm 11 required a project-local allowBuilds decision for vue-demi, recorded in pnpm-workspace.yaml without workspace packages.",
+    "Initial pre-write hash command used tests/bootstrap.test.ts instead of existing tests/bootstrap.spec.ts; that file was not modified.",
+    "Browser smoke was not run because typecheck and production build failed first."
+  ],
+  "blockers": [
+    {
+      "code": "P0B_RERUN_BLOCKED_LATEST_STABLE_COMPATIBILITY_CONFLICT",
+      "summary": "The execution-time registry latest-stable set installs and passes strict peer validation, but Vue type checking fails because vue-tsc@3.3.7 resolves typescript/lib/tsc and typescript@7.0.2 does not export that package subpath.",
+      "failingCommand": "mise exec -- pnpm run typecheck",
+      "failingError": "Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './lib/tsc' is not defined by \"exports\" in node_modules/.pnpm/vue-tsc@3.3.7_typescript@7.0.2/node_modules/typescript/package.json",
+      "packages": [
+        {
+          "packageName": "typescript",
+          "selectedVersion": "7.0.2",
+          "distTag": "latest",
+          "engineRequirements": {
+            "node": ">=16.20.0"
+          },
+          "peerRequirements": null,
+          "compatibilityEvidence": "typescript@7.0.2 package exports omit ./lib/tsc; inspected installed package.json exports."
+        },
+        {
+          "packageName": "vue-tsc",
+          "selectedVersion": "3.3.7",
+          "distTag": "latest",
+          "engineRequirements": null,
+          "peerRequirements": {
+            "typescript": ">=5.0.0"
+          },
+          "compatibilityEvidence": "vue-tsc@3.3.7 index.js calls require.resolve('typescript/lib/tsc') at runtime."
+        }
+      ],
+      "attemptedResolution": "Selected both registry latest stable versions as required; did not downgrade. Re-ran typecheck after pnpm prune and reproduced the same error. Production build fails at the same vue-tsc step."
+    }
+  ],
+  "finalAuthoritativeP0Baseline": {
+    "packageManager": "pnpm@11.11.0",
+    "node": "v26.5.0",
+    "dependencyPolicy": "registry latest stable selected; no prereleases; no downgrades",
+    "p1FeatureImplementation": false
+  },
+  "finalP0AcceptanceReadiness": {
+    "ready": false,
+    "reason": "The execution-time registry latest-stable set installs and passes strict peer validation, but Vue type checking fails because vue-tsc@3.3.7 resolves typescript/lib/tsc and typescript@7.0.2 does not export that package subpath."
+  },
+  "finalVerdict": "P0B_RERUN_BLOCKED_LATEST_STABLE_COMPATIBILITY_CONFLICT"
+}

@@ -1,0 +1,37 @@
+{
+  "name": "chess-pgnviewer-vue",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.11.0",
+  "engines": {
+    "node": "26.5.0",
+    "pnpm": "11.11.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "pnpm run typecheck:vue && vite build",
+    "preview": "vite preview",
+    "typecheck": "pnpm run typecheck:vue",
+    "typecheck:vue": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@tanstack/vue-query": "5.101.2",
+    "chess.js": "1.4.0",
+    "dexie": "4.4.4",
+    "gsap": "3.15.0",
+    "naive-ui": "2.44.1",
+    "pinia": "3.0.4",
+    "vue": "3.5.39",
+    "vue-router": "5.1.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "@vitejs/plugin-vue": "6.0.7",
+    "@vue/tsconfig": "0.9.1",
+    "typescript": "6.0.3",
+    "vite": "8.1.4",
+    "vue-tsc": "3.3.7"
+  }
+}

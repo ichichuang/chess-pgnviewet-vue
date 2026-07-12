@@ -1,0 +1,1428 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-12T02:34:22.133Z",
+  "phase": "F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceAuthorities": [
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "/Users/cc/Work/neobv/Chess/pgnViewer",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer"
+  ],
+  "remoteRepository": {
+    "url": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "fullName": "ichichuang/chess-pgnviewet-vue",
+    "spellingPreserved": true,
+    "ghView": {
+      "visibility": "PUBLIC",
+      "isEmpty": true,
+      "viewerPermission": "ADMIN",
+      "defaultBranchRef": {
+        "name": ""
+      }
+    },
+    "lsRemote": {
+      "heads": [],
+      "headSymref": "EMPTY_OUTPUT_EXIT_0"
+    }
+  },
+  "overallStatus": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE",
+  "summary": {
+    "confirmedBaseline": [
+      "one Vue root",
+      "one Vite root",
+      "one Router foundation",
+      "one Pinia foundation",
+      "one token registry",
+      "pnpm sole manager",
+      "Node 26.5.0",
+      "pnpm 11.11.0",
+      "TypeScript 6.0.3",
+      "no React runtime",
+      "no target automated test framework",
+      "no product mock data",
+      "neutral /pgnViewer/ bootstrap"
+    ],
+    "majorGaps": [
+      "lint/static-scan governance",
+      "theme bootstrap and persistence",
+      "Naive provider/adapters",
+      "i18n",
+      "Dexie persistence",
+      "TanStack Query client",
+      "API/repository/env/security runtime boundaries",
+      "global error/notification policy",
+      "full responsive panel/splitter/overlay foundation"
+    ],
+    "finalReason": "F0B resolved the active target Vite process, removed the authorized Vite deps cache side effect, reconciled forbidden metadata-category authority evidence without inventing historical filenames, revalidated the authorized empty remote, and preserved the original passing validation evidence without rerunning Vite.",
+    "f0Closure": {
+      "status": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE",
+      "f0bVerdict": "F0B_CLOSURE_PASS_F0_READY_FOR_GIT_BASELINE",
+      "blockers": [],
+      "nextRequiredPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH"
+    }
+  },
+  "capabilities": [
+    {
+      "identifier": "toolchain.node_pnpm_mise",
+      "domain": "toolchain and project configuration",
+      "requirement": "Project-local Node 26.5.0 and pnpm 11.11.0 via mise; pnpm sole manager",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "platform/toolchain owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        ".mise.toml",
+        "package.json"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
+      "validationEvidence": [
+        "mise exec -- node --version => v26.5.0",
+        "mise exec -- pnpm --version => 11.11.0",
+        "package-lock/yarn/bun lockfiles not found"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_BASELINE",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    },
+    {
+      "identifier": "toolchain.vue_vite_ts",
+      "domain": "toolchain and project configuration",
+      "requirement": "One Vite root, Vue 3 app, strict TypeScript, /pgnViewer/ base",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "platform/toolchain owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "index.html",
+        "src/main.ts",
+        "vite.config.ts",
+        "tsconfig.json"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
+      "validationEvidence": [
+        "typecheck PASS",
+        "temp outDir production Vite build PASS",
+        "vite base /pgnViewer/ confirmed"
+      ],
+      "browserEvidence": "PASS on http://127.0.0.1:5176/pgnViewer/",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_BASELINE",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    },
+    {
+      "identifier": "tooling.eslint_flat",
+      "domain": "code-quality tooling",
+      "requirement": "ESLint flat configuration and Vue/TypeScript-aware linting",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "package.json has no lint script",
+        "no eslint config found",
+        "eslint package absent from direct deps"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_FOUNDATION_TOOLING",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "tooling.format_stylelint",
+      "domain": "code-quality tooling",
+      "requirement": "Prettier, Stylelint, CSS custom-property governance, forbidden raw-color scans",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "package.json has no format/stylelint/static-scan scripts",
+        "raw color scan currently manual via rg"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_FOUNDATION_TOOLING",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "tooling.dependency_unused_checks",
+      "domain": "code-quality tooling",
+      "requirement": "Dependency checks, unused-dependency checks, import-boundary enforcement",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "no knip/madge/dependency-cruiser scripts configured",
+        "direct dependency inventory completed manually"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_FOUNDATION_TOOLING",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "tooling.security_static_scans",
+      "domain": "security tooling",
+      "requirement": "Secret-pattern, forbidden endpoint, mock-data, raw-color scans",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "security boundary owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "PARTIAL",
+      "validationEvidence": [
+        "manual rg scans run for forbidden architecture, secrets, tests, raw visual values",
+        "no configured repeatable scan scripts"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_FOUNDATION_TOOLING",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "router.foundation",
+      "domain": "router foundation",
+      "requirement": "One Vue Router owner using createWebHistory(import.meta.env.BASE_URL), neutral route only",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "router owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/router/index.ts",
+        "src/main.ts"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
+      "validationEvidence": [
+        "one createRouter occurrence in src/router/index.ts",
+        "route count 1 path / lazy HomeView",
+        "no product routes found in target"
+      ],
+      "browserEvidence": "PASS: RouterView rendered HomeView child at /pgnViewer/",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_BASELINE",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    },
+    {
+      "identifier": "state.pinia_foundation",
+      "domain": "Pinia state foundation",
+      "requirement": "One Pinia owner installed once; no fake business stores",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "state owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/stores/index.ts",
+        "src/main.ts"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
+      "validationEvidence": [
+        "one createPinia singleton",
+        "one app.use(pinia)",
+        "no feature stores present"
+      ],
+      "browserEvidence": "PASS: no duplicate Pinia warnings",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_BASELINE",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    },
+    {
+      "identifier": "state.query_client",
+      "domain": "TanStack Vue Query ownership",
+      "requirement": "QueryClient configuration, key ownership, retry/stale/gc/cancel/focus/offline policy",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "@tanstack/vue-query installed but not referenced in src"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F3_SERVER_STATE_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "theme.token_registry",
+      "domain": "global semantic tokens",
+      "requirement": "Single src/styles/tokens.css registry, neutral system-color bootstrap values",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/styles/tokens.css",
+        "src/styles/index.css",
+        "src/styles/base.css"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
+      "validationEvidence": [
+        "tokens.css exists",
+        "index.css imports tokens then base",
+        "raw values limited to neutral system colors, focus ring, fs-base, reduced motion"
+      ],
+      "browserEvidence": "PASS: token registry style content observed in browser",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_BASELINE",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    },
+    {
+      "identifier": "theme.light_dark_system",
+      "domain": "theme system",
+      "requirement": "Light/dark/system theme, pre-Vue no-flash init, persistence, color-scheme/meta theme-color, reduced-motion transitions",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "theme foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/styles/tokens.css"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "no theme store/provider/pre-Vue script/meta theme-color/html markers found",
+        "pgnViewer-new has themeStore and Naive overrides as later evidence"
+      ],
+      "browserEvidence": "Current browser only validates neutral system-color shell",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_THEME_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "ui.naive_providers",
+      "domain": "Naive UI provider composition",
+      "requirement": "NConfigProvider, message/dialog/notification/loading-bar, discrete API, token-based overrides",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "naive-ui installed but no Naive imports in target src",
+        "canonical pgnViewer-new App.vue has NConfigProvider/NMessageProvider/NDialogProvider only"
+      ],
+      "browserEvidence": "NOT_PRESENT",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_PROVIDER_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "ui.adapters_icons_overlays",
+      "domain": "project-owned UI adapters",
+      "requirement": "Project-owned UI adapters, icon governance, overlay stacking, focus trap, scroll lock",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/ui/index.ts"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "src/ui/index.ts intentionally empty",
+        "no icon libraries imported in target"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_UI_ADAPTER_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "i18n.locale_foundation",
+      "domain": "i18n",
+      "requirement": "Simplified Chinese default, English locale, persistence, HTML lang, Naive locale/date locale, typed IDs, formatting/missing-key policy",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "index.html"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "index.html lang is en",
+        "no vue-i18n dependency or locale files in target",
+        "canonical pgnViewer-new uses Naive zhCN/dateZhCN"
+      ],
+      "browserEvidence": "Current title/body English bootstrap only",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_I18N_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "persistence.dexie_boundary",
+      "domain": "persistence",
+      "requirement": "Dexie schema versioning, migrations, hydration/write lifecycle, corruption/quota/unavailable/reset/logout/cross-tab policy",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "persistence owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "dexie and zod installed but not referenced in src",
+        "raw localStorage/sessionStorage/IndexedDB absent in target src"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F3_PERSISTENCE_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "persistence.safe_bootstrap_preferences",
+      "domain": "persistence",
+      "requirement": "Safe synchronous bootstrap preferences and browser-storage denylist",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "persistence owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "no preference bootstrap script or storage allowlist/denylist exists"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_THEME_PREFERENCES_BOOTSTRAP",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "api.repository_boundaries",
+      "domain": "API boundary",
+      "requirement": "Typed repositories, DTO/Zod validation, normalized errors, request ids, stale-result protection, timeouts/retries/error mapping/redaction",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "no src/api directory in target",
+        "API_BOUNDARY_ADR confirms NOT_IN_P0"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F3_API_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "env.runtime_config",
+      "domain": "environment configuration",
+      "requirement": "Typed public env vars, server-only ownership, .env.example, VITE exposure, URL validation, same-origin policy",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/env.d.ts"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "src/env.d.ts contains only Vite/SFC/asset types",
+        "no .env.example found",
+        "no env variable use found in target src"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_ENV_SECURITY_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "security.same_origin_secrets",
+      "domain": "security boundary",
+      "requirement": "No browser upstream credentials/HMAC/MQTT secrets; CSP/security headers decisions; production debug/error redaction",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "security boundary owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/PERSISTENCE_ADR.md"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "PARTIAL",
+      "validationEvidence": [
+        "target src contains no fetch/proxyRequest/HMAC/MQTT credential handling",
+        "manual secret scan found documentation-only policy strings, no secret values exposed"
+      ],
+      "browserEvidence": "PASS: no runtime console errors; CSP headers not implemented",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_SECURITY_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "runtime.error_lifecycle",
+      "domain": "runtime errors and notifications",
+      "requirement": "Deterministic bootstrap, global Vue error/unhandled rejection/persistence/query error handling, notifications/loading ownership",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/main.ts"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "MISSING",
+      "validationEvidence": [
+        "src/main.ts has synchronous createApp/use/mount only",
+        "no global error handlers or notification provider"
+      ],
+      "browserEvidence": "PASS neutral route, but no error-policy implementation",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_RUNTIME_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "accessibility.focus_motion",
+      "domain": "accessibility",
+      "requirement": "Focus visibility/restoration/trap/escape, names, decorative icons, semantic states, touch targets, contrast, reduced motion, board a11y ownership",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/styles/base.css",
+        "src/App.vue"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "PARTIAL",
+      "validationEvidence": [
+        "focus-visible ring exists",
+        "prefers-reduced-motion CSS exists",
+        "neutral bootstrap has main and paragraph; no interactions"
+      ],
+      "browserEvidence": "PASS for nonblank route only; interactive a11y not applicable",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_UI_ADAPTER_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "layout.viewport_scroll",
+      "domain": "responsive layout",
+      "requirement": "100dvh geometry, body scroll ownership, local scroll, safe areas, breakpoints, panel sizing, splitters, collapse priorities, overlays, ResizeObserver",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/App.vue",
+        "src/styles/base.css",
+        "src/styles/tokens.css"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "PARTIAL",
+      "validationEvidence": [
+        "App shell uses 100dvh",
+        "html/body overflow hidden",
+        "no panels/splitters/overlays implemented"
+      ],
+      "browserEvidence": "PASS: body overflow hidden and no document overflow at current browser viewport",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F2_LAYOUT_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "motion.ownership",
+      "domain": "motion",
+      "requirement": "Vue transition and GSAP ownership, canonical timing, cleanup, cancellation, reduced motion",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/styles/base.css",
+        "src/styles/tokens.css"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "PARTIAL",
+      "validationEvidence": [
+        "gsap installed but unused",
+        "global reduced-motion CSS exists",
+        "canonical pgnViewer-new uses GSAP with cleanup/reduced-motion checks"
+      ],
+      "browserEvidence": "No motion in neutral bootstrap",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F3_MOTION_FOUNDATION",
+      "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
+    },
+    {
+      "identifier": "browser.validation_readiness",
+      "domain": "browser validation",
+      "requirement": "Development-only foundation preview and narrow browser validation readiness",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "package.json",
+        "vite.config.ts",
+        "src/App.vue"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
+      "validationEvidence": [
+        "original browser load/reload PASS on /pgnViewer/",
+        "no console warning/error and no Vite overlay in original evidence",
+        "F0B did not rerun browser validation because running Vite would regenerate node_modules/.vite/deps",
+        "F0B removed node_modules/.vite/deps side effect after terminating isolated target Vite process"
+      ],
+      "browserEvidence": "PASS on /pgnViewer/; original evidence reused; side effect corrected by F0B",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_BASELINE",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    },
+    {
+      "identifier": "product.feature_gate",
+      "domain": "future product gates",
+      "requirement": "No product UI, product mocks, feature migration, API runtime, auth, persistence, board, PGN, AI, tournament implementation in P0",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [
+        "src/App.vue",
+        "src/views/HomeView.vue"
+      ],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
+      "validationEvidence": [
+        "forbidden/premature architecture scan found no target src product implementation",
+        "route count remains 1 neutral bootstrap",
+        "package scripts contain no test script"
+      ],
+      "browserEvidence": "PASS neutral bootstrap only",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_BASELINE",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    },
+    {
+      "identifier": "git.remote_safety",
+      "domain": "Git and remote safety",
+      "requirement": "No local Git init; remote exact URL verified empty before future baseline",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "Remote exact spelling preserved; no fetch/add/commit/push performed",
+      "implementationStatus": "IMPLEMENTED_VALIDATED",
+      "validationEvidence": [
+        "target .git absent",
+        "parent dirs not Git repos",
+        "gh repo view reports ichichuang/chess-pgnviewet-vue public empty ADMIN",
+        "git ls-remote --symref --heads exact authorized URL returned empty output with exit 0",
+        "F0B performed no clone, init, add remote, fetch into target, commit, or push"
+      ],
+      "browserEvidence": "NOT_APPLICABLE",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    },
+    {
+      "identifier": "scope.read_only_integrity",
+      "domain": "phase write isolation",
+      "requirement": "Only two authorized JSON deliverables may be created/modified by F0",
+      "authority": [
+        "CLAUDE.md",
+        "AGENTS.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+      ],
+      "implementationOwner": "future foundation owner",
+      "packageOwner": "pnpm package graph; no dependency changes in F0",
+      "configurationFiles": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts"
+      ],
+      "runtimeFiles": [],
+      "providerOwnership": "NOT_IMPLEMENTED_IN_P0 unless explicitly listed",
+      "persistenceOwnership": "NOT_IMPLEMENTED_IN_P0",
+      "themeOwnership": "src/styles/tokens.css when applicable",
+      "userFacingImpact": "Foundation readiness only; product UI remains blocked",
+      "securityImpact": "No browser secret owner introduced in P0 target",
+      "implementationStatus": "CORRECTED_BY_F0B",
+      "validationEvidence": [
+        "historical F0 Vite dependency-cache side effect preserved in correction history",
+        "F0B terminated only isolated target Vite PID 64753 after provenance checks",
+        "F0B deleted only node_modules/.vite/deps and left node_modules/.vite because it was not empty",
+        "forbidden secondary metadata categories excluded from authority evidence; exact historical filenames were not invented",
+        "F0B changed only F0 report, readiness matrix, new F0B report, and authorized cache deletion"
+      ],
+      "browserEvidence": "Original browser PASS preserved; cache side effect corrected; browser not rerun",
+      "blockers": [],
+      "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
+      "plannedPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
+      "finalVerdict": "FOUNDATION_ACCEPTABLE"
+    }
+  ],
+  "overallVerdict": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE",
+  "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
+  "correctionHistory": [
+    {
+      "phase": "F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY",
+      "verdict": "F0_FOUNDATION_AUDIT_FAIL",
+      "reason": "Useful foundation evidence was collected, but the audit failed because browser validation created Vite dependency-cache side effects and a secondary-source listing entered forbidden generated/dependency/Git metadata areas."
+    },
+    {
+      "phase": "F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION",
+      "verdict": "F0A_CORRECTION_BLOCKED",
+      "reason": "Cleanup was blocked by active PID 64753 listening on 127.0.0.1:5174 from the target directory."
+    },
+    {
+      "phase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
+      "startedAt": "2026-07-12T03:44:00Z",
+      "completedAt": "2026-07-12T03:51:04Z",
+      "activeProcessProvenance": {
+        "pid": 64753,
+        "owner": "cc",
+        "effectiveUser": "cc",
+        "uid": 501,
+        "effectiveUid": 501,
+        "executable": "/Users/cc/.local/share/mise/installs/node/26.5.0/bin/node",
+        "commandLineRedacted": "node /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.bin/../vite/bin/vite.js",
+        "currentWorkingDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+        "startTime": "Sun Jul 12 09:56:39 2026 Asia/Shanghai",
+        "elapsedAtInspection": "01:49:41",
+        "parentPid": 64711,
+        "parentCommandRedacted": "/Users/cc/.local/share/mise/installs/pnpm/11.11.0/pnpm dev",
+        "processGroup": 64711,
+        "sessionIdentifier": 0,
+        "descendants": [],
+        "listeningAddresses": [
+          "127.0.0.1"
+        ],
+        "listeningPorts": [
+          5174
+        ],
+        "classification": "TARGET_PROJECT_VITE_DEVELOPMENT_SERVER"
+      },
+      "processTerminationEvidence": {
+        "processTerminationDecision": {
+          "status": "TERMINATION_ALLOWED_AND_COMPLETED",
+          "targetPid": 64753,
+          "conditionsProven": {
+            "belongsToCurrentUser": true,
+            "cwdExactlyTargetDirectory": true,
+            "commandIsTargetViteDevServer": true,
+            "descendantsExclusivelyOwnedByVite": true,
+            "notShellEditorTerminalAiInstallBuildDbOrUnrelatedProcess": true,
+            "parentProcessNotRequiredForTermination": true
+          },
+          "parentSignal": "NONE",
+          "processGroupSignal": "NONE"
+        },
+        "signalsSent": [
+          {
+            "signal": "SIGTERM",
+            "pid": 64753,
+            "target": "exact Vite node process only",
+            "result": "EXITED_WITHIN_2_SECONDS"
+          }
+        ],
+        "processExitVerification": {
+          "status": "PASS",
+          "pid64753": "ABSENT_AFTER_SIGTERM",
+          "descendants": "NONE",
+          "targetPathProcessScanAfterTermination": "NO_TARGET_VITE_PROCESS_FOUND"
+        },
+        "portClosureVerification": {
+          "status": "PASS",
+          "address": "127.0.0.1",
+          "port": 5174,
+          "listenerAfterTermination": "ABSENT"
+        }
+      },
+      "viteCacheDeletion": {
+        "viteCacheAssessment": {
+          "status": "PRESENT_SAFE_TO_DELETE_THEN_DELETED",
+          "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+          "generatedViteDependencyCacheOnly": true,
+          "containedUserAuthoredSource": false,
+          "containedAuthoritativePackageConfigOrLockfile": false,
+          "note": "node_modules/.vite/deps/package.json is the generated Vite optimized-deps package marker, not the project package.json."
+        },
+        "cacheDeletionActions": [
+          {
+            "action": "rm -rf exact authorized path",
+            "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+            "result": "DELETED"
+          },
+          {
+            "action": "rmdir node_modules/.vite if empty",
+            "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite",
+            "result": "NOT_DELETED_NOT_EMPTY",
+            "remainingEntries": [
+              "node_modules/.vite/vitest"
+            ]
+          },
+          {
+            "action": "verify deps absence",
+            "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/node_modules/.vite/deps",
+            "result": "ABSENT"
+          }
+        ],
+        "viteCacheFilesBeforeDeletion": [
+          {
+            "relativePath": "node_modules/.vite/deps/_metadata.json",
+            "size": 1117,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "b7e3b551ff6d18596aeb926bb063a0da7cc451b0d32e7d61a457b252cf427640"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/dist-C_xL6f4V.js",
+            "size": 5387,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "e97fb6499f2ad3c60d8ae49cfc30b43ee280301211d15e76ac374176b148307e"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/dist-C_xL6f4V.js.map",
+            "size": 21660,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "ba249d77cac55de7891cea847527816924fb321d40f40871a13b4fc1d2d97097"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/package.json",
+            "size": 23,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/pinia.js",
+            "size": 146533,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "a8683b6cf68c362b336ad565d178dd7222949186615d494dd6b417084397961c"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/pinia.js.map",
+            "size": 407936,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "edd8ad9c9db51be812d7da31da4ea85751e7765103860424bf7301c3db484ccf"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/vue-router.js",
+            "size": 201292,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "70d272085b6145edbfc94a5cc9866903a9fdcb79ca4a66b0439e2f03eba01500"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/vue-router.js.map",
+            "size": 440674,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "db54ba68f139bb5feeaf4e1ffdf07a4eb5ff19628bb736e3ca3dabad01bde09c"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/vue.js",
+            "size": 5886,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "0b5a18d35be92c6a8a802cc6657d0685447903b295d1b14208be7c900ca74589"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/vue.runtime.esm-bundler-BxAFZNd8.js",
+            "size": 325387,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "82937bf1f4804ccfd2c73004eaa609c2415457f3add36276a63f5ec5f56d9e8a"
+          },
+          {
+            "relativePath": "node_modules/.vite/deps/vue.runtime.esm-bundler-BxAFZNd8.js.map",
+            "size": 637551,
+            "mtime": "2026-07-12T02:30:16Z",
+            "sha256": "eb3cb7b2b94abbb8c0502f43a37895ccd69fb563a618f8bc6daaaeb82bd3ee51"
+          }
+        ]
+      },
+      "forbiddenMetadataCategoryExclusion": {
+        "status": "APPLIED",
+        "f0AuthorityFilesCurrentAssessment": "Current F0 authorityFilesRead entries are explicit project/source files and do not list source .git, source node_modules, build output, cache metadata, or generated output paths.",
+        "historicalIssuePreserved": "Original F0 secondary-source listing entered forbidden generated/dependency/Git metadata areas.",
+        "affectedSourceRoot": "/Users/cc/Work/neobv/Chess/pgnViewer",
+        "excludedPathCategories": [
+          "source .git metadata",
+          "source node_modules/dependency directories",
+          "generated output",
+          "cache files",
+          "build output"
+        ],
+        "reasonForExclusion": "Generated, dependency, cache, build-output, and Git metadata paths are not architecture or validation authority.",
+        "exactHistoricalFilenamesPreserved": false,
+        "exactHistoricalFilenamesNote": "The prior F0 report did not preserve exact secondary metadata filenames; F0B does not invent them.",
+        "sourceFilesModified": false,
+        "architectureConclusionDependsOnExcludedPaths": false
+      },
+      "remoteRevalidation": {
+        "status": "VERIFIED_EMPTY",
+        "url": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+        "fullName": "ichichuang/chess-pgnviewet-vue",
+        "spellingPreserved": true,
+        "visibility": "PUBLIC",
+        "viewerPermission": "ADMIN",
+        "defaultBranchRef": {
+          "name": ""
+        },
+        "isEmpty": true,
+        "heads": [],
+        "remoteHeadState": "EMPTY_OUTPUT_EXIT_0",
+        "branchHeads": [],
+        "containsCommits": false,
+        "differsFromAuthorizedRepository": false,
+        "readOnlyCommands": [
+          "gh repo view ichichuang/chess-pgnviewet-vue --json nameWithOwner,visibility,defaultBranchRef,isEmpty,viewerPermission,url",
+          "git ls-remote --symref --heads https://github.com/ichichuang/chess-pgnviewet-vue.git"
+        ],
+        "remoteStateModified": false,
+        "gitBaselineApproved": true
+      },
+      "jsonValidation": "PENDING_FINAL_PARSE_AFTER_WRITE",
+      "finalFilesystemVerification": "PENDING_FINAL_PARSE_AFTER_WRITE",
+      "verdict": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE"
+    }
+  ],
+  "validationReferences": {
+    "f0Report": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY_REPORT.json",
+    "f0aReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0A_FOUNDATION_AUDIT_SIDE_EFFECT_CLEANUP_AND_EVIDENCE_RECONCILIATION_REPORT.json",
+    "f0bReport": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE_REPORT.json",
+    "reusedOriginalEvidence": {
+      "typecheckEvidenceReused": {
+        "reused": true,
+        "rerun": false,
+        "command": "mise exec -- pnpm run typecheck",
+        "originalExitCode": 0,
+        "originalStatus": "PASS",
+        "originalTimestamp": "2026-07-12T02:34:22.133Z"
+      },
+      "buildEvidenceReused": {
+        "reused": true,
+        "rerun": false,
+        "command": "tmpdir=$(mktemp -d /tmp/f0-vite-build.XXXXXX) && mise exec -- pnpm exec vue-tsc --noEmit && mise exec -- pnpm exec vite build --outDir \"$tmpdir/dist\" --emptyOutDir && rm -rf \"$tmpdir\"",
+        "originalExitCode": 0,
+        "originalStatus": "PASS_TEMP_OUTDIR",
+        "originalTimestamp": "2026-07-12T02:34:22.133Z"
+      },
+      "securityAuditEvidenceReused": {
+        "reused": true,
+        "rerun": false,
+        "command": "mise exec -- pnpm audit --prod",
+        "originalExitCode": 0,
+        "originalStatus": "PASS",
+        "originalTimestamp": "2026-07-12T02:34:22.133Z"
+      },
+      "browserEvidenceReused": {
+        "reused": true,
+        "rerun": false,
+        "originalStatus": "PASS_WITH_CACHE_SIDE_EFFECT",
+        "correctedStatus": "PASS_SIDE_EFFECT_CORRECTED",
+        "route": "http://127.0.0.1:5176/pgnViewer/",
+        "reasonNotRerun": "Rerunning Vite would regenerate the corrected dependency cache."
+      }
+    }
+  },
+  "browserSideEffectStatus": {
+    "originalStatus": "PASS_WITH_CACHE_SIDE_EFFECT",
+    "correctedStatus": "SIDE_EFFECT_CORRECTED_CACHE_REMOVED",
+    "browserRerun": false,
+    "browserRerunReason": "Rerunning Vite would regenerate node_modules/.vite/deps after F0B removed it."
+  },
+  "remoteStatus": {
+    "status": "VERIFIED_EMPTY",
+    "url": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "fullName": "ichichuang/chess-pgnviewet-vue",
+    "spellingPreserved": true,
+    "visibility": "PUBLIC",
+    "viewerPermission": "ADMIN",
+    "defaultBranchRef": {
+      "name": ""
+    },
+    "isEmpty": true,
+    "heads": [],
+    "remoteHeadState": "EMPTY_OUTPUT_EXIT_0",
+    "branchHeads": [],
+    "containsCommits": false,
+    "differsFromAuthorizedRepository": false,
+    "readOnlyCommands": [
+      "gh repo view ichichuang/chess-pgnviewet-vue --json nameWithOwner,visibility,defaultBranchRef,isEmpty,viewerPermission,url",
+      "git ls-remote --symref --heads https://github.com/ichichuang/chess-pgnviewet-vue.git"
+    ],
+    "remoteStateModified": false,
+    "gitBaselineApproved": true
+  },
+  "blockers": [],
+  "warnings": [
+    "Original browser validation was not rerun because running Vite would regenerate the removed dependency cache.",
+    "node_modules/.vite remains because it contains a pre-existing vitest cache outside the authorized deps deletion path.",
+    "No root .gitignore exists yet; F1 must handle generated/dependency/editor artifacts before baseline commit."
+  ],
+  "plannedNextPhase": "F1_LOCAL_GIT_INITIALIZATION_GITIGNORE_P0_BASELINE_COMMIT_AND_FIRST_SAFE_PUSH",
+  "updatedAt": "2026-07-12T03:51:04Z"
+}

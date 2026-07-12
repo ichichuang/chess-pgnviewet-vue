@@ -1,0 +1,486 @@
+{
+  "phase": "P0B_CANONICAL_VUE_ARCHITECTURE_PNPM_AND_LATEST_STABLE_TOOLCHAIN_ALIGNMENT",
+  "startedAt": "2026-07-11T20:12:00Z",
+  "completedAt": "2026-07-11T20:30:32Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+      "role": "canonical Vue architecture and active runtime evidence",
+      "readable": true,
+      "modified": false
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+      "role": "legacy secondary evidence",
+      "readable": true,
+      "modified": false
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+      "role": "product, UI, and confirmed API evidence",
+      "readable": true,
+      "modified": false
+    }
+  ],
+  "ownerDecision": {
+    "summary": "The earlier npm P0 baseline is superseded by an explicit owner decision requiring pnpm as the sole package manager, canonical Vue architecture parity with pgnViewer-new, latest stable compatible direct dependencies, and project-owned Node/toolchain pinning.",
+    "requiresPnpm": true,
+    "requiresLatestStableDirectDependencies": true,
+    "forbidsPrereleaseDependenciesWithoutOwnerApproval": true,
+    "forbidsSilentDowngrades": true,
+    "forbidsP1Implementation": true,
+    "forbidsSourceProjectWrites": true
+  },
+  "safetyGate": {
+    "targetPathConfirmed": true,
+    "targetPathEvidence": "pwd => /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "sourceDirectoriesExistAndReadable": true,
+    "p1FeatureImplementationInTarget": false,
+    "p1FeatureImplementationEvidence": {
+      "srcFiles": [
+        "src/App.vue",
+        "src/main.ts",
+        "src/router/index.ts",
+        "src/stores/index.ts",
+        "src/styles/base.css",
+        "src/styles/index.css",
+        "src/styles/tokens.css",
+        "src/types/index.ts",
+        "src/ui/index.ts",
+        "src/views/HomeView.vue"
+      ],
+      "summary": "Target src contains only the neutral P0 shell, router foundation, Pinia foundation, global style/token entries, empty shared boundaries, and one empty route view."
+    },
+    "gitCommandsRun": false,
+    "sourceProjectWritesAttempted": false,
+    "secretOrEnvironmentFilesInspected": false,
+    "hashesRecordedBeforeWrites": true,
+    "stopReason": "Required latest stable Node Current release v26.5.0 is not installed locally and cannot be activated without changing files outside the target project."
+  },
+  "preAlignmentBaseline": {
+    "packageManifest": {
+      "path": "package.json",
+      "sha256": "c5c31bd3203a26df25b2f638106bc60b38c699d58397c1ba977bfbe54ce0f41e",
+      "packageManager": "npm@11.13.0",
+      "scripts": ["dev", "build", "preview", "test", "test:watch", "typecheck"]
+    },
+    "lockfiles": [
+      {
+        "path": "package-lock.json",
+        "sha256": "f271431146afcf7f9a952fcdbd77810a1e86741af43b86e1ec438ed45ed0a61c",
+        "status": "present",
+        "packageManager": "npm"
+      }
+    ],
+    "toolchainAndBootstrapHashes": [
+      {"path": "vite.config.ts", "sha256": "11bcf7e0875be5ad6af52cba57f2c7a47840bd5ffa1bed9c83abf62b19669aa2"},
+      {"path": "vitest.config.ts", "sha256": "dadbf724d4e7a57fc696aed924e48958d24139b37e95310b90e0f439d1a8f659"},
+      {"path": "tsconfig.json", "sha256": "8df29b9aa1b4ca1b95f0358b8d23b31f45ebcba6a94b67a268d60f0a4173e662"},
+      {"path": "index.html", "sha256": "e79634f1a0f93b3bbfce3590492c1b388040fd6e90528d7f39c2a61cddc66899"},
+      {"path": "src/main.ts", "sha256": "7d23fe05d33eebbf0435e742dca510c0475199b330f0f051ffa024788a1d8d81"},
+      {"path": "src/App.vue", "sha256": "1d59d83aa455a777661121868c876ec68e85125a3f4a98c6ad6e87582c9a8a2f"},
+      {"path": "src/router/index.ts", "sha256": "2c884d5db56becc2326ce34f0676eb5f650b72cc7df4ecb71fe856abdd4ad623"},
+      {"path": "src/stores/index.ts", "sha256": "487e2027859fefefea762d7b7f936e2174c47ecbe92db44626b3ef4544611b78"},
+      {"path": "src/styles/index.css", "sha256": "33759c251024ff6b18e2ec3c976c6165dfd6784ac4732070cbada90a0056e384"},
+      {"path": "src/styles/base.css", "sha256": "3cff8839c3582d6cf90cd555807137fc4dbdf07643dc5920b73d54a97687f152"},
+      {"path": "src/styles/tokens.css", "sha256": "c610e1d05901e2f702fc14458f5854b05e667d67560fcf0c46eb4cd22ed38250"},
+      {"path": "src/views/HomeView.vue", "sha256": "21728eca10a9bbc9a8a4f4e40fc80115d6260b1027379d5337e8c73e8de8071c"},
+      {"path": "src/types/index.ts", "sha256": "a364a8952642b8f73d21b8bd9292d523ea30a355d194908fb37b9cc3a105cfb1"},
+      {"path": "src/ui/index.ts", "sha256": "680c191826065de59810a2e1defb70fbd7c2032ee9aee2d44bc8f732a21b6553"},
+      {"path": "tests/bootstrap.spec.ts", "sha256": "b6317939ba6b2275558f1611b05d53dd8643532b5995f7e18d02ca3ccedbb9b6"}
+    ],
+    "governanceAndReportHashes": [
+      {"path": "AGENTS.md", "sha256": "00279d1b02b028d2c5a672a91683c40c44e2b634a4b3eae40c1357ebdbfee333"},
+      {"path": "CLAUDE.md", "sha256": "79ec35de2bee1d8d1d775ce18a4009f096dc2a1326918000ba07f737bfe2f830"},
+      {"path": ".ai/skills/project-ui/SKILL.md", "sha256": "4ddd365e7b8180c8bc46659c68e570132e1016d850687f662604dd8ba2f566ac"},
+      {"path": "docs/architecture/TECH_STACK_DECISION.md", "sha256": "989ac0d512839249a5b023698b95484ef80323be5d39a0aeab0dca7583f4513a"},
+      {"path": "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md", "sha256": "7766780583264ffc0a4b52b0fee774baaa77aa1e4655e37411235a7514fe9491"},
+      {"path": "docs/migration/SOURCE_PROVENANCE.md", "sha256": "0f42e885578c609e182d788fd9d068fc07739d6d0a9a6e2f03d4deea6b78b803"},
+      {"path": ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json", "sha256": "ae9ef89f4a9e6843e1e5feec4908daee784f9bd0c02300e891660e1c167bbf49"},
+      {"path": ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json", "sha256": "b3c7ddb549efcaca33a5424d4784932384d6e63f8cd6ef27cb7ed649ffdfbcfd"}
+    ]
+  },
+  "canonicalArchitectureEvidence": {
+    "inspectedSource": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "filesInspected": [
+      "package.json",
+      "pnpm-lock.yaml",
+      "vite.config.ts",
+      "vitest.config.ts",
+      "tsconfig.json",
+      "index.html",
+      "src/env.d.ts",
+      "src/app/main.ts",
+      "src/app/App.vue",
+      "src/app/router/index.ts",
+      "src/app/styles.css",
+      "src/styles/board.css"
+    ],
+    "packageManagerModel": "canonical source has pnpm-lock.yaml and no workspace file found in the inspected root; target should be one non-workspace pnpm app.",
+    "viteRoot": "one Vite root with index.html and vite.config.ts",
+    "vueRoot": "one Vue mount in src/app/main.ts",
+    "pluginInstallationOrder": "createApp(App).use(createPinia()).use(router).mount('#app')",
+    "routerSingleton": "src/app/router/index.ts exports one createRouter singleton using createWebHistory(import.meta.env.BASE_URL)",
+    "piniaSingleton": "canonical creates a single Pinia instance in the bootstrap chain",
+    "globalStyleEntry": "src/app/main.ts imports src/app/styles.css and src/styles/board.css",
+    "tokenRegistryEntry": "canonical global style file owns runtime token values; target P0 owns a single neutral registry in src/styles/tokens.css",
+    "pathAliases": "@ resolves to ./src in Vite and Vitest configs",
+    "basePath": "/pgnViewer/",
+    "environmentTyping": "src/env.d.ts declares vite/client, .vue, .pgn?raw, and .png?inline modules",
+    "workerBundling": "canonical worker pattern uses new Worker(new URL('./search.worker.ts', import.meta.url), { type: 'module' })",
+    "assetHandling": "canonical uses Vite static public favicon, direct image imports, and ?inline image imports; P0B did not copy assets",
+    "testing": "Vitest with jsdom, globals, setupFiles, and tests/**/*.spec.ts plus src/**/*.spec.ts include patterns",
+    "productionBuild": "build script composes vue-tsc --noEmit and vite build"
+  },
+  "canonicalToolchainParity": [
+    {
+      "architectureArea": "package-manager model",
+      "canonicalPattern": "pnpm lockfile in a single Vue app root",
+      "targetPattern": "npm@11.13.0 packageManager with package-lock.json",
+      "alignmentStatus": "blocked_before_alignment",
+      "requiredAdaptation": "replace npm baseline with pnpm packageManager and pnpm-lock.yaml",
+      "adaptationReason": "owner decision superseded previous npm baseline",
+      "featureCodeCopied": false,
+      "evidence": ["canonical package.json", "canonical pnpm-lock.yaml", "target package.json", "target package-lock.json"]
+    },
+    {
+      "architectureArea": "one Vite root",
+      "canonicalPattern": "one index.html plus vite.config.ts",
+      "targetPattern": "one index.html plus vite.config.ts",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "none before Node blocker",
+      "adaptationReason": "same one-root shape",
+      "featureCodeCopied": false,
+      "evidence": ["target index.html", "target vite.config.ts"]
+    },
+    {
+      "architectureArea": "one Vue application root",
+      "canonicalPattern": "single createApp mount",
+      "targetPattern": "single createApp mount in src/main.ts",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "none before Node blocker",
+      "adaptationReason": "same single-root runtime",
+      "featureCodeCopied": false,
+      "evidence": ["canonical src/app/main.ts", "target src/main.ts"]
+    },
+    {
+      "architectureArea": "plugin installation order",
+      "canonicalPattern": "Pinia before Router before mount",
+      "targetPattern": "Pinia before Router before mount",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "none before Node blocker",
+      "adaptationReason": "same plugin order",
+      "featureCodeCopied": false,
+      "evidence": ["target src/main.ts"]
+    },
+    {
+      "architectureArea": "Router singleton",
+      "canonicalPattern": "one createRouter singleton using import.meta.env.BASE_URL",
+      "targetPattern": "one createRouter singleton using import.meta.env.BASE_URL",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "none before Node blocker",
+      "adaptationReason": "same router singleton model without feature routes",
+      "featureCodeCopied": false,
+      "evidence": ["target src/router/index.ts"]
+    },
+    {
+      "architectureArea": "Pinia singleton",
+      "canonicalPattern": "one Pinia foundation",
+      "targetPattern": "one exported Pinia singleton in src/stores/index.ts",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "none before Node blocker",
+      "adaptationReason": "P0 target intentionally exposes one empty Pinia foundation",
+      "featureCodeCopied": false,
+      "evidence": ["target src/stores/index.ts"]
+    },
+    {
+      "architectureArea": "global style and token entry",
+      "canonicalPattern": "global style entry imported once from bootstrap",
+      "targetPattern": "src/main.ts imports src/styles/index.css; index imports tokens then base",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "none before Node blocker",
+      "adaptationReason": "target preserves one neutral P0 token registry",
+      "featureCodeCopied": false,
+      "evidence": ["target src/main.ts", "target src/styles/index.css", "target src/styles/tokens.css"]
+    },
+    {
+      "architectureArea": "path aliases",
+      "canonicalPattern": "@ => ./src in Vite and Vitest",
+      "targetPattern": "@ => ./src in Vite and Vitest",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "none before Node blocker",
+      "adaptationReason": "same alias shape",
+      "featureCodeCopied": false,
+      "evidence": ["target vite.config.ts", "target vitest.config.ts", "target tsconfig.json"]
+    },
+    {
+      "architectureArea": "base path",
+      "canonicalPattern": "/pgnViewer/",
+      "targetPattern": "/pgnViewer/",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "none before Node blocker",
+      "adaptationReason": "active product authority confirms /pgnViewer/ as the unified workspace surface",
+      "featureCodeCopied": false,
+      "evidence": ["CLAUDE.md", "docs/product/PRODUCT_DEFINITION.md", "target vite.config.ts"]
+    },
+    {
+      "architectureArea": "Worker bundling",
+      "canonicalPattern": "Vite module worker via new Worker(new URL(..., import.meta.url), { type: 'module' })",
+      "targetPattern": "no worker runtime in P0",
+      "alignmentStatus": "not_applicable_in_p0",
+      "requiredAdaptation": "keep configuration compatible; do not implement worker runtime",
+      "adaptationReason": "P0 forbids AI/runtime implementation",
+      "featureCodeCopied": false,
+      "evidence": ["canonical src/domains/analysis/searchEngine.ts pattern found by read-only search"]
+    },
+    {
+      "architectureArea": "asset handling",
+      "canonicalPattern": "favicon, static image imports, and ?inline image module typing",
+      "targetPattern": "no product assets in P0 target",
+      "alignmentStatus": "not_applicable_in_p0",
+      "requiredAdaptation": "no asset migration during blocked P0B",
+      "adaptationReason": "asset rights gate remains unresolved and P0B forbids feature migration",
+      "featureCodeCopied": false,
+      "evidence": ["docs/migration/ASSET_INVENTORY.json", "canonical src/env.d.ts"]
+    },
+    {
+      "architectureArea": "TypeScript project references",
+      "canonicalPattern": "single tsconfig extending @vue/tsconfig/tsconfig.dom.json",
+      "targetPattern": "single tsconfig extending @vue/tsconfig/tsconfig.dom.json",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "latest stable compatibility not evaluated due Node blocker",
+      "adaptationReason": "configuration may need adjustment only after latest stable package set is installed",
+      "featureCodeCopied": false,
+      "evidence": ["canonical tsconfig.json", "target tsconfig.json"]
+    },
+    {
+      "architectureArea": "Vue type checking",
+      "canonicalPattern": "vue-tsc --noEmit",
+      "targetPattern": "vue-tsc --noEmit",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "not evaluated against latest stable package set",
+      "adaptationReason": "blocked before dependency installation",
+      "featureCodeCopied": false,
+      "evidence": ["canonical package.json", "target package.json"]
+    },
+    {
+      "architectureArea": "unit testing",
+      "canonicalPattern": "Vitest with jsdom",
+      "targetPattern": "Vitest with jsdom and one bootstrap test",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "canonical setupFiles/src spec include parity not applied due Node blocker",
+      "adaptationReason": "toolchain alignment stopped before writes",
+      "featureCodeCopied": false,
+      "evidence": ["canonical vitest.config.ts", "target vitest.config.ts", "tests/bootstrap.spec.ts"]
+    },
+    {
+      "architectureArea": "browser smoke strategy",
+      "canonicalPattern": "Vite dev/preview served under /pgnViewer/",
+      "targetPattern": "not run in P0B due Node blocker",
+      "alignmentStatus": "blocked_before_validation",
+      "requiredAdaptation": "run after Node and pnpm migration succeeds",
+      "adaptationReason": "validation must use pinned Node version",
+      "featureCodeCopied": false,
+      "evidence": ["owner brief validation gate"]
+    },
+    {
+      "architectureArea": "production build strategy",
+      "canonicalPattern": "vue-tsc --noEmit && vite build",
+      "targetPattern": "vue-tsc --noEmit && vite build",
+      "alignmentStatus": "preliminarily_aligned",
+      "requiredAdaptation": "not validated due Node blocker",
+      "adaptationReason": "validation must use pinned Node version",
+      "featureCodeCopied": false,
+      "evidence": ["canonical package.json", "target package.json"]
+    },
+    {
+      "architectureArea": "canonical dependency categories",
+      "canonicalPattern": "Vue, Vue Router, Pinia, Naive UI, GSAP, chess.js, Vite, Vue plugin, TypeScript, vue-tsc, Vitest, jsdom, @vue/tsconfig, @types/node plus feature-runtime packages in canonical source",
+      "targetPattern": "approved P0 package closure includes Vue, Vue Router, Pinia, TanStack Vue Query, Naive UI, GSAP, chess.js, Dexie, Zod, Vite, Vue plugin, TypeScript, vue-tsc, Vitest, Vue Test Utils, jsdom, @vue/tsconfig, @types/node",
+      "alignmentStatus": "blocked_before_latest_stable_resolution",
+      "requiredAdaptation": "resolve exact latest stable compatible versions after Node v26.5.0 is available",
+      "adaptationReason": "owner decision forbids retaining older majors silently",
+      "featureCodeCopied": false,
+      "evidence": ["canonical package.json", "target package.json", "CLAUDE.md"]
+    }
+  ],
+  "previousPackageManager": {
+    "packageManagerField": "npm@11.13.0",
+    "lockfile": "package-lock.json",
+    "status": "superseded_by_owner_decision_but_not_changed_due_to_node_blocker"
+  },
+  "finalPackageManager": {
+    "packageManagerField": "npm@11.13.0",
+    "status": "unchanged_due_to_blocker",
+    "intendedFinalPackageManager": "pnpm@10.28.2",
+    "pnpmExecutable": "/Users/cc/.local/share/mise/shims/pnpm",
+    "pnpmVersionEvidence": {
+      "command": "(cd /tmp && pnpm --version)",
+      "version": "10.28.2",
+      "note": "pnpm --version in the target failed before migration because package.json still declared npm@11.13.0."
+    }
+  },
+  "lockfileState": {
+    "packageLockJsonPresent": true,
+    "pnpmLockYamlPresent": false,
+    "otherPackageManagerLockfilesPresent": [],
+    "status": "not_migrated_due_to_node_blocker"
+  },
+  "nodeVersion": {
+    "officialReleaseMetadataSource": "https://nodejs.org/dist/index.json",
+    "latestStableCurrentRelease": "v26.5.0",
+    "latestStableCurrentReleaseDate": "2026-07-08",
+    "latestStableCurrentLts": false,
+    "latestStableCurrentBundledNpm": "11.17.0",
+    "activeNode": "v26.1.0",
+    "activeNodePath": "/Users/cc/.local/share/mise/shims/node",
+    "availability": "v26.5.0 not installed in mise node installs"
+  },
+  "nodePinning": {
+    "targetNodeVersionFileBeforeP0B": null,
+    "canonicalNodeVersionFile": null,
+    "chosenMechanism": "not_written_due_to_blocker",
+    "requiredVersion": "26.5.0",
+    "activationCommandTried": "MISE_AUTO_INSTALL=false mise exec node@26.5.0 -- node -v",
+    "activationResult": "FAIL: missing node@26.5.0; mise could not exec node",
+    "blocker": "P0B_BLOCKED_NODE_RUNTIME_UNAVAILABLE"
+  },
+  "dependencyVersionBaseline": [
+    {"packageName": "@tanstack/vue-query", "dependencyRole": "server-state boundary", "previousVersion": "5.101.2", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": null, "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "chess.js", "dependencyRole": "chess domain dependency", "previousVersion": "1.4.0", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^1.0.0", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "dexie", "dependencyRole": "future structured persistence boundary", "previousVersion": "4.4.4", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": null, "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "gsap", "dependencyRole": "motion runtime", "previousVersion": "3.15.0", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^3.15.0", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "naive-ui", "dependencyRole": "canonical-only Vue UI adapter dependency", "previousVersion": "2.44.1", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^2.40.1", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "pinia", "dependencyRole": "client-state foundation", "previousVersion": "2.3.1", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^2.2.6", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "vue", "dependencyRole": "application runtime", "previousVersion": "3.5.38", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^3.5.13", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "vue-router", "dependencyRole": "router foundation", "previousVersion": "4.6.4", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^4.4.5", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "zod", "dependencyRole": "boundary validation", "previousVersion": "4.4.3", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": null, "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "@types/node", "dependencyRole": "Node type declarations", "previousVersion": "26.0.1", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^26.0.1", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "@vitejs/plugin-vue", "dependencyRole": "Vite Vue SFC plugin", "previousVersion": "5.2.4", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^5.2.1", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "@vue/test-utils", "dependencyRole": "Vue component testing", "previousVersion": "2.4.11", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": null, "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "@vue/tsconfig", "dependencyRole": "Vue TypeScript base config", "previousVersion": "0.7.0", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^0.7.0", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "jsdom", "dependencyRole": "DOM test environment", "previousVersion": "25.0.1", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^25.0.1", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "typescript", "dependencyRole": "TypeScript compiler", "previousVersion": "5.9.3", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^5.7.2", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "vite", "dependencyRole": "build and dev server", "previousVersion": "6.4.3", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^6.0.3", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "vitest", "dependencyRole": "unit test runner", "previousVersion": "2.1.9", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^2.1.8", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"},
+    {"packageName": "vue-tsc", "dependencyRole": "Vue type checker", "previousVersion": "2.2.12", "registryLatestStableVersion": null, "selectedVersion": null, "distributionTag": "not_queried_due_to_node_runtime_blocker", "prereleaseStatus": "not_evaluated", "engineRequirements": null, "peerRequirements": null, "canonicalSourceVersionWhenPresent": "^2.1.10", "compatibilityEvidence": "blocked before latest stable resolution", "upgradeDecision": "not_started", "validationStatus": "not_run"}
+  ],
+  "latestStableResolutionMethod": {
+    "status": "not_started_due_to_node_runtime_blocker",
+    "intendedMethod": "Use pnpm view <package> dist-tags, version, engines, and peerDependencies after the target can validate with the pinned Node runtime.",
+    "reason": "The owner brief requires stopping when the required Node version cannot be activated without outside-target changes."
+  },
+  "prereleaseAudit": {
+    "status": "not_run_due_to_node_runtime_blocker",
+    "preliminaryManifestCheck": "current target package.json uses exact non-prerelease versions",
+    "finalAuditRequired": true
+  },
+  "engineCompatibility": {
+    "status": "blocked",
+    "requiredNode": "26.5.0",
+    "activeNode": "26.1.0",
+    "packageEnginesWritten": false
+  },
+  "peerDependencyCompatibility": {
+    "status": "not_run_due_to_node_runtime_blocker",
+    "commandPlanned": "pnpm install --frozen-lockfile plus pnpm ls --depth 0 after migration"
+  },
+  "filesCreated": [
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/P0B_CANONICAL_VUE_ARCHITECTURE_PNPM_AND_LATEST_STABLE_TOOLCHAIN_ALIGNMENT_REPORT.json"
+  ],
+  "filesModified": [],
+  "filesDeleted": [],
+  "governanceUpdates": {
+    "status": "not_applied_due_to_node_runtime_blocker",
+    "filesPlanned": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".ai/skills/project-ui/SKILL.md",
+      "docs/architecture/TECH_STACK_DECISION.md",
+      "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+      "docs/migration/SOURCE_PROVENANCE.md",
+      ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json",
+      ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json"
+    ],
+    "reason": "No broad changes are allowed after P0B_BLOCKED_NODE_RUNTIME_UNAVAILABLE."
+  },
+  "featureImplementationAudit": {
+    "status": "preliminary_pass",
+    "summary": "No P1 product feature implementation was present in target src before writes; no P1 code was added.",
+    "evidence": ["find src -maxdepth 4 -type f", "target source file inspection"]
+  },
+  "reactRuntimeAudit": {
+    "status": "preliminary_pass",
+    "summary": "Target package.json contains no React runtime dependencies and target src contains no React imports.",
+    "evidence": "rg over target src/package/docs found React only in governance prohibitions and historical references."
+  },
+  "mockDataAudit": {
+    "status": "preliminary_pass",
+    "summary": "Target src and tests contain no product mock, fixture, sample tournament, sample replay, live, or AI data.",
+    "evidence": "target source and bootstrap test inspection"
+  },
+  "securityAudit": {
+    "status": "not_run_due_to_node_runtime_blocker",
+    "commandPlanned": "pnpm audit --prod",
+    "secretExposure": "No environment, credential, token, cookie, certificate, private key, database, or secret-bearing local configuration file was inspected."
+  },
+  "frozenInstall": {
+    "status": "not_run_due_to_node_runtime_blocker",
+    "commandPlanned": "pnpm install --frozen-lockfile"
+  },
+  "typecheck": {
+    "status": "not_run_due_to_node_runtime_blocker",
+    "commandPlanned": "pnpm run typecheck"
+  },
+  "unitTests": {
+    "status": "not_run_due_to_node_runtime_blocker",
+    "commandPlanned": "pnpm test"
+  },
+  "productionBuild": {
+    "status": "not_run_due_to_node_runtime_blocker",
+    "commandPlanned": "pnpm run build"
+  },
+  "browserSmokeValidation": {
+    "status": "not_run_due_to_node_runtime_blocker",
+    "plannedBasePath": "/pgnViewer/",
+    "requiredChecks": [
+      "one browser load at configured base path",
+      "one reload at configured base path",
+      "no console-breaking errors",
+      "no Vite error overlay",
+      "Vue root, Router, Pinia, and global styles initialize once",
+      "minimal empty shell renders"
+    ]
+  },
+  "sourceIntegrityEvidence": {
+    "status": "limited_prewrite_read_only_evidence",
+    "sourceProjectWritesAttempted": false,
+    "sourceProjectValidationCommands": "No install, format, generation, or write command targeted any source project.",
+    "limitation": "No whole-tree integrity hash is claimed; validation stopped before final source integrity re-checks."
+  },
+  "warnings": [
+    "P0B did not migrate the package manager because the Node runtime gate failed before edits.",
+    "pnpm is installed and reports 10.28.2 outside the npm-configured target, but running pnpm in the target currently fails because package.json still declares npm@11.13.0.",
+    "Canonical architecture parity is preliminary read-only evidence only; it was not finalized into docs/migration/CANONICAL_TOOLCHAIN_PARITY.json due to the blocker.",
+    "Direct dependency latest stable versions were not queried because the brief requires stopping when the pinned Node runtime cannot be activated."
+  ],
+  "blockers": [
+    {
+      "code": "P0B_BLOCKED_NODE_RUNTIME_UNAVAILABLE",
+      "severity": "blocking",
+      "evidence": [
+        "Official Node release metadata from https://nodejs.org/dist/index.json reports latest Current v26.5.0 dated 2026-07-08.",
+        "Active node is v26.1.0 from /Users/cc/.local/share/mise/shims/node.",
+        "mise installed node versions list does not include 26.5.0.",
+        "MISE_AUTO_INSTALL=false mise exec node@26.5.0 -- node -v failed with missing node@26.5.0."
+      ],
+      "requiredNextStep": "Install or make node@26.5.0 available through the user's approved toolchain outside this task, then rerun P0B so the target can pin and validate the exact official Current version."
+    }
+  ],
+  "finalAuthoritativeP0Baseline": {
+    "status": "not_ready",
+    "summary": "The previous npm baseline remains physically present but is superseded and cannot be accepted as final P0 after the owner P0B decision. No authoritative pnpm baseline was produced because the Node runtime pinning gate blocked before edits."
+  },
+  "finalVerdict": "P0B_BLOCKED_NODE_RUNTIME_UNAVAILABLE"
+}

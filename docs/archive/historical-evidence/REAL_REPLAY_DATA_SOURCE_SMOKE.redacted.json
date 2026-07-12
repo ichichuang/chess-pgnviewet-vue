@@ -1,0 +1,1096 @@
+{
+  "generatedAt": "2026-07-09T10:08:52.581Z",
+  "mode": "live-bounded-read-only",
+  "safety": {
+    "canCallUpstream": true,
+    "reason": "Gateway HMAC configuration and server-only replay session config are present.",
+    "realApiCallsMade": true,
+    "sessionAuthConfigured": true
+  },
+  "gatewayStatus": {
+    "allowlistCount": 5,
+    "authMode": "hmac",
+    "configured": true,
+    "forbiddenCount": 9,
+    "missingServerOnlyEnv": [],
+    "sanitizedUpstreamUrl": "http://pc.kaisaile.org/api",
+    "sessionAuth": {
+      "acquisitionMode": "guest",
+      "guestAcquisitionConfigured": true,
+      "staticTokenConfigured": false,
+      "tokenBodyField": "token"
+    },
+    "upstreamConfigured": true
+  },
+  "allowlist": [
+    {
+      "endpointId": "api-1567",
+      "key": "tournament_list",
+      "method": "POST",
+      "publicPath": "/liveproxy/getactlist"
+    },
+    {
+      "endpointId": "api-1564",
+      "key": "tournament_groups",
+      "method": "POST",
+      "publicPath": "/liveproxy/getactgroups"
+    },
+    {
+      "endpointId": "api-1411",
+      "key": "tournament_rounds",
+      "method": "POST",
+      "publicPath": "/award/c-getmatchroundlist"
+    },
+    {
+      "endpointId": "api-1408",
+      "key": "tournament_pairings",
+      "method": "POST",
+      "publicPath": "/award/c-getmatchpairlist"
+    },
+    {
+      "endpointId": "api-1545",
+      "key": "finished_game_replay",
+      "method": "POST",
+      "publicPath": "/gameapi/gamemgr/getgameinfo"
+    }
+  ],
+  "boundedStrategy": {
+    "maxGroupsPerTournament": 3,
+    "maxPairingRowsObserved": 120,
+    "maxPairingsPerRound": 30,
+    "maxReplayCalls": 36,
+    "maxRoundsPerGroup": 6,
+    "maxTournaments": 6,
+    "pairingRequestVariants": [
+      "legacy_type2_jgid_all",
+      "current_type0"
+    ],
+    "replayCandidatePriority": "finished/result-bearing pairings first; id field before weaker candidate fields"
+  },
+  "calls": [
+    {
+      "bodyKeys": [
+        "actflag",
+        "max",
+        "search",
+        "start",
+        "type"
+      ],
+      "durationMs": 2409,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_list",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/liveproxy/getactlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "keys": [
+            "Total",
+            "Details"
+          ],
+          "nested": {
+            "count": 50,
+            "firstKeys": [
+              "hdid",
+              "title",
+              "act_starttime",
+              "act_endtime",
+              "sign_endtime",
+              "poster",
+              "act_sign",
+              "ext_catgory",
+              "sponsor",
+              "delaymatchtime",
+              "actflag",
+              "sponsorLogo"
+            ],
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid"
+      ],
+      "durationMs": 521,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_groups",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/liveproxy/getactgroups",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 5,
+          "firstKeys": [
+            "signcount",
+            "ticketname",
+            "hdid",
+            "ticketid",
+            "cur_state",
+            "sign_anytime",
+            "sign_start_time",
+            "sign_end_time",
+            "needsign",
+            "isoffline",
+            "round_ajust_time",
+            "ticketpair"
+          ],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "ticketid"
+      ],
+      "durationMs": 523,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_rounds",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchroundlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "keys": [
+            "roundfinish",
+            "cur_round",
+            "roundinfo"
+          ],
+          "nested": {
+            "count": 8,
+            "firstKeys": [
+              "round_id",
+              "starttime"
+            ],
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "jgid",
+        "plen",
+        "round_id",
+        "st",
+        "ticketid",
+        "type"
+      ],
+      "durationMs": 1296,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchpairlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "plen",
+        "round_id",
+        "st",
+        "ticketid",
+        "type"
+      ],
+      "durationMs": 459,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_pairings_current_type0",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchpairlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "jgid",
+        "plen",
+        "round_id",
+        "st",
+        "ticketid",
+        "type"
+      ],
+      "durationMs": 386,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchpairlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "plen",
+        "round_id",
+        "st",
+        "ticketid",
+        "type"
+      ],
+      "durationMs": 484,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_pairings_current_type0",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchpairlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "jgid",
+        "plen",
+        "round_id",
+        "st",
+        "ticketid",
+        "type"
+      ],
+      "durationMs": 522,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchpairlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "plen",
+        "round_id",
+        "st",
+        "ticketid",
+        "type"
+      ],
+      "durationMs": 525,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_pairings_current_type0",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchpairlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "jgid",
+        "plen",
+        "round_id",
+        "st",
+        "ticketid",
+        "type"
+      ],
+      "durationMs": 524,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchpairlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 4,
+          "firstKeys": [
+            "id",
+            "white",
+            "black",
+            "status",
+            "sort_id",
+            "welo",
+            "belo",
+            "wjgname",
+            "bjgname",
+            "wfieldid",
+            "bfieldid",
+            "wfaceimg"
+          ],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "gameid"
+      ],
+      "durationMs": 892,
+      "endpointFamily": "gameapi/gamemgr/getgameinfo",
+      "errorCode": null,
+      "errorKind": null,
+      "key": "finished_game_replay",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "sampleShape": {
+        "type": "object"
+      },
+      "status": 200,
+      "candidateField": "id",
+      "candidateFingerprint": "04ed064be150",
+      "replayShape": {
+        "hasDatas": false,
+        "hasFen": false,
+        "hasMoveHistoryArray": false,
+        "hasMoves": false,
+        "hasPgn": false,
+        "type": "object",
+        "usable": false
+      }
+    },
+    {
+      "bodyKeys": [
+        "gameid"
+      ],
+      "durationMs": 378,
+      "endpointFamily": "gameapi/gamemgr/getgameinfo",
+      "errorCode": null,
+      "errorKind": null,
+      "key": "finished_game_replay",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "sampleShape": {
+        "type": "object"
+      },
+      "status": 200,
+      "candidateField": "id",
+      "candidateFingerprint": "1b1ee91d31e0",
+      "replayShape": {
+        "hasDatas": false,
+        "hasFen": false,
+        "hasMoveHistoryArray": false,
+        "hasMoves": false,
+        "hasPgn": false,
+        "type": "object",
+        "usable": false
+      }
+    },
+    {
+      "bodyKeys": [
+        "gameid"
+      ],
+      "durationMs": 406,
+      "endpointFamily": "gameapi/gamemgr/getgameinfo",
+      "errorCode": null,
+      "errorKind": null,
+      "key": "finished_game_replay",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "sampleShape": {
+        "type": "object"
+      },
+      "status": 200,
+      "candidateField": "id",
+      "candidateFingerprint": "ddf29dd2af9a",
+      "replayShape": {
+        "hasDatas": false,
+        "hasFen": false,
+        "hasMoveHistoryArray": false,
+        "hasMoves": false,
+        "hasPgn": false,
+        "type": "object",
+        "usable": false
+      }
+    },
+    {
+      "bodyKeys": [
+        "gameid"
+      ],
+      "durationMs": 419,
+      "endpointFamily": "gameapi/gamemgr/getgameinfo",
+      "errorCode": null,
+      "errorKind": null,
+      "key": "finished_game_replay",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "sampleShape": {
+        "type": "object"
+      },
+      "status": 200,
+      "candidateField": "id",
+      "candidateFingerprint": "17d974c92ea6",
+      "replayShape": {
+        "hasDatas": false,
+        "hasFen": false,
+        "hasMoveHistoryArray": false,
+        "hasMoves": false,
+        "hasPgn": false,
+        "type": "object",
+        "usable": false
+      }
+    },
+    {
+      "bodyKeys": [
+        "hdid",
+        "jgid",
+        "plen",
+        "round_id",
+        "st",
+        "ticketid",
+        "type"
+      ],
+      "durationMs": 525,
+      "endpointFamily": null,
+      "errorCode": null,
+      "errorKind": null,
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/award/c-getmatchpairlist",
+      "sampleShape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 6,
+          "firstKeys": [
+            "id",
+            "white",
+            "black",
+            "status",
+            "sort_id",
+            "welo",
+            "belo",
+            "wjgname",
+            "bjgname",
+            "wfieldid",
+            "bfieldid",
+            "wfaceimg"
+          ],
+          "type": "array"
+        },
+        "type": "object"
+      },
+      "status": 200
+    },
+    {
+      "bodyKeys": [
+        "gameid"
+      ],
+      "durationMs": 525,
+      "endpointFamily": "gameapi/gamemgr/getgameinfo",
+      "errorCode": null,
+      "errorKind": null,
+      "key": "finished_game_replay",
+      "method": "POST",
+      "ok": true,
+      "parseOk": true,
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "sampleShape": {
+        "keys": [
+          "id",
+          "name",
+          "desc",
+          "updateflag",
+          "status",
+          "stateM",
+          "result",
+          "times",
+          "players",
+          "mqtt",
+          "gametype",
+          "gameserverinfoid"
+        ],
+        "nested": {
+          "keys": [
+            "pgn",
+            "fen",
+            "moves",
+            "sanidx",
+            "threefolds",
+            "stopclock"
+          ],
+          "type": "object"
+        },
+        "type": "object"
+      },
+      "status": 200,
+      "candidateField": "id",
+      "candidateFingerprint": "fc24a42e94bf",
+      "replayShape": {
+        "datasKeys": [
+          "pgn",
+          "fen",
+          "moves",
+          "sanidx",
+          "threefolds",
+          "stopclock"
+        ],
+        "hasDatas": true,
+        "hasFen": true,
+        "hasMoveHistoryArray": true,
+        "hasMoves": true,
+        "hasPgn": false,
+        "keys": [
+          "id",
+          "name",
+          "desc",
+          "updateflag",
+          "status",
+          "stateM",
+          "result",
+          "times",
+          "players",
+          "mqtt",
+          "gametype",
+          "gameserverinfoid",
+          "datas",
+          "tag",
+          "userdata"
+        ],
+        "moveCount": 18,
+        "sanidxPresent": true,
+        "type": "object",
+        "usable": true
+      }
+    }
+  ],
+  "endpointsNotCalled": [],
+  "observedResponseShapes": [
+    {
+      "key": "tournament_list",
+      "path": "/api/liveproxy/getactlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "keys": [
+            "Total",
+            "Details"
+          ],
+          "nested": {
+            "count": 50,
+            "firstKeys": [
+              "hdid",
+              "title",
+              "act_starttime",
+              "act_endtime",
+              "sign_endtime",
+              "poster",
+              "act_sign",
+              "ext_catgory",
+              "sponsor",
+              "delaymatchtime",
+              "actflag",
+              "sponsorLogo"
+            ],
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_groups",
+      "path": "/api/liveproxy/getactgroups",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 5,
+          "firstKeys": [
+            "signcount",
+            "ticketname",
+            "hdid",
+            "ticketid",
+            "cur_state",
+            "sign_anytime",
+            "sign_start_time",
+            "sign_end_time",
+            "needsign",
+            "isoffline",
+            "round_ajust_time",
+            "ticketpair"
+          ],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_rounds",
+      "path": "/api/award/c-getmatchroundlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "keys": [
+            "roundfinish",
+            "cur_round",
+            "roundinfo"
+          ],
+          "nested": {
+            "count": 8,
+            "firstKeys": [
+              "round_id",
+              "starttime"
+            ],
+            "type": "array"
+          },
+          "type": "object"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "path": "/api/award/c-getmatchpairlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_pairings_current_type0",
+      "path": "/api/award/c-getmatchpairlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "path": "/api/award/c-getmatchpairlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_pairings_current_type0",
+      "path": "/api/award/c-getmatchpairlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "path": "/api/award/c-getmatchpairlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_pairings_current_type0",
+      "path": "/api/award/c-getmatchpairlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 0,
+          "firstKeys": [],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "path": "/api/award/c-getmatchpairlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 4,
+          "firstKeys": [
+            "id",
+            "white",
+            "black",
+            "status",
+            "sort_id",
+            "welo",
+            "belo",
+            "wjgname",
+            "bjgname",
+            "wfieldid",
+            "bfieldid",
+            "wfaceimg"
+          ],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "finished_game_replay",
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "status": 200,
+      "shape": {
+        "type": "object"
+      }
+    },
+    {
+      "key": "finished_game_replay",
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "status": 200,
+      "shape": {
+        "type": "object"
+      }
+    },
+    {
+      "key": "finished_game_replay",
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "status": 200,
+      "shape": {
+        "type": "object"
+      }
+    },
+    {
+      "key": "finished_game_replay",
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "status": 200,
+      "shape": {
+        "type": "object"
+      }
+    },
+    {
+      "key": "tournament_pairings_legacy_type2_jgid_all",
+      "path": "/api/award/c-getmatchpairlist",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "resp",
+          "content"
+        ],
+        "nested": {
+          "count": 6,
+          "firstKeys": [
+            "id",
+            "white",
+            "black",
+            "status",
+            "sort_id",
+            "welo",
+            "belo",
+            "wjgname",
+            "bjgname",
+            "wfieldid",
+            "bfieldid",
+            "wfaceimg"
+          ],
+          "type": "array"
+        },
+        "type": "object"
+      }
+    },
+    {
+      "key": "finished_game_replay",
+      "path": "/api/gameapi/gamemgr/getgameinfo",
+      "status": 200,
+      "shape": {
+        "keys": [
+          "id",
+          "name",
+          "desc",
+          "updateflag",
+          "status",
+          "stateM",
+          "result",
+          "times",
+          "players",
+          "mqtt",
+          "gametype",
+          "gameserverinfoid"
+        ],
+        "nested": {
+          "keys": [
+            "pgn",
+            "fen",
+            "moves",
+            "sanidx",
+            "threefolds",
+            "stopclock"
+          ],
+          "type": "object"
+        },
+        "type": "object"
+      }
+    }
+  ],
+  "sampledPairingCount": 5,
+  "candidateIdFieldsChecked": [
+    "id",
+    "gameid",
+    "gameId",
+    "game_id",
+    "matchid",
+    "matchId",
+    "roomid",
+    "roomId",
+    "board_id",
+    "boardId",
+    "chessboard_id",
+    "chessboardId",
+    "table_id",
+    "tableId",
+    "hw_pgnid",
+    "hwPgnId",
+    "SN",
+    "sn"
+  ],
+  "observedPairingFieldKeys": [
+    "belo",
+    "bfaceimg",
+    "bfieldid",
+    "bjgname",
+    "black",
+    "blackname",
+    "id",
+    "sort_id",
+    "status",
+    "welo",
+    "wfaceimg",
+    "wfieldid",
+    "white",
+    "whitename",
+    "wjgname"
+  ],
+  "observedCandidateIdFields": [
+    "id"
+  ],
+  "replayCallsAttempted": 5,
+  "replayLoaded": true,
+  "usableReplayData": {
+    "candidateField": "id",
+    "candidateFingerprint": "fc24a42e94bf",
+    "endpointFamily": "gameapi/gamemgr/getgameinfo",
+    "replayShape": {
+      "datasKeys": [
+        "pgn",
+        "fen",
+        "moves",
+        "sanidx",
+        "threefolds",
+        "stopclock"
+      ],
+      "hasDatas": true,
+      "hasFen": true,
+      "hasMoveHistoryArray": true,
+      "hasMoves": true,
+      "hasPgn": false,
+      "keys": [
+        "id",
+        "name",
+        "desc",
+        "updateflag",
+        "status",
+        "stateM",
+        "result",
+        "times",
+        "players",
+        "mqtt",
+        "gametype",
+        "gameserverinfoid",
+        "datas",
+        "tag",
+        "userdata"
+      ],
+      "moveCount": 18,
+      "sanidxPresent": true,
+      "type": "object",
+      "usable": true
+    }
+  },
+  "realApiCallsMadeFromCli": true
+}

@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "phase": "P0E_UI_FIRST_DELIVERY_AND_NO_AUTOMATED_TEST_GOVERNANCE_CLOSURE",
+  "generatedAt": "2026-07-11T22:05:30.534Z",
+  "canonicalSourceRoot": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "entries": [
+    {
+      "area": "package-manager ownership",
+      "canonicalSourcePaths": [
+        "package.json",
+        "pnpm-lock.yaml"
+      ],
+      "targetPaths": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml"
+      ],
+      "canonicalPattern": "Canonical source has a pnpm lockfile in one Vue app root.",
+      "targetPattern": "Target declares pnpm@11.11.0, has pnpm-lock.yaml, and has pnpm-workspace.yaml only for pnpm 11 allowBuilds policy.",
+      "status": "ALIGNED",
+      "adaptation": "Converted from npm to pnpm; package-lock.json deleted.",
+      "adaptationReason": "Owner decision superseded npm baseline.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "package.json packageManager",
+        "pnpm-lock.yaml importer",
+        "pnpm-workspace.yaml allowBuilds.vue-demi true"
+      ]
+    },
+    {
+      "area": "Vite root",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/index.html",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/vite.config.ts"
+      ],
+      "targetPaths": [
+        "index.html",
+        "vite.config.ts"
+      ],
+      "canonicalPattern": "One index.html and one Vite config.",
+      "targetPattern": "One index.html and one Vite config.",
+      "status": "ALIGNED",
+      "adaptation": "Kept one Vite root.",
+      "adaptationReason": "Target already matched the one-root topology.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "vite.config.ts base /pgnViewer/"
+      ]
+    },
+    {
+      "area": "Vue application root",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/main.ts"
+      ],
+      "targetPaths": [
+        "src/main.ts"
+      ],
+      "canonicalPattern": "One createApp mount.",
+      "targetPattern": "One createApp mount.",
+      "status": "ALIGNED",
+      "adaptation": "No feature code copied.",
+      "adaptationReason": "P0 baseline is intentionally neutral.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "src/main.ts"
+      ]
+    },
+    {
+      "area": "application mount order",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/main.ts"
+      ],
+      "targetPaths": [
+        "src/main.ts"
+      ],
+      "canonicalPattern": "createApp(App).use(createPinia()).use(router).mount('#app')",
+      "targetPattern": "createApp(App), app.use(pinia), app.use(router), app.mount('#app')",
+      "status": "ALIGNED",
+      "adaptation": "Retained Pinia before Router before mount.",
+      "adaptationReason": "Matches canonical plugin ordering without source feature injection.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "src/main.ts"
+      ]
+    },
+    {
+      "area": "Router singleton",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/router/index.ts"
+      ],
+      "targetPaths": [
+        "src/router/index.ts"
+      ],
+      "canonicalPattern": "One createRouter singleton with createWebHistory(import.meta.env.BASE_URL).",
+      "targetPattern": "One createRouter singleton with createWebHistory(import.meta.env.BASE_URL).",
+      "status": "ALIGNED",
+      "adaptation": "Kept neutral root route only.",
+      "adaptationReason": "P1 product routes remain blocked.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "src/router/index.ts"
+      ]
+    },
+    {
+      "area": "Pinia singleton",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/main.ts"
+      ],
+      "targetPaths": [
+        "src/stores/index.ts"
+      ],
+      "canonicalPattern": "One Pinia instance installed in bootstrap.",
+      "targetPattern": "One exported Pinia singleton installed in bootstrap.",
+      "status": "ALIGNED",
+      "adaptation": "Kept empty Pinia foundation.",
+      "adaptationReason": "P0 forbids product stores.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "src/stores/index.ts",
+        "src/main.ts"
+      ]
+    },
+    {
+      "area": "global style installation",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/styles.css",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/styles/board.css"
+      ],
+      "targetPaths": [
+        "src/styles/index.css",
+        "src/styles/base.css"
+      ],
+      "canonicalPattern": "Bootstrap imports global app and board styles once.",
+      "targetPattern": "Bootstrap imports one global style entry once.",
+      "status": "ALIGNED",
+      "adaptation": "Retained P0 neutral global style entry.",
+      "adaptationReason": "No canonical feature/board styles copied in P0B.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "src/main.ts",
+        "src/styles/index.css"
+      ]
+    },
+    {
+      "area": "token-registry installation",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/styles.css"
+      ],
+      "targetPaths": [
+        "src/styles/tokens.css"
+      ],
+      "canonicalPattern": "Canonical global styles own runtime token values.",
+      "targetPattern": "Target has one neutral token registry in src/styles/tokens.css.",
+      "status": "ALIGNED",
+      "adaptation": "Retained one target token registry.",
+      "adaptationReason": "P0 has no final feature token extraction.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "src/styles/tokens.css"
+      ]
+    },
+    {
+      "area": "path aliases",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/vite.config.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/vitest.config.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/tsconfig.json"
+      ],
+      "targetPaths": [
+        "vite.config.ts",
+        "vitest.config.ts",
+        "tsconfig.json"
+      ],
+      "canonicalPattern": "@ resolves to ./src across Vite, Vitest, and TS in the canonical source.",
+      "targetPattern": "@ resolves to ./src across Vite and TypeScript in the target; Vitest is intentionally absent under P0E owner policy.",
+      "status": "OWNER_POLICY_OVERRIDE_NO_AUTOMATED_TESTS",
+      "adaptation": "Removed Vitest from the active target while preserving runtime Vite and TypeScript alias parity.",
+      "adaptationReason": "P0E forbids automated-test infrastructure; runtime alias behavior remains aligned.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "vite.config.ts",
+        "tsconfig.json",
+        "package.json"
+      ]
+    },
+    {
+      "area": "TypeScript strictness",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/tsconfig.json"
+      ],
+      "targetPaths": [
+        "tsconfig.json"
+      ],
+      "canonicalPattern": "Vue DOM tsconfig with project includes.",
+      "targetPattern": "Vue DOM tsconfig with strict, noUncheckedIndexedAccess, exactOptionalPropertyTypes, TypeScript 6 deprecation acknowledgment for baseUrl, and project includes.",
+      "status": "ALIGNED",
+      "adaptation": "Kept stricter empty-baseline checks and added ignoreDeprecations 6.0 for the existing baseUrl path-alias setting required by TypeScript 6.",
+      "adaptationReason": "TypeScript 6 reports baseUrl as deprecated without ignoreDeprecations; this is a documented compiler configuration correction, not a typecheck bypass.",
+      "featurePhase": "P0D",
+      "featureCodeCopied": false,
+      "evidence": [
+        "tsconfig.json",
+        "pnpm run typecheck PASS"
+      ]
+    },
+    {
+      "area": "Vue type checking",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/package.json"
+      ],
+      "targetPaths": [
+        "package.json",
+        "pnpm-lock.yaml"
+      ],
+      "canonicalPattern": "vue-tsc --noEmit.",
+      "targetPattern": "vue-tsc@3.3.7 runs against real official typescript@6.0.3.",
+      "status": "ALIGNED",
+      "adaptation": "Removed TypeScript 7 and @typescript/typescript6 aliases; selected official TypeScript 6.0.3 for Vue SFC typechecking.",
+      "adaptationReason": "Official TypeScript guidance states Vue embedded-language tooling needs TypeScript 6 until stable TypeScript 7 API/tooling support exists; current vue-tsc passes with TypeScript 6.0.3.",
+      "featurePhase": "P0D",
+      "featureCodeCopied": false,
+      "evidence": [
+        "package.json typescript 6.0.3",
+        "pnpm-lock.yaml typescript@6.0.3",
+        "pnpm run typecheck PASS"
+      ]
+    },
+    {
+      "area": "base-path handling",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/vite.config.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/app/router/index.ts"
+      ],
+      "targetPaths": [
+        "vite.config.ts",
+        "src/router/index.ts"
+      ],
+      "canonicalPattern": "Vite base /pgnViewer/ and createWebHistory(import.meta.env.BASE_URL).",
+      "targetPattern": "Vite base /pgnViewer/ and createWebHistory(import.meta.env.BASE_URL).",
+      "status": "ALIGNED",
+      "adaptation": "Preserved /pgnViewer/.",
+      "adaptationReason": "Active target authority still supports /pgnViewer/.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "CLAUDE.md",
+        "docs/product/PRODUCT_DEFINITION.md"
+      ]
+    },
+    {
+      "area": "Worker construction and bundling",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/domains/analysis/searchEngine.ts"
+      ],
+      "targetPaths": [
+        "src/env.d.ts",
+        "vite.config.ts"
+      ],
+      "canonicalPattern": "Vite module worker via new Worker(new URL(..., import.meta.url), { type: 'module' }).",
+      "targetPattern": "No worker runtime in P0; Vite baseline remains worker-compatible.",
+      "status": "FEATURE_PHASE_DEFERRED",
+      "adaptation": "Do not implement worker runtime in P0B.",
+      "adaptationReason": "AI/search runtime belongs to later feature phase.",
+      "featurePhase": "P1_OR_LATER",
+      "featureCodeCopied": false,
+      "evidence": [
+        "canonical searchEngine.ts read-only evidence"
+      ]
+    },
+    {
+      "area": "asset imports",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/env.d.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/domains/board/pieces.ts"
+      ],
+      "targetPaths": [
+        "src/env.d.ts"
+      ],
+      "canonicalPattern": "Vite raw PGN and png?inline typing with direct imports.",
+      "targetPattern": "Target adds compatible module declarations but no product assets.",
+      "status": "FEATURE_PHASE_DEFERRED",
+      "adaptation": "Added typing support only.",
+      "adaptationReason": "Asset rights gate remains unresolved; P0B copies no assets.",
+      "featurePhase": "P1_OR_LATER",
+      "featureCodeCopied": false,
+      "evidence": [
+        "src/env.d.ts",
+        "docs/migration/ASSET_INVENTORY.json"
+      ]
+    },
+    {
+      "area": "test environment",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/vitest.config.ts"
+      ],
+      "targetPaths": [],
+      "canonicalPattern": "Canonical source contains a Vitest jsdom test environment with globals, setupFiles, and spec includes.",
+      "targetPattern": "Target intentionally has no automated-test files, setup files, Vitest config, jsdom test environment, or spec includes.",
+      "status": "OWNER_POLICY_OVERRIDE_NO_AUTOMATED_TESTS",
+      "adaptation": "Removed target test environment instead of aligning mechanically.",
+      "adaptationReason": "Explicit owner delivery policy prioritizes visible UI delivery and forbids automated-test infrastructure.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "package.json without test scripts/dependencies",
+        "tsconfig.json without vitest globals or tests include",
+        "vitest.config.ts removed",
+        "tests/ removed"
+      ]
+    },
+    {
+      "area": "scripts",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/package.json"
+      ],
+      "targetPaths": [
+        "package.json"
+      ],
+      "canonicalPattern": "Canonical source scripts include dev, build, preview, test, test:watch, and typecheck.",
+      "targetPattern": "Target scripts include dev, build, preview, typecheck, and typecheck:vue; no test or test-derived script remains.",
+      "status": "OWNER_POLICY_OVERRIDE_NO_AUTOMATED_TESTS",
+      "adaptation": "Removed test and test:watch scripts while preserving development, preview, typecheck, and production build scripts.",
+      "adaptationReason": "P0E owner policy forbids a test package script.",
+      "featurePhase": "P0B",
+      "featureCodeCopied": false,
+      "evidence": [
+        "package.json scripts"
+      ]
+    },
+    {
+      "area": "browser smoke strategy",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/vite.config.ts"
+      ],
+      "targetPaths": [
+        "vite.config.ts"
+      ],
+      "canonicalPattern": "Start Vite and load configured base path.",
+      "targetPattern": "Start Vite through pnpm and perform one narrow real-browser load/reload at /pgnViewer/ without adding Playwright or another browser-test dependency to the target.",
+      "status": "OWNER_POLICY_OVERRIDE_NO_AUTOMATED_TESTS",
+      "adaptation": "Browser evidence remains required as runtime smoke validation, not as an automated E2E suite.",
+      "adaptationReason": "P0E forbids automated-test infrastructure but preserves narrow browser runtime validation.",
+      "featurePhase": "P0D",
+      "featureCodeCopied": false,
+      "evidence": [
+        "configured base route /pgnViewer/",
+        "nonblank DOM required",
+        "no Vite error overlay required",
+        "no console-breaking errors required"
+      ]
+    },
+    {
+      "area": "dependency categories",
+      "canonicalSourcePaths": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/package.json",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json"
+      ],
+      "targetPaths": [
+        "package.json",
+        "docs/migration/DEPENDENCY_VERSION_BASELINE.json"
+      ],
+      "canonicalPattern": "Canonical active runtime categories include Vue, router, Pinia, Naive UI, GSAP, chess.js, Vite, Vitest, jsdom, and Vue type tooling.",
+      "targetPattern": "Target active graph includes the Vue runtime/tooling architecture with real official TypeScript 6.0.3 and intentionally excludes automated-test dependencies.",
+      "status": "OWNER_POLICY_OVERRIDE_NO_AUTOMATED_TESTS",
+      "adaptation": "Removed Vitest, Vue Test Utils, and jsdom from the active target dependency graph; retained runtime and Vue SFC tooling dependencies.",
+      "adaptationReason": "Explicit owner delivery policy overrides canonical automated-test adoption without changing runtime architecture parity.",
+      "featurePhase": "P0D",
+      "featureCodeCopied": false,
+      "evidence": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "docs/migration/DEPENDENCY_VERSION_BASELINE.json"
+      ]
+    },
+    {
+      "area": "TypeScript 7 and Vue tooling official compatibility bridge",
+      "canonicalSourcePaths": [
+        "https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/",
+        "https://registry.npmjs.org/@typescript/typescript6",
+        "https://registry.npmjs.org/vue-tsc"
+      ],
+      "targetPaths": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json"
+      ],
+      "canonicalPattern": "Microsoft recommends npm aliases so tools importing typescript can use @typescript/typescript6 while TypeScript 7 remains installed side-by-side.",
+      "targetPattern": "P0C bridge attempted typescript -> npm:@typescript/typescript6@6.0.2 and typescript-7 -> npm:typescript@7.0.2; P0D removes both from the active graph.",
+      "status": "REJECTED_CURRENT_TOOLCHAIN_PATH",
+      "adaptation": "Retained as historical failure evidence and replaced by official TypeScript 6.0.3 Vue-compatible baseline.",
+      "adaptationReason": "Current stable Volar/vue-tsc cannot consume the @typescript/typescript6 shim, and TypeScript 7 lacks the stable programmatic API required by Vue tooling.",
+      "featurePhase": "P0D",
+      "featureCodeCopied": false,
+      "evidence": [
+        "@typescript/typescript6@6.0.2 shim failed in P0C with Failed to locate tsc module path from shim.",
+        "typescript@6.0.3 selected as highest stable official 6.x release.",
+        "vue-tsc@3.3.7 with typescript@6.0.3 passes typecheck/build."
+      ]
+    }
+  ],
+  "policyUpdate": "P0E records explicit owner policy override: the canonical source contains a Vitest-based automated-test model, but the target intentionally does not adopt automated-test infrastructure. Runtime Vue architecture parity remains unchanged; future validation uses typecheck, production build, and narrow real-browser runtime evidence.",
+  "ownerPolicyOverride": {
+    "status": "OWNER_POLICY_OVERRIDE_NO_AUTOMATED_TESTS",
+    "ownerDecision": "Prioritize visible, user-facing interface delivery and remove automated-test infrastructure from the active target.",
+    "canonicalAutomatedTestModel": "pgnViewer-new contains Vitest/jsdom automated-test infrastructure.",
+    "targetAutomatedTestModel": "No automated test files, test configuration, test scripts, test fixtures, snapshots, coverage, or test-only dependencies are retained.",
+    "runtimeArchitectureImpact": "No change to Vue runtime architecture parity.",
+    "featureRuntimeCopied": false,
+    "futureValidation": [
+      "pnpm run typecheck",
+      "pnpm run build",
+      "narrow real-browser route/DOM/overlay/console/interaction validation"
+    ]
+  }
+}

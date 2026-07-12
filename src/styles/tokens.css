@@ -1,0 +1,176 @@
+:root {
+  /*
+    One global token registry — P0 foundation.
+    `initial` means P3_PENDING_CANONICAL_EXTRACTION and is intentionally
+    unusable until evidence-backed values are approved. Only values required
+    by the neutral P0 shell use CSS system colors or baseline type metrics.
+  */
+  --p3-pending-canonical-extraction: initial;
+
+  /* Workspace backgrounds — neutral P0 shell values */
+  --bg: Canvas;
+  --surface: Canvas;
+  --surface-2: Canvas;
+  --surface-3: Canvas;
+
+  /* Panel backgrounds */
+  --panel-bg: var(--p3-pending-canonical-extraction);
+  --panel-bg-elevated: var(--p3-pending-canonical-extraction);
+
+  /* Dividers */
+  --divider: var(--p3-pending-canonical-extraction);
+
+  /* Text roles — neutral P0 shell values */
+  --text: CanvasText;
+  --text-2: CanvasText;
+  --text-muted: GrayText;
+  --text-faint: GrayText;
+  --text-on-accent: var(--p3-pending-canonical-extraction);
+
+  /* Control surfaces */
+  --control-surface: var(--p3-pending-canonical-extraction);
+  --control-surface-hover: var(--p3-pending-canonical-extraction);
+  --control-surface-active: var(--p3-pending-canonical-extraction);
+
+  /* Focus states — neutral P0 browser-system value */
+  --focus-ring: 0 0 0 2px Highlight;
+  --focus-border: Highlight;
+
+  /* Board colors */
+  --cg-square-light: var(--p3-pending-canonical-extraction);
+  --cg-square-dark: var(--p3-pending-canonical-extraction);
+
+  /* Chess-piece presentation */
+  --cg-piece-set: var(--p3-pending-canonical-extraction);
+  --cg-piece-outline: var(--p3-pending-canonical-extraction);
+
+  /* Legal-move states */
+  --cg-legal-dot: var(--p3-pending-canonical-extraction);
+  --cg-legal-ring: var(--p3-pending-canonical-extraction);
+
+  /* Selected-square states */
+  --cg-selected: var(--p3-pending-canonical-extraction);
+  --cg-select-ring: var(--p3-pending-canonical-extraction);
+
+  /* Last-move states */
+  --cg-last-move: var(--p3-pending-canonical-extraction);
+  --cg-lastmove-from: var(--p3-pending-canonical-extraction);
+  --cg-lastmove-to: var(--p3-pending-canonical-extraction);
+
+  /* Check states */
+  --cg-check: var(--p3-pending-canonical-extraction);
+  --cg-check-ring: var(--p3-pending-canonical-extraction);
+
+  /* Annotation colors */
+  --cg-arrow-red: var(--p3-pending-canonical-extraction);
+  --cg-arrow-green: var(--p3-pending-canonical-extraction);
+  --cg-arrow-yellow: var(--p3-pending-canonical-extraction);
+  --cg-arrow-orange: var(--p3-pending-canonical-extraction);
+  --cg-arrow-purple: var(--p3-pending-canonical-extraction);
+  --cg-arrow-black: var(--p3-pending-canonical-extraction);
+
+  /* Annotation widths */
+  --annotation-arrow-width: var(--p3-pending-canonical-extraction);
+  --annotation-square-width: var(--p3-pending-canonical-extraction);
+
+  /* Annotation line styles */
+  --annotation-style-solid: var(--p3-pending-canonical-extraction);
+  --annotation-style-dashed: var(--p3-pending-canonical-extraction);
+  --annotation-style-dotted: var(--p3-pending-canonical-extraction);
+
+  /* Evaluation colors */
+  --eval-white: var(--p3-pending-canonical-extraction);
+  --eval-black: var(--p3-pending-canonical-extraction);
+  --eval-advantage-line: var(--p3-pending-canonical-extraction);
+  --eval-blunder: var(--p3-pending-canonical-extraction);
+  --eval-mistake: var(--p3-pending-canonical-extraction);
+  --eval-inaccuracy: var(--p3-pending-canonical-extraction);
+  --eval-good: var(--p3-pending-canonical-extraction);
+  --eval-excellent: var(--p3-pending-canonical-extraction);
+  --eval-best: var(--p3-pending-canonical-extraction);
+  --eval-book: var(--p3-pending-canonical-extraction);
+  --eval-forced: var(--p3-pending-canonical-extraction);
+
+  /* Player states */
+  --player-white: var(--p3-pending-canonical-extraction);
+  --player-black: var(--p3-pending-canonical-extraction);
+  --player-active: var(--p3-pending-canonical-extraction);
+
+  /* Status states */
+  --success: var(--p3-pending-canonical-extraction);
+  --success-bg: var(--p3-pending-canonical-extraction);
+  --warning: var(--p3-pending-canonical-extraction);
+  --warning-bg: var(--p3-pending-canonical-extraction);
+  --danger: var(--p3-pending-canonical-extraction);
+  --danger-bg: var(--p3-pending-canonical-extraction);
+  --info: var(--p3-pending-canonical-extraction);
+  --info-bg: var(--p3-pending-canonical-extraction);
+
+  /* Spacing */
+  --s-1: var(--p3-pending-canonical-extraction);
+  --s-2: var(--p3-pending-canonical-extraction);
+  --s-3: var(--p3-pending-canonical-extraction);
+  --s-4: var(--p3-pending-canonical-extraction);
+  --s-5: var(--p3-pending-canonical-extraction);
+  --s-6: var(--p3-pending-canonical-extraction);
+  --s-8: var(--p3-pending-canonical-extraction);
+  --s-10: var(--p3-pending-canonical-extraction);
+
+  /* Typography — neutral P0 shell values */
+  --font-sans: system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --fs-xs: var(--p3-pending-canonical-extraction);
+  --fs-sm: var(--p3-pending-canonical-extraction);
+  --fs-base: 1rem;
+  --fs-lg: var(--p3-pending-canonical-extraction);
+  --fs-xl: var(--p3-pending-canonical-extraction);
+  --fs-2xl: var(--p3-pending-canonical-extraction);
+
+  /* Control heights */
+  --control-h: var(--p3-pending-canonical-extraction);
+  --toolbar-h: var(--p3-pending-canonical-extraction);
+
+  /* Radius */
+  --r-xs: var(--p3-pending-canonical-extraction);
+  --r-sm: var(--p3-pending-canonical-extraction);
+  --r-md: var(--p3-pending-canonical-extraction);
+  --r-lg: var(--p3-pending-canonical-extraction);
+  --r-xl: var(--p3-pending-canonical-extraction);
+  --r-full: var(--p3-pending-canonical-extraction);
+
+  /* Elevation */
+  --shadow-xs: var(--p3-pending-canonical-extraction);
+  --shadow-sm: var(--p3-pending-canonical-extraction);
+  --shadow-md: var(--p3-pending-canonical-extraction);
+  --shadow-lg: var(--p3-pending-canonical-extraction);
+
+  /* z-index */
+  --z-base: var(--p3-pending-canonical-extraction);
+  --z-dropdown: var(--p3-pending-canonical-extraction);
+  --z-sticky: var(--p3-pending-canonical-extraction);
+  --z-overlay: var(--p3-pending-canonical-extraction);
+  --z-modal: var(--p3-pending-canonical-extraction);
+  --z-toast: var(--p3-pending-canonical-extraction);
+
+  /* Motion duration and easing */
+  --duration-fast: var(--p3-pending-canonical-extraction);
+  --duration-normal: var(--p3-pending-canonical-extraction);
+  --duration-slow: var(--p3-pending-canonical-extraction);
+  --ease-out: var(--p3-pending-canonical-extraction);
+  --ease-in-out: var(--p3-pending-canonical-extraction);
+  --motion-default: var(--p3-pending-canonical-extraction);
+
+  /* Responsive geometry */
+  --responsive-mobile-max: var(--p3-pending-canonical-extraction);
+  --responsive-tablet-max: var(--p3-pending-canonical-extraction);
+  --responsive-laptop-max: var(--p3-pending-canonical-extraction);
+  --responsive-desktop-min: var(--p3-pending-canonical-extraction);
+  --responsive-board-min: var(--p3-pending-canonical-extraction);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    /* Reduced motion is safe and concrete in the neutral P0 shell. */
+    --motion-default: 0ms;
+  }
+}

@@ -1,0 +1,52 @@
+# Dependency stores
+node_modules/
+.pnpm-store/
+.npm/
+
+# Generated output and caches
+dist/
+.vite/
+.cache/
+.tmp/
+temp/
+tmp/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment and local overrides
+.env
+.env.*
+!.env.example
+.mise.local.toml
+
+# Editor and operating-system state
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Browser, validation, and coverage artifacts
+coverage/
+playwright-report/
+test-results/
+browser-profile/
+browser-data/
+
+# Local databases and secret-bearing key material
+*.sqlite
+*.sqlite3
+*.db
+*.pem
+*.p12
+*.pfx
+
+# Local agent/tool state
+.serena/

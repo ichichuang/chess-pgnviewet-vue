@@ -1,0 +1,848 @@
+{
+  "phase": "P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION",
+  "startedAt": "2026-07-11T19:51:04Z",
+  "completedAt": "2026-07-11T20:19:04Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+      "accessPolicy": "STRICTLY_READ_ONLY",
+      "initialRootMtimeEpoch": 1783414829,
+      "finalRootMtimeEpoch": 1783414829
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+      "accessPolicy": "STRICTLY_READ_ONLY",
+      "initialRootMtimeEpoch": 1783065013,
+      "finalRootMtimeEpoch": 1783065013
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+      "accessPolicy": "STRICTLY_READ_ONLY",
+      "initialRootMtimeEpoch": 1783755797,
+      "finalRootMtimeEpoch": 1783755797
+    }
+  ],
+  "safetyGate": {
+    "exactCurrentWorkingDirectoryConfirmed": true,
+    "currentWorkingDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "allThreeSourceDirectoriesExistAndAreReadable": true,
+    "sourceDirectoriesTreatedAsReadOnly": true,
+    "gitCommandsUsed": false,
+    "gitInitialized": false,
+    "sourceInstallFormatCleanOrGenerationCommandsUsed": false,
+    "secretOrEnvironmentFileContentsInspected": false,
+    "secretValuesPrinted": false,
+    "preCorrectionStateCapturedBeforeFirstWrite": true,
+    "verdict": "PROCEED"
+  },
+  "preCorrectionTargetState": {
+    "capturedAt": "2026-07-11T19:51:04.004Z",
+    "entries": [
+      {
+        "path": ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json",
+        "exists": false
+      },
+      {
+        "path": ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json",
+        "exists": true,
+        "type": "file",
+        "bytes": 26869,
+        "mode": "644",
+        "mtime": "2026-07-11T16:26:31.457Z",
+        "sha256": "c64edd1cb921f26f2cd5bc762e1672d8dee2d00968c871390628eeb7bab4150a"
+      },
+      {
+        "path": "docs/migration/API_AUTHORITY_MAP.json",
+        "exists": true,
+        "type": "file",
+        "bytes": 14132,
+        "mode": "644",
+        "mtime": "2026-07-11T15:40:35.229Z",
+        "sha256": "3c45656af8cefff44d4ffa4c2be1e6f0a61eb7821a1d9990986289ab5da99814"
+      },
+      {
+        "path": "docs/migration/ASSET_INVENTORY.json",
+        "exists": true,
+        "type": "file",
+        "bytes": 23742,
+        "mode": "644",
+        "mtime": "2026-07-11T16:03:00.538Z",
+        "sha256": "c1ea2ce67aa363098c84eb1284d343c344f9301ee6717693bfe25e5e97a0d102"
+      },
+      {
+        "path": "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+        "exists": true,
+        "type": "file",
+        "bytes": 46200,
+        "mode": "644",
+        "mtime": "2026-07-11T15:36:41.790Z",
+        "sha256": "456d842d7422bc0bd5fff937fb407647951c502ea8bf6121cfe8ab1a42bef095"
+      },
+      {
+        "path": "docs/migration/CAPABILITY_MATRIX.json",
+        "exists": true,
+        "type": "file",
+        "bytes": 24449,
+        "mode": "644",
+        "mtime": "2026-07-11T15:38:53.466Z",
+        "sha256": "750dd065218f91e67e4fb30a08b5002c2e317b1301e1da66cd246a13a600e68d"
+      },
+      {
+        "path": "docs/migration/DOCUMENT_INVENTORY.json",
+        "exists": true,
+        "type": "file",
+        "bytes": 18927,
+        "mode": "644",
+        "mtime": "2026-07-11T16:03:24.536Z",
+        "sha256": "bd943697c15f5ce112f81fb5f2b56ff856f6b3d3fce2d1b76c72bd7013132dd5"
+      },
+      {
+        "path": "docs/migration/SOURCE_PROVENANCE.md",
+        "exists": true,
+        "type": "file",
+        "bytes": 3278,
+        "mode": "644",
+        "mtime": "2026-07-11T16:00:54.615Z",
+        "sha256": "caeb5e366ed4a7734063611843185db7ab34a482b39cd46b6debd1dae504b123"
+      },
+      {
+        "path": "package-lock.json",
+        "exists": true,
+        "type": "file",
+        "bytes": 164449,
+        "mode": "644",
+        "mtime": "2026-07-11T15:57:56.990Z",
+        "sha256": "f271431146afcf7f9a952fcdbd77810a1e86741af43b86e1ec438ed45ed0a61c"
+      },
+      {
+        "path": "package.json",
+        "exists": true,
+        "type": "file",
+        "bytes": 859,
+        "mode": "644",
+        "mtime": "2026-07-11T15:41:35.163Z",
+        "sha256": "c5c31bd3203a26df25b2f638106bc60b38c699d58397c1ba977bfbe54ce0f41e"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "exists": false
+      },
+      {
+        "path": "yarn.lock",
+        "exists": false
+      }
+    ],
+    "playwrightConfigurationCandidates": [],
+    "activeTargetAssetFiles": []
+  },
+  "conflictingClaims": [
+    {
+      "claim": "23 classified documents versus 22",
+      "resolution": "There are 23 inventory records. Twenty-two are source-derived and one, docs/migration/SOURCE_PROVENANCE.md, is target-authored. Both prior numbers described different sets."
+    },
+    {
+      "claim": "20 ACTIVE_AUTHORITY documents versus 19",
+      "resolution": "There are 20 ACTIVE_AUTHORITY classifications. Nineteen are source-derived and one is the target-authored provenance authority."
+    },
+    {
+      "claim": "zero migrated assets versus 20 migrated assets",
+      "resolution": "There are 20 source asset candidates, 20 exclusions, zero admitted/migrated assets, and zero physical files under src/assets/** or public/**."
+    },
+    {
+      "claim": "13 capabilities versus 12",
+      "resolution": "CAPABILITY_MATRIX.json contains 13 capability records. Twelve is the independent API preserved-boundary-rule count, not a capability count."
+    },
+    {
+      "claim": "7 API capabilities versus 11",
+      "resolution": "API_AUTHORITY_MAP.json contains 7 API capability records and 12 preserved boundary rules. No current inventory field or physical record set supports 11."
+    },
+    {
+      "claim": "npm 11.13.0 versus pnpm 9.15.0",
+      "resolution": "The target declares npm@11.13.0 and has only package-lock.json v3. No target pnpm lock or pnpm declaration exists."
+    },
+    {
+      "claim": "Node 26.1.0 versus the runtime actually used",
+      "resolution": "Direct execution returned v26.1.0. It is host/mise-shim state and is not repository-pinned."
+    },
+    {
+      "claim": "whether Playwright is approved in P0",
+      "resolution": "Playwright is absent from manifest, lock, config, runtime, and tests. P0 authority selects Vitest, Vue Test Utils, and jsdom. A future accessibility E2E reference does not add Playwright to P0."
+    },
+    {
+      "claim": "whether the original P0 report and inventories describe the same filesystem state",
+      "resolution": "Before correction, every inventory/bootstrap hash recorded by the original report matched disk. The corrected report now records the corrected inventory hashes and explicit count semantics."
+    },
+    {
+      "claim": "whether migrated assets pass ownership, license, attribution, provenance, and consumer gates",
+      "resolution": "No asset was migrated. All 20 candidates have verified provenance and current source hashes, but ownership and license/attribution remain unresolved; all remain excluded."
+    }
+  ],
+  "authoritativeFilesystemFindings": {
+    "viteRootCount": 1,
+    "vueApplicationMountCount": 1,
+    "routerSingletonCount": 1,
+    "piniaSingletonCount": 1,
+    "globalTokenRegistryCount": 1,
+    "routeCount": 1,
+    "configuredViteBase": "/pgnViewer/",
+    "routerHistoryBaseExpression": "import.meta.env.BASE_URL",
+    "productFeatureImplementationPresent": false,
+    "physicalTargetAssetFileCount": 0,
+    "playwrightNamedConfigurationFileCount": 0
+  },
+  "packageManager": {
+    "authoritative": "npm",
+    "declaration": "npm@11.13.0",
+    "authoritativeLockfile": "package-lock.json",
+    "lockfileVersion": 3,
+    "physicalAuthoritativeLockfileCount": 1,
+    "competingLockfiles": [],
+    "manifestLockRootDependencyMismatches": [],
+    "packageEntryCount": 339,
+    "reproducibleInstallCommand": "npm ci",
+    "installRunDuringReconciliation": false,
+    "installSkipReason": "package.json and package-lock.json remained byte-for-byte unchanged."
+  },
+  "runtimeVersions": {
+    "directCommands": {
+      "node --version": "v26.1.0",
+      "npm --version": "11.13.0"
+    },
+    "locallyResolvedPackages": {
+      "vue": "3.5.38",
+      "typescript": "5.9.3",
+      "vite": "6.4.3",
+      "vitest": "2.1.9"
+    },
+    "nodeRepositoryPinned": false,
+    "repositoryVersionFilesPresent": []
+  },
+  "documentCountDefinition": {
+    "inventoryPath": "docs/migration/DOCUMENT_INVENTORY.json",
+    "inventoryRecords": "migrated, reconciled, retained, or target-authored governance/evidence documents",
+    "governanceRootsIncluded": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".ai/skills/project-ui/SKILL.md"
+    ],
+    "generatedMachineEvidenceOutsideInventory": [
+      "docs/migration/API_AUTHORITY_MAP.json",
+      "docs/migration/ASSET_INVENTORY.json",
+      "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+      "docs/migration/CAPABILITY_MATRIX.json",
+      "docs/migration/DOCUMENT_INVENTORY.json"
+    ],
+    "selfExclusionReason": "The document inventory cannot contain a stable hash of itself."
+  },
+  "documentCounts": {
+    "totalInventoried": 23,
+    "ACTIVE_AUTHORITY": 20,
+    "MIGRATION_SOURCE": 0,
+    "HISTORICAL_EVIDENCE": 3,
+    "DEPRECATED": 0,
+    "REJECTED": 0,
+    "sourceDerived": 22,
+    "targetAuthored": 1,
+    "sourceDerivedActiveAuthority": 19,
+    "targetAuthoredActiveAuthority": 1,
+    "governanceRootFiles": 3,
+    "activeAuthorityDocumentsUnderDocs": 17,
+    "archivedDocuments": 3,
+    "physicalFilesInDefinedDocumentScope": 28,
+    "generatedMachineEvidenceOutsideInventoryCount": 5
+  },
+  "documentHashValidation": {
+    "destinationRecordsChecked": 23,
+    "destinationMatches": 23,
+    "sourceRecordsChecked": 22,
+    "sourceMatches": 22,
+    "missingDestinations": [],
+    "hashMismatches": [],
+    "unclassifiedInventoryRecords": 0,
+    "inventorySha256": "8b4eb89f5f45feddc25f5dcfef9c9d56b5ce520860473fe427e3c23af9d79a82"
+  },
+  "assetCountDefinition": {
+    "inventoryPath": "docs/migration/ASSET_INVENTORY.json",
+    "totalAssetsMeans": "source candidates considered for admission",
+    "targetRoots": [
+      "src/assets",
+      "public"
+    ],
+    "ordinarySourceCssDeclarationsAndGeneratedFilesExcluded": true,
+    "futureConsumerPathsArePlansNotCurrentConsumers": true
+  },
+  "assetCandidates": {
+    "count": 20,
+    "inventorySha256": "18f90bf504e04f52ed8e8b5896b817f451eab171dd41e4d09d83f1922f0639fc",
+    "activeSourceConsumerCandidates": 18,
+    "unusedCandidates": 2,
+    "allSourceFilesExist": true,
+    "allRecordedSizesMatch": true,
+    "allRecordedSourceHashesMatch": true,
+    "allRecordedMimeTypesMatch": true,
+    "entries": [
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/favicon.png",
+        "sha256": "0fbcd83ce8015ab48b0cd88c15dd53219e11b89ab6ad08505b39acd93c77e94e",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/account-avatar.svg",
+        "sha256": "b30d8dfa96b165e846aed3447bf712af0b88605a18f550d8664fe94a1237ee52",
+        "status": "EXCLUDED_NO_ACTIVE_CONSUMER_AND_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/chess-knight-avatar.png",
+        "sha256": "b794ec45d2d9badb90f2c2f750510bf66d00c89d89ed8e293c0b1962c1082b16",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/chess-rook-login.png",
+        "sha256": "06480568044bede57d460aeb1cb5775a1cb12a77ae9a88da855ad445fa3b049c",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/user-profile-picture.png",
+        "sha256": "fa668f34f1bcdab149a464ff11d6f337dc95660084a6a83fbc8cfc044cae4464",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/competition-logo.png",
+        "sha256": "35ae92362655eba0aa44223bd78010c1107e956a0fb2e0a776520d6ec18d2af0",
+        "status": "EXCLUDED_NO_ACTIVE_CONSUMER_AND_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/pgn-board-icon.png",
+        "sha256": "9aeac12e3f4efddcf6c424ad7f8f8f2eb5b6dd63b8f6e3d2ccbfa494a7359206",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/versus-icon.png",
+        "sha256": "de543c1ad2b9682b1f10729a033bb16cbdb36519a511fdd8970e159650c780c7",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bb.png",
+        "sha256": "3de9d4e7f8d3bd99b00cfdea90fd1c380e54a5d78a24646154f4049b11490c2e",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bk.png",
+        "sha256": "40d1185c92de7b05f8178b1eea1ef0f3b6dc3b547fb0c94679aced1904cbe7cc",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bn.png",
+        "sha256": "0b0123d1688df1aa8f71041ab1b86a190c033171b0e347147a7fda33078c9efc",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bp.png",
+        "sha256": "1a5b9969317bb2a7369124550722d3eb84abdd42053377e5e07781ad3e744015",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bq.png",
+        "sha256": "0a92c07b1eb9d5ded421a67c8b06d8043dc9fce6ed6e56d3f5bfe1a76f3d7786",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/br.png",
+        "sha256": "cf5f13f2c6349a79f6116b1187e51e172958f5433910603ad991261224d9f813",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wb.png",
+        "sha256": "3689113513223d9e6a3257ec23030bd12d8c92fcb1ec2a29bb9604a74c646b9f",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wk.png",
+        "sha256": "56b5c7cb589c1bfe42ffcd38626018b2d6f4c194f5d964064d49c2b2a8646cf8",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wn.png",
+        "sha256": "028fd470425507b88d220b69a40ee59f2558f71240dfc4bc769207ec7d9c7c47",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wp.png",
+        "sha256": "c5d2d5b508c49871095012e2c582659bd709eb9b3e4a024ccef268cbd9a95dc2",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wq.png",
+        "sha256": "2f0806e40ecdec15bf51a39b05d7d6603256cd735f6d885d3f4b3ebfab9b6f83",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      },
+      {
+        "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wr.png",
+        "sha256": "14753ac3088067d544b7f029ec068665f0861732e322680ce8c4c7583411b6c9",
+        "status": "EXCLUDED_UNRESOLVED_LICENSE"
+      }
+    ]
+  },
+  "retainedAssets": [],
+  "excludedAssets": {
+    "count": 20,
+    "unresolvedLicenseOrAttribution": 18,
+    "noActiveConsumerAndUnresolvedLicenseOrAttribution": 2,
+    "allAbsentFromActiveTargetRoots": true,
+    "binaryArchivesCreated": false
+  },
+  "assetAdmissionEvidence": {
+    "sourcePathHashSizeAndMimeChecksPassed": 20,
+    "explicitProvenanceRecords": 20,
+    "verifiedActiveSourceConsumerCandidates": 18,
+    "verifiedUnusedCandidates": 2,
+    "resolvedProductOwnership": 0,
+    "resolvedLicenseOrAttribution": 0,
+    "activeMigratedAssetsEvaluated": 0,
+    "admissionDecision": "EXCLUDE_ALL_20",
+    "decisionReason": "Runtime use and lineage do not establish ownership or migration rights."
+  },
+  "duplicateAssets": {
+    "inventoryCandidateHashesMutuallyDistinct": true,
+    "contentHashEquivalenceClassCountAcrossDeclaredCanonicalAndLegacyPaths": 12,
+    "roots": {
+      "canonical": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida",
+      "legacyMall": "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/pgnManage/imgs/pieces/merida",
+      "legacyChesslight": "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/chesslight/imgs/pieces/merida"
+    },
+    "equivalenceClasses": [
+      {
+        "fileName": "bb.png",
+        "sha256": "3de9d4e7f8d3bd99b00cfdea90fd1c380e54a5d78a24646154f4049b11490c2e",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "bk.png",
+        "sha256": "40d1185c92de7b05f8178b1eea1ef0f3b6dc3b547fb0c94679aced1904cbe7cc",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "bn.png",
+        "sha256": "0b0123d1688df1aa8f71041ab1b86a190c033171b0e347147a7fda33078c9efc",
+        "members": [
+          "canonical",
+          "legacyMall"
+        ]
+      },
+      {
+        "fileName": "bp.png",
+        "sha256": "1a5b9969317bb2a7369124550722d3eb84abdd42053377e5e07781ad3e744015",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "bq.png",
+        "sha256": "0a92c07b1eb9d5ded421a67c8b06d8043dc9fce6ed6e56d3f5bfe1a76f3d7786",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "br.png",
+        "sha256": "cf5f13f2c6349a79f6116b1187e51e172958f5433910603ad991261224d9f813",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "wb.png",
+        "sha256": "3689113513223d9e6a3257ec23030bd12d8c92fcb1ec2a29bb9604a74c646b9f",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "wk.png",
+        "sha256": "56b5c7cb589c1bfe42ffcd38626018b2d6f4c194f5d964064d49c2b2a8646cf8",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "wn.png",
+        "sha256": "028fd470425507b88d220b69a40ee59f2558f71240dfc4bc769207ec7d9c7c47",
+        "members": [
+          "canonical",
+          "legacyMall"
+        ]
+      },
+      {
+        "fileName": "wp.png",
+        "sha256": "c5d2d5b508c49871095012e2c582659bd709eb9b3e4a024ccef268cbd9a95dc2",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "wq.png",
+        "sha256": "2f0806e40ecdec15bf51a39b05d7d6603256cd735f6d885d3f4b3ebfab9b6f83",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      },
+      {
+        "fileName": "wr.png",
+        "sha256": "14753ac3088067d544b7f029ec068665f0861732e322680ce8c4c7583411b6c9",
+        "members": [
+          "canonical",
+          "legacyMall",
+          "legacyChesslight"
+        ]
+      }
+    ],
+    "sameNameDifferentContentVariants": [
+      {
+        "fileName": "bn.png",
+        "member": "legacyChesslight",
+        "sha256": "765f97bfc6b53dcffab8db61a77b47080c45bb4802260814a8b2bce01e27bec0"
+      },
+      {
+        "fileName": "wn.png",
+        "member": "legacyChesslight",
+        "sha256": "edb292f5d627f90b11a6cf6fadad6bb1ad93a7c6fa7377f5d2fa662f6b8ff842"
+      }
+    ]
+  },
+  "canonicalRuntimeClosureNodeCount": 47,
+  "capabilityRecordCount": 13,
+  "apiCapabilityRecordCount": 7,
+  "apiBoundaryRuleCount": 12,
+  "recordValidation": {
+    "canonicalRuntimeClosureRequiredFieldsPresent": true,
+    "canonicalRuntimeClosureSourcePathsExist": true,
+    "capabilityRequiredFieldsPresent": true,
+    "capabilitySourceEvidencePathReferencesChecked": 48,
+    "capabilitySourceEvidencePathsExist": true,
+    "apiRequiredFieldsPresent": true,
+    "apiEvidencePathReferencesChecked": 26,
+    "apiEvidencePathsExist": true,
+    "inventedEndpointMethodIdentifierTransportOrAuthClaimsRemaining": false,
+    "apiCorrections": [
+      "Removed unsupported nonPersonalAccountLabel field name and retained only the documented non-personal-label semantic with exact field name unresolved.",
+      "Changed undocumented session/logout request-body null assumptions to UNRESOLVED.",
+      "Added target API_BOUNDARY_ADR.md authority for the live AI-disabled guard."
+    ]
+  },
+  "playwrightDecision": {
+    "present": false,
+    "manifestEntries": 0,
+    "lockfileEntries": 0,
+    "configurationFiles": 0,
+    "runtimeOrTestImports": 0,
+    "p0BaselineStatus": "NOT_IN_P0",
+    "activeAuthority": "docs/architecture/TECH_STACK_DECISION.md selects Vitest, Vue Test Utils, and jsdom for P0.",
+    "futureAuthorityNote": "docs/ui/ACCESSIBILITY_SPEC.md mentions Playwright for future E2E coverage; it does not approve a P0 dependency.",
+    "action": "NONE"
+  },
+  "correctionsApplied": [
+    "Added explicit document scope, classification counts, source-derived versus target-authored counts, and generated-evidence self-exclusion semantics.",
+    "Added explicit asset candidate versus retained-target counts, provenance-versus-rights semantics, and future-consumer semantics.",
+    "Normalized all active asset consumer evidence to exact canonical repo-relative paths and identified the Merida direct importer.",
+    "Corrected the auth capability visual authority to a machine-checkable exact path and added it to source evidence.",
+    "Removed unsupported API response/request assumptions and added the missing live-guard authority citation.",
+    "Reworded source-integrity evidence to avoid unreproducible whole-tree digest claims.",
+    "Updated the original P0 report with current inventory hashes, count definitions, package-manager evidence, Playwright decision, and source-integrity limitations."
+  ],
+  "filesChanged": [
+    ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json",
+    ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json",
+    "docs/migration/DOCUMENT_INVENTORY.json",
+    "docs/migration/ASSET_INVENTORY.json",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    "docs/migration/API_AUTHORITY_MAP.json",
+    "docs/migration/SOURCE_PROVENANCE.md"
+  ],
+  "filesRemoved": [],
+  "postCorrectionEvidenceHashes": {
+    "docs/migration/API_AUTHORITY_MAP.json": "6ab3392b058008da4c1311eb57f5c50e5f1bb1e680ac09e1f851efa79568ee69",
+    "docs/migration/ASSET_INVENTORY.json": "18f90bf504e04f52ed8e8b5896b817f451eab171dd41e4d09d83f1922f0639fc",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json": "456d842d7422bc0bd5fff937fb407647951c502ea8bf6121cfe8ab1a42bef095",
+    "docs/migration/CAPABILITY_MATRIX.json": "75d35ddb501b7ca0159f4e4fc03ef436bce32d71f87018f96e863febb2b4ee81",
+    "docs/migration/DOCUMENT_INVENTORY.json": "8b4eb89f5f45feddc25f5dcfef9c9d56b5ce520860473fe427e3c23af9d79a82",
+    "docs/migration/SOURCE_PROVENANCE.md": "0f42e885578c609e182d788fd9d068fc07739d6d0a9a6e2f03d4deea6b78b803"
+  },
+  "unchangedCriticalTargetHashes": {
+    "package.json": "c5c31bd3203a26df25b2f638106bc60b38c699d58397c1ba977bfbe54ce0f41e",
+    "package-lock.json": "f271431146afcf7f9a952fcdbd77810a1e86741af43b86e1ec438ed45ed0a61c",
+    "vite.config.ts": "11bcf7e0875be5ad6af52cba57f2c7a47840bd5ffa1bed9c83abf62b19669aa2",
+    "src/main.ts": "7d23fe05d33eebbf0435e742dca510c0475199b330f0f051ffa024788a1d8d81",
+    "src/router/index.ts": "2c884d5db56becc2326ce34f0676eb5f650b72cc7df4ecb71fe856abdd4ad623",
+    "src/stores/index.ts": "487e2027859fefefea762d7b7f936e2174c47ecbe92db44626b3ef4544611b78",
+    "src/styles/tokens.css": "c610e1d05901e2f702fc14458f5854b05e667d67560fcf0c46eb4cd22ed38250"
+  },
+  "sourceIntegrityEvidence": {
+    "broadSourceScanPerformed": false,
+    "sourceRootMtimesUnchangedDuringCorrection": true,
+    "documentInventorySourceHashesChecked": 22,
+    "documentInventorySourceHashMismatches": 0,
+    "assetCandidateSourceHashesChecked": 20,
+    "assetCandidateSourceHashMismatches": 0,
+    "sourceWriteCommandsExecuted": false,
+    "sourceFilesModifiedByThisExecution": false
+  },
+  "sourceIntegrityLimitations": [
+    "The original P0 metadata digest strings lack a preserved serialized manifest or command and are not independently reproducible.",
+    "Unchanged root mtimes, entry counts, and exact referenced-file hashes do not prove byte-for-byte integrity of every file in an entire source tree.",
+    "This corrective phase intentionally avoided a new broad source scan and checked only exact inventory/evidence paths."
+  ],
+  "reactRuntimeAudit": {
+    "status": "PASS",
+    "reactRuntimeDependencies": 0,
+    "reactRouterOrTanStackRouterRuntime": 0,
+    "reactAriaOrRadixReactRuntime": 0,
+    "zustandOrXStateRuntime": 0,
+    "microFrontendIframeOrWebComponentBridges": 0,
+    "duplicateVueRoots": 0,
+    "duplicateRouters": 0,
+    "duplicatePiniaGraphs": 0,
+    "parallelTokenRegistries": 0
+  },
+  "mockDataAudit": {
+    "status": "PASS",
+    "runtimeMocks": 0,
+    "productFixtureFallbacks": 0,
+    "fakeTournamentRecords": 0,
+    "fakeGamesOrReplay": 0,
+    "fakeLiveMessages": 0,
+    "fakeAiResults": 0,
+    "placeholderSuccessStates": 0,
+    "note": "The sole test mounts the real neutral P0 App, router singleton, and Pinia singleton."
+  },
+  "securityAudit": {
+    "status": "PASS_WITH_SCOPE_LIMITATION",
+    "browserHmacSecrets": 0,
+    "genericLegacyCallTransport": 0,
+    "proxyRequestRuntime": 0,
+    "browserCredentialOrTokenStorage": 0,
+    "mqttRuntimeOrPublish": 0,
+    "dangerousDomSinks": 0,
+    "secretBearingFilesRead": false,
+    "limitation": "Deployment CSP and hosting headers were not asserted; prohibited secret-bearing local files were not opened."
+  },
+  "jsonValidation": {
+    "status": "PASS",
+    "migrationJsonFilesParsed": 5,
+    "originalP0ReportParsed": true,
+    "reconciliationReportParsed": true,
+    "documentDestinationHashValidation": "23/23",
+    "documentSourceHashValidation": "22/22",
+    "assetCandidateSourceHashValidation": "20/20",
+    "inventoryDestinationsExist": true,
+    "excludedAssetsAbsentFromActiveTargetRoots": true,
+    "authoritativeLockfileCount": 1
+  },
+  "typecheck": {
+    "command": "npm run typecheck",
+    "status": "PASS",
+    "exitCode": 0
+  },
+  "unitTests": {
+    "command": "npm test",
+    "status": "PASS",
+    "exitCode": 0,
+    "testFiles": 1,
+    "tests": 1
+  },
+  "productionBuild": {
+    "command": "npm run build",
+    "status": "PASS",
+    "exitCode": 0,
+    "viteVersion": "6.4.3",
+    "modulesTransformed": 35
+  },
+  "browserSmokeValidation": {
+    "status": "NOT_RUN_NOT_REQUIRED",
+    "reason": "The bootstrap, dependency graph, package.json, package-lock.json, Vite config, and router/store/token foundations remained byte-for-byte unchanged.",
+    "historicalP0Evidence": "The original P0 report records a passing load/reload smoke at /pgnViewer/."
+  },
+  "originalP0Report": {
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json",
+    "preCorrectionSha256": "c64edd1cb921f26f2cd5bc762e1672d8dee2d00968c871390628eeb7bab4150a",
+    "correctedSha256": "ae9ef89f4a9e6843e1e5feec4908daee784f9bd0c02300e891660e1c167bbf49"
+  },
+  "remainingDiscrepancies": [],
+  "blockers": [],
+  "warnings": [
+    "Node v26.1.0 is the runtime actually used but is host/mise-shim state, not repository-pinned.",
+    "All 20 asset candidates remain unavailable for migration until ownership and license/attribution evidence is approved.",
+    "Whole-source-tree byte integrity is not claimed; current integrity evidence is deliberately limited.",
+    "TECH_STACK_DECISION.md describes the historical canonical-source lock comparison; current target authority is package.json plus the sole package-lock.json, as clarified in SOURCE_PROVENANCE.md.",
+    "Playwright is referenced only as a future E2E method and remains outside P0."
+  ],
+  "finalAuthoritativeP0Facts": {
+    "packageManager": "pnpm@11.11.0",
+    "authoritativeLockfile": "pnpm-lock.yaml",
+    "nodeVersionUsed": "v26.5.0",
+    "documentInventoryRecords": 23,
+    "activeAuthorityDocuments": 20,
+    "sourceDerivedDocuments": 22,
+    "sourceDerivedActiveAuthorityDocuments": 19,
+    "physicalDocumentScopeFiles": 28,
+    "assetCandidates": 20,
+    "retainedActiveAssets": 0,
+    "excludedAssetCandidates": 20,
+    "physicalTargetAssets": 0,
+    "canonicalRuntimeClosureNodes": 47,
+    "capabilityRecords": 13,
+    "apiCapabilityRecords": 7,
+    "apiBoundaryRules": 12,
+    "playwrightInP0": false,
+    "viteBase": "/pgnViewer/",
+    "productFeatureImplementationPresent": false,
+    "p1Started": false,
+    "typeScript": "typescript@6.0.3",
+    "vueTsc": "vue-tsc@3.3.7"
+  },
+  "finalVerdict": "P0_EVIDENCE_RECONCILIATION_CORRECTED_PASS",
+  "p0bRerunBaselineUpdate": {
+    "phase": "P0B_CANONICAL_VUE_ARCHITECTURE_PNPM_AND_LATEST_STABLE_TOOLCHAIN_ALIGNMENT_RERUN",
+    "updatedAt": "2026-07-11T21:11:05.407Z",
+    "reportPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/P0B_CANONICAL_VUE_ARCHITECTURE_PNPM_AND_LATEST_STABLE_TOOLCHAIN_ALIGNMENT_RERUN_REPORT.json",
+    "npmBaselineSupersededByOwnerDecision": true,
+    "nodeProvisioningPassed": true,
+    "pnpmAuthoritative": true,
+    "packageManager": "pnpm@11.11.0",
+    "node": "v26.5.0",
+    "dependencyVersionSource": "execution-time npm registry dist-tags.latest metadata",
+    "p0AcceptanceCondition": "P0 accepted only when P0B rerun passes required validation.",
+    "p0bRerunVerdict": "P0B_RERUN_BLOCKED_LATEST_STABLE_COMPATIBILITY_CONFLICT",
+    "blocker": "The execution-time registry latest-stable set installs and passes strict peer validation, but Vue type checking fails because vue-tsc@3.3.7 resolves typescript/lib/tsc and typescript@7.0.2 does not export that package subpath."
+  },
+  "p0cCompatibilityBridgeUpdate": {
+    "phase": "P0C_TYPESCRIPT_7_AND_VUE_TSC_OFFICIAL_COMPATIBILITY_BRIDGE",
+    "updatedAt": "2026-07-11T21:23:52.553Z",
+    "reportPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/P0C_TYPESCRIPT_7_AND_VUE_TSC_OFFICIAL_COMPATIBILITY_BRIDGE_REPORT.json",
+    "independentLatestPolicyProducedConfirmedIncompatibility": true,
+    "ownerApprovedOfficialEcosystemCompatibilityBridge": true,
+    "pnpmAuthoritative": true,
+    "nodePinned": "26.5.0",
+    "pnpmPinned": "11.11.0",
+    "p0AcceptanceDependsOnP0CValidation": true,
+    "p0cVerdict": "P0C_BLOCKED_COMPATIBILITY_PACKAGE_FAILURE",
+    "blocker": "The official Microsoft @typescript/typescript6 compatibility package exists and is installed under the package name expected by vue-tsc, but vue-tsc@3.3.7 through @volar/typescript@2.4.28 fails against the compatibility package tsc shim with Failed to locate tsc module path from shim."
+  },
+  "p0dOfficialVueTypeScript6BaselineUpdate": {
+    "phase": "P0D_OFFICIAL_VUE_TYPESCRIPT_6_ECOSYSTEM_COMPATIBLE_BASELINE",
+    "updatedAt": "2026-07-11T21:47:59.553Z",
+    "npmBaselineSupersededByOwnerDecision": true,
+    "pnpmAuthoritative": true,
+    "packageManager": "pnpm@11.11.0",
+    "nodePinned": "26.5.0",
+    "pnpmPinned": "11.11.0",
+    "independentLatestPolicyCorrectedToEcosystemCompatibleSelection": true,
+    "typeScript7ActiveDependency": false,
+    "typeScriptCompatibilityShimActiveDependency": false,
+    "officialTypeScriptGuidanceRequiresVueTypeScript6ForNow": true,
+    "selectedTypeScript": "typescript@6.0.3",
+    "vueTsc": "vue-tsc@3.3.7",
+    "finalP0AcceptanceDependsOnP0D": false,
+    "validationStatus": "P0D_VALIDATION_PASS",
+    "finalP0AcceptanceReadiness": "P0D_PASS_READY_FOR_OWNER_CONTROLLED_P1_GATE"
+  },
+  "currentAuthoritativeP0Baseline": {
+    "phase": "P0E_UI_FIRST_DELIVERY_AND_NO_AUTOMATED_TEST_GOVERNANCE_CLOSURE",
+    "updatedAt": "2026-07-11T22:12:52.933Z",
+    "p0dPassed": true,
+    "acceptedP0DVerdict": "P0D_OFFICIAL_VUE_TYPESCRIPT_6_ECOSYSTEM_COMPATIBLE_BASELINE_PASS",
+    "ownerPolicyOverrideNoAutomatedTests": true,
+    "uiFirstDeliveryPriority": true,
+    "automatedTestInfrastructureRemoved": true,
+    "pnpmAuthoritative": true,
+    "packageManager": "pnpm@11.11.0",
+    "nodePinned": "26.5.0",
+    "pnpmPinned": "11.11.0",
+    "selectedTypeScript": "typescript@6.0.3",
+    "vueTsc": "vue-tsc@3.3.7",
+    "typeScript7ActiveDependency": false,
+    "typeScriptCompatibilityShimActiveDependency": false,
+    "finalP0AcceptanceDependsOnP0E": false,
+    "validationStatus": "P0E_VALIDATION_PASS",
+    "finalP0AcceptanceReadiness": "P0E_PASS_READY_FOR_OWNER_CONTROLLED_P1_UI_FIRST_GATE",
+    "p1Started": false,
+    "p0ePassed": true,
+    "p0fAuthorityConsistencyCorrectionPassed": true,
+    "p0fRequiredBrowserValidationCompletedInCorrectionPass": true,
+    "preScopeGitAttemptRecordedAsProceduralWarning": true,
+    "noAutomatedTestInfrastructure": true,
+    "typecheckAndBuildEvidenceAccepted": true,
+    "browserRuntimeEvidencePassed": true,
+    "noApplicationRuntimeSourceModified": true,
+    "noPackageOrLockfileModified": true,
+    "noP1WorkStarted": true,
+    "readyForOwnerAcceptance": true
+  },
+  "finalP0AcceptanceReadiness": "P0D passed; P0E passed; P0F authority consistency correction passed; required browser validation completed in the P0F correction pass; the failed pre-scope git status attempt is recorded as a procedural warning; no P1 work was started. Final P0 is ready for owner acceptance because the correction verdict passed.",
+  "p0eUiFirstDeliveryNoAutomatedTestGovernanceClosureUpdate": {
+    "phase": "P0E_UI_FIRST_DELIVERY_AND_NO_AUTOMATED_TEST_GOVERNANCE_CLOSURE",
+    "updatedAt": "2026-07-11T22:12:52.933Z",
+    "p0dPassed": true,
+    "ownerSubsequentDecision": "Remove automated testing from active project policy and prioritize visible, user-facing interface delivery.",
+    "automatedTestInfrastructureRemoved": true,
+    "removedTestFiles": [
+      "tests/bootstrap.spec.ts",
+      "tests/setup.ts"
+    ],
+    "removedTestConfigurations": [
+      "vitest.config.ts",
+      "tsconfig.json test-only vitest globals/tests include"
+    ],
+    "removedTestScripts": [
+      "test",
+      "test:watch"
+    ],
+    "removedTestDependencies": [
+      "vitest@4.1.10",
+      "@vue/test-utils@2.4.11",
+      "jsdom@29.1.1"
+    ],
+    "retainedValidation": [
+      "pnpm run typecheck",
+      "pnpm run build",
+      "narrow real-browser runtime validation"
+    ],
+    "finalP0AcceptanceRequiresP0ECompletion": false,
+    "p1Status": "UNSTARTED_READY_AFTER_P0E_PASS"
+  },
+  "p0fBrowserValidationAndReportIntegrityCorrectionUpdate": {
+    "phase": "P0F_BROWSER_VALIDATION_AND_REPORT_INTEGRITY_CORRECTION",
+    "completedAt": "2026-07-12T01:54:10Z",
+    "status": "P0F_BROWSER_VALIDATION_AND_REPORT_INTEGRITY_CORRECTION_PASS",
+    "p0dPassed": true,
+    "p0ePassed": true,
+    "p0fAuthorityConsistencyCorrectionPassed": true,
+    "requiredBrowserValidationCompletedInCorrectionPass": true,
+    "failedPreScopeGitCommandAttemptRecordedAsProceduralWarning": true,
+    "noP1WorkStarted": true,
+    "finalP0ReadyForOwnerAcceptanceWhenCorrectionVerdictPasses": true,
+    "reportPath": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/P0F_BROWSER_VALIDATION_AND_REPORT_INTEGRITY_CORRECTION_REPORT.json"
+  }
+}

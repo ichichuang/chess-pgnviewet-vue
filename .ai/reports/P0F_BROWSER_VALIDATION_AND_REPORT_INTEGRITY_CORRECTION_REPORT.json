@@ -1,0 +1,297 @@
+{
+  "phase": "P0F_BROWSER_VALIDATION_AND_REPORT_INTEGRITY_CORRECTION",
+  "startedAt": "2026-07-12T01:45:00Z",
+  "completedAt": "2026-07-12T01:54:10Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "safetyGate": {
+    "workingDirectoryExact": true,
+    "workingDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "nodeVersion": "v26.5.0",
+    "pnpmVersion": "11.11.0",
+    "misePins": {
+      "node": "26.5.0",
+      "pnpm": "11.11.0"
+    },
+    "packageLockAbsent": true,
+    "onlyPackageManagerLockfile": "pnpm-lock.yaml",
+    "gitCommandsDuringCorrection": [],
+    "applicationRuntimeSourceModified": false,
+    "packageDependenciesOrLockfilesModified": false,
+    "automatedTestArtifactsCreated": false,
+    "sourceProjectsInspectedOrModified": false,
+    "p1Started": false
+  },
+  "acceptedPriorEvidence": {
+    "p0fAuthorityConflictsCorrected": true,
+    "typecheck": {
+      "command": "mise exec -- pnpm run typecheck",
+      "status": "PASS",
+      "acceptedFrom": "first P0F pass"
+    },
+    "build": {
+      "command": "mise exec -- pnpm run build",
+      "status": "PASS",
+      "acceptedFrom": "first P0F pass"
+    },
+    "migrationJsonParsing": "PASS",
+    "automatedTestFilesConfigurationsScriptsOrDependenciesRemain": false,
+    "runtimeSourceChangedInP0F": false,
+    "firstP0fBrowserValidation": "NOT_RUN",
+    "preScopeGitStatusAttempt": "FAILED_BEFORE_PHASE_INSTRUCTIONS_FULLY_LOADED_NO_REPOSITORY_STATE_READ"
+  },
+  "p0fReportBeforeCorrection": {
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/P0F_ACTIVE_AUTHORITY_NO_TEST_AND_UI_FIRST_CONSISTENCY_CLOSURE_REPORT.json",
+    "sha256BeforeCorrection": "3f226f3b44a2ba92694ea364ed2a17be7eb99c63b765d6753a1c011bea6fc20a",
+    "browserValidationStatusBeforeCorrection": "NOT_RUN",
+    "claimedBrowserValidationPassedBeforeCorrection": false,
+    "recordedPreScopeGitAttemptBeforeCorrection": true
+  },
+  "authorityConsistencyConfirmation": {
+    "status": "PASS_NO_ACTIVE_CONFLICT",
+    "scanScope": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".ai/skills/project-ui/SKILL.md",
+      "docs/product/PRODUCT_DEFINITION.md",
+      "docs/product/WORKSPACE_MODES.md",
+      "docs/ui/THEME_SYSTEM_SPEC.md",
+      "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+      "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+      "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+      "docs/ui/ACCESSIBILITY_SPEC.md",
+      "docs/ui/I18N_SPEC.md",
+      "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+      "docs/ui/PAGE_STYLE_SPEC.md",
+      "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+      "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+      "docs/architecture/TECH_STACK_DECISION.md",
+      "docs/architecture/API_BOUNDARY_ADR.md",
+      "docs/architecture/PERSISTENCE_ADR.md",
+      "docs/architecture/SOURCE_ADAPTER_ADR.md",
+      "docs/migration/SOURCE_PROVENANCE.md",
+      "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+      "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+      "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json",
+      "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+      "docs/migration/DOCUMENT_INVENTORY.json",
+      "package.json",
+      "tsconfig.json",
+      "pnpm-workspace.yaml",
+      ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json",
+      ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json",
+      ".ai/reports/P0E_UI_FIRST_DELIVERY_AND_NO_AUTOMATED_TEST_GOVERNANCE_CLOSURE_REPORT.json"
+    ],
+    "activeConflictsFound": [],
+    "classifications": {
+      "ALLOWED_PROHIBITION": [
+        "No automated test files/infrastructure/test scripts/test dependencies requirements in active governance files.",
+        "Do not run pnpm test / no test script permitted statements.",
+        "Mock, fake, sample, and fixture fallback product data forbidden statements."
+      ],
+      "HISTORICAL_REFERENCE": [
+        "Prior P0 and P0E reports retain historical automated-test references and were not rewritten."
+      ],
+      "MIGRATION_SOURCE_DESCRIPTION": [
+        "Canonical source descriptions mention Vitest/jsdom as source evidence only and state they are not adopted."
+      ],
+      "NON_TEST_MEANING": [
+        "Snapshot appears as data type or live-data semantic wording in UI/migration documents."
+      ],
+      "NO_CHANGE_REQUIRED": [
+        "typecheck/build/browser validation and real-production-API-only policy signals remain present."
+      ]
+    },
+    "confirmed": {
+      "noActiveVitestRequirement": true,
+      "noActiveVueTestUtilsRequirement": true,
+      "noActiveJsdomTestEnvironmentRequirement": true,
+      "noActivePlaywrightCypressJestTestingLibraryRequirement": true,
+      "noActiveSnapshotCoverageAutomatedE2ERequirement": true,
+      "noPnpmTestRequirement": true,
+      "noUnitComponentIntegrationOrAutomatedAccessibilityTestRequirement": true,
+      "typecheckMandatory": true,
+      "productionBuildMandatory": true,
+      "narrowBrowserRuntimeValidationMandatoryForVisibleUiWork": true,
+      "realProductionApisOnly": true,
+      "mockFakeSampleFixtureFallbackProductDataForbidden": true
+    }
+  },
+  "activeConflictsFound": [],
+  "browserServerCommand": "mise exec -- pnpm run dev -- --host 127.0.0.1",
+  "browserRoute": "http://127.0.0.1:5174/pgnViewer/",
+  "browserInitialLoad": {
+    "status": "PASS",
+    "url": "http://127.0.0.1:5174/pgnViewer/",
+    "title": "Application bootstrap",
+    "bodyText": "Application bootstrap ready.",
+    "bodyLength": 28,
+    "domSnapshotExcerpt": "- main:\n  - paragraph: Application bootstrap ready."
+  },
+  "browserReload": {
+    "status": "PASS",
+    "url": "http://127.0.0.1:5174/pgnViewer/",
+    "title": "Application bootstrap",
+    "bodyText": "Application bootstrap ready.",
+    "bodyLength": 28,
+    "domSnapshotExcerpt": "- main:\n  - paragraph: Application bootstrap ready."
+  },
+  "domValidation": {
+    "status": "PASS",
+    "nonblank": true,
+    "appElementCount": 1,
+    "bootstrapTextPresent": true,
+    "homeViewRouterChildRendered": "<div aria-hidden=\"true\"> from HomeView.vue present inside app root"
+  },
+  "vueRootValidation": {
+    "status": "PASS",
+    "vueMountedRootCount": 1,
+    "evidence": "#app[data-v-app] count was 1 on initial load and reload."
+  },
+  "routerValidation": {
+    "status": "PASS",
+    "installedOnce": true,
+    "evidence": "src/main.ts contains one app.use(router); src/router/index.ts exports one router; browser loaded one /pgnViewer/src/main.ts module script; RouterView rendered the HomeView child; console contained no duplicate-install or router errors."
+  },
+  "piniaValidation": {
+    "status": "PASS",
+    "installedOnce": true,
+    "evidence": "src/main.ts contains one app.use(pinia); src/stores/index.ts exports one createPinia() singleton; browser loaded one /pgnViewer/src/main.ts module script; console contained no duplicate-install or Pinia errors."
+  },
+  "globalStyleValidation": {
+    "status": "PASS",
+    "loaded": true,
+    "evidence": "Injected Vite style entry included /src/styles/index.css."
+  },
+  "tokenRegistryValidation": {
+    "status": "PASS",
+    "loaded": true,
+    "computedBgToken": "Canvas",
+    "evidence": "Injected /src/styles/index.css contained token registry content from tokens.css including --p3-pending-canonical-extraction and --bg: Canvas."
+  },
+  "viteOverlayValidation": {
+    "status": "PASS",
+    "viteOverlayCount": 0,
+    "errorOverlayText": false
+  },
+  "consoleValidation": {
+    "status": "PASS",
+    "initialErrorsOrWarnings": [],
+    "reloadErrorsOrWarnings": [],
+    "consoleBreakingErrors": []
+  },
+  "runtimeWarnings": [
+    {
+      "type": "TOOLING_LIMITATION",
+      "message": "Browser runtime did not support networkidle load state; validation used supported load state."
+    },
+    {
+      "type": "INTROSPECTION_LIMITATION",
+      "message": "Vue internal app object was not exposed on #app; Router/Pinia single-install validation used source entrypoint evidence, one loaded main module script, rendered RouterView child, and clean console."
+    }
+  ],
+  "unexpectedPreScopeGitAttempt": {
+    "attemptedBeforeOriginalP0fInstructionsFullyLoaded": true,
+    "command": "git status --short",
+    "result": "FAILED",
+    "evidence": "fatal: not a git repository (or any of the parent directories): .git",
+    "repositoryStateSuccessfullyRead": false,
+    "gitWriteOperationPerformed": false,
+    "stageCommitPushResetCleanStashCheckoutBranchTagOrInitOccurred": false,
+    "furtherGitCommandsAfterAttempt": false,
+    "gitCommandsDuringCorrectionPhase": [],
+    "classification": "PROCEDURAL_WARNING_NOT_SOURCE_INTEGRITY_PROOF"
+  },
+  "gitWriteAudit": {
+    "status": "PASS",
+    "gitWriteOperationPerformed": false,
+    "forbiddenGitOperations": []
+  },
+  "gitCommandsDuringCorrection": [],
+  "filesCreated": [
+    ".ai/reports/P0F_BROWSER_VALIDATION_AND_REPORT_INTEGRITY_CORRECTION_REPORT.json"
+  ],
+  "filesModified": [
+    ".ai/reports/P0F_ACTIVE_AUTHORITY_NO_TEST_AND_UI_FIRST_CONSISTENCY_CLOSURE_REPORT.json",
+    ".ai/reports/P0_NEW_VUE_PROJECT_BASELINE_AND_RESOURCE_DOCUMENT_MIGRATION_REPORT.json",
+    ".ai/reports/P0_EVIDENCE_RECONCILIATION_AND_BASELINE_CORRECTION_REPORT.json"
+  ],
+  "filesDeleted": [],
+  "reportCorrections": {
+    "p0fReportUpdated": true,
+    "currentP0StatusEvidenceUpdated": true,
+    "historicalReportsRewritten": false,
+    "firstP0fBrowserOmissionPreserved": true,
+    "preScopeGitAttemptPreserved": true
+  },
+  "applicationSourceIntegrity": {
+    "status": "PASS",
+    "applicationRuntimeSourceModified": false,
+    "runtimeSourceFilesReadOnlyInspected": [
+      "src/main.ts",
+      "src/App.vue",
+      "src/router/index.ts",
+      "src/stores/index.ts",
+      "src/styles/index.css",
+      "src/styles/tokens.css",
+      "src/views/HomeView.vue",
+      "index.html"
+    ]
+  },
+  "packageStateIntegrity": {
+    "status": "PASS",
+    "packageFilesModified": false,
+    "lockfilesModified": false,
+    "packageLockAbsent": true,
+    "onlyPackageManagerLockfile": "pnpm-lock.yaml",
+    "testScriptPresent": false,
+    "testOnlyDependenciesPresent": false
+  },
+  "sourceProjectIntegrity": {
+    "status": "PASS",
+    "sourceProjectsInspected": false,
+    "sourceProjectsModified": false
+  },
+  "blockers": [],
+  "warnings": [
+    {
+      "attemptedBeforeOriginalP0fInstructionsFullyLoaded": true,
+      "command": "git status --short",
+      "result": "FAILED",
+      "evidence": "fatal: not a git repository (or any of the parent directories): .git",
+      "repositoryStateSuccessfullyRead": false,
+      "gitWriteOperationPerformed": false,
+      "stageCommitPushResetCleanStashCheckoutBranchTagOrInitOccurred": false,
+      "furtherGitCommandsAfterAttempt": false,
+      "gitCommandsDuringCorrectionPhase": [],
+      "classification": "PROCEDURAL_WARNING_NOT_SOURCE_INTEGRITY_PROOF"
+    },
+    {
+      "type": "TOOLING_LIMITATION",
+      "message": "Browser runtime did not support networkidle load state; validation used supported load state."
+    },
+    {
+      "type": "INTROSPECTION_LIMITATION",
+      "message": "Vue internal app object was not exposed on #app; Router/Pinia single-install validation used source entrypoint evidence, one loaded main module script, rendered RouterView child, and clean console."
+    }
+  ],
+  "finalAuthoritativeP0Baseline": {
+    "p0dPassed": true,
+    "p0ePassed": true,
+    "p0fAuthorityConsistencyCorrectionPassed": true,
+    "p0fRequiredBrowserValidationCompletedInCorrectionPass": true,
+    "preScopeGitAttemptRecordedAsProceduralWarning": true,
+    "noAutomatedTestInfrastructure": true,
+    "typecheckAndBuildEvidenceAccepted": true,
+    "browserRuntimeEvidencePassed": true,
+    "noApplicationRuntimeSourceModified": true,
+    "noPackageOrLockfileModified": true,
+    "noP1WorkStarted": true,
+    "readyForOwnerAcceptance": true
+  },
+  "p1UiFirstReadiness": {
+    "status": "READY_AFTER_OWNER_ACCEPTANCE",
+    "constraint": "P1 must begin with UI-first mechanical migration of canonical visible interface only; no automated test infrastructure; real production APIs only; stop before P1 in this correction phase.",
+    "p1StartedInThisCorrection": false
+  },
+  "finalVerdict": "P0F_BROWSER_VALIDATION_AND_REPORT_INTEGRITY_CORRECTION_PASS"
+}

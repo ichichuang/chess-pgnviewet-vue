@@ -1,0 +1,199 @@
+{
+  "phase": "P0B_NODE_RUNTIME_PROVISIONING_ONLY",
+  "startedAt": "2026-07-11T20:40:00Z",
+  "completedAt": "2026-07-11T20:47:11Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+      "exists": true,
+      "readable": true,
+      "role": "permanent read-only canonical Vue source",
+      "intentionallyModified": false
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+      "exists": true,
+      "readable": true,
+      "role": "permanent read-only legacy evidence source",
+      "intentionallyModified": false
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+      "exists": true,
+      "readable": true,
+      "role": "permanent read-only product/API evidence source",
+      "intentionallyModified": false
+    }
+  ],
+  "safetyGate": {
+    "targetDirectoryConfirmed": true,
+    "targetDirectoryEvidence": "pwd => /Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "sourceDirectoriesExistAndReadable": true,
+    "miseAvailable": true,
+    "miseExecutable": "/Users/cc/.local/bin/mise",
+    "miseVersion": "2026.5.8 macos-arm64 (2026-05-14)",
+    "preProvisionNodeExecutable": "/Users/cc/.local/share/mise/installs/node/26.1.0/bin/node",
+    "preProvisionNodeVersion": "v26.1.0",
+    "preProvisionNodeShim": "/Users/cc/.local/share/mise/shims/node",
+    "preProvisionProjectScopedMiseConfiguration": {
+      "currentNode": "26.1.0",
+      "source": "~/.config/mise/config.toml",
+      "projectPinFiles": [],
+      "packageJsonVolta": null,
+      "packageJsonEngines": null,
+      "packageManager": "npm@11.13.0"
+    },
+    "conflictingProjectNodePins": [],
+    "gitCommandsUsed": false,
+    "projectDependencyOrProductFileModificationPlanned": false,
+    "secretsOrEnvironmentFilesInspected": false
+  },
+  "miseExecutable": "/Users/cc/.local/bin/mise",
+  "miseVersion": "2026.5.8 macos-arm64 (2026-05-14)",
+  "preProvisionNodeVersion": "v26.1.0",
+  "preProvisionNodeExecutable": "/Users/cc/.local/share/mise/installs/node/26.1.0/bin/node",
+  "officialLatestCurrentResolution": {
+    "resolvedVersion": "v26.5.0",
+    "releaseDate": "2026-07-08",
+    "releaseLine": "26.x Current",
+    "stabilityStatus": "stable-current",
+    "lts": false,
+    "npm": "11.17.0",
+    "v8": "14.6.202.34",
+    "authoritySource": "https://nodejs.org/dist/index.json",
+    "resolutionTimestamp": "2026-07-11T20:45:03.715Z",
+    "prerelease": false,
+    "nightlyOrRcOrTestBuild": false
+  },
+  "previousRequiredVersion": "v26.5.0",
+  "selectedNodeVersion": "v26.5.0",
+  "selectedNodeReleaseDate": "2026-07-08",
+  "selectedNodeAuthority": "https://nodejs.org/dist/index.json",
+  "miseResolutionEvidence": {
+    "command": "mise ls-remote node | rg '^26\\.5\\.0$'",
+    "result": "26.5.0",
+    "resolvedBeforeProjectConfigWrite": true
+  },
+  "installationCommand": "mise install node@26.5.0",
+  "installationResult": {
+    "status": "PASS",
+    "summary": "mise downloaded node-v26.5.0-darwin-arm64.tar.gz, reported a good GPG signature, verified checksum, extracted Node, and reported node v26.5.0 with npm 11.17.0.",
+    "installedPath": "/Users/cc/.local/share/mise/installs/node/26.5.0"
+  },
+  "projectPinFile": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.mise.toml",
+  "projectPinContents": "[tools]\nnode = \"26.5.0\"\n",
+  "globalToolchainChanges": {
+    "nodeInstalledThroughMise": "node@26.5.0",
+    "globalDefaultNodeChanged": false,
+    "globalDefaultNodeEvidence": {
+      "outsideProjectDirectory": "/tmp",
+      "miseCurrentNode": "26.1.0",
+      "normalShellNodeVersion": "v26.1.0",
+      "normalShellNodeExecutable": "/Users/cc/.local/share/mise/installs/node/26.1.0/bin/node"
+    },
+    "projectConfigTrusted": true,
+    "projectConfigTrustEvidence": "mise trust -y .mise.toml; mise trust --show => ~/Work/neobv/Chess/chess-pgnviewer-vue: trusted"
+  },
+  "shellConfigurationChanges": {
+    "changed": false,
+    "details": "No shell startup files were edited."
+  },
+  "projectScopedRuntime": {
+    "miseCurrentNode": "26.5.0",
+    "miseExecNodeVersion": "v26.5.0",
+    "miseExecNodeExecutable": "/Users/cc/.local/share/mise/installs/node/26.5.0/bin/node",
+    "miseExecProcessVersionsNode": "26.5.0",
+    "miseExecNpmVersion": "11.17.0",
+    "matchesProjectPin": true
+  },
+  "normalProjectShellRuntime": {
+    "nodeVersion": "v26.5.0",
+    "nodeExecutable": "/Users/cc/.local/share/mise/installs/node/26.5.0/bin/node",
+    "processVersionsNode": "26.5.0",
+    "npmVersion": "11.17.0",
+    "nodeShim": "/Users/cc/.local/share/mise/shims/node",
+    "npmShim": "/Users/cc/.local/share/mise/shims/npm",
+    "matchesProjectPin": true
+  },
+  "nodeExecutable": "/Users/cc/.local/share/mise/installs/node/26.5.0/bin/node",
+  "nodeVersion": "v26.5.0",
+  "npmVersion": "11.17.0",
+  "corepackVersion": {
+    "status": "unavailable",
+    "miseExecCorepackVersion": "FAILED: mise ERROR No version is set for shim: corepack",
+    "selectedNodeInstallCorepackBinary": "not found under /Users/cc/.local/share/mise/installs/node/26.5.0/bin/corepack",
+    "note": "Corepack was checked because a shim exists, but the selected Node installation does not expose a corepack binary through mise."
+  },
+  "pnpmAvailability": {
+    "checked": true,
+    "command": "mise exec -- pnpm --version",
+    "status": "unavailable_in_project_context",
+    "result": "ERROR: This project is configured to use npm",
+    "shim": "/Users/cc/.local/share/mise/shims/pnpm",
+    "note": "No pnpm installation or configuration was changed in this phase."
+  },
+  "protectedFileHashesBefore": [
+    {"path": "package.json", "sha256": "c5c31bd3203a26df25b2f638106bc60b38c699d58397c1ba977bfbe54ce0f41e"},
+    {"path": "package-lock.json", "sha256": "f271431146afcf7f9a952fcdbd77810a1e86741af43b86e1ec438ed45ed0a61c"},
+    {"path": "pnpm-lock.yaml", "sha256": null, "status": "absent"},
+    {"path": "vite.config.ts", "sha256": "11bcf7e0875be5ad6af52cba57f2c7a47840bd5ffa1bed9c83abf62b19669aa2"},
+    {"path": "tsconfig.json", "sha256": "8df29b9aa1b4ca1b95f0358b8d23b31f45ebcba6a94b67a268d60f0a4173e662"},
+    {"path": "src/main.ts", "sha256": "7d23fe05d33eebbf0435e742dca510c0475199b330f0f051ffa024788a1d8d81"},
+    {"path": "src/App.vue", "sha256": "1d59d83aa455a777661121868c876ec68e85125a3f4a98c6ad6e87582c9a8a2f"},
+    {"path": "src/router/index.ts", "sha256": "2c884d5db56becc2326ce34f0676eb5f650b72cc7df4ecb71fe856abdd4ad623"},
+    {"path": "src/stores/index.ts", "sha256": "487e2027859fefefea762d7b7f936e2174c47ecbe92db44626b3ef4544611b78"},
+    {"path": "src/styles/tokens.css", "sha256": "c610e1d05901e2f702fc14458f5854b05e667d67560fcf0c46eb4cd22ed38250"},
+    {"path": "AGENTS.md", "sha256": "00279d1b02b028d2c5a672a91683c40c44e2b634a4b3eae40c1357ebdbfee333"},
+    {"path": "CLAUDE.md", "sha256": "79ec35de2bee1d8d1d775ce18a4009f096dc2a1326918000ba07f737bfe2f830"},
+    {"path": ".ai/skills/project-ui/SKILL.md", "sha256": "4ddd365e7b8180c8bc46659c68e570132e1016d850687f662604dd8ba2f566ac"}
+  ],
+  "protectedFileHashesAfter": [
+    {"path": "package.json", "sha256": "c5c31bd3203a26df25b2f638106bc60b38c699d58397c1ba977bfbe54ce0f41e"},
+    {"path": "package-lock.json", "sha256": "f271431146afcf7f9a952fcdbd77810a1e86741af43b86e1ec438ed45ed0a61c"},
+    {"path": "pnpm-lock.yaml", "sha256": null, "status": "absent"},
+    {"path": "vite.config.ts", "sha256": "11bcf7e0875be5ad6af52cba57f2c7a47840bd5ffa1bed9c83abf62b19669aa2"},
+    {"path": "tsconfig.json", "sha256": "8df29b9aa1b4ca1b95f0358b8d23b31f45ebcba6a94b67a268d60f0a4173e662"},
+    {"path": "src/main.ts", "sha256": "7d23fe05d33eebbf0435e742dca510c0475199b330f0f051ffa024788a1d8d81"},
+    {"path": "src/App.vue", "sha256": "1d59d83aa455a777661121868c876ec68e85125a3f4a98c6ad6e87582c9a8a2f"},
+    {"path": "src/router/index.ts", "sha256": "2c884d5db56becc2326ce34f0676eb5f650b72cc7df4ecb71fe856abdd4ad623"},
+    {"path": "src/stores/index.ts", "sha256": "487e2027859fefefea762d7b7f936e2174c47ecbe92db44626b3ef4544611b78"},
+    {"path": "src/styles/tokens.css", "sha256": "c610e1d05901e2f702fc14458f5854b05e667d67560fcf0c46eb4cd22ed38250"},
+    {"path": "AGENTS.md", "sha256": "00279d1b02b028d2c5a672a91683c40c44e2b634a4b3eae40c1357ebdbfee333"},
+    {"path": "CLAUDE.md", "sha256": "79ec35de2bee1d8d1d775ce18a4009f096dc2a1326918000ba07f737bfe2f830"},
+    {"path": ".ai/skills/project-ui/SKILL.md", "sha256": "4ddd365e7b8180c8bc46659c68e570132e1016d850687f662604dd8ba2f566ac"}
+  ],
+  "protectedFilesUnchanged": true,
+  "filesCreated": [
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.mise.toml",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue/.ai/reports/P0B_NODE_RUNTIME_PROVISIONING_REPORT.json"
+  ],
+  "filesModified": [],
+  "unexpectedChanges": [],
+  "postChangeIntegrity": {
+    "packageJsonUnchanged": true,
+    "packageLockJsonUnchanged": true,
+    "pnpmLockYamlCreated": false,
+    "projectDependencyInstallCommandsRun": false,
+    "dependencyDirectoryOrPackageManagerStateCreated": false,
+    "dependencyDirectoryNote": "Existing ./node_modules was present before this phase; no dependency install command was run.",
+    "p1ImplementationAdded": false,
+    "p1AuditEvidence": "rg over src and tests for product feature markers returned no matches."
+  },
+  "sourceIntegrityEvidence": {
+    "sourceProjectWritesAttempted": false,
+    "commandsTargetingSources": "existence/readability checks and root stat only",
+    "sourceRootMetadataAfter": [
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new 2026-07-07T17:00:29+0800",
+      "/Users/cc/Work/neobv/Chess/pgnViewer 2026-07-03T15:50:13+0800",
+      "/Users/cc/Work/neobv/Chess/chess-pgnviewer 2026-07-11T15:43:17+0800"
+    ]
+  },
+  "warnings": [
+    "mise emitted an update notice: version 2026.7.5 is available. mise itself was not updated.",
+    "Corepack is not available through the selected node@26.5.0 mise installation in this environment.",
+    "pnpm exists as a mise shim but `mise exec -- pnpm --version` is blocked while package.json still declares npm@11.13.0; this is expected until the later P0B pnpm migration phase."
+  ],
+  "blockers": [],
+  "finalVerdict": "P0B_NODE_RUNTIME_PROVISIONING_PASS"
+}

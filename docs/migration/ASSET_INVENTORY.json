@@ -1,0 +1,580 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-11T20:01:53Z",
+  "count_definition": {
+    "total_assets_semantics": "Source asset candidates inventoried for admission review; this is not a migrated or retained target-asset count.",
+    "source_root_for_relative_consumer_paths": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "target_roots": ["src/assets", "public"],
+    "expected_future_target_consumer_semantics": "Planned repository-relative paths only. They are not present or active in P0 and do not prove admission eligibility.",
+    "rights_evidence_semantics": "Source lineage and active consumption prove provenance only. They do not prove ownership, license, or attribution rights.",
+    "duplicate_group_semantics": "duplicate_groups records one Merida filename family; the reconciliation report records the twelve objective current SHA-256 equivalence classes."
+  },
+  "total_assets": 20,
+  "asset_candidate_count": 20,
+  "active_source_candidate_count": 18,
+  "unused_source_candidate_count": 2,
+  "physical_target_asset_file_count": 0,
+  "retained_active_asset_count": 0,
+  "assets": [
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/favicon.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "site favicon",
+      "active_source_consumers": [
+        "index.html"
+      ],
+      "expected_future_target_consumers": [
+        "index.html"
+      ],
+      "license_or_provenance": "Canonical source path and runtime consumer establish provenance; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "UNIQUE_WITHIN_CHECKED_SET",
+      "byte_size": 2575,
+      "source_sha256": "0fbcd83ce8015ab48b0cd88c15dd53219e11b89ab6ad08505b39acd93c77e94e",
+      "destination_sha256": null,
+      "duplicate_group_identifier": null
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/account-avatar.svg",
+      "destination_relative_path": null,
+      "file_type": "image/svg+xml",
+      "owner": "UNRESOLVED",
+      "purpose": "default avatar fallback",
+      "active_source_consumers": [],
+      "expected_future_target_consumers": [],
+      "license_or_provenance": "No active runtime consumer and no local license/attribution record found.",
+      "migration_status": "EXCLUDED_NO_ACTIVE_CONSUMER_AND_UNRESOLVED_LICENSE",
+      "duplication_status": "UNIQUE_WITHIN_CHECKED_SET",
+      "byte_size": 354,
+      "source_sha256": "b30d8dfa96b165e846aed3447bf712af0b88605a18f550d8664fe94a1237ee52",
+      "destination_sha256": null,
+      "duplicate_group_identifier": null
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/chess-knight-avatar.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "account-menu fallback avatar",
+      "active_source_consumers": [
+        "src/features/account-menu/accountMenu.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/account-menu/AccountMenu.vue"
+      ],
+      "license_or_provenance": "Canonical source path and runtime consumer establish provenance; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "UNIQUE_WITHIN_CHECKED_SET",
+      "byte_size": 803,
+      "source_sha256": "b794ec45d2d9badb90f2c2f750510bf66d00c89d89ed8e293c0b1962c1082b16",
+      "destination_sha256": null,
+      "duplicate_group_identifier": null
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/chess-rook-login.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "login page branding",
+      "active_source_consumers": [
+        "src/features/auth/loginBranding.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/auth/LoginPage.vue"
+      ],
+      "license_or_provenance": "Canonical source path and runtime consumer establish provenance; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "UNIQUE_WITHIN_CHECKED_SET",
+      "byte_size": 1504,
+      "source_sha256": "06480568044bede57d460aeb1cb5775a1cb12a77ae9a88da855ad445fa3b049c",
+      "destination_sha256": null,
+      "duplicate_group_identifier": null
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/user-profile-picture.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "default user profile picture",
+      "active_source_consumers": [
+        "src/features/kaisaile-live/pages/CompetitionDetailPage.vue",
+        "src/features/teaching-workspace/components/TeachingLiveRoundNavigator.vue"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/competitions/CompetitionDetailPage.vue"
+      ],
+      "license_or_provenance": "Canonical source path and runtime consumer establish provenance; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "UNIQUE_WITHIN_CHECKED_SET",
+      "byte_size": 2105,
+      "source_sha256": "fa668f34f1bcdab149a464ff11d6f337dc95660084a6a83fbc8cfc044cae4464",
+      "destination_sha256": null,
+      "duplicate_group_identifier": null
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/competition-logo.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "competition logo placeholder",
+      "active_source_consumers": [],
+      "expected_future_target_consumers": [],
+      "license_or_provenance": "No active runtime consumer and no local license/attribution record found.",
+      "migration_status": "EXCLUDED_NO_ACTIVE_CONSUMER_AND_UNRESOLVED_LICENSE",
+      "duplication_status": "UNIQUE_WITHIN_CHECKED_SET",
+      "byte_size": 5312,
+      "source_sha256": "35ae92362655eba0aa44223bd78010c1107e956a0fb2e0a776520d6ec18d2af0",
+      "destination_sha256": null,
+      "duplicate_group_identifier": null
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/pgn-board-icon.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "competition list board icon",
+      "active_source_consumers": [
+        "src/features/kaisaile-live/pages/CompetitionListPage.vue"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/competitions/CompetitionListPage.vue"
+      ],
+      "license_or_provenance": "Canonical source path and runtime consumer establish provenance; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "UNIQUE_WITHIN_CHECKED_SET",
+      "byte_size": 1457,
+      "source_sha256": "9aeac12e3f4efddcf6c424ad7f8f8f2eb5b6dd63b8f6e3d2ccbfa494a7359206",
+      "destination_sha256": null,
+      "duplicate_group_identifier": null
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/versus-icon.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "versus indicator",
+      "active_source_consumers": [
+        "src/features/kaisaile-live/pages/CompetitionDisplayPage.vue",
+        "src/features/kaisaile-live/pages/CompetitionDetailPage.vue"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/competitions/CompetitionDisplayPage.vue",
+        "src/features/competitions/CompetitionDetailPage.vue"
+      ],
+      "license_or_provenance": "Canonical source path and runtime consumer establish provenance; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "UNIQUE_WITHIN_CHECKED_SET",
+      "byte_size": 2931,
+      "source_sha256": "de543c1ad2b9682b1f10729a033bb16cbdb36519a511fdd8970e159650c780c7",
+      "destination_sha256": null,
+      "duplicate_group_identifier": null
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bb.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "bb piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 4769,
+      "source_sha256": "3de9d4e7f8d3bd99b00cfdea90fd1c380e54a5d78a24646154f4049b11490c2e",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-bb-3de9d4e7"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bk.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "bk piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 7101,
+      "source_sha256": "40d1185c92de7b05f8178b1eea1ef0f3b6dc3b547fb0c94679aced1904cbe7cc",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-bk-40d1185c"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bn.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "bn piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 5201,
+      "source_sha256": "0b0123d1688df1aa8f71041ab1b86a190c033171b0e347147a7fda33078c9efc",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-bn-0b0123d1"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bp.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "bp piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 2544,
+      "source_sha256": "1a5b9969317bb2a7369124550722d3eb84abdd42053377e5e07781ad3e744015",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-bp-1a5b9969"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bq.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "bq piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 6645,
+      "source_sha256": "0a92c07b1eb9d5ded421a67c8b06d8043dc9fce6ed6e56d3f5bfe1a76f3d7786",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-bq-0a92c07b"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/br.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "br piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 2357,
+      "source_sha256": "cf5f13f2c6349a79f6116b1187e51e172958f5433910603ad991261224d9f813",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-br-cf5f13f2"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wb.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "wb piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 8334,
+      "source_sha256": "3689113513223d9e6a3257ec23030bd12d8c92fcb1ec2a29bb9604a74c646b9f",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-wb-36891135"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wk.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "wk piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 7918,
+      "source_sha256": "56b5c7cb589c1bfe42ffcd38626018b2d6f4c194f5d964064d49c2b2a8646cf8",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-wk-56b5c7cb"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wn.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "wn piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 6686,
+      "source_sha256": "028fd470425507b88d220b69a40ee59f2558f71240dfc4bc769207ec7d9c7c47",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-wn-028fd470"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wp.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "wp piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 4511,
+      "source_sha256": "c5d2d5b508c49871095012e2c582659bd709eb9b3e4a024ccef268cbd9a95dc2",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-wp-c5d2d5b5"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wq.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "wq piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 10735,
+      "source_sha256": "2f0806e40ecdec15bf51a39b05d7d6603256cd735f6d885d3f4b3ebfab9b6f83",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-wq-2f0806e4"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wr.png",
+      "destination_relative_path": null,
+      "file_type": "image/png",
+      "owner": "UNRESOLVED",
+      "purpose": "wr piece sprite for self-developed SVG board",
+      "active_source_consumers": [
+        "src/domains/board/pieces.ts",
+        "src/features/board/BoardView.vue",
+        "src/features/board-editor/BoardEditorPanel.vue",
+        "src/domains/board/boardImage.ts"
+      ],
+      "expected_future_target_consumers": [
+        "src/features/board/BoardView.vue"
+      ],
+      "license_or_provenance": "Canonical pieces.ts records migration from old pgnViewer; no local license/attribution record found.",
+      "migration_status": "EXCLUDED_UNRESOLVED_LICENSE",
+      "duplication_status": "DUPLICATE_ACROSS_SOURCES",
+      "byte_size": 3055,
+      "source_sha256": "14753ac3088067d544b7f029ec068665f0861732e322680ce8c4c7583411b6c9",
+      "destination_sha256": null,
+      "duplicate_group_identifier": "merida-wr-14753ac3"
+    }
+  ],
+  "duplicate_groups": [
+    {
+      "group_pattern": "merida-<piece>-<hash-prefix>",
+      "canonical_candidate_root": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida",
+      "identical_source_root": "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/pgnManage/imgs/pieces/merida",
+      "identical_files": [
+        "bb.png",
+        "bk.png",
+        "bn.png",
+        "bp.png",
+        "bq.png",
+        "br.png",
+        "wb.png",
+        "wk.png",
+        "wn.png",
+        "wp.png",
+        "wq.png",
+        "wr.png"
+      ],
+      "additional_identical_source_root": "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/chesslight/imgs/pieces/merida",
+      "additional_identical_files": [
+        "bb.png",
+        "bk.png",
+        "bp.png",
+        "bq.png",
+        "br.png",
+        "wb.png",
+        "wk.png",
+        "wp.png",
+        "wq.png",
+        "wr.png"
+      ],
+      "different_content_same_name_variants": [
+        {
+          "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/chesslight/imgs/pieces/merida/bn.png",
+          "sha256": "765f97bfc6b53dcffab8db61a77b47080c45bb4802260814a8b2bce01e27bec0"
+        },
+        {
+          "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/chesslight/imgs/pieces/merida/wn.png",
+          "sha256": "edb292f5d627f90b11a6cf6fadad6bb1ad93a7c6fa7377f5d2fa662f6b8ff842"
+        }
+      ],
+      "decision": "No copy selected. Canonical-runtime files would win only after license approval; different-content legacy variants remain inventoried."
+    }
+  ],
+  "excluded_assets": [
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/favicon.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/account-avatar.svg",
+      "reason": "EXCLUDED_NO_ACTIVE_CONSUMER_AND_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/chess-knight-avatar.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/chess-rook-login.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/user-profile-picture.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/competition-logo.png",
+      "reason": "EXCLUDED_NO_ACTIVE_CONSUMER_AND_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/pgn-board-icon.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/assets/versus-icon.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bb.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bk.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bn.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bp.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/bq.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/br.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wb.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wk.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wn.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wp.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wq.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    },
+    {
+      "source_absolute_path": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/assets/pieces/merida/wr.png",
+      "reason": "EXCLUDED_UNRESOLVED_LICENSE"
+    }
+  ],
+  "migrated_asset_count": 0,
+  "excluded_asset_count": 20
+}
