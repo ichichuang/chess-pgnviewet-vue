@@ -1,7 +1,7 @@
 # Token And Theme Architecture Baseline
 
-Status: `F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN_COMPLETE`
-Phase: `F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN`
+Status: `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTED`
+Phase: `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`
 Generated: `2026-07-12T07:47:56.192Z`
 
 ## Decision
@@ -12,7 +12,22 @@ Theme mode supports `light`, `dark`, and `system`. The root applies resolved mod
 
 ## Current Target
 
-The target has a single token file, `src/styles/tokens.css`, imported through `src/styles/index.css`. It is mostly a placeholder registry. Concrete P0 values are limited to browser system colors, system font aliases, `--fs-base: 1rem`, focus values, and reduced-motion placeholders. There is no implemented theme store, prepaint script, meta theme-color, system preference listener, cross-tab listener, Naive provider, board-theme runtime, or tokenized component adapter layer.
+The target has a single token file, `src/styles/tokens.css`, imported through `src/styles/index.css`. F3B replaces the previous placeholder registry with the evidence-backed semantic token registry from `docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json`.
+
+Actual F3B registry status:
+
+- Implemented entries: 86
+- Deferred inventory entries: 0
+- Shared declarations: 55
+- Light declarations: 31
+- Dark declarations: 31
+- Governed compatibility aliases: 3
+- Authority path: `src/styles/tokens.css`
+- Active baseline: `docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md`
+
+Canonical parity passed with the temporary inventory-to-CSS reconciliation script stored outside the repository. Current target consumer migration is complete for the neutral bootstrap: `src/styles/base.css` now consumes `--state-focus-ring`; existing `--bg`, `--text`, `--font-sans`, and `--fs-base` consumers already resolve through the registry.
+
+There is still no implemented theme store, prepaint script, meta theme-color, system preference listener, cross-tab listener, Naive provider, board-theme runtime, or tokenized component adapter layer.
 
 The existing scanner evidence is valid but narrow: `mise exec -- pnpm run check:tokens --json` returned zero findings. That proves governed forbidden values are absent outside accepted scope; it does not prove the theme system is complete.
 
@@ -45,23 +60,40 @@ F3C owns light, dark, and system preference identifiers, applied light/dark reso
 
 F3C also owns future Pinia theme-store boundaries, reduced-motion behavior, and theme-transition behavior. F3D owns future Naive UI `NConfigProvider` installation, light/dark Naive theme selection, and project-token-based `themeOverrides`. Overlay and z-index relationships, accessibility/contrast validation, browser validation requirements, exact proposed implementation files, Git boundaries, review triggers, removal conditions, remaining unresolved decisions, and completion gates remain phase-gated and unimplemented in F3A.
 
+## F3B Status
+
+F3B implements only the global semantic token registry. It does not implement theme preference, system mode, persistence, no-flash startup, runtime document markers, runtime `color-scheme`, runtime `meta[name="theme-color"]`, Pinia theme state, Naive UI providers, Naive UI theme overrides, reusable UI adapters, product routes, or product UI.
+
+The implemented domain counts are:
+
+- `ui-chrome`: 31
+- `radius`: 6
+- `spacing`: 8
+- `typography`: 8
+- `control-geometry`: 4
+- `board`: 13
+- `annotation`: 6
+- `annotation-geometry`: 6
+- `evaluation`: 4
+
+Raw-value governance, typecheck, static validation, production build, production/full audit, installed dependency listing, aggregate static validation, and real-browser `/pgnViewer/` token-loading validation passed for F3B.
+
 ## Gaps
 
-Open gaps: canonical values are not implemented in the target; system mode is not implemented in canonical or target runtime; Dexie preference bootstrap is missing; meta theme-color and no-flash startup are missing; board tokens are placeholders; icon/link/disabled/connection/analysis/player-state roles are incomplete; motion/z-index/responsive/safe-area concrete scales are incomplete.
+Open gaps: system mode is not implemented in canonical or target runtime; Dexie preference bootstrap is missing; meta theme-color and no-flash startup are missing; icon/link/disabled/connection/analysis/player-state roles are incomplete; motion/z-index/responsive/safe-area concrete scales are incomplete; panel, splitter, scroll-surface, line-height, and font-weight token domains remain unimplemented without approved inventory entries.
 
-These gaps are non-runtime F3A design findings. They do not claim any theme provider, preference store, prepaint script, persistence, document marker, Naive UI provider, browser behavior, route, component, or product UI implementation already exists.
+These gaps remain non-runtime findings. They do not claim any theme provider, preference store, prepaint script, persistence, document marker, Naive UI provider, browser behavior, route, component, or product UI implementation already exists.
 
 ## Next Phase
 
-Next required phase: `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`.
+Next required phase: `F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`.
 
 Superseded local alias: `F3B_TOKEN_AUTHORITY_IMPLEMENTATION`. The canonical replacement is `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`.
 
-Allowed scope for F3B: implement the token authority only. Do not migrate product UI, routes, providers, stores, persistence, board runtime, Naive provider, API, auth, or feature components until their own implementation slice is opened.
+Completed F3B scope: token authority only. Product UI, routes, providers, stores, persistence, board runtime, Naive provider, API, auth, and feature components remain blocked until their own implementation slice is opened.
 
-Canonical later slices:
+Remaining canonical slices:
 
-1. `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`
-2. `F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`
-3. `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
-4. `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE`
+1. `F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`
+2. `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
+3. `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE`

@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "F3A_TOKEN_THEME_DESIGN_VALIDATED_PENDING_GIT_CLOSURE",
+    "overallStatus": "F3B_TOKEN_REGISTRY_IMPLEMENTED_PENDING_GIT_CLOSURE",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -135,6 +135,41 @@
                     "F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE"
                 ]
             }
+        },
+        "f3bSemanticTokenRegistry": {
+            "status": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTED",
+            "report": ".ai/reports/F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION_REPORT.json",
+            "authority": "src/styles/tokens.css",
+            "baseline": "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md",
+            "implementedTokenCount": 86,
+            "deferredTokenCount": 0,
+            "domainCounts": {
+                "ui-chrome": 31,
+                "radius": 6,
+                "spacing": 8,
+                "typography": 8,
+                "control-geometry": 4,
+                "board": 13,
+                "annotation": 6,
+                "annotation-geometry": 6,
+                "evaluation": 4
+            },
+            "canonicalParityValidation": "PASS",
+            "consumerMigration": "PASS: existing target consumers migrated; no product consumers present",
+            "rawValueGovernance": "PASS",
+            "browserTokenLoading": "PASS",
+            "missingDomainsRemainUnimplemented": true,
+            "notImplemented": [
+                "theme preference",
+                "no-flash bootstrap",
+                "persistence",
+                "Pinia theme store",
+                "system mode",
+                "cross-tab behavior",
+                "Naive UI provider",
+                "theme overrides"
+            ],
+            "nextRequiredPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION"
         }
     },
     "capabilities": [
@@ -543,15 +578,19 @@
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "IMPLEMENTED_VALIDATED",
             "validationEvidence": [
-                "tokens.css exists",
-                "index.css imports tokens then base",
-                "raw values limited to neutral system colors, focus ring, fs-base, reduced motion"
+                "src/styles/tokens.css is the active sole semantic visual-value authority",
+                "86 inventory-backed token entries implemented",
+                "domain counts: ui-chrome 31, radius 6, spacing 8, typography 8, control-geometry 4, board 13, annotation 6, annotation-geometry 6, evaluation 4",
+                "canonical parity validation PASS",
+                "raw visual governance PASS",
+                "current target consumers migrated or already valid",
+                "missing domains remain explicitly unimplemented"
             ],
-            "browserEvidence": "PASS: token registry style content observed in browser",
+            "browserEvidence": "PASS: /pgnViewer/ loaded from temporary production build in Google Chrome; registry present in built CSS; computed token samples resolved; dark declarations present; no console/network errors",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F1_LOCAL_GIT_BASELINE",
-            "finalVerdict": "FOUNDATION_ACCEPTABLE"
+            "plannedPhase": "F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION",
+            "finalVerdict": "FOUNDATION_TOKEN_REGISTRY_ACCEPTABLE_F3B_IMPLEMENTED"
         },
         {
             "identifier": "theme.light_dark_system",
@@ -581,13 +620,13 @@
             "securityImpact": "No browser secret owner introduced in P0 target",
             "implementationStatus": "MISSING",
             "validationEvidence": [
-                "no theme store/provider/pre-Vue script/meta theme-color/html markers found",
-                "pgnViewer-new has themeStore and Naive overrides as later evidence"
+                "F3B declares light and dark token scopes only",
+                "no theme preference engine, no no-flash bootstrap, no persistence, no Pinia theme store, no system mode listener, no cross-tab behavior, no runtime color-scheme or meta theme-color mutation"
             ],
-            "browserEvidence": "Current browser only validates neutral system-color shell",
+            "browserEvidence": "PASS confirms no theme preference control or runtime provider is present; F3C remains required",
             "blockers": [],
             "reviewTrigger": "Before F1/F2 implementation or before enabling product UI gate",
-            "plannedPhase": "F2_THEME_FOUNDATION",
+            "plannedPhase": "F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION",
             "finalVerdict": "GAP_REQUIRES_FUTURE_PHASE"
         },
         {
@@ -1199,7 +1238,7 @@
             "finalVerdict": "FOUNDATION_ACCEPTABLE"
         }
     ],
-    "overallVerdict": "F3A_TOKEN_THEME_DESIGN_PASS_READY_FOR_TOKEN_REGISTRY_IMPLEMENTATION",
+    "overallVerdict": "F3B_TOKEN_REGISTRY_PASS_READY_FOR_THEME_ENGINE_IMPLEMENTATION",
     "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
     "correctionHistory": [
         {
