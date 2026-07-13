@@ -1,3 +1,5 @@
+import type { AnalysisResult } from '@/features/analysis/domain/analysisResult'
+
 export type AnnotationShapeKind = 'arrow' | 'square' | 'highlight'
 export type AnnotationColorId =
   'draw-red' | 'draw-green' | 'draw-yellow' | 'draw-orange' | 'draw-purple' | 'draw-dark'
@@ -24,6 +26,7 @@ export interface BoardAnnotation {
   squares: AnnotationSquare[]
   systemTexts: string[]
   userTexts: string[]
+  analysis?: AnalysisResult | undefined
   unknownFields: UnknownAnnotationField[]
   plainComments: string[]
 }
@@ -52,6 +55,7 @@ export function emptyAnnotation(): BoardAnnotation {
     squares: [],
     systemTexts: [],
     userTexts: [],
+    analysis: undefined,
     unknownFields: [],
     plainComments: [],
   }
@@ -63,6 +67,7 @@ export function cloneAnnotation(annotation: BoardAnnotation): BoardAnnotation {
     squares: annotation.squares.map((square) => ({ ...square })),
     systemTexts: [...annotation.systemTexts],
     userTexts: [...annotation.userTexts],
+    analysis: annotation.analysis ? { ...annotation.analysis } : undefined,
     unknownFields: annotation.unknownFields.map((field) => ({ ...field })),
     plainComments: [...annotation.plainComments],
   }

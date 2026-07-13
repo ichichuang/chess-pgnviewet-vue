@@ -2,12 +2,13 @@
 import { computed } from 'vue'
 
 import PgnNotationPanel from '@/features/pgn/components/PgnNotationPanel.vue'
-import { usePgnStore, useWorkspaceStore } from '@/stores'
+import { useAnalysisStore, usePgnStore, useWorkspaceStore } from '@/stores'
 
 const emit = defineEmits(['action'])
 
 const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
+const analysis = useAnalysisStore()
 
 const tabs = [
   { key: 'notation', label: '棋谱' },
@@ -23,6 +24,21 @@ const annotationSummary = computed(() => ({
   arrows: pgn.currentAnnotation?.arrows.length ?? 0,
   squares: pgn.currentAnnotation?.squares.length ?? 0,
 }))
+const analysisScore = computed(() => {
+  const score = analysis.current?.score
+
+  if (!score) {
+    return '—'
+  }
+
+  if (score.kind === 'mate') {
+    return `#${score.whiteValue}`
+  }
+
+  const pawns = score.whiteValue / 100
+
+  return `${pawns > 0 ? '+' : ''}${pawns.toFixed(2)}`
+})
 </script>
 
 <template>
@@ -90,9 +106,18 @@ const annotationSummary = computed(() => ({
       </dl>
     </section>
 
-    <section v-else class="panel-content panel-scroll" aria-label="AI 分析结构区域">
+    <section v-else class="panel-content panel-scroll" aria-label="AI 分析状态">
       <h2>分析面板</h2>
-      <p>待 P1F 迁移</p>
+      <dl class="panel-list">
+        <dt>状态</dt>
+        <dd>{{ analysis.phase }}</dd>
+        <dt>评估</dt>
+        <dd>{{ analysisScore }}</dd>
+        <dt>最佳</dt>
+        <dd>{{ analysis.current?.bestMove || '—' }}</dd>
+        <dt>Worker</dt>
+        <dd>{{ analysis.workerMode }}</dd>
+      </dl>
     </section>
   </section>
 </template>

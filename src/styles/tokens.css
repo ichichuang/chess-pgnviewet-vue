@@ -155,6 +155,9 @@
   --eval-white: linear-gradient(180deg, #fbfcfd, #d9dde3);
   --eval-advantage-line: var(--accent-strong, var(--accent)) with 0 0 6px 1px var(--accent);
   --eval-neutral: var(--text-2);
+  --analysis-rail-dark-fill: var(--eval-black);
+  --analysis-rail-light-fill: var(--eval-white);
+  --analysis-rail-boundary-offset: -1px;
 }
 
 :root,

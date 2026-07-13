@@ -6,12 +6,14 @@ Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 - Panels: left shell panel collapses; right shell panel remains visible for P1A geometry
 -->
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, watch } from 'vue'
 
+import AnalysisPanel from '@/features/analysis/components/AnalysisPanel.vue'
+import EvalBar from '@/features/analysis/components/EvalBar.vue'
 import CanonicalChessBoard from '@/features/board/CanonicalChessBoard.vue'
 import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
 import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
-import { useWorkspaceStore } from '@/stores'
+import { useAnalysisStore, useWorkspaceStore } from '@/stores'
 import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceModeContext'
 
 import WorkspaceRightPanel from './WorkspaceRightPanel.vue'
@@ -31,6 +33,7 @@ const {
   pgn,
 } = usePgnWorkspaceRuntime()
 const workspace = useWorkspaceStore()
+const analysis = useAnalysisStore()
 const { onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
 
 const boardJustifyContent = computed(() => {
@@ -49,6 +52,18 @@ defineExpose({
   workspaceModeContext,
   workspace,
 })
+
+watch(
+  () => `${pgn.selectedIndex}:${pgn.selectedNodeId ?? 'root'}:${pgn.currentFen}`,
+  () => {
+    void analysis.analyzeCurrent()
+  },
+  { immediate: true }
+)
+
+onBeforeUnmount(() => {
+  analysis.dispose()
+})
 </script>
 
 <template>
@@ -60,10 +75,7 @@ defineExpose({
       :class="{ 'no-list': !workspace.showLeftSidebar }"
       aria-label="开赛了教学工作区"
     >
-      <aside class="area-eval" aria-label="评估栏结构区域">
-        <span>评估</span>
-        <small>结构</small>
-      </aside>
+      <EvalBar class="area-eval" />
 
       <aside
         class="area-list"
@@ -136,10 +148,7 @@ defineExpose({
           aria-labelledby="workspace-analysis-title"
         >
           <div class="panel-scroll">
-            <section class="shell-region">
-              <h2 id="workspace-analysis-title">分析面板</h2>
-              <p>待 P1F 迁移</p>
-            </section>
+            <AnalysisPanel />
           </div>
         </section>
       </aside>
@@ -188,22 +197,8 @@ defineExpose({
 }
 
 .area-eval {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   min-width: 0;
   min-height: 0;
-  gap: var(--s-2);
-  border-right: var(--workspace-border-w) solid var(--border);
-  background: var(--surface-2);
-  color: var(--text-muted);
-  writing-mode: vertical-rl;
-}
-
-.area-eval span,
-.area-eval small {
-  font-size: var(--fs-xs);
 }
 
 .area-list {

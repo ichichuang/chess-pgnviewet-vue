@@ -5,6 +5,7 @@ import {
   type AnnotationColorId,
   type BoardAnnotation,
 } from './annotationTypes'
+import { parseAnalysisResult } from '@/features/analysis/domain/analysisResult'
 
 const YCDW_MAGIC = 'YCDW:'
 
@@ -59,6 +60,42 @@ function parseFieldToken(token: string): { key: string; value: string } | null {
   }
 
   return { key: match[1], value: match[2] ?? '' }
+}
+
+function bytesToBinary(bytes: Uint8Array): string {
+  let binary = ''
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte)
+  }
+
+  return binary
+}
+
+function binaryToBytes(binary: string): Uint8Array {
+  const bytes = new Uint8Array(binary.length)
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index)
+  }
+
+  return bytes
+}
+
+function decodeBase64(value: string): string {
+  if (typeof atob === 'function' && typeof TextDecoder === 'function') {
+    return new TextDecoder().decode(binaryToBytes(atob(value)))
+  }
+
+  return Buffer.from(value, 'base64').toString('utf-8')
+}
+
+function encodeBase64(value: string): string {
+  if (typeof btoa === 'function' && typeof TextEncoder === 'function') {
+    return btoa(bytesToBinary(new TextEncoder().encode(value)))
+  }
+
+  return Buffer.from(value, 'utf-8').toString('base64')
 }
 
 function appendArrow(value: string, annotation: BoardAnnotation): void {
@@ -121,6 +158,19 @@ function parseYcdwPayload(payload: string, annotation: BoardAnnotation): void {
     } else if (field.key === 'U') {
       annotation.userTexts.push(field.value)
       lastText = { arr: annotation.userTexts, index: annotation.userTexts.length - 1 }
+    } else if (field.key === 'A') {
+      try {
+        const analysis = parseAnalysisResult(JSON.parse(decodeBase64(field.value)))
+
+        if (!analysis) {
+          annotation.unknownFields.push(field)
+          continue
+        }
+
+        annotation.analysis = analysis
+      } catch {
+        annotation.unknownFields.push(field)
+      }
     } else {
       annotation.unknownFields.push(field)
       lastText = null
@@ -170,6 +220,10 @@ export function serializeAnnotation(annotation: BoardAnnotation): string[] {
 
   for (const value of annotation.userTexts) {
     fields.push(`U=${value}`)
+  }
+
+  if (annotation.analysis !== undefined) {
+    fields.push(`A=${encodeBase64(JSON.stringify(annotation.analysis))}`)
   }
 
   for (const field of annotation.unknownFields) {
