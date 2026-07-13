@@ -1,0 +1,663 @@
+{
+    "phase": "P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN",
+    "generatedAt": "2026-07-13T03:49:43Z",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "canonicalSourceDirectory": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "authorityHierarchy": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+        "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+        "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md",
+        "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+        "docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md",
+        "docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md",
+        "docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new"
+    ],
+    "targetCurrentState": {
+        "branch": "main",
+        "head": "ba6cba1ece649d985438713b4583bfa36f008518",
+        "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+        "latestSubject": "docs(governance): 记录 P1F AI 分析运行时验收证据",
+        "p1bVerdict": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
+        "p1bProvenanceState": "BOARD_MOSTLY_MIGRATED_WITH_JUSTIFIED_ADAPTATIONS",
+        "advancedCapabilitiesAbsent": [
+            "GSAP move animation",
+            "GSAP snapback animation",
+            "canonical radial menu",
+            "canonical free-placement/editor mode",
+            "canonical wheel navigation"
+        ],
+        "runtimeCodeChangedInP1B2": false
+    },
+    "canonicalFilesInspected": [
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/board/BoardView.vue",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/board/RadialMenu.vue",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/domains/board/moveDiff.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/board-editor/BoardEditorPanel.vue",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/stores/boardEditorStore.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/stores/brushStore.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/stores/pgnStore.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/teaching-workspace/TeachingWorkspace.vue",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/teaching-workspace/composables/useTeachingWorkspaceBoardSource.ts",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/package.json",
+        "/Users/cc/Work/neobv/Chess/pgnViewer-new/pnpm-lock.yaml"
+    ],
+    "targetFilesInspected": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        "package.json",
+        "pnpm-lock.yaml",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+        "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+        "src/features/board/CanonicalChessBoard.vue",
+        "src/features/board/BoardView.vue",
+        "src/features/board/useBoardView.ts",
+        "src/features/board/useCanonicalChessBoard.ts",
+        "src/features/board/domain/boardTypes.ts",
+        "src/features/board/domain/boardGeometry.ts",
+        "src/features/board/domain/chessRules.ts",
+        "src/features/board/domain/fenBoard.ts",
+        "src/features/board/domain/pieceAssets.ts",
+        "src/features/teaching-workspace/TeachingWorkspace.vue",
+        "src/features/teaching-workspace/WorkspaceToolbar.vue",
+        "src/features/pgn/usePgnWorkspaceRuntime.ts",
+        "src/stores/pgn.ts",
+        "src/stores/workspace.ts",
+        "src/stores/analysis.ts",
+        "src/styles/tokens.css",
+        "src/assets/chess/pieces/merida/*.png"
+    ],
+    "gsapDependencyAudit": {
+        "packageJson": "gsap@3.15.0",
+        "pnpmLock": "specifier 3.15.0, version 3.15.0, package gsap@3.15.0",
+        "canonicalPackage": "^3.15.0 resolved to 3.15.0",
+        "decision": "PRESENT_COMPATIBLE_NO_INSTALL_OR_UPGRADE_REQUIRED",
+        "dependenciesAdded": [],
+        "dependenciesRemoved": []
+    },
+    "canonicalGsapPluginInventory": {
+        "coreImport": "import { gsap } from 'gsap'",
+        "pluginsDetected": [],
+        "pluginDecision": "GSAP_CORE_ONLY",
+        "licenseDecision": "No premium or Club GSAP plugin is authorized or required by canonical source evidence."
+    },
+    "animationInventory": {
+        "canonicalOwners": [
+            "BoardView.vue lines 15, 513-539, 909-996, 1121-1148",
+            "moveDiff.ts lines 1-51"
+        ],
+        "moveDifference": "detectMoves(prevFen,newFen) matches appeared pieces to disappeared same-piece or same-color pieces and returns null for no change or more than four changed squares.",
+        "moveAnimation": "After Vue renders the new FEN, image[data-square=to] tweens attr x/y from the previous square to the rendered square with duration 0.28 and ease power3.out.",
+        "capturePromotionCastlingEnPassant": "Covered by the same changed-square diff: captures and en passant remove pieces, promotion matches same color when type changes, castling allows up to four changed squares.",
+        "snapback": "Illegal or cancelled drag calls snapBackGhost(from), tweening the fixed ghost to squareCenterPx(from) with duration 0.22 and ease power3.out before clearMoveDrag.",
+        "dragSettle": "Successful drag suppresses the next FEN slide, settles the ghost to target with opacity 0 over 0.18 power2.out, then fades the rendered target piece in over reduced-motion-aware 0.15 power1.out.",
+        "reducedMotion": "motionDuration(duration) returns 0 when prefers-reduced-motion is reduce; canonical ANIM_DURATION 0.28 is raw and must become governed in target.",
+        "cleanup": "onBeforeUnmount disconnects ResizeObserver, removes radial listeners, kills live preview, selection, destination, last-move, check, and ghost tweens.",
+        "targetStatus": "ABSENT_EXCEPT_CSS_TRANSITIONS"
+    },
+    "radialMenuInventory": {
+        "canonicalOwners": [
+            "BoardView.vue lines 164-172, 552-665, 1174-1190",
+            "RadialMenu.vue lines 1-505",
+            "brushStore.ts lines 1-86"
+        ],
+        "trigger": "Right pointer button opens the menu from board pointerdown; contextmenu also opens it unless suppressed.",
+        "openingConditions": "Not in boardEditor.isEditing, not already suppressed by recent close, and not blocked by active radial/menu state.",
+        "geometry": "Fixed 300px menu centered at client x/y; center 150, outer radius 141, inner radius 48, label radius 96, hit radius 45-168.",
+        "commands": [
+            "shape select/null",
+            "shape square",
+            "shape highlight",
+            "shape arrow",
+            "width 0.08",
+            "width 0.16",
+            "width 0.28",
+            "color index from DRAW_COLORS"
+        ],
+        "selection": "Pointer angle maps to slice index; selected shortcut is emitted and also applied by brushStore while open.",
+        "dismissal": "Pointerup commits selected shortcut; window blur closes without commit; close suppresses native context menu for 260ms.",
+        "animation": "GSAP core fromTo/to open, close, and active-indicator opacity with reduced-motion-aware durations.",
+        "targetStatus": "ABSENT"
+    },
+    "editorInventory": {
+        "canonicalOwners": [
+            "BoardView.vue lines 52-69, 130-137, 619-630, 733-789",
+            "BoardEditorPanel.vue lines 1-298",
+            "boardEditorStore.ts lines 1-152",
+            "TeachingWorkspace.vue lines 446-481",
+            "pgnStore.ts lines 513-563"
+        ],
+        "modes": "Board mode is edit when boardEditor.isEditing, place when free and placing, move when interactive or free, otherwise view.",
+        "stateOwner": "boardEditorStore owns isEditing, selectedPiece, sideToMove, castlingRights, and editable board grid.",
+        "entry": "TeachingWorkspace freeSetup action cancels analysis, disables brush, hides drawing layer/sidebar, starts editing from pgn.currentFen, marks view illegal, and shows BoardEditorPanel.",
+        "placement": "Click empty/occupied square with selected piece places/replaces; click occupied square without selected piece picks it up and removes it; right click removes piece.",
+        "dragOutside": "Dragging an editor piece outside the board removes it from the source square.",
+        "metadata": "Editor supports side to move and KQkq castling rights; en-passant output is '-' and half/fullmove are '0 1'.",
+        "fenBoundary": "generateFenString returns placement side castling '-' 0 1; finish inserts a manual PGN only through pgn.insertPgnFromFen and restores editor on invalid FEN.",
+        "targetStatus": "ABSENT"
+    },
+    "wheelNavigationInventory": {
+        "canonicalOwners": [
+            "BoardView.vue lines 68-69, 172, 545-546, 665-675, 1145",
+            "TeachingWorkspace.vue lines 990-1007",
+            "useTeachingWorkspaceBoardSource.ts lines 180-304"
+        ],
+        "eventTarget": ".cg-wrap board wrapper with @wheel.prevent",
+        "direction": "deltaY > 0 dispatches pgnStore.nextStep(); deltaY < 0 dispatches pgnStore.prevStep().",
+        "normalization": "Ignores abs(deltaY) < 1; throttles to 60ms.",
+        "consumption": "Canonical template prevents default for all wheel events on the board wrapper, then code returns early when disabled or incompatible.",
+        "enabledSources": "Analysis source enables wheel navigation; electronic-board live and online-game live disable it.",
+        "conflicts": "Disabled while boardEditor.isEditing or radial menu open.",
+        "targetStatus": "ABSENT"
+    },
+    "sourceToTargetMapping": [
+        {
+            "capability": "animation.move",
+            "canonicalSourceFile": "pgnViewer-new/src/features/board/BoardView.vue",
+            "canonicalSourceLocator": "lines 909-940 and 1121-1148",
+            "targetOwner": "src/features/board/useBoardAnimationController.ts",
+            "migrationClassification": "MECHANICAL_TARGET_ARCHITECTURE_INTEGRATION",
+            "canonicalBehavior": "Detect single-ply FEN transitions and tween rendered SVG image attr x/y from old square to new square.",
+            "currentTargetBehavior": "FEN prop changes replace rendered pieces immediately; only CSS opacity transitions exist.",
+            "requiredAction": "Port detectMoves, compose a scoped GSAP animation controller, and observe board position transitions without owning chess state.",
+            "integrationRisk": "MEDIUM",
+            "validationRequirement": "Quiet move, capture, castling, promotion, en passant, rapid navigation, orientation change, and resize during animation.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "animation.snapback",
+            "canonicalSourceFile": "pgnViewer-new/src/features/board/BoardView.vue",
+            "canonicalSourceLocator": "lines 889-907 and 952-996",
+            "targetOwner": "src/features/board/useBoardAnimationController.ts",
+            "migrationClassification": "MECHANICAL_TARGET_ARCHITECTURE_INTEGRATION",
+            "canonicalBehavior": "Illegal or cancelled drag keeps the ghost visible and tweens it back to the source square before clearing drag state.",
+            "currentTargetBehavior": "Invalid or cancelled drag clears ghost immediately.",
+            "requiredAction": "Expose snapback controller from board pointer logic and preserve final state equality whether enabled or disabled.",
+            "integrationRisk": "MEDIUM",
+            "validationRequirement": "Illegal move, cancelled drag, pointer release outside board, touch cancellation, interrupted snapback, and reduced motion.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "animation.move-diff-domain",
+            "canonicalSourceFile": "pgnViewer-new/src/domains/board/moveDiff.ts",
+            "canonicalSourceLocator": "lines 1-51",
+            "targetOwner": "src/features/board/domain/moveDiff.ts",
+            "migrationClassification": "MECHANICAL_VUE_OR_TYPESCRIPT_ADAPTATION",
+            "canonicalBehavior": "Framework-free FEN grid diff returns PieceMove[] or null.",
+            "currentTargetBehavior": "No moveDiff helper exists.",
+            "requiredAction": "Copy mechanically with target import path adaptation to domain/fenBoard.",
+            "integrationRisk": "LOW",
+            "validationRequirement": "Static parse plus browser animation cases.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "radial-menu",
+            "canonicalSourceFile": "pgnViewer-new/src/features/board/RadialMenu.vue",
+            "canonicalSourceLocator": "lines 1-505",
+            "targetOwner": "src/features/board/radial-menu/BoardRadialMenu.vue",
+            "migrationClassification": "NECESSARY_TOKEN_OR_PROVIDER_ADAPTATION",
+            "canonicalBehavior": "Fixed radial SVG menu with shape, width, and color slices; GSAP open/close/indicator animation.",
+            "currentTargetBehavior": "No radial menu rendering, state, or commands.",
+            "requiredAction": "Migrate component behind target semantic tokens and a store-free command contract.",
+            "integrationRisk": "MEDIUM",
+            "validationRequirement": "Open, geometry, all commands, dismissal, orientation independence, viewport bounds, touch, context menu, listener cleanup.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "radial-menu-controller",
+            "canonicalSourceFile": "pgnViewer-new/src/features/board/BoardView.vue",
+            "canonicalSourceLocator": "lines 552-665 and 1174-1190",
+            "targetOwner": "src/features/board/useBoardRadialMenu.ts",
+            "migrationClassification": "NEW_GLUE_WITHOUT_DOMAIN_LOGIC",
+            "canonicalBehavior": "Board right-click/pointer gestures open, track, select, commit, dismiss, and suppress native context menu.",
+            "currentTargetBehavior": "Board overlay prevents contextmenu only; no menu state.",
+            "requiredAction": "Compose canonical controller but dispatch commands through emitted board events or injected callbacks, not brush store imports.",
+            "integrationRisk": "HIGH",
+            "validationRequirement": "No duplicate annotation commands and no stuck pointer capture when radial is disabled or dismissed.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "editor-store",
+            "canonicalSourceFile": "pgnViewer-new/src/stores/boardEditorStore.ts",
+            "canonicalSourceLocator": "lines 1-152",
+            "targetOwner": "src/features/board/editor/boardEditorDraft.ts",
+            "migrationClassification": "MECHANICAL_TARGET_ARCHITECTURE_INTEGRATION",
+            "canonicalBehavior": "Pinia store owns editable grid, side-to-move, castling rights, selected piece, FEN generation.",
+            "currentTargetBehavior": "No editor draft state exists.",
+            "requiredAction": "Create board-scoped draft controller or feature store with explicit activation; do not silently replace PGN state.",
+            "integrationRisk": "HIGH",
+            "validationRequirement": "Placement, replacement, removal, drag outside, clear, reset, FEN, invalid FEN, exit, cancellation.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "editor-panel",
+            "canonicalSourceFile": "pgnViewer-new/src/features/board-editor/BoardEditorPanel.vue",
+            "canonicalSourceLocator": "lines 1-298",
+            "targetOwner": "src/features/board/editor/BoardEditorPanel.vue",
+            "migrationClassification": "NECESSARY_TOKEN_OR_PROVIDER_ADAPTATION",
+            "canonicalBehavior": "Piece palette, side-to-move, castling toggles, clear, reset, and finish action.",
+            "currentTargetBehavior": "No editor UI exists.",
+            "requiredAction": "Migrate panel under board feature tokens and emit finish/cancel without adding a second workspace shell.",
+            "integrationRisk": "MEDIUM",
+            "validationRequirement": "Palette behavior, controls, reduced motion, responsive sizing, no PGN mutation until accepted.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "editor-workspace-integration",
+            "canonicalSourceFile": "pgnViewer-new/src/features/teaching-workspace/TeachingWorkspace.vue",
+            "canonicalSourceLocator": "lines 446-481 and 1028-1031",
+            "targetOwner": "src/features/teaching-workspace/TeachingWorkspace.vue",
+            "migrationClassification": "MECHANICAL_TARGET_ARCHITECTURE_INTEGRATION",
+            "canonicalBehavior": "Toolbar freeSetup action enters editor, hides incompatible UI, finish inserts generated FEN as a manual PGN through PGN owner.",
+            "currentTargetBehavior": "Toolbar has no free setup action and PGN store lacks insertPgnFromFen.",
+            "requiredAction": "Add explicit product enablement and PGN acceptance callback in P1B3; keep P1G paused.",
+            "integrationRisk": "HIGH",
+            "validationRequirement": "No unintended PGN mutation while editing; restoration of normal board mode after finish/cancel.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "wheel-navigation",
+            "canonicalSourceFile": "pgnViewer-new/src/features/board/BoardView.vue",
+            "canonicalSourceLocator": "lines 665-675 and template line 1145",
+            "targetOwner": "src/features/board/useBoardWheelNavigation.ts",
+            "migrationClassification": "NEW_GLUE_WITHOUT_DOMAIN_LOGIC",
+            "canonicalBehavior": "Prevent default on board wheel, ignore small deltas, throttle 60ms, deltaY positive next and negative previous.",
+            "currentTargetBehavior": "No wheel listener or board-level navigation.",
+            "requiredAction": "Emit navigation intent or call an injected command boundary; board must not import PGN store.",
+            "integrationRisk": "MEDIUM",
+            "validationRequirement": "Previous/next, boundaries, trackpad deltas, throttling, preventDefault scope, inactive during gestures, cleanup.",
+            "evidenceStatus": "TRACED"
+        },
+        {
+            "capability": "wheel-source-policy",
+            "canonicalSourceFile": "pgnViewer-new/src/features/teaching-workspace/composables/useTeachingWorkspaceBoardSource.ts",
+            "canonicalSourceLocator": "lines 180-304",
+            "targetOwner": "src/features/teaching-workspace/TeachingWorkspace.vue",
+            "migrationClassification": "MECHANICAL_TARGET_ARCHITECTURE_INTEGRATION",
+            "canonicalBehavior": "Analysis source enables wheel navigation; electronic-board and online live sources disable it.",
+            "currentTargetBehavior": "Target currently has only analysis/manual PGN path.",
+            "requiredAction": "Default wheel off for reusable board, explicitly on for canonical analysis route, and off for future live/read-only adapters.",
+            "integrationRisk": "LOW",
+            "validationRequirement": "Source-specific enablement once live/read-only adapters exist.",
+            "evidenceStatus": "TRACED"
+        }
+    ],
+    "currentTargetConflicts": [
+        {
+            "owner": "src/features/board/useBoardView.ts",
+            "conflict": "Current drag cancellation clears ghost immediately, conflicting with canonical snapback timing.",
+            "requiredResolution": "Replace immediate clear on invalid drag with optional snapback controller while preserving disabled behavior."
+        },
+        {
+            "owner": "src/features/board/BoardView.vue",
+            "conflict": "Current board has a single overlay for move and annotation events; advanced capabilities need deterministic priority with radial/editor/wheel.",
+            "requiredResolution": "Introduce one interaction arbiter before adding listeners."
+        },
+        {
+            "owner": "src/stores/pgn.ts",
+            "conflict": "Target lacks FEN manual insert/load helpers required by canonical editor finish.",
+            "requiredResolution": "Add explicit PGN acceptance boundary in P1B3; editor must not mutate PGN directly."
+        }
+    ],
+    "targetCapabilityContract": {
+        "name": "BoardAdvancedCapabilities",
+        "owner": "src/features/board/domain/boardCapabilities.ts",
+        "shape": "one typed advanced-capability configuration object passed to CanonicalChessBoard and normalized before BoardView composition",
+        "groups": ["animation", "radialMenu", "editor", "wheelNavigation"],
+        "backwardCompatibility": "Existing consumers that omit advancedCapabilities keep current behavior except canonical product route may explicitly enable move/snapback animation and wheel navigation in P1B3."
+    },
+    "parameterMatrix": [
+        {
+            "identifier": "advancedCapabilities.animation.move.enabled",
+            "type": "boolean",
+            "default": "canonicalProduct true, reusable consumer false",
+            "capabilityOwner": "Board animation controller",
+            "runtimeEffect": "Animates eligible FEN transitions with canonical GSAP move tween.",
+            "disabledBehavior": "Render final FEN immediately without changing move legality or final state.",
+            "consumerOwner": "TeachingWorkspace for product route; reusable consumer for isolated boards.",
+            "eventImpact": "No emitted event.",
+            "stateImpact": "Observes position transitions only.",
+            "compatibilityImpact": "Opt-in for reusable board; product restores canonical motion.",
+            "canonicalEvidence": "BoardView.vue animateMoves and props.fen watcher.",
+            "validationCases": [
+                "quiet",
+                "capture",
+                "castling",
+                "promotion",
+                "en passant",
+                "rapid jumps",
+                "resize",
+                "orientation"
+            ]
+        },
+        {
+            "identifier": "advancedCapabilities.animation.snapback.enabled",
+            "type": "boolean",
+            "default": "canonicalProduct true, reusable consumer false",
+            "capabilityOwner": "Board animation controller",
+            "runtimeEffect": "Animates illegal/cancelled drag ghost back to source.",
+            "disabledBehavior": "Clear drag immediately and preserve board state.",
+            "consumerOwner": "Board consumer.",
+            "eventImpact": "No extra event.",
+            "stateImpact": "Temporary drag visual state only.",
+            "compatibilityImpact": "No legality or FEN changes.",
+            "canonicalEvidence": "BoardView.vue snapBackGhost.",
+            "validationCases": [
+                "illegal move",
+                "cancel",
+                "release outside",
+                "touch cancel",
+                "interruption"
+            ]
+        },
+        {
+            "identifier": "advancedCapabilities.radialMenu.enabled",
+            "type": "boolean",
+            "default": "canonicalProduct true for annotation-capable route, reusable consumer false",
+            "capabilityOwner": "Board radial controller",
+            "runtimeEffect": "Installs right-click/context menu handling and renders canonical radial menu.",
+            "disabledBehavior": "No radial listeners, no rendering, scoped contextmenu prevention remains only if other board modes require it.",
+            "consumerOwner": "Workspace annotation owner supplies commands.",
+            "eventImpact": "Emits radial-command or calls injected command handler.",
+            "stateImpact": "Temporary open, pointer, and selected-shortcut state only.",
+            "compatibilityImpact": "No board state mutation.",
+            "canonicalEvidence": "BoardView.vue radial controller and RadialMenu.vue.",
+            "validationCases": [
+                "open",
+                "all commands",
+                "dismiss",
+                "contextmenu suppression",
+                "touch",
+                "cleanup"
+            ]
+        },
+        {
+            "identifier": "advancedCapabilities.editor.available",
+            "type": "boolean",
+            "default": "canonicalProduct true when workspace exposes free setup, reusable consumer false",
+            "capabilityOwner": "Board editor controller",
+            "runtimeEffect": "Allows consumers to activate editor mode and render editor panel/palette.",
+            "disabledBehavior": "No editor UI or editor pointer paths.",
+            "consumerOwner": "TeachingWorkspace or reusable consumer.",
+            "eventImpact": "Enables editor lifecycle events.",
+            "stateImpact": "No state until active.",
+            "compatibilityImpact": "Existing board move/annotation behavior unchanged.",
+            "canonicalEvidence": "BoardEditorPanel.vue and TeachingWorkspace freeSetup.",
+            "validationCases": ["available off", "available on inactive", "active lifecycle"]
+        },
+        {
+            "identifier": "advancedCapabilities.editor.active",
+            "type": "boolean | controlled model",
+            "default": "false",
+            "capabilityOwner": "Consumer-controlled editor lifecycle",
+            "runtimeEffect": "Switches board interaction into canonical editor placement/removal mode.",
+            "disabledBehavior": "Normal controlled board behavior.",
+            "consumerOwner": "Workspace owns active state for product route.",
+            "eventImpact": "Emits editor-update, editor-commit, editor-cancel, editor-error.",
+            "stateImpact": "Temporary editable FEN draft only until consumer accepts.",
+            "compatibilityImpact": "Must not mutate PGN without explicit commit.",
+            "canonicalEvidence": "boardEditorStore.startEditing/stopEditing and finishBoardEditor.",
+            "validationCases": [
+                "placement",
+                "replacement",
+                "removal",
+                "FEN",
+                "cancel",
+                "restore normal mode"
+            ]
+        },
+        {
+            "identifier": "advancedCapabilities.wheelNavigation.enabled",
+            "type": "boolean",
+            "default": "canonicalProduct true for analysis PGN, reusable consumer false",
+            "capabilityOwner": "Board wheel navigation composable",
+            "runtimeEffect": "Consumes board wheel events and dispatches previous/next navigation intent.",
+            "disabledBehavior": "No wheel listener or preventDefault policy beyond browser defaults.",
+            "consumerOwner": "PGN owner supplies navigation boundary.",
+            "eventImpact": "Emits board-wheel-navigation or invokes injected callback.",
+            "stateImpact": "No board state ownership.",
+            "compatibilityImpact": "Board does not become a current-node owner.",
+            "canonicalEvidence": "BoardView.vue onWheel and useTeachingWorkspaceBoardSource.",
+            "validationCases": [
+                "previous",
+                "next",
+                "boundary",
+                "trackpad",
+                "throttle",
+                "gesture conflicts",
+                "cleanup"
+            ]
+        }
+    ],
+    "defaultBehaviorMatrix": {
+        "reusableBoardConsumer": {
+            "animation.move": false,
+            "animation.snapback": false,
+            "radialMenu": false,
+            "editor.available": false,
+            "editor.active": false,
+            "wheelNavigation": false
+        },
+        "canonicalProductAnalysisRoute": {
+            "animation.move": true,
+            "animation.snapback": true,
+            "radialMenu": true,
+            "editor.available": true,
+            "editor.active": false,
+            "wheelNavigation": true
+        },
+        "futureLiveReadonlySources": {
+            "animation.move": true,
+            "animation.snapback": false,
+            "radialMenu": false,
+            "editor.available": false,
+            "editor.active": false,
+            "wheelNavigation": false
+        }
+    },
+    "eventContract": {
+        "move": "Existing move-request remains the only normal move boundary.",
+        "radialCommand": "Emit canonical command ids shape/null, shape/square, shape/highlight, shape/arrow, width/0.08, width/0.16, width/0.28, color/index.",
+        "editorDraftChange": "Emit normalized draft FEN plus metadata after local edit; consumer may ignore.",
+        "editorCommit": "Emit generated FEN and metadata; consumer returns accepted/rejected through controlled state or callback.",
+        "editorCancel": "Emit cancellation without PGN mutation.",
+        "wheelNavigation": "Emit previous or next intent; consumer decides whether boundary allows navigation.",
+        "rejection": "Callbacks may return false or a reason string; board keeps visual state coherent and does not own error display."
+    },
+    "stateOwnership": {
+        "animation": "Observes DOM and position changes; never owns chess state.",
+        "radialMenu": "Owns temporary open, pointer, and selected shortcut state only.",
+        "editor": "Owns temporary editable position draft while active; PGN mutation requires explicit consumer accept.",
+        "wheelNavigation": "Owns throttling timestamp only; never owns current PGN node.",
+        "pgn": "src/stores/pgn.ts remains current game, current node, FEN, legal move, branch, promotion, annotation, and navigation owner.",
+        "workspace": "src/stores/workspace.ts remains orientation, toolbar, annotation tool/color, panel, and splitter owner.",
+        "analysis": "src/stores/analysis.ts remains worker/request/result owner."
+    },
+    "interactionPriority": [
+        "workspace splitter drag",
+        "editor pointer mode",
+        "radial menu open or tracking",
+        "annotation drawing gesture",
+        "normal piece drag",
+        "click movement",
+        "touch movement",
+        "wheel navigation",
+        "board keyboard navigation"
+    ],
+    "plannedFiles": [
+        "src/features/board/domain/boardCapabilities.ts",
+        "src/features/board/domain/moveDiff.ts",
+        "src/features/board/useBoardCapabilityOptions.ts",
+        "src/features/board/useBoardAnimationController.ts",
+        "src/features/board/useBoardRadialMenu.ts",
+        "src/features/board/radial-menu/BoardRadialMenu.vue",
+        "src/features/board/editor/boardEditorDraft.ts",
+        "src/features/board/editor/BoardEditorPanel.vue",
+        "src/features/board/useBoardWheelNavigation.ts",
+        ".ai/skills/gsap/SKILL.md"
+    ],
+    "tokenRequirements": {
+        "existingTokens": [
+            "--workspace-motion-duration-fast",
+            "--workspace-motion-duration-base",
+            "--workspace-motion-ease-standard",
+            "--board-coordinate-*",
+            "--board-overlay-z",
+            "--board-ghost-z",
+            "--board-promotion-z",
+            "--cg-*",
+            "--annotation-*",
+            "--s-*",
+            "--r-*",
+            "--surface",
+            "--text",
+            "--border",
+            "--accent"
+        ],
+        "implementationTokensRequired": [
+            "board motion duration move 0.28s",
+            "board motion duration snapback 0.22s",
+            "board motion duration drag settle 0.18s",
+            "board motion duration piece settle 0.15s",
+            "radial menu size 300px",
+            "radial center 150px",
+            "radial outer radius 141",
+            "radial inner radius 48",
+            "radial label radius 96",
+            "radial hit radius 45-168",
+            "radial z-index 70",
+            "wheel throttle 60ms",
+            "drag threshold 5px",
+            "editor panel spacing and chip geometry",
+            "radial color-mix and shadow values translated to semantic tokens"
+        ],
+        "rule": "No raw governed durations, easings, geometry, color, shadow, z-index, or control size values may remain in feature files after P1B3."
+    },
+    "assetRequirements": {
+        "pieceAssets": {
+            "status": "ALREADY_PRESENT_BYTE_IDENTICAL",
+            "targetPath": "src/assets/chess/pieces/merida/*.png",
+            "sourcePath": "pgnViewer-new/src/assets/pieces/merida/*.png",
+            "hashesVerified": true,
+            "licenseRisk": "Existing P1B accepted Merida assets; no new asset copy is required in P1B3."
+        },
+        "radialMenuAssets": [],
+        "editorAssets": "Uses existing Merida piece resolver only.",
+        "broadAssetCopy": "FORBIDDEN"
+    },
+    "gsapSkillContract": {
+        "futurePath": ".ai/skills/gsap/SKILL.md",
+        "createdInP1B2": false,
+        "mustRead": [
+            ".ai/skills/project-ui/SKILL.md",
+            "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md"
+        ],
+        "requirements": [
+            "Use Vue onMounted and onBeforeUnmount ownership.",
+            "Use gsap.context or equivalent scoped ownership where DOM scope exists.",
+            "Kill/revert timelines and tweens on interruption, unmount, disabled capability, and reduced-motion changes.",
+            "Define overwrite policy before animating the same target.",
+            "Prefer transform and opacity; SVG attr tweening is allowed only where canonical BoardView requires x/y.",
+            "No unmanaged global selectors.",
+            "Durations and easings resolve through semantic motion tokens or typed constants backed by this baseline.",
+            "Honor prefers-reduced-motion.",
+            "Coordinate with ResizeObserver and orientation changes.",
+            "Use quickTo only for justified high-frequency pointer updates.",
+            "Snapback must preserve board state integrity.",
+            "No decorative animation unrelated to product behavior.",
+            "Require real-browser validation for animated UI changes."
+        ],
+        "authorityBoundary": "Reusable animation implementation guidance only; it must not become a second project UI authority."
+    },
+    "implementationSlices": [
+        "P1B3.1 capability types, normalization, and no-op defaults",
+        "P1B3.2 GSAP Skill creation and animation controller",
+        "P1B3.3 radial menu component and command boundary",
+        "P1B3.4 editor draft/controller/panel and PGN acceptance boundary",
+        "P1B3.5 wheel navigation composable and PGN command injection",
+        "P1B3.6 TeachingWorkspace explicit product enablement and validation report"
+    ],
+    "browserValidationPlan": {
+        "browserValidationInP1B2": "NOT_APPLICABLE_DESIGN_DOCS_ONLY",
+        "viewports": [
+            "desktop",
+            "large desktop",
+            "tablet portrait",
+            "tablet landscape",
+            "mobile portrait",
+            "mobile landscape 844x390"
+        ],
+        "themes": ["light", "dark", "system"],
+        "animation": [
+            "quiet moves",
+            "captures",
+            "castling",
+            "promotion",
+            "en passant",
+            "rapid consecutive changes",
+            "navigation jumps",
+            "orientation changes",
+            "resize during animation",
+            "reduced motion",
+            "tween cleanup"
+        ],
+        "snapback": [
+            "illegal move",
+            "cancelled drag",
+            "release outside board",
+            "touch cancellation",
+            "interrupted animation"
+        ],
+        "radialMenu": [
+            "open",
+            "item geometry",
+            "all commands",
+            "orientation correctness",
+            "dismissal",
+            "context-menu behavior",
+            "touch behavior",
+            "viewport bounds",
+            "responsive behavior",
+            "listener cleanup"
+        ],
+        "editor": [
+            "enable",
+            "disable",
+            "free placement",
+            "replacement",
+            "removal",
+            "palette",
+            "drag outside",
+            "FEN generation",
+            "invalid-position handling",
+            "exit",
+            "cancellation",
+            "normal mode restoration",
+            "orientation",
+            "resize",
+            "touch",
+            "no unintended PGN mutation"
+        ],
+        "wheelNavigation": [
+            "previous",
+            "next",
+            "boundaries",
+            "trackpad delta normalization",
+            "throttling",
+            "preventDefault scope",
+            "inactive during incompatible gestures",
+            "orientation independence",
+            "cleanup"
+        ],
+        "capabilityCombinations": "Each capability independently disabled, independently enabled, and relevant combinations with listener/UI removal proven."
+    },
+    "unresolvedEvidence": [],
+    "blockers": [],
+    "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
+    "finalVerdict": "P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_PASS_READY_FOR_IMPLEMENTATION"
+}

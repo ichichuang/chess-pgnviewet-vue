@@ -64,9 +64,11 @@ The owner-approved pre-product sequence was:
 
 Because F3C, F3D, and the dedicated gate review are accepted in the live target,
 P1A, P1B, P1C, P1D, P1E, and P1F have now been implemented and browser
-validated. The next required phase is
-`P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`. This document
-does not reopen F3C or F3D.
+validated. Owner-mandated reusable-board advanced capability completion is now
+required before P1G. The next required phase is
+`P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`. P1G is
+paused until that implementation closes. This document does not reopen F3C or
+F3D.
 
 The active P1 sequence is:
 
@@ -76,8 +78,10 @@ The active P1 sequence is:
 4. `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`
 5. `P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`
 6. `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`
-7. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
-8. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
+7. `P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN`
+8. `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
+9. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
+10. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
 
 `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE` is superseded as a
 separate pre-product gate. Narrow theme browser validation remains mandatory
@@ -211,7 +215,28 @@ P1F is now implemented and browser validated:
   import, tournament integration, report export, final integration, and later P1
   runtime remain unimplemented.
 - The next required phase is
-  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
+  `P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN`.
+
+P1B2 is now design complete:
+
+- Result:
+  `P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_PASS_READY_FOR_IMPLEMENTATION`.
+- Report:
+  `.ai/reports/P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN_REPORT.json`.
+- Inventory:
+  `docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json`.
+- Baseline:
+  `docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md`.
+- This phase records the owner-mandated board capability completion requirement:
+  the reusable self-developed board must support parameter-controlled GSAP move
+  and snapback animation, canonical radial menu, canonical free-placement/editor
+  mode, canonical wheel navigation, and a project-owned GSAP Skill contract.
+- P1B2 changes no runtime code and does not implement the capabilities.
+- The next required phase is
+  `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`.
+
+P1G is temporarily paused until P1B3 implements and validates the advanced board
+capabilities.
 
 ## P1 Product Migration Program
 
@@ -227,10 +252,11 @@ a narrower adjustment:
 5. canonical panels, toolbars, splitters, responsive workspace behavior, and
    persisted user layout only when directly required by the workspace;
 6. canonical AI analysis runtime and Web Worker behavior;
-7. real production authentication and API-backed product capabilities;
-8. real product error, unavailable, loading, permission, and retry behavior only
+7. owner-mandated advanced reusable board capabilities and project GSAP Skill;
+8. real production authentication and API-backed product capabilities;
+9. real product error, unavailable, loading, permission, and retry behavior only
    as required by implemented product flows;
-9. final complete product flow integration.
+10. final complete product flow integration.
 
 P1 must use `/Users/cc/Work/neobv/Chess/pgnViewer-new` as the canonical runtime
 authority and migrate working behavior mechanically before refactoring. It must

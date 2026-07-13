@@ -226,7 +226,8 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+            "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
+            "p1gStatus": "PAUSED_UNTIL_ADVANCED_BOARD_CAPABILITY_IMPLEMENTATION_CLOSES",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
             "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
             "p1aCanonicalApplicationShell": {
@@ -274,6 +275,24 @@
                     "cloud persistence and export UI",
                     "live/replay/tournament runtime expansion"
                 ]
+            },
+            "p1b2CanonicalBoardAdvancedCapabilityDesign": {
+                "status": "P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_PASS_READY_FOR_IMPLEMENTATION",
+                "phase": "P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN",
+                "report": ".ai/reports/P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN_REPORT.json",
+                "inventory": "docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json",
+                "baseline": "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+                "designScope": [
+                    "canonical GSAP move and snapback animation",
+                    "canonical radial menu",
+                    "canonical free-placement/editor mode",
+                    "canonical wheel navigation",
+                    "project GSAP Skill contract"
+                ],
+                "implementationStatus": "NOT_IMPLEMENTED_IN_P1B2",
+                "requiredBeforeCoreRuntimeFoundationClosure": true,
+                "p1gStatus": "PAUSED_UNTIL_ADVANCED_BOARD_CAPABILITY_IMPLEMENTATION_CLOSES",
+                "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL"
             }
         },
         "p1bCanonicalBoard": {
@@ -1781,6 +1800,53 @@
             "blockers": [],
             "finalVerdict": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
             "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
+        },
+        {
+            "identifier": "product.p1b2_canonical_board_advanced_capability_design",
+            "domain": "product UI migration",
+            "requirement": "Design authority for reusable self-developed board advanced capabilities: GSAP move animation, GSAP snapback animation, radial menu, free-placement/editor mode, wheel navigation, and project GSAP Skill ownership.",
+            "authority": [
+                "docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json",
+                "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+                ".ai/reports/P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN_REPORT.json",
+                "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+                "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md"
+            ],
+            "implementationOwner": "P1B3 canonical board advanced capability implementation owner",
+            "runtimeFiles": [
+                "src/features/board/domain/boardCapabilities.ts",
+                "src/features/board/domain/moveDiff.ts",
+                "src/features/board/useBoardCapabilityOptions.ts",
+                "src/features/board/useBoardAnimationController.ts",
+                "src/features/board/useBoardRadialMenu.ts",
+                "src/features/board/radial-menu/BoardRadialMenu.vue",
+                "src/features/board/editor/boardEditorDraft.ts",
+                "src/features/board/editor/BoardEditorPanel.vue",
+                "src/features/board/useBoardWheelNavigation.ts",
+                ".ai/skills/gsap/SKILL.md"
+            ],
+            "capabilities": {
+                "animation": "REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE",
+                "radialMenu": "REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE",
+                "editorMode": "REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE",
+                "wheelNavigation": "REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE",
+                "projectGsapSkill": "REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE"
+            },
+            "implementationStatus": "DESIGN_COMPLETE_IMPLEMENTATION_PENDING",
+            "validationEvidence": [
+                "P1B2 design inventory created",
+                "P1B2 architecture baseline created",
+                "P1B2 report created",
+                "Browser validation NOT_APPLICABLE because no runtime code changed"
+            ],
+            "browserEvidence": "NOT_APPLICABLE_DESIGN_DOCUMENTS_ONLY",
+            "deferredLaterP1Capabilities": [
+                "P1G auth and production API capabilities paused until P1B3 closes",
+                "P1H product integration"
+            ],
+            "blockers": [],
+            "finalVerdict": "P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_PASS_READY_FOR_IMPLEMENTATION",
+            "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL"
         }
     ],
     "overallVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
@@ -2018,7 +2084,7 @@
         "authority": "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
         "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
         "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
-        "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+        "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
         "p1Authority": "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
         "deferredPolicy": "Deferred comprehensive foundations remain DEFERRED_UNTIL_PRODUCT_COMPLETE with earlier trigger only for real feature-owned need.",
         "p1aResult": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
@@ -2168,8 +2234,8 @@
         "PRODUCT_UI_MIGRATION_READY has opened P1A through P1C; annotations, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices.",
         "P1C implements only the real local PGN runtime on top of P1A/P1B; annotations, complete panels/toolbars/splitters, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices."
     ],
-    "plannedNextPhase": "P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION",
-    "updatedAt": "2026-07-12T14:50:00Z",
+    "plannedNextPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
+    "updatedAt": "2026-07-13T03:49:43Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -2898,6 +2964,26 @@
             "dependenciesRemoved": [],
             "existingDependencyUsage": ["zod"],
             "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
+        },
+        "p1b2CanonicalBoardAdvancedCapabilityDesign": {
+            "status": "DESIGN_COMPLETE_IMPLEMENTATION_PENDING",
+            "phase": "P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN",
+            "report": ".ai/reports/P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN_REPORT.json",
+            "inventory": "docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json",
+            "baseline": "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+            "requiredBeforeCoreRuntimeFoundationClosure": [
+                "GSAP move animation",
+                "GSAP snapback animation",
+                "radial menu",
+                "free-placement/editor mode",
+                "wheel navigation",
+                "project GSAP Skill"
+            ],
+            "implementationStatus": "NOT_IMPLEMENTED_IN_P1B2",
+            "dependenciesAdded": [],
+            "dependenciesRemoved": [],
+            "p1gStatus": "PAUSED_UNTIL_ADVANCED_BOARD_CAPABILITY_IMPLEMENTATION_CLOSES",
+            "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL"
         }
     }
 }

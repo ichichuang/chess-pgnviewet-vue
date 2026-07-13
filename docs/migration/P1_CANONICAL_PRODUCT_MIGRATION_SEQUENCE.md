@@ -46,8 +46,10 @@ the owning module. It must not imitate real product data.
 4. `P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION`
 5. `P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION`
 6. `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`
-7. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
-8. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
+7. `P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN`
+8. `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
+9. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
+10. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
 
 ## P1A
 
@@ -362,10 +364,43 @@ P1F is now implemented and browser validated:
   import, tournament integration, report export, final integration, and later P1
   runtime remain unimplemented.
 - Next phase:
-  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
+  `P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN`.
+
+P1B2 is now design complete:
+
+- Result:
+  `P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_PASS_READY_FOR_IMPLEMENTATION`.
+- Report:
+  `.ai/reports/P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN_REPORT.json`.
+- Inventory:
+  `docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json`.
+- Baseline:
+  `docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md`.
+- P1B2 traces the canonical GSAP move and snapback animation, radial menu,
+  free-placement/editor mode, and wheel navigation from `pgnViewer-new`; defines
+  one parameter-controlled reusable board contract; records state ownership,
+  interaction priority, GSAP dependency and plugin decisions, future project
+  GSAP Skill requirements, token and asset boundaries, planned implementation
+  files, and browser gates.
+- P1B2 changes no runtime code, package file, lockfile, asset, scanner, semantic
+  token, style, Router, Pinia, provider, PGN, annotation, or analysis runtime.
+- Next phase:
+  `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`.
+
+P1B3 owns implementation of the owner-mandated advanced reusable board runtime:
+
+- GSAP move animation and snapback animation;
+- canonical radial menu;
+- canonical free-placement/editor mode;
+- canonical wheel navigation;
+- project-owned `.ai/skills/gsap/SKILL.md`;
+- explicit `/pgnViewer/` product enablement and validation.
+
+P1G is paused until P1B3 closes.
 
 P1G owns real authentication and production API product capabilities through
-confirmed same-origin boundaries.
+confirmed same-origin boundaries. It is paused until
+`P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL` closes.
 
 P1H integrates the product into `PRODUCT_COMPLETE_USABLE` with real data, real
 APIs, and accepted browser evidence.

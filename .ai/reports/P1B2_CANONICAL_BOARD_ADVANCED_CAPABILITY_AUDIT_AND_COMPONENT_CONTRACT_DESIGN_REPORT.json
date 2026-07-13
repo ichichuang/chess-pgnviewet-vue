@@ -1,0 +1,232 @@
+{
+  "phase": "P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN",
+  "startedAt": "2026-07-13T03:49:43Z",
+  "completedAt": "2026-07-13T03:49:43Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "/Users/cc/Work/neobv/Chess/pgnViewer",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer"
+  ],
+  "authorityFilesRead": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md",
+    "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+    "docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md",
+    "docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md",
+    "docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    "docs/migration/ASSET_INVENTORY.json",
+    "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+    ".ai/reports/P1A_CANONICAL_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_MIGRATION_REPORT.json",
+    ".ai/reports/P1B_CANONICAL_BOARD_RENDERING_AND_INTERACTION_MIGRATION_REPORT.json",
+    ".ai/reports/P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION_REPORT.json",
+    ".ai/reports/P1D_CANONICAL_ANNOTATION_RUNTIME_MIGRATION_REPORT.json",
+    ".ai/reports/P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION_REPORT.json",
+    ".ai/reports/P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION_REPORT.json"
+  ],
+  "safetyGate": {
+    "targetResolvedExactly": true,
+    "targetIsSymlink": false,
+    "targetIsGitRoot": true,
+    "branch": "main",
+    "authorizedOrigin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "indexCleanBeforeWrite": true,
+    "trackedWorktreeCleanBeforeWrite": true,
+    "untrackedBeforeWrite": [],
+    "localHead": "ba6cba1ece649d985438713b4583bfa36f008518",
+    "originMain": "ba6cba1ece649d985438713b4583bfa36f008518",
+    "liveRemoteMain": "ba6cba1ece649d985438713b4583bfa36f008518",
+    "writerProcessRisk": "NO_VITE_BUILD_FORMATTER_PACKAGE_MANAGER_OR_AMBIGUOUS_WRITER_DETECTED",
+    "evidenceRootsReadOnly": true
+  },
+  "prerequisiteVerdicts": {
+    "p1a": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
+    "p1b": "P1B_CANONICAL_BOARD_PASS_READY_FOR_P1C_PGN_MIGRATION",
+    "p1c": "P1C_REAL_PGN_RUNTIME_PASS_READY_FOR_P1D_ANNOTATION_MIGRATION",
+    "p1d": "P1D_CANONICAL_ANNOTATION_PASS_READY_FOR_WORKSPACE_COMPLETION",
+    "p1e": "P1E_CANONICAL_WORKSPACE_PASS_READY_FOR_AI_MIGRATION",
+    "p1f": "P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_PASS_READY_FOR_P1G"
+  },
+  "prePhaseState": {
+    "latestSubject": "docs(governance): 记录 P1F AI 分析运行时验收证据",
+    "p1gPrePhaseStatus": "NEXT_REQUIRED_BEFORE_OWNER_ADVANCED_BOARD_PAUSE",
+    "runtimeCodeChanged": false
+  },
+  "remoteState": {
+    "remote": "origin",
+    "url": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "localEqualsRemoteBeforeWrite": true
+  },
+  "boardProvenanceState": {
+    "acceptedState": "BOARD_MOSTLY_MIGRATED_WITH_JUSTIFIED_ADAPTATIONS",
+    "omittedCanonicalCapabilities": [
+      "GSAP move and snapback animation",
+      "radial menu",
+      "free-placement/editor paths",
+      "wheel navigation"
+    ],
+    "laterP1WorkAlreadyImplementedCapabilities": false
+  },
+  "gsapDependencyAudit": {
+    "packageJson": "gsap 3.15.0",
+    "pnpmLock": "gsap 3.15.0",
+    "decision": "NO_DEPENDENCY_ACTION_REQUIRED"
+  },
+  "gsapPluginAudit": {
+    "canonicalImports": [
+      "import { gsap } from 'gsap'"
+    ],
+    "pluginsRequired": [],
+    "decision": "GSAP_CORE_ONLY_NO_PREMIUM_PLUGIN"
+  },
+  "canonicalSourceAudit": {
+    "animation": "TRACED",
+    "radialMenu": "TRACED",
+    "editor": "TRACED",
+    "wheelNavigation": "TRACED"
+  },
+  "targetBoardAudit": {
+    "animation": "ABSENT",
+    "radialMenu": "ABSENT",
+    "editor": "ABSENT",
+    "wheelNavigation": "ABSENT",
+    "existingPointerDragAnnotationKeyboardRuntime": "PRESENT"
+  },
+  "animationAudit": "Canonical BoardView.vue plus moveDiff.ts define move diff, move tween, snapback, drag settle, reduced motion, and cleanup.",
+  "radialMenuAudit": "Canonical BoardView.vue plus RadialMenu.vue define right-click/context radial command selection with shape, width, and color commands.",
+  "editorAudit": "Canonical BoardView.vue, BoardEditorPanel.vue, boardEditorStore.ts, TeachingWorkspace.vue, and pgnStore.ts define free setup, draft FEN, and explicit PGN acceptance.",
+  "wheelNavigationAudit": "Canonical BoardView.vue consumes wheel on board wrapper, throttles 60ms, maps deltaY to PGN previous/next, and source policy disables live boards.",
+  "sourceToTargetMapping": "See docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json sourceToTargetMapping.",
+  "currentTargetConflicts": [
+    "Immediate drag clear conflicts with canonical snapback.",
+    "Single overlay needs deterministic priority before radial/editor/wheel.",
+    "PGN store needs explicit FEN acceptance before editor commit."
+  ],
+  "parameterContract": "One BoardAdvancedCapabilities object with animation, radialMenu, editor, and wheelNavigation groups.",
+  "defaultBehaviorDecision": "Reusable board defaults advanced groups off; canonical analysis route explicitly enables canonical product capabilities; future live/read-only sources keep editor/radial/wheel disabled.",
+  "stateOwnershipDecision": "Board animation/radial/editor/wheel own only transient UI state; PGN, workspace, annotation, and analysis owners remain singular.",
+  "interactionPriorityDecision": [
+    "splitter drag",
+    "editor",
+    "radial menu",
+    "annotation",
+    "move drag",
+    "click movement",
+    "touch movement",
+    "wheel",
+    "keyboard"
+  ],
+  "eventContractDecision": "Board emits move, radial-command, editor draft/commit/cancel/error, and wheel navigation intent through typed boundaries; it does not import PGN store for wheel or editor commit.",
+  "gsapSkillDecision": {
+    "futurePath": ".ai/skills/gsap/SKILL.md",
+    "createdInP1B2": false,
+    "requiredInP1B3": true,
+    "contractRecordedIn": "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md"
+  },
+  "tokenImpact": {
+    "p1b2TokenFilesChanged": false,
+    "p1b3TokenRequirementsRecorded": true
+  },
+  "assetImpact": {
+    "assetsAdded": [],
+    "assetsRemoved": [],
+    "meridaHashesVerifiedByteIdentical": true,
+    "newAssetsRequired": []
+  },
+  "implementationFiles": [
+    "src/features/board/domain/boardCapabilities.ts",
+    "src/features/board/domain/moveDiff.ts",
+    "src/features/board/useBoardCapabilityOptions.ts",
+    "src/features/board/useBoardAnimationController.ts",
+    "src/features/board/useBoardRadialMenu.ts",
+    "src/features/board/radial-menu/BoardRadialMenu.vue",
+    "src/features/board/editor/boardEditorDraft.ts",
+    "src/features/board/editor/BoardEditorPanel.vue",
+    "src/features/board/useBoardWheelNavigation.ts",
+    ".ai/skills/gsap/SKILL.md"
+  ],
+  "implementationSlices": [
+    "capability contract",
+    "GSAP Skill and animation controller",
+    "radial menu",
+    "editor mode",
+    "wheel navigation",
+    "product integration and validation"
+  ],
+  "validationPlan": "Static governance, typecheck, temporary production build, audits, browser matrix, and capability-combination validation are required in P1B3.",
+  "deferredP1GImpact": "P1G is paused until P1B3 closes.",
+  "dependenciesReviewed": [
+    "gsap",
+    "vue",
+    "pinia",
+    "chess.js"
+  ],
+  "dependenciesAdded": [],
+  "dependenciesRemoved": [],
+  "automatedTestAudit": "PASS_NO_TEST_FILES_OR_TEST_INFRASTRUCTURE_ADDED",
+  "mockDataAudit": "PASS_NO_MOCK_DATA_ADDED",
+  "secretRiskAudit": "PASS_NO_SECRET_VALUES_READ_OR_WRITTEN",
+  "dependencyPolicyValidation": "PASS",
+  "architectureValidation": "PASS",
+  "rawVisualValueValidation": "PASS",
+  "mockDataValidation": "PASS",
+  "secretPatternValidation": "PASS",
+  "prettierValidation": "PASS",
+  "eslintValidation": "PASS",
+  "stylelintValidation": "PASS",
+  "knipValidation": "PASS",
+  "governanceValidation": "PASS",
+  "typecheck": "PASS",
+  "build": "PASS_TEMP_OUTDIR_OUTSIDE_REPOSITORY",
+  "productionSecurityAudit": "PASS",
+  "fullSecurityAudit": "PASS",
+  "installedDependencyValidation": "PASS",
+  "staticAggregateValidation": "PASS",
+  "browserValidation": "NOT_APPLICABLE_DESIGN_DOCUMENTS_AND_REPORTS_ONLY",
+  "filesCreated": [
+    "docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json",
+    "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+    ".ai/reports/P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN_REPORT.json"
+  ],
+  "filesModified": [
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md"
+  ],
+  "filesDeleted": [],
+  "documentationReconciliation": "P1B2 inserted advanced board design authority and paused P1G until P1B3 implementation closes.",
+  "readinessMatrixUpdate": "Advanced board capability lane added as REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE.",
+  "migrationSequenceUpdate": "P1B2 and P1B3 inserted before P1G.",
+  "gitStateBeforeCommit": {
+    "status": "CLEAN_BEFORE_WRITES",
+    "protectedHashManifest": "/tmp/chess-pgnviewer-vue-p1b2-protected-before.sha256"
+  },
+  "commit": {
+    "status": "PLANNED_SINGLE_COMMIT_AFTER_VALIDATION",
+    "subject": "docs(architecture): 锁定棋盘高级能力与参数化组件契约",
+    "note": "The actual commit hash is verified after the one normal commit because recording it inside the same commit would require an amend or second commit."
+  },
+  "push": {
+    "status": "PLANNED_NORMAL_PUSH_AFTER_COMMIT",
+    "remote": "origin",
+    "branch": "main",
+    "force": false
+  },
+  "warnings": [],
+  "blockers": [],
+  "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
+  "finalVerdict": "P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_PASS_READY_FOR_IMPLEMENTATION"
+}
