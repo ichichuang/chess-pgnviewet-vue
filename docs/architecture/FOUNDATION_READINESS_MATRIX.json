@@ -226,8 +226,8 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
-            "p1gStatus": "NOT_STARTED_READY_AFTER_P1B4_REUSABLE_BOARD_CLOSURE",
+            "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
+            "p1gStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
             "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
             "p1aCanonicalApplicationShell": {
@@ -346,8 +346,50 @@
                 "dependenciesAdded": [],
                 "dependenciesRemoved": [],
                 "existingDependencyUsage": ["gsap"],
-                "p1gStatus": "NOT_STARTED_READY_AFTER_P1B4_REUSABLE_BOARD_CLOSURE",
-                "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
+                "p1gStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
+                "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_CLOSED"
+            },
+            "p1gRealAuthenticationAndProductionApi": {
+                "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
+                "phase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+                "report": ".ai/reports/P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_REPORT.json",
+                "contractInventory": "docs/architecture/P1G_PRODUCTION_API_CONTRACT_INVENTORY.json",
+                "implementationCommit": "d0c47a60bfc00e0028d2f9fbe597eb322cb7440d",
+                "implementationPush": "d0c47a60bfc00e0028d2f9fbe597eb322cb7440d",
+                "route": "/pgnViewer/",
+                "productRoutes": [
+                    "/competitions",
+                    "/competitions/:hdid",
+                    "/competitions/:hdid/display",
+                    "/competitions/:hdid/live",
+                    "/match/:key",
+                    "/share/:uuid",
+                    "/cloud/:fileid",
+                    "/login"
+                ],
+                "result": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PASS_READY_FOR_P1H",
+                "implemented": [
+                    "same-origin production API boundary configuration through /api/ksl",
+                    "Vue Query production API ownership",
+                    "real login submission boundary",
+                    "session persistence, restore, and logout",
+                    "production tournament list route",
+                    "production tournament groups, rounds, and pairings route",
+                    "big-screen pairing display route",
+                    "sanitized compatibility handoffs for match, share, and cloud links",
+                    "authenticated replay handoff into the canonical board and PGN workspace",
+                    "truthful live-route unavailable state without invented MQTT fallback"
+                ],
+                "browserEvidence": "Temporary production build browser validation PASS through same-origin /api/ksl proxy to real production upstream: /pgnViewer/ shell, /competitions real rows, /competitions/47347 groups/rounds/pairings, replay handoff login-required state without protected request, /match compatibility handoff, no Vite overlay, zero new console errors.",
+                "dependenciesAdded": [],
+                "dependenciesRemoved": [],
+                "existingDependencyUsage": ["@tanstack/vue-query", "chess.js", "pinia", "zod"],
+                "residualRisks": [
+                    "Production hosting must provide the same-origin /api/ksl boundary or an approved HTTPS production API base that permits browser reads; direct browser fetches to wxapi.kaisaile.org failed CORS during validation while server-side production requests returned real data.",
+                    "Successful credentialed login and protected replay success were not validated without owner credentials.",
+                    "MQTT/live streaming remains intentionally closed until an owner-approved read-only transport contract exists."
+                ],
+                "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
             }
         },
         "p1bCanonicalBoard": {
@@ -1943,9 +1985,9 @@
             "dependenciesAdded": [],
             "dependenciesRemoved": [],
             "blockers": [],
-            "p1gStatus": "NOT_STARTED",
+            "p1gStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
             "finalVerdict": "P1B4_BOARD_COMPONENT_FULLY_PARAMETERIZED_REUSABLE_TYPESAFE_AND_MOTION_READY",
-            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
+            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_CLOSED"
         }
     ],
     "overallVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
@@ -2333,7 +2375,7 @@
         "PRODUCT_UI_MIGRATION_READY has opened P1A through P1C; annotations, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices.",
         "P1C implements only the real local PGN runtime on top of P1A/P1B; annotations, complete panels/toolbars/splitters, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices."
     ],
-    "plannedNextPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+    "plannedNextPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
     "updatedAt": "2026-07-13T00:00:00.000Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
@@ -2954,7 +2996,7 @@
             "no force push",
             "no source-project modification"
         ],
-        "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+        "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
         "finalMilestones": [
             "PRODUCT_UI_MIGRATION_READY",
             "PRODUCT_COMPLETE_USABLE",
@@ -3084,7 +3126,7 @@
             "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE",
             "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL_CLOSED"
         },
-        "p1gStatus": "NOT_STARTED_READY_AFTER_P1B4_REUSABLE_BOARD_CLOSURE",
+        "p1gStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
         "p1b3CanonicalBoardAdvancedCapabilityRuntime": {
             "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
             "phase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
@@ -3133,8 +3175,50 @@
             "dependenciesAdded": [],
             "dependenciesRemoved": [],
             "existingDependencyUsage": ["gsap"],
-            "p1gStatus": "NOT_STARTED_READY_AFTER_P1B4_REUSABLE_BOARD_CLOSURE",
-            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
+            "p1gStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
+            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_CLOSED"
+        },
+        "p1gRealAuthenticationAndProductionApi": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
+            "phase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+            "report": ".ai/reports/P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_REPORT.json",
+            "contractInventory": "docs/architecture/P1G_PRODUCTION_API_CONTRACT_INVENTORY.json",
+            "implementationCommit": "d0c47a60bfc00e0028d2f9fbe597eb322cb7440d",
+            "implementationPush": "d0c47a60bfc00e0028d2f9fbe597eb322cb7440d",
+            "route": "/pgnViewer/",
+            "productRoutes": [
+                "/competitions",
+                "/competitions/:hdid",
+                "/competitions/:hdid/display",
+                "/competitions/:hdid/live",
+                "/match/:key",
+                "/share/:uuid",
+                "/cloud/:fileid",
+                "/login"
+            ],
+            "result": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PASS_READY_FOR_P1H",
+            "implemented": [
+                "same-origin production API boundary configuration through /api/ksl",
+                "Vue Query production API ownership",
+                "real login submission boundary",
+                "session persistence, restore, and logout",
+                "production tournament list route",
+                "production tournament groups, rounds, and pairings route",
+                "big-screen pairing display route",
+                "sanitized compatibility handoffs for match, share, and cloud links",
+                "authenticated replay handoff into the canonical board and PGN workspace",
+                "truthful live-route unavailable state without invented MQTT fallback"
+            ],
+            "browserEvidence": "Temporary production build browser validation PASS through same-origin /api/ksl proxy to real production upstream: /pgnViewer/ shell, /competitions real rows, /competitions/47347 groups/rounds/pairings, replay handoff login-required state without protected request, /match compatibility handoff, no Vite overlay, zero new console errors.",
+            "dependenciesAdded": [],
+            "dependenciesRemoved": [],
+            "existingDependencyUsage": ["@tanstack/vue-query", "chess.js", "pinia", "zod"],
+            "residualRisks": [
+                "Production hosting must provide the same-origin /api/ksl boundary or an approved HTTPS production API base that permits browser reads; direct browser fetches to wxapi.kaisaile.org failed CORS during validation while server-side production requests returned real data.",
+                "Successful credentialed login and protected replay success were not validated without owner credentials.",
+                "MQTT/live streaming remains intentionally closed until an owner-approved read-only transport contract exists."
+            ],
+            "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
         }
     }
 }

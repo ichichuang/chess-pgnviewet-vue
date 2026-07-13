@@ -438,14 +438,35 @@ runtime:
 - Full static gates, temporary-outDir production build, and real Chrome
   capability, responsive, theme, reduced-motion, isolation, and unload/remount
   validation passed.
-- P1G remains not started. Next phase:
-  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
+- P1G is now implemented and browser validated. Next phase:
+  `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`.
 
 P1G owns real authentication and production API product capabilities through
-confirmed same-origin boundaries. It starts after
-`P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API` closes; that
-prerequisite is now satisfied by the P1B4 implementation report. P1G has not
-started in P1B4.
+confirmed same-origin boundaries. It started after
+`P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API` closed and now
+records:
+
+- Result:
+  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PASS_READY_FOR_P1H`.
+- Report:
+  `.ai/reports/P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_REPORT.json`.
+- Contract inventory:
+  `docs/architecture/P1G_PRODUCTION_API_CONTRACT_INVENTORY.json`.
+- Implementation commit:
+  `d0c47a60bfc00e0028d2f9fbe597eb322cb7440d`.
+- Implemented runtime:
+  real login submission boundary, session restore/logout, production
+  tournament list/groups/rounds/pairings, big-screen pairing display,
+  sanitized compatibility/live handoffs, and authenticated replay handoff into
+  the canonical workspace.
+- Validation:
+  static gates, typecheck, production audit, temporary-output production build,
+  and real-browser validation passed against `/pgnViewer/`, `/competitions`,
+  `/competitions/:hdid`, replay handoff, and `/match/:key`.
+- Remaining credential-dependent evidence:
+  successful owner-account login and protected replay success were not run
+  without credentials; the unauthenticated protected replay path is blocked in
+  UI before issuing a protected request.
 
 P1H integrates the product into `PRODUCT_COMPLETE_USABLE` with real data, real
 APIs, and accepted browser evidence.

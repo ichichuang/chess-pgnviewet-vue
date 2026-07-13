@@ -279,8 +279,34 @@ P1B4 is now implemented and browser validated:
   isolation, orientation, resize, themes, reduced motion, and unload/remount
   cleanup with no clean-run console, page, request, long-task, layout-shift,
   overflow, pointer, or GSAP residue.
-- P1G remains not started. The next required phase is
-  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
+- P1G is now implemented and browser validated. The next required phase is
+  `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`.
+
+P1G is now implemented and browser validated:
+
+- Result:
+  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PASS_READY_FOR_P1H`.
+- Report:
+  `.ai/reports/P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_REPORT.json`.
+- Contract inventory:
+  `docs/architecture/P1G_PRODUCTION_API_CONTRACT_INVENTORY.json`.
+- Implementation commit:
+  `d0c47a60bfc00e0028d2f9fbe597eb322cb7440d`.
+- `/pgnViewer/` now includes real authentication shell state, production API
+  boundary configuration, production tournament list/detail/display routes,
+  sanitized compatibility and live handoffs, and authenticated replay handoff
+  loading into the canonical board/PGN workspace.
+- Browser validation used the required same-origin `/api/ksl` boundary against
+  the real production upstream because direct browser calls to
+  `wxapi.kaisaile.org` failed CORS while server-side production requests
+  returned real data.
+- Static checks, typecheck, temporary-output production build, production audit,
+  aggregate static check, and production-bundle browser validation passed.
+- Successful credentialed login and protected replay remain credential-dependent
+  and were not run without owner credentials. MQTT/live streaming remains
+  intentionally closed pending owner-approved read-only transport.
+- The next required phase is
+  `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`.
 
 ## P1 Product Migration Program
 

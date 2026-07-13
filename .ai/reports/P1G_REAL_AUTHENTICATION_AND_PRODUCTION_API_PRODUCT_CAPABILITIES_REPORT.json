@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 2,
+  "phase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+  "startedFromCommit": "8d97076ebafd2fe689404aa51119ec2efbbc99b4",
+  "implementationCommit": "d0c47a60bfc00e0028d2f9fbe597eb322cb7440d",
+  "implementationPush": "d0c47a60bfc00e0028d2f9fbe597eb322cb7440d",
+  "governanceClosureCommit": "this report is committed by the P1G governance closure commit",
+  "generatedAt": "2026-07-13T08:40:57.354Z",
+  "completedAt": "2026-07-13T08:40:57.354Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "finalVerdict": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PASS_READY_FOR_P1H",
+  "changedRuntimeFiles": [
+    "knip.json",
+    "src/api/auth.ts",
+    "src/api/client.ts",
+    "src/api/md5.ts",
+    "src/api/productApi.ts",
+    "src/api/productMappers.ts",
+    "src/api/productTypes.ts",
+    "src/api/queryClient.ts",
+    "src/features/product-api/components/ResourceState.vue",
+    "src/features/product-api/components/RouteHeader.vue",
+    "src/features/product-api/views/CompatibilityEntryView.vue",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/features/product-api/views/CompetitionDisplayView.vue",
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/features/product-api/views/CompetitionLiveRedirectView.vue",
+    "src/features/product-api/views/LoginView.vue",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/useRemoteReplayLoader.ts",
+    "src/features/workspace-mode/WorkspaceModeController.vue",
+    "src/features/pgn/domain/types.ts",
+    "src/main.ts",
+    "src/persistence/auth/sessionPersistence.ts",
+    "src/persistence/workspace/workspaceHandoff.ts",
+    "src/router/index.ts",
+    "src/runtime/config/productionApi.ts",
+    "src/stores/auth.ts",
+    "src/stores/index.ts"
+  ],
+  "changedEvidenceFiles": [
+    "docs/architecture/P1G_PRODUCTION_API_CONTRACT_INVENTORY.json",
+    ".ai/reports/P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_REPORT.json",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+  ],
+  "implementationSummary": [
+    "Added a constrained production API client and mappers for auth, competition list/groups/rounds/pairings, and finished replay game info.",
+    "Added Pinia auth state and persistence boundaries for login, logout, stored session restore, and URL session handoff cleanup.",
+    "Installed TanStack Vue Query as the server-state owner and routed product pages through it.",
+    "Added product routes for /competitions, /competitions/:hdid, /competitions/:hdid/display, /competitions/:hdid/live, /login, /match/:key, /share/:uuid, and /cloud/:fileid.",
+    "Added sanitized workspace handoff storage and replay loading into the canonical board/PGN workspace.",
+    "Preserved project constraints: no React, no tests, no mock product data, no generic /CALL, no proxyRequest runtime usage, no MQTT publish/live credential runtime."
+  ],
+  "apiBoundaryDecision": {
+    "selectedBrowserBase": "/api/ksl",
+    "directProductionEndpointEvidence": "curl POST https://wxapi.kaisaile.org/liveproxy/GetActList returned real production rows.",
+    "directBrowserEvidence": "Temporary production build direct browser fetch to https://wxapi.kaisaile.org/liveproxy/GetActList failed CORS because Access-Control-Allow-Origin was empty.",
+    "resultingDecision": "Runtime defaults to same-origin /api/ksl while allowing approved HTTPS production override. Browser validation used a temporary local /api/ksl proxy to the real upstream."
+  },
+  "validation": {
+    "typecheck": "PASS: mise exec -- pnpm run typecheck",
+    "lint": "PASS: mise exec -- pnpm run lint",
+    "stylelint": "PASS: mise exec -- pnpm run lint:style",
+    "formatCheck": "PASS: mise exec -- pnpm run format:check",
+    "governance": "PASS: mise exec -- pnpm run check:governance",
+    "unused": "PASS: mise exec -- pnpm run check:unused",
+    "staticGate": "PASS: mise exec -- pnpm run check:static",
+    "productionAudit": "PASS: mise exec -- pnpm run audit:prod",
+    "productionBuild": "PASS: mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-p1g-build",
+    "browserValidation": {
+      "route": "temporary production build at http://127.0.0.1:4175/pgnViewer/ with /api/ksl proxy",
+      "workspace": "PASS: /pgnViewer/ nonblank shell and board, no Vite overlay, toolbar interaction changed state, zero new console errors.",
+      "competitions": "PASS: /competitions returned 20 real production rows through /api/ksl, filter input changed state, no Vite overlay, zero new console errors.",
+      "competitionDetail": "PASS: /competitions/47347 returned real groups, rounds, and pairings, no Vite overlay, zero new console errors.",
+      "replayHandoff": "PASS: pairing handoff entered workspace; unauthenticated state displayed login-required message without issuing protected getgameinfo.",
+      "compatibilityHandoff": "PASS: /match/PGNShare:abc123 sanitized into workspace handoff and displayed truthful no-PGN state with zero new console errors."
+    }
+  },
+  "residualRisks": [
+    "Production hosting must provide the same-origin /api/ksl boundary or set an approved HTTPS production API base that permits browser reads.",
+    "Successful login and authenticated protected replay were not run because no owner credentials were available in this task.",
+    "MQTT/live streaming remains intentionally closed pending owner-approved read-only transport and credential boundary.",
+    "Compatibility match/share/cloud resolvers are represented as sanitized handoffs and truthful unavailable workspace states until resolver contracts are supplied."
+  ],
+  "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
+}
