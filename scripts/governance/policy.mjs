@@ -29,6 +29,7 @@ export const generatedOrLocalPatterns = [
 export const approvedVersions = {
   dependencies: {
     '@tanstack/vue-query': '5.101.2',
+    axios: '1.18.1',
     'chess.js': '1.4.0',
     dexie: '4.4.4',
     gsap: '3.15.0',
@@ -144,13 +145,16 @@ export const architecturePolicy = {
   naiveUiAllowlist: ['src/ui/', 'src/app/providers/', 'src/providers/'],
   iconAllowlist: ['src/ui/icons/', 'src/ui/', 'src/app/providers/'],
   apiAllowlist: ['src/api/', 'src/repositories/', 'src/sources/', 'src/runtime/http/'],
+  axiosImportAllowlist: ['src/api/client.ts'],
+  browserAuthHeaderAllowlist: ['src/api/client.ts'],
+  nativeHttpAllowlist: [],
   persistenceAllowlist: [
     'src/persistence/',
     'src/bootstrap/preferences/',
     'src/runtime/preferences/',
   ],
   runtimeConfigAllowlist: ['src/runtime/config/', 'src/config/runtime.ts', 'src/router/index.ts'],
-  writeEndpointAllowlist: [],
+  writeEndpointAllowlist: ['src/api/client.ts'],
   futureAllowlists: {
     naiveUi: ['src/ui/', 'src/app/providers/', 'src/providers/'],
     icons: ['src/ui/icons/'],

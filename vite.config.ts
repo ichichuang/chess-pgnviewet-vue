@@ -13,6 +13,14 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port: 5174,
+    proxy: {
+      '/api/ksl': {
+        target: 'https://wxapi.kaisaile.org',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api\/ksl(?=\/|$)/u, ''),
+      },
+    },
     strictPort: false,
   },
 })

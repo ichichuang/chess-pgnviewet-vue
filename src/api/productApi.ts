@@ -1,6 +1,3 @@
-import { productionApiConfig } from '@/runtime/config/productionApi'
-import { readAuthSession } from '@/persistence/auth/sessionPersistence'
-
 import { requestJson } from './client'
 import {
   mapCompetitionDetail,
@@ -136,12 +133,10 @@ export async function fetchFinishedGameReplay(
   gameId: string,
   signal?: AbortSignal
 ): Promise<FinishedGameReplay> {
-  const session = readAuthSession()
   const raw = await requestJson({
-    base: productionApiConfig.chessApiBase,
     path: '/gameapi/gamemgr/getgameinfo',
     signal,
-    headerValue: session?.loginValue,
+    auth: 'session-required',
     body: { gameid: gameId },
   })
 

@@ -107,12 +107,12 @@ function scanImports(file, text) {
       )
     }
 
-    if (specifier === 'axios' && !isAllowed(file, architecturePolicy.apiAllowlist)) {
+    if (specifier === 'axios' && !isAllowed(file, architecturePolicy.axiosImportAllowlist)) {
       addArchitectureFinding(
         'ARCH_RAW_HTTP_CLIENT',
         file,
         location,
-        'Raw HTTP clients are allowed only inside approved API or repository boundaries.'
+        'Axios imports are allowed only in the project-owned HTTP client.'
       )
     }
 
@@ -140,14 +140,14 @@ function scanBoundaries(file, text) {
     {
       ruleId: 'ARCH_RAW_FETCH_OUTSIDE_API',
       pattern: /\bfetch\s*\(/gu,
-      allowlist: architecturePolicy.apiAllowlist,
-      reason: 'Raw fetch is allowed only inside approved API or repository boundaries.',
+      allowlist: architecturePolicy.nativeHttpAllowlist,
+      reason: 'Native fetch is forbidden in authored browser product code.',
     },
     {
       ruleId: 'ARCH_RAW_XMLHTTPREQUEST_OUTSIDE_API',
       pattern: /\bXMLHttpRequest\b/gu,
-      allowlist: architecturePolicy.apiAllowlist,
-      reason: 'Raw XMLHttpRequest is allowed only inside approved API or repository boundaries.',
+      allowlist: architecturePolicy.nativeHttpAllowlist,
+      reason: 'Raw XMLHttpRequest is forbidden in authored browser product code.',
     },
     {
       ruleId: 'ARCH_RAW_BROWSER_STORAGE',
@@ -165,13 +165,13 @@ function scanBoundaries(file, text) {
     {
       ruleId: 'ARCH_GENERIC_CALL_ENDPOINT',
       pattern: /['"`]\/CALL(?:['"`/?#]|$)|\b\/CALL\b/gu,
-      allowlist: architecturePolicy.apiAllowlist,
+      allowlist: [],
       reason: 'Generic /CALL usage is forbidden.',
     },
     {
       ruleId: 'ARCH_PROXY_REQUEST_USAGE',
       pattern: /\bproxyRequest\b/gu,
-      allowlist: architecturePolicy.apiAllowlist,
+      allowlist: [],
       reason: 'proxyRequest usage is forbidden without explicit API authority.',
     },
     {
@@ -184,7 +184,7 @@ function scanBoundaries(file, text) {
       ruleId: 'ARCH_BROWSER_SECRET_OWNERSHIP',
       pattern:
         /\b(?:Authorization|Bearer|HMAC|signingSecret|clientSecret|mqttPassword|mqttUsername|upstreamCredential|secretUrl)\b/gu,
-      allowlist: architecturePolicy.apiAllowlist,
+      allowlist: architecturePolicy.browserAuthHeaderAllowlist,
       reason:
         'Browser runtime must not own upstream credentials, auth headers, signing secrets, or secret-bearing URLs.',
     },
