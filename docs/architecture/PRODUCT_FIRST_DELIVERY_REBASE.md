@@ -63,10 +63,10 @@ The owner-approved pre-product sequence was:
 4. `P1_CANONICAL_PRODUCT_RUNTIME_AND_UI_MIGRATION`
 
 Because F3C, F3D, and the dedicated gate review are accepted in the live target,
-P1A, P1B, P1C, P1D, and P1E have now been implemented and browser validated.
-The next required phase is
-`P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`. This document does not reopen
-F3C or F3D.
+P1A, P1B, P1C, P1D, P1E, and P1F have now been implemented and browser
+validated. The next required phase is
+`P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`. This document
+does not reopen F3C or F3D.
 
 The active P1 sequence is:
 
@@ -189,6 +189,29 @@ P1E is now implemented and browser validated:
   remain unimplemented.
 - The next required phase is
   `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`.
+
+P1F is now implemented and browser validated:
+
+- Result:
+  `P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_PASS_READY_FOR_P1G`.
+- Report:
+  `.ai/reports/P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `45c5ff50a0917f423d1fb3a528fe6fadb509aec0`.
+- `/pgnViewer/` now owns the canonical local analysis runtime: TypeScript
+  negamax search, module Web Worker pool, request identity, stale-result
+  rejection, cancellation, retry, evaluation rail, lower analysis panel,
+  right-panel analysis status, PV legality validation, candidate lines, and
+  YCDW:A analysis serialization with Zod boundary validation.
+- Static checks, typecheck, temporary-output production build, production audit,
+  aggregate static check, and production-bundle browser validation passed.
+- Authentication, production APIs, cloud persistence, settings, live/replay
+  import, tournament integration, report export, final integration, and later P1
+  runtime remain unimplemented.
+- The next required phase is
+  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
 
 ## P1 Product Migration Program
 

@@ -226,7 +226,7 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "P1E_CANONICAL_WORKSPACE_PANELS_TOOLBARS_AND_SPLITTER_COMPLETION",
+            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
             "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
             "p1aCanonicalApplicationShell": {
@@ -2018,7 +2018,7 @@
         "authority": "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
         "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
         "finalVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
-        "nextRequiredPhase": "P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION",
+        "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
         "p1Authority": "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
         "deferredPolicy": "Deferred comprehensive foundations remain DEFERRED_UNTIL_PRODUCT_COMPLETE with earlier trigger only for real feature-owned need.",
         "p1aResult": "P1A_CANONICAL_SHELL_PASS_READY_FOR_BOARD_MIGRATION",
@@ -2789,7 +2789,7 @@
             "no force push",
             "no source-project modification"
         ],
-        "nextRequiredPhase": "P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION",
+        "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
         "finalMilestones": [
             "PRODUCT_UI_MIGRATION_READY",
             "PRODUCT_COMPLETE_USABLE",
@@ -2861,6 +2861,43 @@
             "dependenciesAdded": [],
             "dependenciesRemoved": [],
             "nextRequiredPhase": "P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION"
+        },
+        "p1fCanonicalAiAnalysisWorkerRuntime": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "implementationCommit": "45c5ff50a0917f423d1fb3a528fe6fadb509aec0",
+            "report": ".ai/reports/P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION_REPORT.json",
+            "baseline": "docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md",
+            "result": "P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_PASS_READY_FOR_P1G",
+            "implemented": [
+                "local TypeScript analysis search",
+                "module Web Worker pool",
+                "single Pinia analysis store",
+                "request identity and stale-result rejection",
+                "analysis cancellation and retry",
+                "evaluation rail",
+                "lower analysis panel",
+                "right-panel compact analysis status",
+                "principal variation legality validation",
+                "candidate lines",
+                "YCDW:A analysis serialization",
+                "Zod validation for imported analysis blobs"
+            ],
+            "notImplemented": [
+                "authentication",
+                "production APIs",
+                "cloud persistence",
+                "settings",
+                "live/replay import",
+                "tournament integration",
+                "report export",
+                "final integration",
+                "later P1 capabilities"
+            ],
+            "browserEvidence": "Temporary production build browser validation PASS for /pgnViewer/ at http://127.0.0.1:4178/pgnViewer/: real PGN upload, one-move navigation, analysis tab, 分析当前 action, Worker x 4, request 3, best move b8c6, PV and candidate lines, search.worker asset HTTP 200, desktop and 844x390 mobile-landscape screenshots, no Vite overlay, and no app-breaking runtime error.",
+            "dependenciesAdded": [],
+            "dependenciesRemoved": [],
+            "existingDependencyUsage": ["zod"],
+            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
         }
     }
 }

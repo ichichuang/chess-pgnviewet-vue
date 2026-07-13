@@ -341,7 +341,28 @@ P1E is now implemented and browser validated:
 - Next phase:
   `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`.
 
-P1F owns canonical AI analysis and Web Worker behavior.
+P1F is now implemented and browser validated:
+
+- Result:
+  `P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_PASS_READY_FOR_P1G`.
+- Report:
+  `.ai/reports/P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `45c5ff50a0917f423d1fb3a528fe6fadb509aec0`.
+- `/pgnViewer/` now runs the canonical local AI analysis runtime with module Web
+  Workers, current-node request identity, stale-result rejection, cancellation,
+  retry, evaluation rail, lower analysis panel, compact right-panel status, PV
+  legality validation, candidate lines, and YCDW:A analysis serialization with
+  boundary validation.
+- Static checks, typecheck, temporary-output production build, production audit,
+  aggregate static check, and production-bundle browser validation passed.
+- Authentication, production APIs, cloud persistence, settings, live/replay
+  import, tournament integration, report export, final integration, and later P1
+  runtime remain unimplemented.
+- Next phase:
+  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
 
 P1G owns real authentication and production API product capabilities through
 confirmed same-origin boundaries.
