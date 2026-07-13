@@ -25,7 +25,7 @@
             "headSymref": "EMPTY_OUTPUT_EXIT_0"
         }
     },
-    "overallStatus": "PRODUCT_UI_MIGRATION_READY",
+    "overallStatus": "PRODUCT_COMPLETE_USABLE",
     "summary": {
         "confirmedBaseline": [
             "one Vue root",
@@ -40,21 +40,21 @@
             "no React runtime",
             "no target automated test framework",
             "no product mock data",
-            "neutral /pgnViewer/ bootstrap"
+            "one complete canonical /pgnViewer/ product workspace",
+            "real production competition list, detail, display, and replay handoff",
+            "P1H PRODUCT_COMPLETE_USABLE acceptance"
         ],
         "majorGaps": [
-            "Dexie structured preference ownership",
-            "Naive UI provider/adapters",
-            "i18n",
-            "TanStack Query client",
-            "API/repository/env/security runtime boundaries",
-            "global error/notification policy",
-            "full responsive panel/splitter/overlay foundation",
-            "board-theme runtime",
-            "display-theme runtime",
-            "product UI migration"
+            "comprehensive Dexie preferences, drafts, and cross-tab synchronization",
+            "Naive UI adapter and overlay expansion",
+            "i18n completion",
+            "comprehensive Query policy and repository consolidation",
+            "production security headers and deployment-environment validation",
+            "global error and feedback framework",
+            "comprehensive accessibility and motion foundations",
+            "foundation preview and broad integration infrastructure"
         ],
-        "finalReason": "F0B resolved the active target Vite process, removed the authorized Vite deps cache side effect, reconciled forbidden metadata-category authority evidence without inventing historical filenames, revalidated the authorized empty remote, and preserved the original passing validation evidence without rerunning Vite.",
+        "finalReason": "P1H integrated and validated the accepted P1A-P1G1 runtime as one complete usable product with real production data, strict feature-owned persistence, private-state cleanup, lifecycle recovery, responsive and accessibility closure, and truthful unavailable boundaries.",
         "f0Closure": {
             "status": "F0_FOUNDATION_AUDIT_PASS_READY_FOR_GIT_BASELINE",
             "f0bVerdict": "F0B_CLOSURE_PASS_F0_READY_FOR_GIT_BASELINE",
@@ -226,7 +226,7 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
+            "nextRequiredPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
             "p1gStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
             "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
@@ -403,6 +403,24 @@
                 "developmentProxy": "/api/ksl -> https://wxapi.kaisaile.org",
                 "result": "P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_PASS_READY_FOR_P1H",
                 "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
+            },
+            "p1hProductCompleteUsableIntegration": {
+                "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_PRODUCT_COMPLETE_USABLE",
+                "phase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
+                "report": ".ai/reports/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE_REPORT.json",
+                "baseline": "docs/architecture/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_BASELINE.md",
+                "deploymentBoundary": "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+                "implementationCommit": "99c4f3383f7ec469eaee9aed813620dc2758acf4",
+                "implementationPush": "99c4f3383f7ec469eaee9aed813620dc2758acf4",
+                "result": "P1H_PRODUCT_COMPLETE_USABLE_PASS",
+                "browserEvidence": "Real production competition data, canonical workspace PGN/variation/annotation/Worker interactions, protected unauthenticated denial, network and invalid-contract states, responsive and accessibility profiles, and route teardown/remount all passed with a clean final browser run.",
+                "blockers": [],
+                "residualRisks": [
+                    "Credentialed login and protected replay success remain unclaimed without owner credentials.",
+                    "MQTT live remains intentionally unavailable pending an approved read-only contract.",
+                    "Production hosting must implement the restricted same-origin /api/ksl boundary."
+                ],
+                "nextRequiredPhase": "POST_PRODUCT_FOUNDATION_HARDENING"
             }
         },
         "p1bCanonicalBoard": {
@@ -2003,7 +2021,7 @@
             "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_CLOSED"
         }
     ],
-    "overallVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
+    "overallVerdict": "P1H_PRODUCT_COMPLETE_USABLE_PASS",
     "correctedByPhase": "F0B_ACTIVE_VITE_PROCESS_RESOLUTION_AND_F0_AUDIT_CLOSURE",
     "correctionHistory": [
         {
@@ -2379,17 +2397,17 @@
     },
     "blockers": [],
     "warnings": [
-        "F3C implements only non-sensitive themeMode bootstrap persistence; Dexie structured preferences remain future work.",
+        "F3C theme bootstrap and the P1H narrow Dexie workspace-layout record are accepted; comprehensive preferences, drafts, and cross-tab synchronization remain post-product work.",
         "F3D implements only the single Naive UI root provider, NGlobalStyle ownership, resolved light/dark mapping, and token-derived themeOverrides; reusable UI adapters, icons, locale/date-locale, discrete API, message/dialog/notification/loading-bar consumers, and product UI remain unimplemented.",
         "Board-theme and display-theme runtimes remain independent future slices; F3C did not implement board or product controls.",
         "F3R preserved accepted F3C live state although the owner prompt described an older F3B starting point.",
         "F3E is superseded as a separate pre-product gate; broad integration closure moves to post-product hardening.",
         "Deferred generalized foundations remain tracked and may be triggered earlier only by real product-feature needs.",
-        "PRODUCT_UI_MIGRATION_READY has opened P1A through P1C; annotations, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices.",
-        "P1C implements only the real local PGN runtime on top of P1A/P1B; annotations, complete panels/toolbars/splitters, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices."
+        "P1H is PRODUCT_COMPLETE_USABLE; comprehensive generalized foundations are classified under POST_PRODUCT_FOUNDATION_HARDENING and must preserve accepted runtime owners.",
+        "Successful credentialed login and protected replay remain owner-credential dependent, MQTT live remains contract dependent, and production hosting must validate the restricted same-origin /api/ksl boundary."
     ],
-    "plannedNextPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
-    "updatedAt": "2026-07-13T00:00:00.000Z",
+    "plannedNextPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
+    "updatedAt": "2026-07-13T10:38:37.000Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -3009,7 +3027,7 @@
             "no force push",
             "no source-project modification"
         ],
-        "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
+        "nextRequiredPhase": "POST_PRODUCT_FOUNDATION_HARDENING",
         "finalMilestones": [
             "PRODUCT_UI_MIGRATION_READY",
             "PRODUCT_COMPLETE_USABLE",
@@ -3245,6 +3263,24 @@
             "developmentProxy": "/api/ksl -> https://wxapi.kaisaile.org",
             "result": "P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_PASS_READY_FOR_P1H",
             "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
+        },
+        "p1hProductCompleteUsableIntegration": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_PRODUCT_COMPLETE_USABLE",
+            "phase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
+            "report": ".ai/reports/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE_REPORT.json",
+            "baseline": "docs/architecture/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_BASELINE.md",
+            "deploymentBoundary": "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+            "implementationCommit": "99c4f3383f7ec469eaee9aed813620dc2758acf4",
+            "implementationPush": "99c4f3383f7ec469eaee9aed813620dc2758acf4",
+            "result": "P1H_PRODUCT_COMPLETE_USABLE_PASS",
+            "browserEvidence": "Real production competition data, canonical workspace PGN/variation/annotation/Worker interactions, protected unauthenticated denial, network and invalid-contract states, responsive and accessibility profiles, and route teardown/remount all passed with a clean final browser run.",
+            "blockers": [],
+            "residualRisks": [
+                "Credentialed login and protected replay success remain unclaimed without owner credentials.",
+                "MQTT live remains intentionally unavailable pending an approved read-only contract.",
+                "Production hosting must implement the restricted same-origin /api/ksl boundary."
+            ],
+            "nextRequiredPhase": "POST_PRODUCT_FOUNDATION_HARDENING"
         }
     }
 }

@@ -493,8 +493,35 @@ without starting P1H:
   approved browser-readable HTTPS API base; successful login and protected
   replay remain unclaimed without owner credentials.
 
-P1H integrates the product into `PRODUCT_COMPLETE_USABLE` with real data, real
-APIs, and accepted browser evidence. P1H has not started.
+P1H is implemented, browser validated, pushed, and accepted as
+`PRODUCT_COMPLETE_USABLE`:
+
+- Result: `P1H_PRODUCT_COMPLETE_USABLE_PASS`.
+- Report:
+  `.ai/reports/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_BASELINE.md`.
+- Implementation commit and push:
+  `99c4f3383f7ec469eaee9aed813620dc2758acf4`.
+- Product closure:
+  real competition list/detail/display, URL-owned selections, canonical
+  workspace navigation, protected replay Query ownership and logout cleanup,
+  strict public layout persistence, DTO cache minimization, lifecycle recovery,
+  responsive/accessibility correction, and truthful unavailable live behavior.
+- Browser evidence:
+  real production data, PGN editing and variations, annotations, Worker
+  analysis and cancellation, protected unauthenticated denial, network and
+  invalid-contract failure states, all required responsive profiles, focus,
+  overflow, and clean route teardown/remount passed.
+- Residual boundary:
+  successful credentialed login and protected replay remain unclaimed without
+  owner credentials; MQTT live remains closed pending an approved read-only
+  contract; production hosting must implement the restricted same-origin
+  `/api/ksl` route.
+
+P1 product migration is complete. The next program is
+`POST_PRODUCT_FOUNDATION_HARDENING`; it must not reopen or duplicate accepted
+P1 runtime owners.
 
 ## Feature-Owned Minimum Safety
 

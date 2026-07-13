@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "phase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
+  "startedAt": "2026-07-13T09:47:00Z",
+  "completedAt": "2026-07-13T10:38:37Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "baselineCommit": "9d9797d78b3db0036323a9954bbde378a4d597f1",
+  "implementationCommit": "99c4f3383f7ec469eaee9aed813620dc2758acf4",
+  "implementationPush": "99c4f3383f7ec469eaee9aed813620dc2758acf4",
+  "verdict": "P1H_PRODUCT_COMPLETE_USABLE_PASS",
+  "productStatus": "PRODUCT_COMPLETE_USABLE",
+  "safetyGate": {
+    "status": "PASS",
+    "branch": "main",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "localHead": "9d9797d78b3db0036323a9954bbde378a4d597f1",
+    "originMain": "9d9797d78b3db0036323a9954bbde378a4d597f1",
+    "liveRemoteMain": "9d9797d78b3db0036323a9954bbde378a4d597f1",
+    "worktreeAndIndex": "CLEAN",
+    "gitLocks": "ABSENT",
+    "activeRepositoryWriter": "ABSENT"
+  },
+  "acceptedPredecessors": {
+    "phases": [
+      "P1A",
+      "P1B",
+      "P1B2",
+      "P1B3",
+      "P1B4",
+      "P1C",
+      "P1D",
+      "P1E",
+      "P1F",
+      "P1G",
+      "P1G1"
+    ],
+    "p1g1ImplementationCommit": "0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf",
+    "p1g1GovernanceCommit": "9d9797d78b3db0036323a9954bbde378a4d597f1",
+    "blockers": []
+  },
+  "authorityFilesRead": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    ".ai/skills/gsap/SKILL.md",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_CONTRACTS.md",
+    "docs/architecture/P1G_PRODUCTION_API_CONTRACT_INVENTORY.json",
+    "docs/architecture/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_BASELINE.md",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+  ],
+  "productOwners": {
+    "vueBootstrap": "src/main.ts",
+    "router": "src/router/index.ts",
+    "pinia": "src/stores/index.ts",
+    "queryClient": "src/api/queryClient.ts",
+    "axiosClient": "src/api/client.ts",
+    "board": "src/features/board",
+    "pgn": "src/features/pgn and src/stores/pgn.ts",
+    "annotations": "src/features/annotations",
+    "analysisWorkers": "src/features/analysis and src/stores/analysis.ts",
+    "tokens": "src/styles/tokens.css",
+    "workspaceLayout": "src/persistence/workspace/workspaceLayoutPersistence.ts"
+  },
+  "implementedClosure": [
+    "versioned QueryClient keys for every public product query and protected replay",
+    "private replay Query metadata and private cache removal on logout or login failure",
+    "protected handoff, protected PGN, and analysis cleanup without deleting public or local work",
+    "strict removal of raw upstream payloads before domain results and Query cache",
+    "draft-versus-committed competition and player filtering with one request owner",
+    "URL-owned competition group and round selection for refresh and history recovery",
+    "independent detail and pairing error and retry ownership",
+    "sanitized compatibility and replay handoff integration into the canonical workspace",
+    "narrow Dexie layout persistence with strict validation, expiry, and corrupt-record removal",
+    "workspace route navigation to tournaments and authentication",
+    "analysis Worker reinitialization after route teardown and remount",
+    "compact and coarse-pointer 44px interaction targets",
+    "consumer journeys and production deployment boundary documentation"
+  ],
+  "persistenceClassification": {
+    "workspaceLayout": {
+      "owner": "src/persistence/workspace/workspaceLayoutPersistence.ts",
+      "database": "chess-pgnviewer-vue",
+      "schemaVersion": 1,
+      "expiryDays": 30,
+      "stored": [
+        "panel visibility",
+        "toolbar collapsed state",
+        "board alignment",
+        "board orientation",
+        "active right tab",
+        "right PGN height"
+      ],
+      "excluded": [
+        "credentials",
+        "auth tokens",
+        "API payloads",
+        "protected replay",
+        "live payloads",
+        "PGN text",
+        "annotations"
+      ],
+      "corruptOrExpired": "DELETE_AND_USE_DEFAULTS"
+    },
+    "competitionSelection": "ROUTER_QUERY",
+    "publicApiState": "TANSTACK_QUERY_MEMORY",
+    "privateReplayState": "TANSTACK_QUERY_MEMORY_PRIVATE_REMOVED_ON_AUTH_LOSS",
+    "liveState": "MEMORY_ONLY",
+    "authState": "EXISTING_P1G_OWNER_NO_NEW_CREDENTIAL_STORE"
+  },
+  "transportAndSecurity": {
+    "httpOwner": "src/api/client.ts",
+    "transport": "AXIOS_XHR_ONLY",
+    "axiosVersion": "1.18.1",
+    "developmentProxy": "/api/ksl -> https://wxapi.kaisaile.org",
+    "nativeFetch": "ABSENT",
+    "directXMLHttpRequest": "ABSENT",
+    "directAxiosOutsideClient": "ABSENT",
+    "genericCall": "ABSENT",
+    "genericProxyRequest": "ABSENT",
+    "dynamicProxyTarget": "ABSENT",
+    "browserSecrets": "ABSENT",
+    "productionBoundary": "Production hosting must provide the restricted same-origin /api/ksl route or an owner-approved browser-readable HTTPS API base."
+  },
+  "browserValidation": {
+    "runtime": "real local Vite application with same-origin /api/ksl and production upstream data",
+    "productionCompetition": "47347",
+    "routes": [
+      "/pgnViewer/",
+      "/competitions",
+      "/competitions/47347",
+      "/competitions/47347/display",
+      "/competitions/47347/live",
+      "/match/PGNShare:integration",
+      "/share/integration",
+      "/cloud/integration",
+      "/login?next=%2Fcompetitions",
+      "/unknown-catchall"
+    ],
+    "realData": {
+      "listRows": 20,
+      "listTotal": 18360,
+      "committedSearchRows": 4,
+      "groups": 2,
+      "rounds": 3,
+      "selectedRoundPairings": 2,
+      "playerSearchRows": 1,
+      "displayRows": 2
+    },
+    "workspaceInteractions": [
+      "valid manual FEN PGN creation",
+      "legal e2-e4 mainline move",
+      "legal d2-d4 variation creation",
+      "annotation draw, undo, redo, and clear",
+      "Worker analysis, cancellation, navigation refresh, and candidate lines",
+      "route teardown, Worker disposal, workspace remount, and Worker reinitialization",
+      "layout persistence across reload"
+    ],
+    "responsiveProfiles": [
+      "1440x900",
+      "1920x1080",
+      "768x1024",
+      "1024x768",
+      "390x844",
+      "844x390"
+    ],
+    "accessibility": [
+      "visible keyboard focus",
+      "44px compact and coarse-pointer targets",
+      "system theme resolution",
+      "reduced-motion contract retained",
+      "no document-level horizontal overflow"
+    ],
+    "negativeAndRecovery": [
+      "network interruption produced the owned error state and recovered when service returned",
+      "malformed replay DTO rejected as contract-mismatch",
+      "unauthenticated protected replay denied before protected data loaded",
+      "unconfirmed live and compatibility sources remained truthfully unavailable",
+      "repeated route navigation did not accumulate boards or Workers"
+    ],
+    "cleanRun": {
+      "nonblankDom": true,
+      "viteOverlay": false,
+      "consoleErrors": 0,
+      "consoleWarnings": 0,
+      "staleAnalysisResultsAccepted": 0,
+      "activeGsapResidue": 0,
+      "documentOverflow": false
+    },
+    "credentialDependentEvidence": "NOT_RUN_OWNER_CREDENTIALS_UNAVAILABLE",
+    "mqttLive": "INTENTIONALLY_UNAVAILABLE_CONTRACT_NOT_APPROVED",
+    "result": "PASS"
+  },
+  "validation": {
+    "pnpm run check:deps": "PASS",
+    "pnpm run check:architecture": "PASS",
+    "pnpm run check:tokens": "PASS",
+    "pnpm run check:mocks": "PASS",
+    "pnpm run check:secrets": "PASS",
+    "pnpm run format:check": "PASS",
+    "pnpm run lint": "PASS",
+    "pnpm run lint:style": "PASS",
+    "pnpm run check:unused": "PASS",
+    "pnpm run check:governance": "PASS",
+    "pnpm run typecheck": "PASS",
+    "pnpm run audit:prod": "PASS_NO_KNOWN_VULNERABILITIES",
+    "pnpm audit": "PASS_NO_KNOWN_VULNERABILITIES",
+    "pnpm list --depth 0": "PASS_28_PACKAGES_ONE_AXIOS_1_18_1",
+    "pnpm run check:static": "PASS",
+    "temporaryProductionBuild": "PASS_3142_MODULES",
+    "automatedTests": "NOT_CREATED_NOT_RUN_BY_POLICY"
+  },
+  "sourceEvidenceIntegrity": {
+    "pgnViewerNewGitHead": "NO_GIT_HEAD",
+    "pgnViewerNewStatusHashBefore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "chessPgnviewerGitHead": "NO_GIT_HEAD",
+    "chessPgnviewerStatusHashBefore": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pgnViewerGitHead": "eeff5f95b6d781522eb4aca5959540b2a87feb65",
+    "pgnViewerStatusHashBefore": "310ddd6a95fc9ced5695328a53d21f12d5811abaed0816b15de01e2b2b8ad78a",
+    "finalComparison": "PASS_ALL_HEADS_AND_STATUS_HASHES_UNCHANGED"
+  },
+  "deferredPostProductFoundations": [
+    "comprehensive Query policy and repository consolidation",
+    "security runtime headers and deployment hardening",
+    "global error and feedback framework",
+    "i18n completion",
+    "UI adapter and overlay expansion",
+    "broad Dexie preferences, drafts, and cross-tab synchronization",
+    "comprehensive accessibility and motion foundations",
+    "foundation preview and broad integration infrastructure"
+  ],
+  "residualRisks": [
+    "Successful login, protected replay success, authenticated logout, and post-logout server denial remain unclaimed because owner credentials were unavailable.",
+    "MQTT/electronic-board live remains intentionally unavailable pending an owner-approved read-only contract.",
+    "Production hosting must implement and validate the restricted same-origin /api/ksl boundary."
+  ],
+  "blockers": [],
+  "nextPhase": "POST_PRODUCT_FOUNDATION_HARDENING"
+}

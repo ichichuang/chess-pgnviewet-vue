@@ -317,8 +317,19 @@ P1G is now implemented and browser validated:
   `.ai/reports/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION_REPORT.json`.
 - P1G1 result:
   `P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_PASS_READY_FOR_P1H`.
-- The next required phase is
-  `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`; it has not started.
+- P1H then integrated the accepted runtime into a complete usable product:
+  committed competition filters, URL-owned group and round selection, one
+  QueryClient owner for public and private product data, protected replay and
+  logout cleanup, strict feature-owned Dexie layout persistence, lifecycle
+  recovery, product navigation, and responsive/accessibility closure.
+- P1H implementation commit and push:
+  `99c4f3383f7ec469eaee9aed813620dc2758acf4`.
+- P1H report:
+  `.ai/reports/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE_REPORT.json`.
+- P1H result: `P1H_PRODUCT_COMPLETE_USABLE_PASS`.
+- The product-first delivery program is now `PRODUCT_COMPLETE_USABLE`. The
+  next program is `POST_PRODUCT_FOUNDATION_HARDENING`; it must preserve the
+  accepted runtime owners and remain separate from product migration.
 
 ## P1 Product Migration Program
 
