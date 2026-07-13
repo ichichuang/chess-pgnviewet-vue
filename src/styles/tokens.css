@@ -125,9 +125,74 @@
   --board-overlay-z: 6;
   --board-ghost-z: 50;
   --board-promotion-z: 70;
+  --board-radial-z: 70;
+  --board-editor-z: 72;
   --board-touch-target-min: 44px;
   --board-promotion-piece-size: 56px;
   --board-promotion-backdrop: rgb(20 35 25 / 0.32);
+  --board-motion-duration-move: 0.28s;
+  --board-motion-duration-snapback: 0.22s;
+  --board-motion-duration-drag-settle: 0.18s;
+  --board-motion-duration-piece-settle: 0.15s;
+  --board-motion-ease-move: power3.out;
+  --board-motion-ease-snapback: power3.out;
+  --board-motion-ease-drag-settle: power2.out;
+  --board-motion-ease-piece-settle: power1.out;
+  --board-radial-size: 300px;
+  --board-radial-center: 150px;
+  --board-radial-open-duration: 0.2s;
+  --board-radial-close-duration: 0.12s;
+  --board-radial-slice-close-duration: 0.1s;
+  --board-radial-indicator-duration: 0.2s;
+  --board-radial-stagger-duration: 0.02s;
+  --board-radial-close-stagger-duration: 0.01s;
+  --board-radial-css-duration: 0.16s;
+  --board-radial-open-ease: back.out(2);
+  --board-radial-close-ease: power1.in;
+  --board-radial-indicator-ease: power1.out;
+  --board-radial-sector-stroke: 1.8;
+  --board-radial-active-sector-stroke: 4.2;
+  --board-radial-active-color-stroke: 4;
+  --board-radial-active-width-stroke: 3.4;
+  --board-radial-slice-active-stroke: 2.6;
+  --board-radial-swatch-stroke: 3.2;
+  --board-radial-label-font-size: 17px;
+  --board-radial-label-font-weight: 800;
+  --board-radial-slice-fill: color-mix(in srgb, var(--surface) 86%, transparent);
+  --board-radial-slice-selected: color-mix(in srgb, var(--accent) 58%, var(--surface));
+  --board-radial-slice-active: color-mix(in srgb, var(--accent) 78%, var(--text));
+  --board-radial-divider: color-mix(in srgb, var(--border) 72%, transparent);
+  --board-radial-primary-soft: color-mix(in srgb, var(--accent) 24%, transparent);
+  --board-radial-primary-line: color-mix(in srgb, var(--accent) 88%, var(--text));
+  --board-radial-core-fill: color-mix(in srgb, var(--surface) 82%, transparent);
+  --board-radial-swatch-ring: color-mix(in srgb, var(--text) 74%, transparent);
+  --board-radial-active-fill: color-mix(in srgb, var(--accent) 16%, transparent);
+  --board-radial-active-shadow: drop-shadow(
+    0 0 9px color-mix(in srgb, var(--accent) 42%, transparent)
+  );
+  --board-radial-swatch-shadow: drop-shadow(
+    0 3px 6px color-mix(in srgb, var(--text) 20%, transparent)
+  );
+  --board-radial-width-shadow: drop-shadow(
+    0 2px 5px color-mix(in srgb, var(--text) 18%, transparent)
+  );
+  --board-radial-shadow: none;
+  --board-editor-panel-w: 320px;
+  --board-editor-panel-mobile-h: 48vh;
+  --board-editor-panel-gap: 14px;
+  --board-editor-panel-pad: 14px;
+  --board-editor-panel-pad-compact: 12px;
+  --board-editor-chip-min: 36px;
+  --board-editor-piece-img-size: 84%;
+  --board-editor-chip-hover-y: -1px;
+  --board-editor-compact-button-h: 30px;
+  --board-editor-operation-margin: auto;
+  --board-editor-intro-duration: 0.2s;
+  --board-editor-intro-ease: power2.out;
+  --board-editor-chip-bg: color-mix(in srgb, var(--surface-2) 76%, transparent);
+  --board-editor-button-bg: color-mix(in srgb, var(--surface-2) 82%, transparent);
+  --board-wheel-throttle: 60ms;
+  --board-drag-threshold: 5px;
 
   /* Annotation colors */
   /* prettier-ignore */

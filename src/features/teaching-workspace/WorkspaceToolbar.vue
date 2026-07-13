@@ -69,6 +69,13 @@ function setAnnotationColor(color = '') {
         >
           {{ alignment.label }}
         </button>
+        <button
+          class="toolbar-button compact"
+          type="button"
+          @click="emit('action', 'enterBoardEditor')"
+        >
+          摆谱
+        </button>
       </section>
 
       <section class="toolbar-group" aria-label="棋谱导航">

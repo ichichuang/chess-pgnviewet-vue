@@ -101,6 +101,20 @@ function parseStrictCollection(text: string): PgnItem[] {
   return items
 }
 
+function pgnTextFromFen(fen: string): string {
+  const escapedFen = fen.replace(/\\/gu, '\\\\').replace(/"/gu, '\\"')
+  const date = new Date().toISOString().slice(0, 10).replace(/-/gu, '.')
+
+  return [
+    '[Event "manual"]',
+    `[Date "${date}"]`,
+    '[SetUp "1"]',
+    `[FEN "${escapedFen}"]`,
+    '',
+    '',
+  ].join('\n')
+}
+
 export const usePgnStore = defineStore('pgn', {
   state: (): PgnState => defaultPgnState(),
 
@@ -244,6 +258,42 @@ export const usePgnStore = defineStore('pgn', {
           this.selectItem(0)
         }
 
+        this.pendingPromotion = null
+        this.pendingBranch = null
+        this.drawUndo = []
+        this.drawRedo = []
+        this.lastError = null
+        return true
+      } catch (error) {
+        this.lastError = error instanceof Error ? error.message : 'PGN 解析失败'
+        return false
+      }
+    },
+    insertPgnFromFen(fen: string): boolean {
+      const normalizedFen = fen.trim().replace(/\s+/gu, ' ')
+
+      try {
+        new Chess(normalizedFen)
+      } catch {
+        this.lastError = 'FEN 格式不正确'
+        return false
+      }
+
+      try {
+        const [item] = parseStrictCollection(pgnTextFromFen(normalizedFen))
+
+        if (!item) {
+          this.lastError = 'PGN 中未找到棋谱'
+          return false
+        }
+
+        item.dataSource = { type: 'manual' }
+
+        const hasSelectedItem = this.selectedIndex >= 0 && this.selectedIndex < this.items.length
+        const insertIndex = hasSelectedItem ? this.selectedIndex + 1 : this.items.length
+        this.items.splice(insertIndex, 0, item)
+        this.source = { type: 'manual' }
+        this.selectItem(insertIndex)
         this.pendingPromotion = null
         this.pendingBranch = null
         this.drawUndo = []

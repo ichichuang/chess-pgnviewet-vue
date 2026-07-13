@@ -36,6 +36,7 @@ Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, r
 - Keep one workspace shell and one global token registry.
 - No body scroll; modules declare scroll ownership and preserve geometry.
 - No raw visual values in feature files.
+- GSAP animation, animated board interaction, and later animated UI work must read and obey `.ai/skills/gsap/SKILL.md`.
 - Persist only categorized, non-secret state; logout clears private/auth state while preserving non-sensitive public workspace context.
 - Confirmed reads use typed repositories and a same-origin server boundary. Unknown contracts remain blocked, never faked.
 - Browser code never owns upstream credentials or signing secrets.

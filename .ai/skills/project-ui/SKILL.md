@@ -45,6 +45,7 @@ Before editing UI code, read and obey:
 - Touch targets are at least 44×44 CSS pixels where interactive.
 - Board, keyboard navigation, dialogs, menus, and panels meet WCAG 2.1 AA and expose accessible names.
 - Motion clarifies state, uses GSAP or Vue transitions only where canonical behavior requires it, cleans up on unmount, and honors `prefers-reduced-motion`.
+- GSAP animation, animated board interaction, and later animated UI work must also read and obey `.ai/skills/gsap/SKILL.md`.
 - Responsive modes preserve one component system; mobile drawers and big-screen composition are variants, not forks.
 - Page and mode transitions preserve outer geometry and user intent.
 

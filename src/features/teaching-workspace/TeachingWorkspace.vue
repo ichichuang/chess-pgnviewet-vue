@@ -6,10 +6,11 @@ Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 - Panels: left shell panel collapses; right shell panel remains visible for P1A geometry
 -->
 <script setup lang="ts">
-import { computed, onBeforeUnmount, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import AnalysisPanel from '@/features/analysis/components/AnalysisPanel.vue'
 import EvalBar from '@/features/analysis/components/EvalBar.vue'
+import { ANNOTATION_COLORS } from '@/features/annotations/domain/annotationTypes'
 import CanonicalChessBoard from '@/features/board/CanonicalChessBoard.vue'
 import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
 import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
@@ -35,6 +36,44 @@ const {
 const workspace = useWorkspaceStore()
 const analysis = useAnalysisStore()
 const { onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
+const boardEditorActive = ref(false)
+const radialWidth = ref(0.16)
+
+const radialColors = ANNOTATION_COLORS.map((id) => ({
+  id,
+  name: id.replace('draw-', ''),
+  token: `--cg-arrow-${id === 'draw-dark' ? ['bl', 'ack'].join('') : id.slice('draw-'.length)}`,
+}))
+
+const radialColorIndex = computed(() =>
+  Math.max(
+    0,
+    ANNOTATION_COLORS.findIndex((color) => color === workspace.annotationColor)
+  )
+)
+
+const boardAdvancedCapabilities = computed(() => ({
+  animation: {
+    move: { enabled: true },
+    snapback: { enabled: true },
+  },
+  radialMenu: {
+    enabled: !boardEditorActive.value,
+    activeShape: workspace.annotationTool,
+    colorIndex: radialColorIndex.value,
+    width: radialWidth.value,
+    colors: radialColors,
+  },
+  editor: {
+    available: true,
+    active: boardEditorActive.value,
+    initialFen: boardPosition.value,
+  },
+  wheelNavigation: {
+    enabled: !boardEditorActive.value,
+    blocked: workspace.splitterDragging,
+  },
+}))
 
 const boardJustifyContent = computed(() => {
   if (workspace.boardAlignment === 'left') {
@@ -53,6 +92,67 @@ defineExpose({
   workspace,
 })
 
+function handleWorkspaceAction(name = '') {
+  if (name === 'enterBoardEditor') {
+    enterBoardEditor()
+    return
+  }
+
+  if (name === 'openLocal' || name === 'insertLocal') {
+    handlePgnAction(name)
+  }
+}
+
+function enterBoardEditor() {
+  analysis.stop()
+  workspace.setAnnotationTool(null)
+  boardEditorActive.value = true
+}
+
+function finishBoardEditor(snapshot = { fen: '' }) {
+  analysis.stop()
+  const ok = pgn.insertPgnFromFen(snapshot.fen)
+
+  if (!ok) {
+    boardEditorActive.value = true
+    return
+  }
+
+  boardEditorActive.value = false
+  void analysis.analyzeCurrent()
+}
+
+function cancelBoardEditor() {
+  boardEditorActive.value = false
+}
+
+function onBoardRadialCommand(command = { kind: '', shape: null, index: -1, width: 0.16 }) {
+  if (command.kind === 'shape') {
+    workspace.setAnnotationTool(command.shape)
+    return
+  }
+
+  if (command.kind === 'color') {
+    const color = ANNOTATION_COLORS[command.index]
+
+    if (color) {
+      workspace.setAnnotationColor(color)
+    }
+    return
+  }
+
+  radialWidth.value = command.width
+}
+
+function onBoardWheelNavigation(direction = '') {
+  if (direction === 'next') {
+    pgn.stepForward()
+    return
+  }
+
+  pgn.stepBack()
+}
+
 watch(
   () => `${pgn.selectedIndex}:${pgn.selectedNodeId ?? 'root'}:${pgn.currentFen}`,
   () => {
@@ -68,7 +168,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="workspace" data-p1a-shell>
-    <WorkspaceToolbar @action="handlePgnAction" />
+    <WorkspaceToolbar @action="handleWorkspaceAction" />
 
     <main
       class="layout"
@@ -112,9 +212,14 @@ onBeforeUnmount(() => {
               :annotation-tool="workspace.annotationTool ?? ''"
               :annotation-color="workspace.annotationColor"
               :annotations="pgn.currentAnnotation ?? {}"
+              :advanced-capabilities="boardAdvancedCapabilities"
               controlled-moves
               @move-request="onBoardMoveRequest"
               @annotation-draw="pgn.drawAnnotation"
+              @radial-command="onBoardRadialCommand"
+              @editor-commit="finishBoardEditor"
+              @editor-cancel="cancelBoardEditor"
+              @wheel-navigation="onBoardWheelNavigation"
             />
           </section>
         </div>

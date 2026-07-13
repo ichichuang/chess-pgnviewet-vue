@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { BOARD_COLOR_WHITE, BOARD_ORIENTATION_WHITE } from './domain/boardTypes'
+import BoardRadialMenu from './radial-menu/BoardRadialMenu.vue'
 import { useBoardView } from './useBoardView'
 
 const props = defineProps({
@@ -13,9 +14,18 @@ const props = defineProps({
   annotationTool: { type: String, default: null },
   annotationColor: { type: String, default: 'draw-red' },
   annotations: { type: Object, default: () => ({}) },
+  advancedCapabilities: { type: Object, default: undefined },
+  editorDraft: { type: Object, default: null },
 })
 
-const emit = defineEmits(['move', 'interaction-active', 'annotation-draw'])
+const emit = defineEmits([
+  'move',
+  'interaction-active',
+  'annotation-draw',
+  'radial-command',
+  'editor-update',
+  'wheel-navigation',
+])
 
 const {
   annotationArrows,
@@ -34,12 +44,15 @@ const {
   files,
   focusedMarker,
   ghost,
+  ghostEl,
   hoverSquare,
   onCancel,
+  onContextMenu,
   onDown,
   onKeydown,
   onLeave,
   onMove,
+  onRadialSelect,
   onUp,
   overlayOn,
   pieces,
@@ -47,11 +60,17 @@ const {
   pieceImg,
   QUIET_MOVE_RADIUS,
   ranks,
+  radial,
   selectedMarker,
   squarePx,
   stateOverlays,
+  svg,
   wrap,
-} = useBoardView(props, emit)
+  wheelBindings,
+} = useBoardView(
+  props,
+  emit
+)
 </script>
 
 <template>
@@ -70,8 +89,10 @@ const {
         tabindex="0"
         :aria-label="ariaLabel"
         @keydown="onKeydown"
+        v-on="wheelBindings"
       >
         <svg
+          ref="svg"
           class="board-svg"
           viewBox="0 0 8 8"
           preserveAspectRatio="xMidYMid meet"
@@ -262,11 +283,12 @@ const {
           @pointerup="onUp"
           @pointercancel="onCancel"
           @pointerleave="onLeave"
-          @contextmenu.prevent
+          @contextmenu="onContextMenu"
         />
 
         <img
           v-if="ghost"
+          ref="ghostEl"
           class="ghost"
           :src="pieceImg(ghost.letter)"
           :style="{
@@ -277,6 +299,19 @@ const {
           }"
           alt=""
           draggable="false"
+        />
+        <BoardRadialMenu
+          v-if="radial.mounted.value"
+          :open="radial.open.value"
+          :x="radial.x.value"
+          :y="radial.y.value"
+          :pointer-x="radial.pointerX.value"
+          :pointer-y="radial.pointerY.value"
+          :colors="radial.colors.value.slice()"
+          :active-shape="radial.activeShape.value ?? ''"
+          :color-index="radial.colorIndex.value"
+          :width="radial.width.value"
+          @select="onRadialSelect"
         />
       </div>
       <div class="coords ranks ranks-right" aria-hidden="true">
