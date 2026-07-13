@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "phase": "W2_AUTH_URL_TOKEN_REMOVAL_PRIVATE_LIFECYCLE_AND_TRUTHFUL_UI",
+  "completedAt": "2026-07-14T07:18:21+08:00",
+  "status": "IMPLEMENTED_VALIDATED_READY_FOR_FINAL_READINESS",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "safetyGate": {
+    "localHead": "4f1720e10a85eb629522a28c789f80dad0cf3bd6",
+    "originMain": "4f1720e10a85eb629522a28c789f80dad0cf3bd6",
+    "liveRemoteMain": "4f1720e10a85eb629522a28c789f80dad0cf3bd6",
+    "ahead": 0,
+    "behind": 0,
+    "worktreeCount": 1,
+    "gitLocks": [],
+    "writableRepositoryFileDescriptors": 0,
+    "result": "PASS"
+  },
+  "removedRuntime": [
+    "src/api/auth.ts",
+    "src/api/md5.ts",
+    "password and password-digest collection",
+    "openid compatibility payloads",
+    "URL token absorption and route-query session restoration",
+    "indefinite localStorage session restoration",
+    "login application identifier configuration"
+  ],
+  "implemented": {
+    "authState": [
+      "The auth store remains anonymous and unavailable until a safe Web-only login lifecycle is verified.",
+      "Initialization deletes only enumerated legacy auth keys and never restores them as authority.",
+      "Local logout and auth loss clear private Query entries, protected replay, protected handoffs, and active analysis while preserving public local PGN work and public tournament queries.",
+      "A private-query HTTP 401 schedules centralized auth-loss cleanup; HTTP 403 remains a permission error and cannot escalate privileges.",
+      "No expiry is invented because no accepted session or stable source expiry exists."
+    ],
+    "uiState": [
+      "The login route renders a credential-free unavailable explanation.",
+      "Product navigation labels the route as authentication information rather than a working login.",
+      "ResourceState distinguishes authentication, permission, unavailable, retryable error, loading, and empty states.",
+      "Deterministic unavailable errors do not render retry controls and stop display polling.",
+      "Protected replay reports the blocked authentication contract without issuing a request."
+    ],
+    "governance": [
+      "Git-backed scanners now ignore tracked paths that have been deleted from the working tree, while still failing closed for every file that can ship.",
+      "Secret and mock scanners pass after unsafe auth modules are removed."
+    ]
+  },
+  "implementationHashes": {
+    "src/stores/auth.ts": "67f189d28a53c926ee21d2b60142b775f802e6215a19c42c260d46594c0c6ad0",
+    "src/persistence/auth/sessionPersistence.ts": "9a5e48b5cc326bf0f062d38b8b3fb89fd3c6a35b4edfc719f8da4fcd9ceb8c38",
+    "src/router/index.ts": "da7f578163cd1080edc3572320f4ee2c1bc550dd74347e56775ff9af357e3a55",
+    "src/features/product-api/views/LoginView.vue": "d830dc533fdcb861a9116de3ac3d56caa53daa0f2010932294b07273e1ae88c0",
+    "src/features/product-api/components/ResourceState.vue": "f9a849ab942faae1e1f4d5e96ee6926974bf96eb9d63e6d3e2e7810a6d0cf6b8",
+    "src/features/product-api/domain/resourceError.ts": "a1297a42ef3ed12de51988af71dc317a14e047f731792b8390402390cfe274d1",
+    "src/features/teaching-workspace/useRemoteReplayLoader.ts": "39f944895a8fdbc9e6a14fcae58b2c5a350d8fad123237b85d50753abe7d47ff",
+    "src/persistence/workspace/workspaceHandoff.ts": "eb6a65b08be0d997673d0b8136769fb5fcce9f51ec2d631817ea760e18aacb15",
+    "src/api/client.ts": "e0f8d3c804f62de75fa87db7c024218a4f59a0689556e2f57a3919cd42c61709",
+    "src/api/privateAuthLifecycle.ts": "2b5d704f7df5c4f9d7356433dca0ee43be99f39492a3fa46b6d108200c329624",
+    "src/api/queryClient.ts": "4aae8b116a90db3508bfd3f63451637d16210cd8b01cfc11f4e6abf77eb830e0",
+    "scripts/governance/utils.mjs": "e0f0c778626e49e85bc897c51dd485fe457c99686ad21b94ec060c9c30a885fe"
+  },
+  "browserValidation": {
+    "tool": "Playwright CLI runtime session",
+    "baseUrl": "http://127.0.0.1:5174/pgnViewer/",
+    "routes": ["/login", "/competitions"],
+    "loginDom": {
+      "nonblank": true,
+      "mainCount": 1,
+      "formCount": 0,
+      "credentialInputCount": 0,
+      "unavailableCopyPresent": true,
+      "viteOverlayPresent": false
+    },
+    "interaction": "Keyboard focus and Enter activation of the visible 返回赛事 link changed the route from /login to /competitions.",
+    "competitionState": {
+      "nonblank": true,
+      "truthfulCorsUnavailableState": true,
+      "retryButtonCount": 0,
+      "upstreamRequestsSent": 0,
+      "viteOverlayPresent": false
+    },
+    "legacyRestorationProbe": "A controlled obsolete legacy key was deleted on reload and was not restored as a session.",
+    "console": "No app-breaking error; the only error was the preexisting nonbreaking favicon.ico 404.",
+    "retainedArtifacts": []
+  },
+  "validation": [
+    {
+      "command": "pnpm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "PASS_INCLUDING_FORMAT_STYLELINT_KNIP_SECRET_MOCK_AND_PRODUCTION_AUDIT"
+    },
+    {
+      "command": "pnpm run build",
+      "result": "PASS"
+    },
+    {
+      "command": "jq empty docs/architecture/*.json docs/migration/*.json .ai/reports/*.json",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    },
+    {
+      "command": "Playwright CLI narrow runtime validation",
+      "result": "PASS"
+    }
+  ],
+  "residualBlocks": [
+    "The confirmed upstream still grants no verified cross-origin browser CORS contract.",
+    "Password login remains blocked until a non-openid, non-browser-HMAC Web request is verified.",
+    "Finished replay remains blocked until an approved guest-token lifecycle is verified.",
+    "The repository has no hosting authority that can remove these upstream contract blocks."
+  ],
+  "result": "AUTH_AND_URL_TOKEN_RUNTIME_REMOVED_PRIVATE_LIFECYCLE_AND_TRUTHFUL_UI_VALIDATED"
+}

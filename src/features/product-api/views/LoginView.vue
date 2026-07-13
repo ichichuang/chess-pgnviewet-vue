@@ -1,68 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import { useAuthStore } from '@/stores'
 
-const route = useRoute()
-const router = useRouter()
 const auth = useAuthStore()
-const account = ref('')
-const password = ref('')
-const submitting = computed(() => auth.status === 'submitting')
-
-function safeNext(value: unknown): string {
-  const text = typeof value === 'string' ? value.trim() : ''
-  if (!text || !text.startsWith('/') || text.startsWith('//')) return '/'
-  for (const character of text) {
-    const code = character.charCodeAt(0)
-
-    if (
-      code <= 31 ||
-      character === '<' ||
-      character === '>' ||
-      character === '`' ||
-      character === '"' ||
-      character === "'" ||
-      character === '\\'
-    ) {
-      return '/'
-    }
-  }
-  return text
-}
-
-async function submitLogin(): Promise<void> {
-  try {
-    await auth.login(account.value, password.value)
-    await router.replace(safeNext(route.query.next))
-  } catch {
-    password.value = ''
-  }
-}
 </script>
 
 <template>
   <main class="product-route">
-    <RouteHeader title="登录" subtitle="使用生产认证接口建立当前会话" />
+    <RouteHeader title="认证说明" subtitle="当前不收集登录凭据" />
 
     <section class="login-surface" aria-labelledby="login-title">
-      <form class="login-form" @submit.prevent="submitLogin">
-        <h2 id="login-title">账号登录</h2>
-        <label>
-          <span>账号</span>
-          <input v-model.trim="account" autocomplete="username" required />
-        </label>
-        <label>
-          <span>密码</span>
-          <input v-model="password" autocomplete="current-password" required type="password" />
-        </label>
-        <p v-if="auth.lastError" class="form-error">{{ auth.lastError }}</p>
-        <button type="submit" :disabled="submitting">
-          {{ submitting ? '登录中' : '登录' }}
-        </button>
-      </form>
+      <div class="login-notice" role="status">
+        <h2 id="login-title">登录暂不可用</h2>
+        <p>{{ auth.unavailableMessage }}</p>
+        <p>公开赛事合同已确认，但当前部署尚未获得跨域权限；受保护回放同样保持不可用。</p>
+        <RouterLink :to="{ name: 'competitions' }">返回赛事</RouterLink>
+      </div>
     </section>
   </main>
 </template>
@@ -85,62 +38,46 @@ async function submitLogin(): Promise<void> {
   overflow: auto;
 }
 
-.login-form {
+.login-notice {
   display: grid;
   gap: var(--s-4);
-  width: min(100%, 420px);
+  width: min(100%, 560px);
   padding: var(--s-5);
   border: var(--workspace-border-w) solid var(--border);
   border-radius: var(--r-sm);
   background: var(--surface);
 }
 
-.login-form h2,
-.login-form p {
+.login-notice h2,
+.login-notice p {
   margin: 0;
 }
 
-.login-form h2 {
+.login-notice h2 {
   font-size: var(--fs-lg);
 }
 
-.login-form label {
-  display: grid;
-  gap: var(--s-2);
-}
-
-.login-form span {
+.login-notice p {
   color: var(--text-muted);
-  font-size: var(--fs-sm);
 }
 
-.login-form input {
+.login-notice a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
   min-height: var(--control-h);
   padding: 0 var(--s-3);
   border: var(--workspace-border-w) solid var(--border-strong);
   border-radius: var(--r-sm);
   background: var(--surface-2);
   color: var(--text);
-  font: inherit;
+  text-decoration: none;
 }
 
-.login-form button {
-  min-height: var(--control-h);
-  border: var(--workspace-border-w) solid var(--accent);
-  border-radius: var(--r-sm);
-  background: var(--accent-bg);
-  color: var(--accent-strong);
-  font: inherit;
-  cursor: pointer;
-}
-
-.login-form button:disabled {
-  cursor: default;
-  opacity: var(--workspace-disabled-opacity);
-}
-
-.form-error {
-  color: var(--danger);
-  font-size: var(--fs-sm);
+@media (pointer: coarse), (width <= 1024px) {
+  .login-notice a {
+    min-height: var(--board-touch-target-min);
+  }
 }
 </style>

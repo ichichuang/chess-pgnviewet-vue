@@ -1,9 +1,15 @@
 <script setup lang="ts">
-withDefaults(
+import { computed } from 'vue'
+
+import type { ResourceErrorKind } from '@/features/product-api/domain/resourceError'
+
+const props = withDefaults(
   defineProps<{
     pending?: boolean
     empty?: boolean
     errorText?: string
+    errorKind?: ResourceErrorKind
+    retryable?: boolean
     loadingText?: string
     emptyText?: string
   }>(),
@@ -11,10 +17,19 @@ withDefaults(
     pending: false,
     empty: false,
     errorText: '',
+    errorKind: 'error',
+    retryable: false,
     loadingText: '加载中',
     emptyText: '暂无数据',
   }
 )
+
+const errorTitle = computed(() => {
+  if (props.errorKind === 'authentication') return '需要认证'
+  if (props.errorKind === 'permission') return '权限不足'
+  if (props.errorKind === 'unavailable') return '服务不可用'
+  return '加载失败'
+})
 
 const emit = defineEmits<{
   retry: []
@@ -25,9 +40,9 @@ const emit = defineEmits<{
   <section v-if="pending || errorText || empty" class="resource-state" aria-live="polite">
     <strong v-if="pending">{{ loadingText }}</strong>
     <template v-else-if="errorText">
-      <strong>加载失败</strong>
+      <strong>{{ errorTitle }}</strong>
       <p>{{ errorText }}</p>
-      <button type="button" @click="emit('retry')">重试</button>
+      <button v-if="retryable" type="button" @click="emit('retry')">重试</button>
     </template>
     <strong v-else>{{ emptyText }}</strong>
   </section>

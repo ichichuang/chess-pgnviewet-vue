@@ -18,15 +18,30 @@ export type ApiClientErrorKind =
   | 'timeout'
   | 'upstream'
 
+const RETRYABLE_ERROR_KINDS = new Set<ApiClientErrorKind>([
+  'network',
+  'rate-limited',
+  'service-unavailable',
+  'timeout',
+  'upstream',
+])
+
 export class ApiClientError extends Error {
   readonly kind: ApiClientErrorKind
   readonly status: number | null
+  readonly retryable: boolean
 
-  constructor(input: { kind: ApiClientErrorKind; message: string; status?: number | null }) {
+  constructor(input: {
+    kind: ApiClientErrorKind
+    message: string
+    status?: number | null
+    retryable?: boolean
+  }) {
     super(input.message)
     this.name = 'ApiClientError'
     this.kind = input.kind
     this.status = input.status ?? null
+    this.retryable = input.retryable ?? RETRYABLE_ERROR_KINDS.has(input.kind)
   }
 }
 
@@ -128,6 +143,7 @@ function assertBrowserTransportAvailable(): void {
     throw new ApiClientError({
       kind: 'service-unavailable',
       message: '当前部署未获得已验证 Web API 的跨域访问权限。',
+      retryable: false,
     })
   }
 }

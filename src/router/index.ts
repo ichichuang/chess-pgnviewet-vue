@@ -57,23 +57,9 @@ export const router = createRouter({
   ]
 })
 
-router.beforeEach((to) => {
+router.beforeEach(() => {
   const auth = useAuthStore()
-  const absorbed = auth.absorbRouteQuery(to.query)
-
-  if (absorbed.changed) {
-    return {
-      name: to.name ?? 'workspace',
-      params: to.params,
-      query: absorbed.query,
-      hash: to.hash,
-      replace: true
-    }
-  }
-
-  if (!auth.initialized) {
-    auth.restoreStoredSession()
-  }
+  auth.initialize()
 
   return true
 })

@@ -2,10 +2,10 @@
 import { useQuery } from '@tanstack/vue-query'
 import { computed, ref } from 'vue'
 
-import { apiErrorMessage } from '@/api/client'
 import { tournamentRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
+import { resourceError } from '@/features/product-api/domain/resourceError'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 
 const now = new Date()
@@ -43,9 +43,7 @@ const total = computed(() => competitionQuery.data.value?.total ?? 0)
 const listPending = computed(() => competitionQuery.isPending.value)
 const canGoPrevious = computed(() => page.value > 0)
 const canGoNext = computed(() => (page.value + 1) * pageSize < total.value)
-const errorText = computed(() =>
-  competitionQuery.error.value ? apiErrorMessage(competitionQuery.error.value) : ''
-)
+const errorState = computed(() => resourceError(competitionQuery.error.value))
 
 function applyFilters(): void {
   const nextFilters = {
@@ -113,7 +111,9 @@ function nextPage(): void {
 
       <ResourceState
         :pending="listPending"
-        :error-text="errorText"
+        :error-text="errorState?.text ?? ''"
+        :error-kind="errorState?.kind ?? 'error'"
+        :retryable="errorState?.retryable ?? false"
         :empty="!listPending && competitions.length === 0"
         empty-text="没有返回赛事"
         @retry="competitionQuery.refetch()"

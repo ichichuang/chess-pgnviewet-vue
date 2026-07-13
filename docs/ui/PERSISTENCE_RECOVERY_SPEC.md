@@ -71,27 +71,27 @@ This document governs:
 | ---------------- | ------------------------------------------------------------------------------ |
 | Storage          | URL query parameters                                                           |
 | Example fields   | `handoff`, `mode`, `source` (only when shareable), `moveIndex`, `panelVisible` |
-| Versioning       | Handoff token versioned by backend; URL params versioned by app                |
+| Versioning       | Project-owned handoff context identifiers and URL params are versioned by app  |
 | Migration        | Unknown params ignored; deprecated params mapped once                          |
 | Expiration       | Lives with URL                                                                 |
 | Security         | Must not contain tokens, MQTT credentials, or PII                              |
-| Refresh recovery | Re-read from URL on load; handoff resolved and removed                         |
+| Refresh recovery | Re-read safe URL state; resolve a local handoff context when present           |
 | Reset behavior   | Browser back/forward updates URL state                                         |
 | Tests            | URL round-trip test, handoff resolution test, no-secret-in-URL audit           |
 
 ### 5. API query cache
 
-| Attribute        | Value                                                                                                          |
-| ---------------- | -------------------------------------------------------------------------------------------------------------- |
-| Storage          | TanStack Query cache (in-memory with optional persistence)                                                     |
-| Example fields   | Competition list, pairing data, game info, PGN history, user profile                                           |
-| Versioning       | Query key includes endpoint version tag                                                                        |
-| Migration        | Invalidate keys on schema version change                                                                       |
-| Expiration       | Per-query `staleTime`/`gcTime`; typically minutes to hours                                                     |
-| Security         | May contain user data; persistence disabled for sensitive queries unless encrypted                             |
-| Refresh recovery | Re-fetched automatically using restored query keys; cache rehydration optional                                 |
-| Reset behavior   | Logout evicts authenticated/private entries; public tournament and replay reads may remain but must revalidate |
-| Tests            | Cache invalidation test, re-fetch on refresh test                                                              |
+| Attribute        | Value                                                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Storage          | TanStack Query cache (in-memory with optional persistence)                                                         |
+| Example fields   | Competition list, pairing data, game info, PGN history, user profile                                               |
+| Versioning       | Query key includes endpoint version tag                                                                            |
+| Migration        | Invalidate keys on schema version change                                                                           |
+| Expiration       | Per-query `staleTime`/`gcTime`; typically minutes to hours                                                         |
+| Security         | May contain user data; persistence disabled for sensitive queries unless encrypted                                 |
+| Refresh recovery | Re-fetched automatically using restored query keys; cache rehydration optional                                     |
+| Reset behavior   | Logout evicts authenticated/private entries and replay reads; public tournament queries remain and must revalidate |
+| Tests            | Cache invalidation test, re-fetch on refresh test                                                                  |
 
 ### 6. Live stream transient state
 
@@ -218,7 +218,7 @@ Live stream data is in-memory only. Recovery re-establishes the stream, not a sn
 
 ### R6. Reset behavior is explicit
 
-Each category documents what clears it: logout, new workspace, explicit reset, or expiry. Logout clears auth/private caches and secrets but preserves non-sensitive public workspace selections, layout, and public tournament context.
+Each category documents what clears it: logout, new workspace, explicit reset, or expiry. Logout clears auth/private caches, protected handoffs, replay, and active analysis while preserving public local PGN work, public tournament context, and non-sensitive layout preferences.
 
 ## Acceptance criteria
 

@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/vue-query'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { apiErrorMessage } from '@/api/client'
 import { tournamentRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
 import type { CompetitionPairing } from '@/api/productTypes'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
+import { resourceError } from '@/features/product-api/domain/resourceError'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import {
   buildRootWorkspaceRouteFromHandoff,
@@ -87,16 +87,10 @@ const loading = computed(
   () => detailQuery.isFetching.value || groupsQuery.isFetching.value || roundsQuery.isFetching.value
 )
 const pairingsPending = computed(() => pairingsQuery.isFetching.value)
-const primaryErrorText = computed(
-  () =>
-    [detailQuery.error.value, groupsQuery.error.value, roundsQuery.error.value]
-      .filter(Boolean)
-      .map(apiErrorMessage)
-      .at(0) ?? ''
+const primaryError = computed(() =>
+  resourceError(detailQuery.error.value ?? groupsQuery.error.value ?? roundsQuery.error.value)
 )
-const pairingErrorText = computed(() =>
-  pairingsQuery.error.value ? apiErrorMessage(pairingsQuery.error.value) : ''
-)
+const pairingError = computed(() => resourceError(pairingsQuery.error.value))
 
 watch(
   groups,
@@ -221,7 +215,9 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
 
       <ResourceState
         :pending="loading"
-        :error-text="primaryErrorText"
+        :error-text="primaryError?.text ?? ''"
+        :error-kind="primaryError?.kind ?? 'error'"
+        :retryable="primaryError?.retryable ?? false"
         @retry="retryCompetitionData"
       />
 
@@ -251,7 +247,9 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
 
       <ResourceState
         :pending="pairingsPending"
-        :error-text="pairingErrorText"
+        :error-text="pairingError?.text ?? ''"
+        :error-kind="pairingError?.kind ?? 'error'"
+        :retryable="pairingError?.retryable ?? false"
         :empty="!pairingsPending && pairings.length === 0"
         empty-text="没有返回对阵"
         @retry="refreshPairings"

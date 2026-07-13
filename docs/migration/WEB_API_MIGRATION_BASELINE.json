@@ -124,7 +124,7 @@
         {
             "path": "src/api/auth.ts",
             "classification": "REPLACE",
-            "reason": "Speculative response aliases, empty openid, and URL-session absorption are not authoritative."
+            "reason": "Removed because password-login request and response contracts remain blocked; the runtime must not collect credentials or absorb URL sessions."
         },
         {
             "path": "src/persistence/auth/sessionPersistence.ts",
@@ -196,27 +196,28 @@
         {
             "id": "W0",
             "scope": "authority-documents-inventories-coverage-migration-readiness",
-            "prerequisite": "complete"
+            "prerequisite": "complete",
+            "status": "COMMITTED_REMOTE_VERIFIED",
+            "commit": "d37249cd3a2483ba88c3fd151969cde5bbed449f"
         },
         {
             "id": "W1",
-            "scope": "transport-config-axios-query-runtime",
-            "prerequisite": "W0 committed and remote verified"
+            "scope": "transport-config-axios-query-strict-tournament-repositories",
+            "prerequisite": "W0 committed and remote verified",
+            "status": "COMMITTED_REMOTE_VERIFIED",
+            "commit": "4f1720e10a85eb629522a28c789f80dad0cf3bd6"
         },
         {
             "id": "W2",
-            "scope": "strict-tournament-repositories-dtos-ui-states",
-            "prerequisite": "W1 committed and remote verified"
+            "scope": "auth-url-token-removal-private-lifecycle-replay-and-ui-states",
+            "prerequisite": "W1 committed and remote verified",
+            "status": "IMPLEMENTED_VALIDATED_PENDING_COMMIT"
         },
         {
             "id": "W3",
-            "scope": "auth-url-token-removal-private-lifecycle-replay-blocking",
-            "prerequisite": "W2 committed and remote verified"
-        },
-        {
-            "id": "W4",
             "scope": "full-validation-browser-evidence-final-readiness",
-            "prerequisite": "W3 committed and remote verified"
+            "prerequisite": "W2 committed and remote verified",
+            "status": "PENDING"
         }
     ]
 }

@@ -185,6 +185,7 @@ function fetchFinishedGameReplay(
     new ApiClientError({
       kind: 'service-unavailable',
       message: '回放认证合同尚未确认，当前不会发送受保护请求。',
+      retryable: false,
     })
   )
 }

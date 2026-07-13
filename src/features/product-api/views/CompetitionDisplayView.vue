@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/vue-query'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { apiErrorMessage } from '@/api/client'
 import { tournamentRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
+import { resourceError } from '@/features/product-api/domain/resourceError'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 
 const route = useRoute()
@@ -55,7 +55,10 @@ const pairingsQuery = useQuery({
       signal
     ),
   enabled: computed(() => Boolean(hdid.value && selectedGroupId.value && selectedRoundId.value)),
-  refetchInterval: 30_000,
+  refetchInterval: (query) => {
+    const error = resourceError(query.state.error)
+    return error && !error.retryable ? false : 30_000
+  },
 })
 
 const pairings = computed(() => pairingsQuery.data.value?.items ?? [])
@@ -67,12 +70,13 @@ const pairingsPending = computed(
     roundsQuery.isFetching.value ||
     pairingsQuery.isFetching.value
 )
-const errorText = computed(
-  () =>
-    [detailQuery.error.value, groupsQuery.error.value, roundsQuery.error.value, pairingsQuery.error.value]
-      .filter(Boolean)
-      .map(apiErrorMessage)
-      .at(0) ?? ''
+const errorState = computed(() =>
+  resourceError(
+    detailQuery.error.value ??
+      groupsQuery.error.value ??
+      roundsQuery.error.value ??
+      pairingsQuery.error.value
+  )
 )
 
 watch(
@@ -135,7 +139,9 @@ function routeText(value: unknown): string {
     <section class="display-body" aria-label="大屏对阵">
       <ResourceState
         :pending="pairingsPending"
-        :error-text="errorText"
+        :error-text="errorState?.text ?? ''"
+        :error-kind="errorState?.kind ?? 'error'"
+        :retryable="errorState?.retryable ?? false"
         :empty="!pairingsPending && pairings.length === 0"
         empty-text="没有返回大屏对阵"
         @retry="pairingsQuery.refetch()"

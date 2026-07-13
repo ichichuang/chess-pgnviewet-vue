@@ -2,14 +2,12 @@ type BrowserApiAccess = 'same-origin' | 'cross-origin-unconfirmed' | 'non-browse
 
 export interface ProductionApiRuntimeConfig {
   readonly chessApiBase: string
-  readonly loginAppId: string
   readonly requestTimeoutMs: number
   readonly browserAccess: BrowserApiAccess
   readonly configurationIssue: string
 }
 
 const CONFIRMED_CHESS_API_BASE = 'https://wxapi.kaisaile.org'
-const PUBLIC_LOGIN_APP_ID = 'wx670cc0af39c366e0'
 const DEFAULT_REQUEST_TIMEOUT_MS = 8_000
 
 type ProductionEnvKey = 'VITE_KSL_CHESS_API_BASE' | 'VITE_KSL_REQUEST_TIMEOUT_MS'
@@ -79,7 +77,6 @@ const configuredBase = sourceConfirmedBase(envText('VITE_KSL_CHESS_API_BASE'))
 
 export const productionApiConfig: ProductionApiRuntimeConfig = Object.freeze({
   chessApiBase: configuredBase.base,
-  loginAppId: PUBLIC_LOGIN_APP_ID,
   requestTimeoutMs: requestTimeoutMs(envText('VITE_KSL_REQUEST_TIMEOUT_MS')),
   browserAccess: browserAccess(configuredBase.base),
   configurationIssue: configuredBase.issue,

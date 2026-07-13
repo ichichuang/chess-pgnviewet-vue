@@ -391,12 +391,23 @@ function clearWorkspaceHandoffContext(): void {
   }
 }
 
+function isPrivateWorkspaceHandoff(context: WorkspaceHandoffContext): boolean {
+  return (
+    context.mode === 'replay' ||
+    context.mode === 'live_spectator' ||
+    context.source === 'cloud_pgn' ||
+    context.source === 'backend_handoff_pgn' ||
+    context.source === 'electronic_board_live' ||
+    context.source === 'online_game_live'
+  )
+}
+
 export function clearPrivateWorkspaceHandoffContexts(): void {
   const payload = storedPayload()
   if (!payload) return
 
   const publicContexts = Object.fromEntries(
-    Object.entries(payload.contexts).filter(([, context]) => context.mode !== 'replay')
+    Object.entries(payload.contexts).filter(([, context]) => !isPrivateWorkspaceHandoff(context))
   )
   const latestId =
     payload.latestId && publicContexts[payload.latestId]

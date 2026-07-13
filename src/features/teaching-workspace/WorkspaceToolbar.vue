@@ -141,7 +141,7 @@ onBeforeUnmount(() => {
         <nav class="toolbar-group" aria-label="产品入口">
           <RouterLink class="toolbar-button" :to="{ name: 'competitions' }">赛事</RouterLink>
           <RouterLink v-if="!auth.isAuthenticated" class="toolbar-button" :to="{ name: 'login' }">
-            登录
+            认证说明
           </RouterLink>
           <button v-else class="toolbar-button" type="button" @click="auth.logout()">退出</button>
         </nav>

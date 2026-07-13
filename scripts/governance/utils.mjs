@@ -178,9 +178,19 @@ function listTrackedFiles(context) {
       .split('\0')
       .filter(Boolean)
       .map(toPosixPath)
+      .filter((relativeFilePath) => !isDeletedWorkingTreePath(context.root, relativeFilePath))
       .sort((left, right) => left.localeCompare(right))
   } catch {
     return listFilesByTraversal(context, ['.'], [])
+  }
+}
+
+function isDeletedWorkingTreePath(root, relativeFilePath) {
+  try {
+    fs.lstatSync(path.resolve(root, relativeFilePath))
+    return false
+  } catch (error) {
+    return error?.code === 'ENOENT'
   }
 }
 

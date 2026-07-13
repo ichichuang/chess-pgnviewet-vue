@@ -2,7 +2,7 @@
     "schemaVersion": 1,
     "status": "ACTIVE_AUTHORITY",
     "effectiveDate": "2026-07-14",
-    "overall": "IMPLEMENTATION_IN_PROGRESS",
+    "overall": "FINAL_VALIDATION_IN_PROGRESS",
     "capabilities": [
         {
             "id": "authority.source-precedence",
@@ -24,7 +24,7 @@
             "id": "transport.production-base",
             "contract": "CONFIRMED_HTTPS_ORIGIN",
             "runtime": "EXACT_CONFIRMED_ORIGIN_PROXY_REMOVED",
-            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "browser": "TRUTHFUL_CORS_UNAVAILABLE_VALIDATED",
             "classification": "REPLACE",
             "readyForMerge": true
         },
@@ -32,65 +32,65 @@
             "id": "tournament.list",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
             "runtime": "STRICT_ZOD_REPOSITORY",
-            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "browser": "TRUTHFUL_CORS_UNAVAILABLE_VALIDATED",
             "classification": "MERGE",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "tournament.detail",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
             "runtime": "STRICT_ZOD_REPOSITORY",
-            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "browser": "TRUTHFUL_CORS_UNAVAILABLE_VALIDATED",
             "classification": "MERGE",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "tournament.groups",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
             "runtime": "STRICT_ZOD_REPOSITORY",
-            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "browser": "TRUTHFUL_CORS_UNAVAILABLE_VALIDATED",
             "classification": "MERGE",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "tournament.rounds",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
             "runtime": "STRICT_ZOD_REPOSITORY",
-            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "browser": "TRUTHFUL_CORS_UNAVAILABLE_VALIDATED",
             "classification": "MERGE",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "tournament.pairings",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
             "runtime": "STRICT_ZOD_REPOSITORY",
-            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "browser": "TRUTHFUL_CORS_UNAVAILABLE_VALIDATED",
             "classification": "MERGE",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "auth.password-login",
             "contract": "BLOCKED_OPENID_AND_BROWSER_HMAC_CONFLICT",
-            "runtime": "INCORRECTLY_CLAIMS_USABLE",
-            "browser": "UNVERIFIED",
+            "runtime": "CREDENTIAL_COLLECTION_REMOVED_TRUTHFULLY_BLOCKED",
+            "browser": "BLOCKED_STATE_VALIDATED",
             "classification": "BLOCKED_UNCONFIRMED",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "auth.restore-logout-loss",
             "contract": "LOCAL_LOGOUT_ONLY_PARTIAL",
-            "runtime": "LEGACY_LOCALSTORAGE_AND_URL_TOKEN",
-            "browser": "SECURITY_CONFLICT",
+            "runtime": "NO_SESSION_RESTORE_SCOPED_LEGACY_AND_PRIVATE_CLEANUP",
+            "browser": "LEGACY_KEY_PURGE_VALIDATED",
             "classification": "REPLACE",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "replay.finished-game",
             "contract": "BLOCKED_GUEST_TOKEN_LIFECYCLE",
             "runtime": "TRUTHFULLY_BLOCKED_NO_REQUEST",
-            "browser": "UNVERIFIED",
+            "browser": "TRUTHFUL_BLOCKED_STATE_VALIDATED",
             "classification": "BLOCKED_UNCONFIRMED",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "compatibility.match-share-cloud",
@@ -119,10 +119,10 @@
         {
             "id": "miniapp-url-token-openid",
             "contract": "NON_AUTHORITY",
-            "runtime": "URL_TOKEN_ABSORPTION_PRESENT",
-            "browser": "SECURITY_CONFLICT",
+            "runtime": "ABSORPTION_AND_OPENID_RUNTIME_REMOVED",
+            "browser": "VALIDATED_ABSENT",
             "classification": "REMOVE_MINIAPP_ONLY",
-            "readyForMerge": false
+            "readyForMerge": true
         }
     ],
     "mergeGate": {

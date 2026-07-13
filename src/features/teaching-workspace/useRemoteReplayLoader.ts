@@ -65,7 +65,7 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
       if (!auth.isAuthenticated) {
         pgn.clearPrivateReplay()
         status.value = 'unavailable'
-        message.value = '该回放需要登录后加载。'
+        message.value = '回放认证合同尚未确认，当前不会发送受保护请求。'
         loadedKey = ''
         return
       }

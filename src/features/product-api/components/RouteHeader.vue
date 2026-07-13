@@ -9,7 +9,7 @@ defineProps<{
 }>()
 
 const auth = useAuthStore()
-const sessionLabel = computed(() => (auth.isAuthenticated ? auth.accountLabel : '未登录'))
+const sessionLabel = computed(() => auth.accountLabel)
 
 function logout(): void {
   auth.logout()
@@ -28,7 +28,7 @@ function logout(): void {
 
     <nav class="route-actions" aria-label="产品入口">
       <RouterLink :to="{ name: 'competitions' }">赛事</RouterLink>
-      <RouterLink v-if="!auth.isAuthenticated" :to="{ name: 'login' }">登录</RouterLink>
+      <RouterLink v-if="!auth.isAuthenticated" :to="{ name: 'login' }">认证说明</RouterLink>
       <button v-else type="button" @click="logout">退出</button>
       <span>{{ sessionLabel }}</span>
     </nav>
