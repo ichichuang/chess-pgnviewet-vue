@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import {
   DEFAULT_ANNOTATION_COLOR,
   isAnnotationColorId,
+  type AnnotationShapeKind,
   type AnnotationColorId,
 } from '@/features/annotations/domain/annotationTypes'
 import {
@@ -12,7 +13,7 @@ import {
 } from '@/features/board/domain/boardTypes'
 
 type WorkspacePanelTab = 'notation' | 'comments' | 'annotations' | 'analysis'
-type WorkspaceAnnotationTool = 'arrow' | 'square' | 'highlight' | null
+type WorkspaceAnnotationTool = AnnotationShapeKind | null
 type WorkspaceBoardAlignment = 'left' | 'center' | 'right'
 
 interface WorkspaceState {
@@ -56,7 +57,7 @@ export const useWorkspaceStore = defineStore('workspace', {
     toggleToolbar(): void {
       this.toolbarCollapsed = !this.toolbarCollapsed
     },
-    setBoardAlignment(alignment: string): void {
+    setBoardAlignment(alignment: WorkspaceBoardAlignment): void {
       if (alignment === 'left' || alignment === 'center' || alignment === 'right') {
         this.boardAlignment = alignment
       }
@@ -67,7 +68,7 @@ export const useWorkspaceStore = defineStore('workspace', {
           ? BOARD_ORIENTATION_BLACK
           : BOARD_ORIENTATION_WHITE
     },
-    setActiveRightTab(tab: string): void {
+    setActiveRightTab(tab: WorkspacePanelTab): void {
       if (tab !== 'notation' && tab !== 'comments' && tab !== 'annotations' && tab !== 'analysis') {
         return
       }
@@ -77,14 +78,14 @@ export const useWorkspaceStore = defineStore('workspace', {
         this.showAnalysisRegion = true
       }
     },
-    setAnnotationTool(tool: string | null): void {
+    setAnnotationTool(tool: WorkspaceAnnotationTool): void {
       if (tool !== 'arrow' && tool !== 'square' && tool !== 'highlight' && tool !== null) {
         return
       }
 
       this.annotationTool = this.annotationTool === tool ? null : tool
     },
-    setAnnotationColor(color: string): void {
+    setAnnotationColor(color: AnnotationColorId): void {
       if (isAnnotationColorId(color)) {
         this.annotationColor = color
       }

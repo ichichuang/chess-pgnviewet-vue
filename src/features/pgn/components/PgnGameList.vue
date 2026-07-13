@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import type { PgnWorkspaceAction } from '@/features/pgn/pgnWorkspaceTypes'
+
 import { usePgnStore } from '@/stores'
 
-const emit = defineEmits(['action'])
+const emit = defineEmits<{
+  action: [name: PgnWorkspaceAction]
+}>()
 
 const store = usePgnStore()
 

@@ -1,4 +1,4 @@
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { gsap } from 'gsap'
 
 import type { AnnotationShapeKind } from '@/features/annotations/domain/annotationTypes'
@@ -8,30 +8,37 @@ import {
   BOARD_RADIAL_WIDTHS,
   type BoardRadialColor,
   type BoardRadialCommand,
+  type BoardRadialCustomItem,
+  type BoardReducedMotionMode,
 } from '../domain/boardCapabilities'
 
-interface BoardRadialMenuProps {
-  open?: boolean
-  x?: number
-  y?: number
-  pointerX?: number
-  pointerY?: number
-  colors?: unknown[]
-  activeShape?: string | null
-  colorIndex?: number
-  width?: number
+export interface BoardRadialMenuProps {
+  open?: boolean | undefined
+  x?: number | undefined
+  y?: number | undefined
+  pointerX?: number | undefined
+  pointerY?: number | undefined
+  colors?: readonly BoardRadialColor[] | undefined
+  activeShape?: AnnotationShapeKind | null | undefined
+  colorIndex?: number | undefined
+  width?: 0.08 | 0.16 | 0.28 | undefined
+  customItems?: readonly BoardRadialCustomItem[] | undefined
+  reducedMotion?: BoardReducedMotionMode | undefined
 }
 
-interface RadialOption {
+export interface RadialOption {
   id: string
   title: string
   label: string
   fill?: string
   command: BoardRadialCommand
   active: boolean
+  disabled: boolean
 }
 
-type RadialMenuEmit = (event: string, command: BoardRadialCommand | null) => void
+interface RadialMenuHandlers {
+  onSelect: (command: BoardRadialCommand | null) => void
+}
 
 const geometry = BOARD_RADIAL_GEOMETRY
 
@@ -48,19 +55,6 @@ const widthOptions = [
   { title: '粗线', label: 'L', width: BOARD_RADIAL_WIDTHS[2] },
 ]
 
-function isRadialColor(value: unknown): value is BoardRadialColor {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    'id' in value &&
-    'name' in value &&
-    'token' in value &&
-    typeof value.id === 'string' &&
-    typeof value.name === 'string' &&
-    typeof value.token === 'string'
-  )
-}
-
 function tokenValue(name: string): string {
   if (typeof window === 'undefined') {
     return ''
@@ -69,11 +63,12 @@ function tokenValue(name: string): string {
   return window.getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 }
 
-function duration(name: string): number {
+function duration(name: string, reducedMotion: BoardReducedMotionMode | undefined): number {
   if (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    reducedMotion === 'reduce' ||
+    (typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   ) {
     return 0
   }
@@ -91,16 +86,16 @@ function ease(name: string): string {
   return tokenValue(name) || 'none'
 }
 
-function isShape(value: string | null | undefined): value is AnnotationShapeKind {
-  return value === 'arrow' || value === 'square' || value === 'highlight'
-}
-
-export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: RadialMenuEmit) {
+export function useBoardRadialMenuView(props: BoardRadialMenuProps, handlers: RadialMenuHandlers) {
   const rootEl = ref<HTMLDivElement | null>(null)
-  const colors = computed(() => (props.colors ?? []).filter(isRadialColor))
-  const activeShape = computed<AnnotationShapeKind | null>(() =>
-    isShape(props.activeShape) ? props.activeShape : null
-  )
+  let context: ReturnType<typeof gsap.context> | null = null
+  const colors = computed(() => props.colors ?? [])
+  const activeShape = computed<AnnotationShapeKind | null>(() => props.activeShape ?? null)
+
+  function runScoped(work: () => void): void {
+    if (context) context.add(work)
+    else work()
+  }
 
   const options = computed<RadialOption[]>(() => [
     ...shapeOptions.map((option) => ({
@@ -109,6 +104,7 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
       label: option.label,
       command: { kind: 'shape', shape: option.shape } satisfies BoardRadialCommand,
       active: activeShape.value === option.shape,
+      disabled: false,
     })),
     ...widthOptions.map((option) => ({
       id: `width-${option.width}`,
@@ -116,15 +112,30 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
       label: option.label,
       command: { kind: 'width', width: option.width } satisfies BoardRadialCommand,
       active: props.width === option.width,
+      disabled: false,
     })),
     ...colors.value.map((color, index) => ({
       id: `color-${color.id}`,
       title: color.name,
       label: '',
-      fill: `var(${color.token})`,
+      ...(cssVariableName(color.token) ? { fill: `var(${color.token})` } : {}),
       command: { kind: 'color', index } satisfies BoardRadialCommand,
       active: props.colorIndex === index,
+      disabled: false,
     })),
+    ...(props.customItems ?? []).map((item) => {
+      const fill = safeSvgColor(item.fill)
+
+      return {
+        id: `custom-${item.key}`,
+        title: item.title,
+        label: item.label,
+        ...(fill === undefined ? {} : { fill }),
+        command: { kind: 'custom', item } satisfies BoardRadialCommand,
+        active: item.active === true,
+        disabled: item.disabled === true,
+      }
+    }),
   ])
 
   const selectedIndex = computed(() => {
@@ -154,7 +165,9 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
   const selectedOption = computed(() => {
     const index = selectedIndex.value
 
-    return index >= 0 ? (options.value[index] ?? null) : null
+    const option = index >= 0 ? (options.value[index] ?? null) : null
+
+    return option?.disabled ? null : option
   })
 
   const menuStyle = computed(() => ({
@@ -177,7 +190,7 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
   }
 
   function indicatorOpacity(_index: number, target: Element): number {
-    return (target as SVGElement).dataset.active === 'true' ? 1 : 0
+    return target instanceof SVGElement && target.dataset.active === 'true' ? 1 : 0
   }
 
   async function syncActiveIndicators(immediate = false): Promise<void> {
@@ -189,11 +202,15 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
     }
 
     gsap.killTweensOf(targets)
-    gsap.to(targets, {
-      autoAlpha: indicatorOpacity,
-      duration: immediate ? 0 : duration('--board-radial-indicator-duration'),
-      ease: ease('--board-radial-indicator-ease'),
-      overwrite: true,
+    runScoped(() => {
+      gsap.to(targets, {
+        autoAlpha: indicatorOpacity,
+        duration: immediate
+          ? 0
+          : duration('--board-radial-indicator-duration', props.reducedMotion),
+        ease: ease('--board-radial-indicator-ease'),
+        overwrite: true,
+      })
     })
   }
 
@@ -206,41 +223,43 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
 
     const slices = sliceTargets()
     gsap.killTweensOf([root, ...slices])
-    gsap.fromTo(
-      root,
-      {
-        autoAlpha: 0,
-        scale: 0.4,
-        transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
-      },
-      {
-        autoAlpha: 1,
-        scale: 1,
-        transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
-        duration: duration('--board-radial-open-duration'),
-        ease: ease('--board-radial-open-ease'),
-        overwrite: true,
-      }
-    )
-    gsap.fromTo(
-      slices,
-      {
-        autoAlpha: 0,
-        scale: 0.72,
-        transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
-        svgOrigin: `${geometry.menuCenter} ${geometry.menuCenter}`,
-      },
-      {
-        autoAlpha: 1,
-        scale: 1,
-        transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
-        svgOrigin: `${geometry.menuCenter} ${geometry.menuCenter}`,
-        duration: duration('--board-radial-open-duration'),
-        ease: ease('--board-radial-open-ease'),
-        stagger: duration('--board-radial-stagger-duration'),
-        overwrite: true,
-      }
-    )
+    runScoped(() => {
+      gsap.fromTo(
+        root,
+        {
+          autoAlpha: 0,
+          scale: 0.4,
+          transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
+        },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
+          duration: duration('--board-radial-open-duration', props.reducedMotion),
+          ease: ease('--board-radial-open-ease'),
+          overwrite: true,
+        }
+      )
+      gsap.fromTo(
+        slices,
+        {
+          autoAlpha: 0,
+          scale: 0.72,
+          transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
+          svgOrigin: `${geometry.menuCenter} ${geometry.menuCenter}`,
+        },
+        {
+          autoAlpha: 1,
+          scale: 1,
+          transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
+          svgOrigin: `${geometry.menuCenter} ${geometry.menuCenter}`,
+          duration: duration('--board-radial-open-duration', props.reducedMotion),
+          ease: ease('--board-radial-open-ease'),
+          stagger: duration('--board-radial-stagger-duration', props.reducedMotion),
+          overwrite: true,
+        }
+      )
+    })
   }
 
   function animateClose(): void {
@@ -252,23 +271,25 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
 
     const slices = sliceTargets()
     gsap.killTweensOf([root, ...slices])
-    gsap.to(root, {
-      autoAlpha: 0,
-      scale: 0.82,
-      transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
-      duration: duration('--board-radial-close-duration'),
-      ease: ease('--board-radial-close-ease'),
-      overwrite: true,
-    })
-    gsap.to(slices, {
-      autoAlpha: 0,
-      scale: 0.86,
-      transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
-      svgOrigin: `${geometry.menuCenter} ${geometry.menuCenter}`,
-      duration: duration('--board-radial-slice-close-duration'),
-      ease: ease('--board-radial-close-ease'),
-      stagger: duration('--board-radial-close-stagger-duration'),
-      overwrite: true,
+    runScoped(() => {
+      gsap.to(root, {
+        autoAlpha: 0,
+        scale: 0.82,
+        transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
+        duration: duration('--board-radial-close-duration', props.reducedMotion),
+        ease: ease('--board-radial-close-ease'),
+        overwrite: true,
+      })
+      gsap.to(slices, {
+        autoAlpha: 0,
+        scale: 0.86,
+        transformOrigin: `${geometry.menuCenter}px ${geometry.menuCenter}px`,
+        svgOrigin: `${geometry.menuCenter} ${geometry.menuCenter}`,
+        duration: duration('--board-radial-slice-close-duration', props.reducedMotion),
+        ease: ease('--board-radial-close-ease'),
+        stagger: duration('--board-radial-close-stagger-duration', props.reducedMotion),
+        overwrite: true,
+      })
     })
   }
 
@@ -359,7 +380,7 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
   watch(
     selectedOption,
     (option) => {
-      emit('select', option?.command ?? null)
+      handlers.onSelect(option?.command ?? null)
     },
     { immediate: true }
   )
@@ -381,12 +402,19 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
     { flush: 'post', immediate: true }
   )
 
+  onMounted(() => {
+    if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
+  })
+
   onBeforeUnmount(() => {
     const root = rootEl.value
 
     if (root) {
       gsap.killTweensOf([root, ...sliceTargets(), ...activeIndicatorTargets()])
     }
+
+    context?.revert()
+    context = null
   })
 
   return {
@@ -401,4 +429,24 @@ export function useBoardRadialMenuView(props: BoardRadialMenuProps, emit: Radial
     widthFocusRect,
     widthStroke,
   }
+}
+
+function cssVariableName(value: string): boolean {
+  return /^--[a-z][a-z0-9-]*$/iu.test(value)
+}
+
+function safeSvgColor(value: string | undefined): string | undefined {
+  if (
+    !value ||
+    value.includes(';') ||
+    value.includes('{') ||
+    value.includes('}') ||
+    /url\s*\(/iu.test(value)
+  ) {
+    return undefined
+  }
+
+  return typeof globalThis.CSS === 'undefined' || globalThis.CSS.supports('color', value)
+    ? value
+    : undefined
 }

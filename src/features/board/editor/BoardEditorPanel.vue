@@ -1,19 +1,22 @@
-<script setup>
-import { pieceImg } from '../domain/pieceAssets'
-import { useBoardEditorPanelView } from './useBoardEditorPanelView'
+<script setup lang="ts">
+import {
+  useBoardEditorPanelView,
+  type BoardEditorPanelProps,
+} from './useBoardEditorPanelView'
 
-const props = defineProps({
-  draft: { type: Object, required: true },
-})
+const props = defineProps<BoardEditorPanelProps>()
 
-const emit = defineEmits(['finish', 'cancel'])
+const emit = defineEmits<{
+  finish: []
+  cancel: []
+}>()
 
 const {
   blackPieces,
   editorDraft,
   isSelected,
   panelRoot,
-  pieceLetter,
+  pieceImage,
   selectPiece,
   setCastlingRight,
   setSideToMove,
@@ -35,28 +38,32 @@ const {
       <div class="band-title">棋子</div>
       <div class="piece-row" aria-label="白方棋子">
         <button
-          v-for="type in whitePieces"
-          :key="`w-${type}`"
+          v-for="piece in whitePieces"
+          :key="`${piece.color}-${piece.type}`"
           class="piece-chip"
-          :class="{ active: isSelected({ color: 'w', type }) }"
+          :class="{ active: isSelected(piece) }"
           type="button"
-          :title="`白方 ${type}`"
-          @click="selectPiece({ color: 'w', type })"
+          :title="`白方 ${piece.type}`"
+          :aria-pressed="isSelected(piece)"
+          :disabled="!freePlacement"
+          @click="selectPiece(piece)"
         >
-          <img :src="pieceImg(pieceLetter({ color: 'w', type }))" alt="" />
+          <img :src="pieceImage(piece)" alt="" />
         </button>
       </div>
       <div class="piece-row" aria-label="黑方棋子">
         <button
-          v-for="type in blackPieces"
-          :key="`b-${type}`"
+          v-for="piece in blackPieces"
+          :key="`${piece.color}-${piece.type}`"
           class="piece-chip"
-          :class="{ active: isSelected({ color: 'b', type }) }"
+          :class="{ active: isSelected(piece) }"
           type="button"
-          :title="`黑方 ${type}`"
-          @click="selectPiece({ color: 'b', type })"
+          :title="`黑方 ${piece.type}`"
+          :aria-pressed="isSelected(piece)"
+          :disabled="!freePlacement"
+          @click="selectPiece(piece)"
         >
-          <img :src="pieceImg(pieceLetter({ color: 'b', type }))" alt="" />
+          <img :src="pieceImage(piece)" alt="" />
         </button>
       </div>
     </div>
@@ -67,6 +74,7 @@ const {
         <button
           type="button"
           :class="{ active: editorDraft.sideToMove.value === 'w' }"
+          :aria-pressed="editorDraft.sideToMove.value === 'w'"
           @click="setSideToMove('w')"
         >
           白先
@@ -74,6 +82,7 @@ const {
         <button
           type="button"
           :class="{ active: editorDraft.sideToMove.value === 'b' }"
+          :aria-pressed="editorDraft.sideToMove.value === 'b'"
           @click="setSideToMove('b')"
         >
           黑先
@@ -191,7 +200,7 @@ const {
   align-items: center;
   justify-content: center;
   min-width: 0;
-  border: var(--workspace-border-w) solid var(--border);
+  border: var(--workspace-border-w) solid var(--board-editor-palette-border, var(--border));
   border-radius: var(--r-sm);
   aspect-ratio: 1;
   background: var(--board-editor-chip-bg);
@@ -211,7 +220,12 @@ const {
   pointer-events: none;
 }
 
-.piece-chip:hover {
+.piece-chip:disabled {
+  cursor: default;
+  opacity: var(--workspace-disabled-opacity);
+}
+
+.piece-chip:not(:disabled):hover {
   border-color: var(--accent);
   background: var(--state-hover-bg);
   transform: translateY(var(--board-editor-chip-hover-y));
@@ -219,7 +233,7 @@ const {
 
 .piece-chip.active {
   border-color: var(--accent);
-  background: var(--accent-bg);
+  background: var(--board-editor-palette-selected, var(--accent-bg));
   box-shadow: inset 0 0 0 var(--workspace-border-w) var(--accent);
 }
 

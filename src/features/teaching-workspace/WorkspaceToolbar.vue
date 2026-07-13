@@ -2,34 +2,129 @@
 import {
   ANNOTATION_COLORS,
   annotationColorToken,
+  type AnnotationColorId,
+  type AnnotationShapeKind,
 } from '@/features/annotations/domain/annotationTypes'
 import { BOARD_ORIENTATION_BLACK } from '@/features/board/domain/boardTypes'
+import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
 import { usePgnStore, useWorkspaceStore } from '@/stores'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { gsap } from 'gsap'
 
-const emit = defineEmits(['action'])
+import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
+
+const emit = defineEmits<{
+  action: [name: WorkspaceToolbarAction]
+}>()
 
 const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
 
-const annotationTools = [
+const annotationTools: readonly { key: AnnotationShapeKind; label: string }[] = [
   { key: 'arrow', label: '箭头' },
   { key: 'square', label: '方框' },
   { key: 'highlight', label: '高亮' },
 ]
 
-const alignments = [
+const alignments: readonly { key: 'center' | 'left' | 'right'; label: string }[] = [
   { key: 'left', label: '左' },
   { key: 'center', label: '中' },
   { key: 'right', label: '右' },
 ]
 
-function setAnnotationColor(color = '') {
+function setAnnotationColor(color: AnnotationColorId): void {
   workspace.setAnnotationColor(color)
 }
+
+const rootEl = ref<HTMLElement | null>(null)
+let context: ReturnType<typeof gsap.context> | null = null
+
+function onGroupsEnter(element: Element, done: () => void): void {
+  if (!(element instanceof HTMLElement)) {
+    done()
+    return
+  }
+
+  context?.add(() => {
+    gsap.fromTo(
+      element,
+      { autoAlpha: 0, height: 0 },
+      {
+        autoAlpha: 1,
+        height: 'auto',
+        duration: motionDuration(rootEl.value, '--workspace-motion-duration-panel'),
+        ease: motionEase(rootEl.value, '--workspace-motion-ease-enter'),
+        overwrite: true,
+        clearProps: 'height,opacity,visibility',
+        onComplete: done,
+      }
+    )
+  })
+}
+
+function onGroupsLeave(element: Element, done: () => void): void {
+  if (!(element instanceof HTMLElement)) {
+    done()
+    return
+  }
+
+  context?.add(() => {
+    gsap.to(element, {
+      autoAlpha: 0,
+      height: 0,
+      duration: motionDuration(rootEl.value, '--workspace-motion-duration-fast'),
+      ease: motionEase(rootEl.value, '--workspace-motion-ease-state'),
+      overwrite: true,
+      onComplete: done,
+    })
+  })
+}
+
+function animateToolbarState(event: MouseEvent): void {
+  const target = event.target
+
+  if (!(target instanceof Element)) return
+
+  const button = target.closest('button')
+
+  if (!(button instanceof HTMLButtonElement) || button.disabled) return
+
+  gsap.killTweensOf(button)
+  context?.add(() => {
+    gsap.fromTo(
+      button,
+      { scale: motionScalar(rootEl.value, '--workspace-motion-press-scale') },
+      {
+        scale: 1,
+        duration: motionDuration(rootEl.value, '--workspace-motion-duration-fast'),
+        ease: motionEase(rootEl.value, '--workspace-motion-ease-state'),
+        overwrite: true,
+        clearProps: 'transform',
+      }
+    )
+  })
+}
+
+onMounted(() => {
+  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
+})
+
+onBeforeUnmount(() => {
+  const targets = rootEl.value ? [rootEl.value, ...rootEl.value.querySelectorAll('*')] : []
+  gsap.killTweensOf(targets)
+  context?.revert()
+  context = null
+})
 </script>
 
 <template>
-  <header class="workspace-toolbar" role="toolbar" aria-label="工作区工具栏">
+  <header
+    ref="rootEl"
+    class="workspace-toolbar"
+    role="toolbar"
+    aria-label="工作区工具栏"
+    @click.capture="animateToolbarState"
+  >
     <button
       class="toolbar-collapse"
       type="button"
@@ -40,147 +135,149 @@ function setAnnotationColor(color = '') {
       {{ workspace.toolbarCollapsed ? '展开' : '收起' }}
     </button>
 
-    <div v-show="!workspace.toolbarCollapsed" class="toolbar-groups">
-      <section class="toolbar-group" aria-label="棋谱文件">
-        <button class="toolbar-button" type="button" @click="emit('action', 'openLocal')">
-          打开
-        </button>
-        <button class="toolbar-button" type="button" @click="emit('action', 'insertLocal')">
-          插入
-        </button>
-      </section>
+    <Transition :css="false" @enter="onGroupsEnter" @leave="onGroupsLeave">
+      <div v-if="!workspace.toolbarCollapsed" class="toolbar-groups">
+        <section class="toolbar-group" aria-label="棋谱文件">
+          <button class="toolbar-button" type="button" @click="emit('action', 'openLocal')">
+            打开
+          </button>
+          <button class="toolbar-button" type="button" @click="emit('action', 'insertLocal')">
+            插入
+          </button>
+        </section>
 
-      <section class="toolbar-group" aria-label="棋盘控制">
-        <button
-          class="toolbar-button"
-          type="button"
-          :aria-pressed="workspace.boardOrientation === BOARD_ORIENTATION_BLACK"
-          @click="workspace.flipBoardOrientation()"
-        >
-          翻转
-        </button>
-        <button
-          v-for="alignment in alignments"
-          :key="alignment.key"
-          class="toolbar-button compact"
-          type="button"
-          :aria-pressed="workspace.boardAlignment === alignment.key"
-          @click="workspace.setBoardAlignment(alignment.key)"
-        >
-          {{ alignment.label }}
-        </button>
-        <button
-          class="toolbar-button compact"
-          type="button"
-          @click="emit('action', 'enterBoardEditor')"
-        >
-          摆谱
-        </button>
-      </section>
+        <section class="toolbar-group" aria-label="棋盘控制">
+          <button
+            class="toolbar-button"
+            type="button"
+            :aria-pressed="workspace.boardOrientation === BOARD_ORIENTATION_BLACK"
+            @click="workspace.flipBoardOrientation()"
+          >
+            翻转
+          </button>
+          <button
+            v-for="alignment in alignments"
+            :key="alignment.key"
+            class="toolbar-button compact"
+            type="button"
+            :aria-pressed="workspace.boardAlignment === alignment.key"
+            @click="workspace.setBoardAlignment(alignment.key)"
+          >
+            {{ alignment.label }}
+          </button>
+          <button
+            class="toolbar-button compact"
+            type="button"
+            @click="emit('action', 'enterBoardEditor')"
+          >
+            摆谱
+          </button>
+        </section>
 
-      <section class="toolbar-group" aria-label="棋谱导航">
-        <button
-          class="toolbar-button compact"
-          type="button"
-          :disabled="!pgn.canGoStart"
-          @click="pgn.goToStart()"
-        >
-          起始
-        </button>
-        <button
-          class="toolbar-button compact"
-          type="button"
-          :disabled="!pgn.canStepBack"
-          @click="pgn.stepBack()"
-        >
-          上步
-        </button>
-        <button
-          class="toolbar-button compact"
-          type="button"
-          :disabled="!pgn.canStepForward"
-          @click="pgn.stepForward()"
-        >
-          下步
-        </button>
-        <button
-          class="toolbar-button compact"
-          type="button"
-          :disabled="!pgn.canGoEnd"
-          @click="pgn.goToEnd()"
-        >
-          末尾
-        </button>
-      </section>
+        <section class="toolbar-group" aria-label="棋谱导航">
+          <button
+            class="toolbar-button compact"
+            type="button"
+            :disabled="!pgn.canGoStart"
+            @click="pgn.goToStart()"
+          >
+            起始
+          </button>
+          <button
+            class="toolbar-button compact"
+            type="button"
+            :disabled="!pgn.canStepBack"
+            @click="pgn.stepBack()"
+          >
+            上步
+          </button>
+          <button
+            class="toolbar-button compact"
+            type="button"
+            :disabled="!pgn.canStepForward"
+            @click="pgn.stepForward()"
+          >
+            下步
+          </button>
+          <button
+            class="toolbar-button compact"
+            type="button"
+            :disabled="!pgn.canGoEnd"
+            @click="pgn.goToEnd()"
+          >
+            末尾
+          </button>
+        </section>
 
-      <section class="toolbar-group" aria-label="标注工具">
-        <button
-          v-for="tool in annotationTools"
-          :key="tool.key"
-          class="toolbar-button compact"
-          type="button"
-          :aria-pressed="workspace.annotationTool === tool.key"
-          :disabled="!pgn.hasGame"
-          @click="workspace.setAnnotationTool(tool.key)"
-        >
-          {{ tool.label }}
-        </button>
-        <button
-          v-for="color in ANNOTATION_COLORS"
-          :key="color"
-          class="toolbar-swatch"
-          type="button"
-          :style="{ background: annotationColorToken(color) }"
-          :aria-label="`标注颜色 ${color}`"
-          :aria-pressed="workspace.annotationColor === color"
-          :disabled="!pgn.hasGame"
-          @click="setAnnotationColor(color)"
-        />
-        <button
-          class="toolbar-button compact"
-          type="button"
-          :disabled="!pgn.canUndoCurrentDrawing"
-          @click="pgn.undoCurrentDrawing()"
-        >
-          撤销
-        </button>
-        <button
-          class="toolbar-button compact"
-          type="button"
-          :disabled="!pgn.canRedoCurrentDrawing"
-          @click="pgn.redoCurrentDrawing()"
-        >
-          重做
-        </button>
-        <button
-          class="toolbar-button compact"
-          type="button"
-          :disabled="!pgn.hasCurrentDrawing"
-          @click="pgn.clearDrawing()"
-        >
-          清除
-        </button>
-      </section>
+        <section class="toolbar-group" aria-label="标注工具">
+          <button
+            v-for="tool in annotationTools"
+            :key="tool.key"
+            class="toolbar-button compact"
+            type="button"
+            :aria-pressed="workspace.annotationTool === tool.key"
+            :disabled="!pgn.hasGame"
+            @click="workspace.setAnnotationTool(tool.key)"
+          >
+            {{ tool.label }}
+          </button>
+          <button
+            v-for="color in ANNOTATION_COLORS"
+            :key="color"
+            class="toolbar-swatch"
+            type="button"
+            :style="{ background: annotationColorToken(color) }"
+            :aria-label="`标注颜色 ${color}`"
+            :aria-pressed="workspace.annotationColor === color"
+            :disabled="!pgn.hasGame"
+            @click="setAnnotationColor(color)"
+          />
+          <button
+            class="toolbar-button compact"
+            type="button"
+            :disabled="!pgn.canUndoCurrentDrawing"
+            @click="pgn.undoCurrentDrawing()"
+          >
+            撤销
+          </button>
+          <button
+            class="toolbar-button compact"
+            type="button"
+            :disabled="!pgn.canRedoCurrentDrawing"
+            @click="pgn.redoCurrentDrawing()"
+          >
+            重做
+          </button>
+          <button
+            class="toolbar-button compact"
+            type="button"
+            :disabled="!pgn.hasCurrentDrawing"
+            @click="pgn.clearDrawing()"
+          >
+            清除
+          </button>
+        </section>
 
-      <section class="toolbar-group" aria-label="面板控制">
-        <button
-          class="toolbar-button"
-          type="button"
-          :aria-pressed="workspace.showLeftSidebar"
-          @click="workspace.toggleLeftSidebar()"
-        >
-          列表
-        </button>
-        <button
-          class="toolbar-button"
-          type="button"
-          :aria-pressed="workspace.showAnalysisRegion"
-          @click="workspace.toggleAnalysisRegion()"
-        >
-          分析
-        </button>
-      </section>
-    </div>
+        <section class="toolbar-group" aria-label="面板控制">
+          <button
+            class="toolbar-button"
+            type="button"
+            :aria-pressed="workspace.showLeftSidebar"
+            @click="workspace.toggleLeftSidebar()"
+          >
+            列表
+          </button>
+          <button
+            class="toolbar-button"
+            type="button"
+            :aria-pressed="workspace.showAnalysisRegion"
+            @click="workspace.toggleAnalysisRegion()"
+          >
+            分析
+          </button>
+        </section>
+      </div>
+    </Transition>
   </header>
 </template>
 
@@ -203,6 +300,7 @@ function setAnnotationColor(color = '') {
   align-items: center;
   gap: var(--s-2);
   min-width: 0;
+  overflow: hidden;
 }
 
 .toolbar-group {

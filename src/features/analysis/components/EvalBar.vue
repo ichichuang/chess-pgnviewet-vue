@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { gsap } from 'gsap'
 
+import { motionDuration, motionEase } from '@/features/motion/gsapTokens'
 import { useAnalysisStore, useWorkspaceStore } from '@/stores'
 import { BOARD_ORIENTATION_WHITE } from '@/features/board/domain/boardTypes'
 
@@ -44,27 +46,13 @@ const leader = computed<'w' | 'b' | 'equal' | 'na'>(() => {
 
 const topSide = computed<'w' | 'b'>(() => (whiteAtBottom.value ? 'b' : 'w'))
 const bottomSide = computed<'w' | 'b'>(() => (whiteAtBottom.value ? 'w' : 'b'))
-
-const fillStyle = computed(() =>
-  whiteAtBottom.value
-    ? { height: `${whitePct.value}%`, bottom: '0', top: 'auto' }
-    : { height: `${whitePct.value}%`, top: '0', bottom: 'auto' }
-)
-
-const bandStyle = computed(() => {
-  const low = Math.min(50, whitePct.value)
-  const height = Math.abs(whitePct.value - 50)
-
-  return whiteAtBottom.value
-    ? { bottom: `${low}%`, top: 'auto', height: `${height}%` }
-    : { top: `${low}%`, bottom: 'auto', height: `${height}%` }
-})
-
-const boundaryStyle = computed(() =>
-  whiteAtBottom.value
-    ? { bottom: `${whitePct.value}%`, top: 'auto' }
-    : { top: `${whitePct.value}%`, bottom: 'auto' }
-)
+const rootEl = ref<HTMLElement | null>(null)
+const lightEl = ref<HTMLElement | null>(null)
+const bandEl = ref<HTMLElement | null>(null)
+const boundaryEl = ref<HTMLElement | null>(null)
+const scoreEl = ref<HTMLElement | null>(null)
+let context: ReturnType<typeof gsap.context> | null = null
+let reducedMotionQuery: MediaQueryList | null = null
 
 const scoreText = computed(() => {
   const score = analysis.current?.score
@@ -81,18 +69,103 @@ const scoreText = computed(() => {
 
   return `${pawns > 0 ? '+' : ''}${pawns.toFixed(1)}`
 })
+
+async function syncRail(immediate = false): Promise<void> {
+  await nextTick()
+  const root = rootEl.value
+  const light = lightEl.value
+  const boundary = boundaryEl.value
+
+  if (!root || !light || !boundary || !context) return
+
+  const low = Math.min(50, whitePct.value)
+  const bandHeight = Math.abs(whitePct.value - 50)
+  const duration = immediate ? 0 : motionDuration(root, '--workspace-motion-duration-analysis')
+  const ease = motionEase(root, '--workspace-motion-ease-state')
+  const targets = [light, boundary, ...(bandEl.value ? [bandEl.value] : [])]
+  gsap.killTweensOf(targets)
+
+  context.add(() => {
+    gsap.set(
+      light,
+      whiteAtBottom.value ? { bottom: 0, top: 'auto' } : { bottom: 'auto', top: 0 }
+    )
+    gsap.to(light, { height: `${whitePct.value}%`, duration, ease, overwrite: true })
+    gsap.set(
+      boundary,
+      whiteAtBottom.value
+        ? { bottom: `${whitePct.value}%`, top: 'auto' }
+        : { bottom: 'auto', top: `${whitePct.value}%` }
+    )
+
+    if (bandEl.value) {
+      gsap.set(
+        bandEl.value,
+        whiteAtBottom.value
+          ? { bottom: `${low}%`, top: 'auto' }
+          : { bottom: 'auto', top: `${low}%` }
+      )
+      gsap.to(bandEl.value, { height: `${bandHeight}%`, duration, ease, overwrite: true })
+    }
+
+    if (!immediate && scoreEl.value) {
+      gsap.killTweensOf(scoreEl.value)
+      gsap.fromTo(
+        scoreEl.value,
+        { autoAlpha: 0.45, yPercent: -8 },
+        {
+          autoAlpha: 1,
+          yPercent: 0,
+          duration,
+          ease,
+          overwrite: true,
+          clearProps: 'opacity,transform',
+        }
+      )
+    }
+  })
+}
+
+watch([whitePct, whiteAtBottom, leader], () => void syncRail())
+
+onMounted(() => {
+  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
+
+  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    reducedMotionQuery.addEventListener('change', onReducedMotionChange)
+  }
+
+  void syncRail(true)
+})
+
+function onReducedMotionChange(): void {
+  void syncRail(true)
+}
+
+onBeforeUnmount(() => {
+  reducedMotionQuery?.removeEventListener('change', onReducedMotionChange)
+  reducedMotionQuery = null
+  const targets = [lightEl.value, bandEl.value, boundaryEl.value, scoreEl.value].filter(
+    (target): target is HTMLElement => target !== null
+  )
+  gsap.killTweensOf(targets)
+  gsap.set(targets, { clearProps: 'opacity,transform' })
+  context?.revert()
+  context = null
+})
 </script>
 
 <template>
-  <aside class="eval-bar" :class="`lead-${leader}`" aria-label="当前分析评估栏">
+  <aside ref="rootEl" class="eval-bar" :class="`lead-${leader}`" aria-label="当前分析评估栏">
     <span class="eval-end" :class="{ lead: leader === topSide }">{{ topLabel }}</span>
     <div class="eval-track">
-      <div class="eval-light-side" :style="fillStyle" />
+      <div ref="lightEl" class="eval-light-side" />
       <div class="eval-mid" />
-      <div v-if="whiteScore != null && leader !== 'equal'" class="eval-band" :style="bandStyle" />
-      <div v-if="whiteScore != null" class="eval-boundary" :style="boundaryStyle" />
+      <div v-if="whiteScore != null && leader !== 'equal'" ref="bandEl" class="eval-band" />
+      <div v-if="whiteScore != null" ref="boundaryEl" class="eval-boundary" />
     </div>
-    <strong class="eval-score">{{ scoreText }}</strong>
+    <strong ref="scoreEl" class="eval-score">{{ scoreText }}</strong>
     <span class="eval-end" :class="{ lead: leader === bottomSide }">{{ bottomLabel }}</span>
   </aside>
 </template>
@@ -142,10 +215,6 @@ const scoreText = computed(() => {
 
 .eval-light-side {
   background: var(--analysis-rail-light-fill);
-  transition:
-    height var(--workspace-motion-duration-base) var(--workspace-motion-ease-standard),
-    top var(--workspace-motion-duration-base) var(--workspace-motion-ease-standard),
-    bottom var(--workspace-motion-duration-base) var(--workspace-motion-ease-standard);
 }
 
 .eval-mid {

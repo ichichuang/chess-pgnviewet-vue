@@ -1,19 +1,15 @@
-<script setup>
-import { useBoardRadialMenuView } from './useBoardRadialMenuView'
+<script setup lang="ts">
+import type { BoardRadialCommand } from '../domain/boardCapabilities'
+import {
+  useBoardRadialMenuView,
+  type BoardRadialMenuProps,
+} from './useBoardRadialMenuView'
 
-const props = defineProps({
-  open: { type: Boolean, default: false },
-  x: { type: Number, default: 0 },
-  y: { type: Number, default: 0 },
-  pointerX: { type: Number, default: 0 },
-  pointerY: { type: Number, default: 0 },
-  colors: { type: Array, default: () => [] },
-  activeShape: { type: String, default: null },
-  colorIndex: { type: Number, default: 0 },
-  width: { type: Number, default: 0.16 },
-})
+const props = defineProps<BoardRadialMenuProps>()
 
-const emit = defineEmits(['select'])
+const emit = defineEmits<{
+  select: [command: BoardRadialCommand | null]
+}>()
 
 const {
   geometry,
@@ -26,7 +22,9 @@ const {
   selectedIndex,
   widthFocusRect,
   widthStroke,
-} = useBoardRadialMenuView(props, emit)
+} = useBoardRadialMenuView(props, {
+  onSelect: (command) => emit('select', command),
+})
 </script>
 
 <template>
@@ -39,7 +37,7 @@ const {
           class="radial-menu-slice"
           :class="[
             optionClass(option),
-            { selected: selectedIndex === index, active: option.active },
+            { selected: selectedIndex === index, active: option.active, disabled: option.disabled },
           ]"
         >
           <path class="radial-menu-sector" :d="sectorPath(index)" />
@@ -126,6 +124,10 @@ const {
   opacity: 0;
   transform-box: view-box;
   transform-origin: var(--board-radial-center) var(--board-radial-center);
+}
+
+.radial-menu-slice.disabled {
+  opacity: var(--workspace-disabled-opacity);
 }
 
 .radial-menu-sector {

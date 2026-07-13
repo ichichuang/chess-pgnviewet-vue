@@ -3,6 +3,8 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import type { BoardMoveRequest } from '@/features/board/domain/boardTypes'
 import { usePgnStore } from '@/stores'
 
+import type { PgnWorkspaceAction } from './pgnWorkspaceTypes'
+
 export function usePgnWorkspaceRuntime() {
   const pgn = usePgnStore()
   const fileInput = ref<HTMLInputElement | null>(null)
@@ -12,7 +14,7 @@ export function usePgnWorkspaceRuntime() {
   const boardInteractive = computed(() => pgn.hasGame)
   const dragActive = computed(() => dragDepth.value > 0)
 
-  function handlePgnAction(name: 'openLocal' | 'insertLocal'): void {
+  function handlePgnAction(name: PgnWorkspaceAction): void {
     insertMode.value = name === 'insertLocal'
     fileInput.value?.click()
   }

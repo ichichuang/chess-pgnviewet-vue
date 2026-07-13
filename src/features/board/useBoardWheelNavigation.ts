@@ -1,11 +1,17 @@
 import { computed } from 'vue'
 
-import type { BoardWheelNavigationDirection } from './domain/boardCapabilities'
-import { BOARD_WHEEL_THROTTLE_MS } from './domain/boardCapabilities'
+import type {
+  BoardWheelEventConsumption,
+  BoardWheelNavigationDirection,
+} from './domain/boardCapabilities'
 
 interface BoardWheelNavigationOptions {
   enabled: () => boolean
   blocked: () => boolean
+  directions: () => readonly BoardWheelNavigationDirection[]
+  threshold: () => number
+  throttleMs: () => number
+  consume: () => BoardWheelEventConsumption
   emitNavigate: (direction: BoardWheelNavigationDirection) => void
 }
 
@@ -21,20 +27,29 @@ export function useBoardWheelNavigation(options: BoardWheelNavigationOptions) {
       return
     }
 
-    event.preventDefault()
+    const consumption = options.consume()
 
-    if (options.blocked() || Math.abs(event.deltaY) < 1) {
+    if (consumption === 'always') event.preventDefault()
+
+    if (options.blocked() || Math.abs(event.deltaY) < options.threshold()) {
       return
     }
 
+    const direction: BoardWheelNavigationDirection = event.deltaY > 0 ? 'next' : 'previous'
+
+    if (!options.directions().includes(direction)) return
+
     const now = nowMs()
 
-    if (now - lastWheelAt < BOARD_WHEEL_THROTTLE_MS) {
+    if (now - lastWheelAt < options.throttleMs()) {
       return
     }
 
     lastWheelAt = now
-    options.emitNavigate(event.deltaY > 0 ? 'next' : 'previous')
+
+    if (consumption === 'handled') event.preventDefault()
+
+    options.emitNavigate(direction)
   }
 
   const wheelBindings = computed(() => (options.enabled() ? { wheel: onWheel } : {}))

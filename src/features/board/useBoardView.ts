@@ -2,7 +2,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import {
   annotationColorToken,
-  isAnnotationColorId,
+  emptyAnnotation,
   modifierAnnotationColor,
   type AnnotationColorId,
   type AnnotationDrawPayload,
@@ -17,11 +17,14 @@ import {
 import { squareCenter, squareRect, squareToDisplay } from './domain/boardGeometry'
 import { buildBoardCells } from './domain/boardCells'
 import { fenToGrid } from './domain/fenBoard'
-import { pieceImg } from './domain/pieceAssets'
+import { describePiece, resolvePieceImage } from './domain/pieceAssets'
 import type {
-  BoardAdvancedCapabilities,
   BoardEditorDraftSnapshot,
+  BoardInteractionKind,
+  BoardMoveRequestDecision,
   BoardRadialCommand,
+  BoardWheelNavigationDirection,
+  NormalizedChessboardCapabilities,
 } from './domain/boardCapabilities'
 import { BOARD_DRAG_THRESHOLD_PX, isAcceptedMoveDecision } from './domain/boardCapabilities'
 import {
@@ -34,34 +37,31 @@ import {
   type BoardOrientation,
 } from './domain/boardTypes'
 import { useBoardAnimationController } from './useBoardAnimationController'
-import { useBoardCapabilityOptions } from './useBoardCapabilityOptions'
+import { useBoardOverlayAnimation } from './useBoardOverlayAnimation'
 import { useBoardRadialMenu } from './useBoardRadialMenu'
 import { useBoardWheelNavigation } from './useBoardWheelNavigation'
 import type { BoardEditorDraft } from './editor/boardEditorDraft'
 
 interface BoardViewRuntimeProps {
   fen: string
-  lastMove?: unknown
-  orientation?: string
-  turnColor?: string
-  dests?: unknown
-  check?: boolean
-  interactive?: boolean
-  annotationTool?: string | null
-  annotationColor?: string
-  annotations?: unknown
-  advancedCapabilities?: BoardAdvancedCapabilities
-  editorDraft?: unknown
+  lastMove?: readonly [string, string] | undefined
+  orientation: BoardOrientation
+  turnColor: BoardColor
+  dests: ReadonlyMap<string, readonly string[]>
+  check: boolean
+  annotations: BoardAnnotation
+  capabilities: NormalizedChessboardCapabilities
+  editorDraft: BoardEditorDraft
+  requestMove: (payload: BoardMoveRequest) => BoardMoveRequestDecision
 }
 
-type BoardViewEvent =
-  | 'move'
-  | 'interaction-active'
-  | 'annotation-draw'
-  | 'radial-command'
-  | 'editor-update'
-  | 'wheel-navigation'
-type BoardViewEmit = (event: BoardViewEvent, ...args: unknown[]) => void
+interface BoardViewHandlers {
+  onInteractionActive: (active: boolean) => void
+  onAnnotationDraw: (payload: AnnotationDrawPayload) => void
+  onRadialCommand: (command: BoardRadialCommand) => void
+  onEditorUpdate: (snapshot: BoardEditorDraftSnapshot) => void
+  onWheelNavigation: (direction: BoardWheelNavigationDirection) => void
+}
 
 const BOARD_SIDE = 8
 const PIECE_UNIT = 1
@@ -69,7 +69,7 @@ const QUIET_MOVE_RADIUS = 0.15
 const CAPTURE_OUTLINE_RADIUS = 0.43
 const CAPTURE_RING_RADIUS = 0.38
 
-export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) {
+export function useBoardView(props: BoardViewRuntimeProps, handlers: BoardViewHandlers) {
   const wrap = ref<HTMLElement | null>(null)
   const svg = ref<SVGSVGElement | null>(null)
   const ghostEl = ref<HTMLImageElement | null>(null)
@@ -94,36 +94,27 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   let resizeObserver: ResizeObserver | null = null
   let editorLastFen = ''
 
-  const orientation = computed<BoardOrientation>(() =>
-    props.orientation === BOARD_ORIENTATION_BLACK
-      ? BOARD_ORIENTATION_BLACK
-      : BOARD_ORIENTATION_WHITE
-  )
-  const turnColor = computed<BoardColor>(() =>
-    props.turnColor === BOARD_COLOR_BLACK ? BOARD_COLOR_BLACK : BOARD_COLOR_WHITE
-  )
-  const legalDests = computed(() => normalizeDests(props.dests))
-  const interactive = computed(() => props.interactive !== false)
-  const capabilities = useBoardCapabilityOptions(() => props.advancedCapabilities)
-  const editorDraft = computed(() => props.editorDraft as BoardEditorDraft | null | undefined)
+  const orientation = computed<BoardOrientation>(() => props.orientation)
+  const turnColor = computed<BoardColor>(() => props.turnColor)
+  const legalDests = computed(() => props.dests)
+  const interactive = computed(() => props.capabilities.position.playable)
+  const capabilities = computed(() => props.capabilities)
+  const editorDraft = computed(() => props.editorDraft)
   const editorActive = computed(
     () => capabilities.value.editor.active && editorDraft.value?.editing.value === true
   )
-  const annotationTool = computed<AnnotationShapeKind | null>(() => {
-    if (editorActive.value) {
-      return null
-    }
-
-    return props.annotationTool === 'arrow' ||
-      props.annotationTool === 'square' ||
-      props.annotationTool === 'highlight'
-      ? props.annotationTool
-      : null
-  })
-  const annotationColor = computed<AnnotationColorId>(() =>
-    props.annotationColor && isAnnotationColorId(props.annotationColor)
-      ? props.annotationColor
-      : 'draw-red'
+  const annotationTool = computed<AnnotationShapeKind | null>(() =>
+    editorActive.value ||
+    !capabilities.value.annotations.enabled ||
+    !capabilities.value.annotations.drawing
+      ? null
+      : capabilities.value.annotations.activeTool
+  )
+  const annotationColor = computed<AnnotationColorId>(
+    () => capabilities.value.annotations.activeColor
+  )
+  const annotationModel = computed<BoardAnnotation>(() =>
+    capabilities.value.annotations.enabled ? props.annotations : emptyAnnotation()
   )
 
   const files = computed(() => {
@@ -140,12 +131,19 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
 
   const grid = computed(() => fenToGrid(props.fen))
   const cells = computed(() => buildBoardCells(props.fen, orientation.value))
-  const pieces = computed(() => cells.value.filter((cell) => cell.letter))
-  const lastMoveSet = computed(() => new Set(Array.isArray(props.lastMove) ? props.lastMove : []))
+  const pieces = computed(() =>
+    capabilities.value.position.visible ? cells.value.filter((cell) => cell.letter) : []
+  )
+  const lastMoveSet = computed(() => new Set(props.lastMove ?? []))
+  const pointerMoveEnabled = computed(
+    () =>
+      interactive.value &&
+      (capabilities.value.interaction.click || capabilities.value.interaction.drag)
+  )
   const overlayOn = computed(
     () =>
       editorActive.value ||
-      interactive.value ||
+      pointerMoveEnabled.value ||
       annotationTool.value !== null ||
       capabilities.value.radialMenu.enabled ||
       capabilities.value.wheelNavigation.enabled
@@ -153,20 +151,18 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
 
   const radial = useBoardRadialMenu({
     enabled: () => capabilities.value.radialMenu.enabled,
-    isBlocked: () => editorActive.value || annotationStart.value !== null || dragging.value,
-    emitCommand: (command) => emit('radial-command', command),
+    isBlocked: () => !canStartInteraction('radial-menu'),
+    emitCommand: handlers.onRadialCommand,
   })
 
   const wheel = useBoardWheelNavigation({
     enabled: () => capabilities.value.wheelNavigation.enabled,
-    blocked: () =>
-      capabilities.value.wheelNavigation.blocked ||
-      editorActive.value ||
-      radial.active.value ||
-      annotationStart.value !== null ||
-      dragStart.value !== null ||
-      dragging.value,
-    emitNavigate: (direction) => emit('wheel-navigation', direction),
+    blocked: () => capabilities.value.wheelNavigation.blocked || !canStartInteraction('wheel'),
+    directions: () => capabilities.value.wheelNavigation.directions,
+    threshold: () => capabilities.value.wheelNavigation.threshold,
+    throttleMs: () => capabilities.value.wheelNavigation.throttleMs,
+    consume: () => capabilities.value.wheelNavigation.consume,
+    emitNavigate: handlers.onWheelNavigation,
   })
 
   const animation = useBoardAnimationController({
@@ -176,6 +172,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     orientation,
     moveEnabled: computed(() => capabilities.value.animation.move.enabled),
     snapbackEnabled: computed(() => capabilities.value.animation.snapback.enabled),
+    reducedMotion: computed(() => capabilities.value.animation.reducedMotion),
     clearMoveDrag,
   })
 
@@ -183,10 +180,12 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     activeShape: computed(() => capabilities.value.radialMenu.activeShape),
     colorIndex: computed(() => capabilities.value.radialMenu.colorIndex),
     colors: computed(() => capabilities.value.radialMenu.colors),
+    customItems: computed(() => capabilities.value.radialMenu.customItems),
     mounted: radial.mounted,
     open: radial.open,
     pointerX: radial.pointerX,
     pointerY: radial.pointerY,
+    reducedMotion: computed(() => capabilities.value.animation.reducedMotion),
     width: computed(() => capabilities.value.radialMenu.width),
     x: radial.x,
     y: radial.y,
@@ -202,7 +201,21 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
       annotationStart.value !== null
   )
 
-  watch(interactionActive, (active) => emit('interaction-active', active), { immediate: true })
+  const overlayAnimationSignature = computed(() =>
+    [
+      props.fen,
+      props.lastMove?.join('-') ?? '',
+      props.check ? 'check' : '',
+      selected.value ?? '',
+      focusedSquare.value,
+      JSON.stringify(annotationModel.value.arrows),
+      JSON.stringify(annotationModel.value.squares),
+    ].join('|')
+  )
+
+  useBoardOverlayAnimation({ svg, signature: overlayAnimationSignature })
+
+  watch(interactionActive, handlers.onInteractionActive, { immediate: true })
 
   const kingSquare = computed<string | null>(() => {
     if (!props.check) {
@@ -262,7 +275,11 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   const selectedMarker = computed(() =>
     selected.value ? squareRect(selected.value, orientation.value) : null
   )
-  const focusedMarker = computed(() => squareRect(focusedSquare.value, orientation.value))
+  const focusedMarker = computed(() =>
+    capabilities.value.interaction.keyboard
+      ? squareRect(focusedSquare.value, orientation.value)
+      : null
+  )
   const checkMarker = computed(() =>
     kingSquare.value ? squareRect(kingSquare.value, orientation.value) : null
   )
@@ -391,33 +408,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     const piece = pieceAt(focusedSquare.value)
     const occupant = piece ? pieceLabel(piece) : '空格'
 
-    return `棋盘，当前焦点 ${focusedSquare.value}，${occupant}`
-  })
-
-  const annotationModel = computed<BoardAnnotation>(() => {
-    const value = props.annotations
-
-    if (!value || typeof value !== 'object') {
-      return {
-        arrows: [],
-        squares: [],
-        systemTexts: [],
-        userTexts: [],
-        unknownFields: [],
-        plainComments: [],
-      }
-    }
-
-    const candidate = value as Partial<BoardAnnotation>
-
-    return {
-      arrows: Array.isArray(candidate.arrows) ? candidate.arrows : [],
-      squares: Array.isArray(candidate.squares) ? candidate.squares : [],
-      systemTexts: Array.isArray(candidate.systemTexts) ? candidate.systemTexts : [],
-      userTexts: Array.isArray(candidate.userTexts) ? candidate.userTexts : [],
-      unknownFields: Array.isArray(candidate.unknownFields) ? candidate.unknownFields : [],
-      plainComments: Array.isArray(candidate.plainComments) ? candidate.plainComments : [],
-    }
+    return `${capabilities.value.accessibility.labels.board}，当前焦点 ${focusedSquare.value}，${occupant}`
   })
 
   function pieceAt(square: string): string {
@@ -427,26 +418,38 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     return grid.value[BOARD_SIDE - rank]?.[file] ?? ''
   }
 
-  function normalizeDests(value: unknown): Map<string, string[]> {
-    const dests = new Map<string, string[]>()
+  function pieceImage(letter: string, square?: string): string {
+    return resolvePieceImage(capabilities.value.pieceResolver, letter, square)
+  }
 
-    if (!(value instanceof Map)) {
-      return dests
-    }
+  function squareAriaLabel(square: string): string {
+    const letter = pieceAt(square)
+    const piece = letter ? describePiece(letter, square) : null
 
-    for (const [from, targets] of value.entries()) {
-      if (typeof from !== 'string' || !Array.isArray(targets)) {
-        continue
-      }
+    return capabilities.value.accessibility.labels.square(square, piece)
+  }
 
-      const legalTargets = targets.filter((target): target is string => typeof target === 'string')
+  function activeInteractionKinds(): BoardInteractionKind[] {
+    const active: BoardInteractionKind[] = []
 
-      if (legalTargets.length > 0) {
-        dests.set(from, legalTargets)
-      }
-    }
+    if (editorActive.value || editorDownSquare.value !== null) active.push('editor')
+    if (radial.active.value) active.push('radial-menu')
+    if (annotationStart.value !== null) active.push('annotation')
+    if (dragging.value || ghost.value !== null) active.push('drag')
+    if (dragStart.value !== null && !dragging.value) active.push('click')
 
-    return dests
+    return active
+  }
+
+  function canStartInteraction(kind: BoardInteractionKind): boolean {
+    const priority = capabilities.value.interaction.priority
+    const nextIndex = priority.indexOf(kind)
+
+    return activeInteractionKinds().every((activeKind) => {
+      const activeIndex = priority.indexOf(activeKind)
+
+      return activeKind === kind || activeIndex < 0 || nextIndex < activeIndex
+    })
   }
 
   function pieceLabel(letter: string): string {
@@ -549,26 +552,15 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   }
 
   function emitEditorUpdate(): void {
-    const snapshot = editorDraft.value?.snapshot.value
-
-    if (snapshot) {
-      emit('editor-update', snapshot satisfies BoardEditorDraftSnapshot)
-    }
+    handlers.onEditorUpdate(editorDraft.value.snapshot.value satisfies BoardEditorDraftSnapshot)
   }
 
   function editorPieceAt(square: string): string {
-    return editorDraft.value?.pieceAt(square) ?? ''
+    return editorDraft.value.pieceAt(square)
   }
 
   function requestMove(payload: BoardMoveRequest): boolean {
-    const request = capabilities.value.animation.move.requestMove
-
-    if (!request) {
-      emit('move', payload)
-      return true
-    }
-
-    const decision = request(payload)
+    const decision = props.requestMove(payload)
 
     return isAcceptedMoveDecision(decision)
   }
@@ -586,10 +578,30 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     downY.value = event.clientY
     ghost.value = null
 
+    capturePointer(event)
+  }
+
+  function capturePointer(event: PointerEvent): void {
+    const target = event.currentTarget
+
+    if (!(target instanceof HTMLElement)) return
+
     try {
-      ;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)
+      target.setPointerCapture(event.pointerId)
     } catch {
-      return
+      // Pointer capture is optional in embedded browser contexts.
+    }
+  }
+
+  function releasePointer(event: PointerEvent): void {
+    const target = event.currentTarget
+
+    if (!(target instanceof HTMLElement)) return
+
+    try {
+      target.releasePointerCapture(event.pointerId)
+    } catch {
+      // Pointer capture is optional in embedded browser contexts.
     }
   }
 
@@ -626,7 +638,15 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   }
 
   function onDown(event: PointerEvent): void {
+    if (event.pointerType === 'touch' && !capabilities.value.interaction.touch) {
+      return
+    }
+
     if (editorActive.value) {
+      if (!capabilities.value.editor.freePlacement || !canStartInteraction('editor')) {
+        return
+      }
+
       if (event.button === 2) {
         event.preventDefault()
         event.stopPropagation()
@@ -662,11 +682,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
       downX.value = event.clientX
       downY.value = event.clientY
 
-      try {
-        ;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)
-      } catch {
-        // Pointer capture is optional in embedded browser contexts.
-      }
+      capturePointer(event)
 
       return
     }
@@ -675,7 +691,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
       return
     }
 
-    if (annotationTool.value) {
+    if (annotationTool.value && canStartInteraction('annotation')) {
       if (event.button !== 0) {
         return
       }
@@ -698,15 +714,15 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
       }
       annotationPointer.value = pointerToBoardPoint(event.clientX, event.clientY)
 
-      try {
-        ;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)
-      } catch {
-        // Pointer capture is optional in some embedded browser contexts.
-      }
+      capturePointer(event)
       return
     }
 
-    if (!interactive.value || event.button !== 0) {
+    if (
+      !interactive.value ||
+      event.button !== 0 ||
+      (!capabilities.value.interaction.click && !capabilities.value.interaction.drag)
+    ) {
       return
     }
 
@@ -720,19 +736,27 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     hoverSquare.value = null
     focusedSquare.value = square
 
-    if (selected.value && square !== selected.value) {
+    if (capabilities.value.interaction.click && selected.value && square !== selected.value) {
       commitSquare(square)
       return
     }
 
     if (isMovable(square)) {
-      armMovePointer(event, square)
+      if (capabilities.value.interaction.drag) {
+        armMovePointer(event, square)
+      } else if (capabilities.value.interaction.click && canStartInteraction('click')) {
+        commitSquare(square)
+      }
     } else {
       selected.value = null
     }
   }
 
   function onMove(event: PointerEvent): void {
+    if (event.pointerType === 'touch' && !capabilities.value.interaction.touch) {
+      return
+    }
+
     if (editorActive.value) {
       if (!editorDownSquare.value) {
         return
@@ -794,6 +818,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     dragOverSquare.value = squareAt(event.clientX, event.clientY)
 
     if (
+      capabilities.value.interaction.drag &&
       !dragging.value &&
       Math.hypot(event.clientX - downX.value, event.clientY - downY.value) > BOARD_DRAG_THRESHOLD_PX
     ) {
@@ -806,15 +831,15 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   }
 
   function onUp(event: PointerEvent): void {
+    if (event.pointerType === 'touch' && !capabilities.value.interaction.touch) {
+      return
+    }
+
     if (editorActive.value) {
       event.preventDefault()
       event.stopPropagation()
 
-      try {
-        ;(event.currentTarget as HTMLElement).releasePointerCapture(event.pointerId)
-      } catch {
-        // Pointer capture is optional in embedded browser contexts.
-      }
+      releasePointer(event)
 
       const start = editorDownSquare.value
       const target = squareAt(event.clientX, event.clientY)
@@ -843,11 +868,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
         return
       }
 
-      try {
-        ;(event.currentTarget as HTMLElement).releasePointerCapture(event.pointerId)
-      } catch {
-        // Pointer capture is optional in some embedded browser contexts.
-      }
+      releasePointer(event)
 
       const end = squareAt(event.clientX, event.clientY)
       const color = colorForAnnotation(event)
@@ -864,9 +885,9 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
             payload.to = end
           }
 
-          emit('annotation-draw', payload)
+          handlers.onAnnotationDraw(payload)
         } else {
-          emit('annotation-draw', {
+          handlers.onAnnotationDraw({
             kind: annotationTool.value,
             from: end,
             color,
@@ -882,11 +903,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
       return
     }
 
-    try {
-      ;(event.currentTarget as HTMLElement).releasePointerCapture(event.pointerId)
-    } catch {
-      // Pointer capture is optional in some embedded browser contexts.
-    }
+    releasePointer(event)
 
     const target = squareAt(event.clientX, event.clientY)
 
@@ -911,7 +928,11 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
       }
 
       return
-    } else if (!dragging.value && target === dragStart.value) {
+    } else if (
+      !dragging.value &&
+      target === dragStart.value &&
+      capabilities.value.interaction.click
+    ) {
       selected.value = dragStart.value
       clearMoveDrag()
       return
@@ -942,7 +963,13 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   }
 
   function onKeydown(event: KeyboardEvent): void {
-    if (!interactive.value || editorActive.value || radial.active.value) {
+    if (
+      !interactive.value ||
+      !capabilities.value.interaction.keyboard ||
+      editorActive.value ||
+      radial.active.value ||
+      !canStartInteraction('keyboard')
+    ) {
       return
     }
 
@@ -969,6 +996,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
         orientation.value === BOARD_ORIENTATION_WHITE
           ? String.fromCharCode(97 + nextCol) + (BOARD_SIDE - nextRow)
           : String.fromCharCode(97 + (BOARD_SIDE - 1 - nextCol)) + (nextRow + 1)
+      capabilities.value.accessibility.announce?.(squareAriaLabel(focusedSquare.value))
       return
     }
 
@@ -991,7 +1019,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
       return
     }
 
-    event.preventDefault()
+    if (editorActive.value) event.preventDefault()
   }
 
   function onRadialSelect(command: BoardRadialCommand | null): void {
@@ -1041,6 +1069,47 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   )
 
   watch(
+    () =>
+      [
+        capabilities.value.animation.move.enabled,
+        capabilities.value.animation.snapback.enabled,
+        capabilities.value.animation.reducedMotion,
+      ] as const,
+    () => animation.killBoardTweens()
+  )
+
+  watch(
+    () => capabilities.value.interaction.drag,
+    (enabled) => {
+      if (!enabled) clearMoveDrag()
+    }
+  )
+
+  watch(
+    () => capabilities.value.position.playable,
+    (playable) => {
+      if (!playable) {
+        selected.value = null
+        onCancel()
+      }
+    }
+  )
+
+  watch(
+    () => capabilities.value.interaction.touch,
+    (enabled) => {
+      if (!enabled) onCancel()
+    }
+  )
+
+  watch(
+    () => capabilities.value.annotations.drawing,
+    (enabled) => {
+      if (!enabled) clearAnnotationGesture()
+    }
+  )
+
+  watch(
     () => capabilities.value.editor.active,
     (active) => {
       if (active) {
@@ -1065,6 +1134,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
 
   onMounted(() => {
     measureSquare()
+    window.addEventListener('blur', onCancel)
 
     if (wrap.value && typeof ResizeObserver !== 'undefined') {
       resizeObserver = new ResizeObserver(measureSquare)
@@ -1073,6 +1143,7 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
   })
 
   onBeforeUnmount(() => {
+    window.removeEventListener('blur', onCancel)
     resizeObserver?.disconnect()
     animation.killBoardTweens()
     radial.close(false)
@@ -1112,11 +1183,13 @@ export function useBoardView(props: BoardViewRuntimeProps, emit: BoardViewEmit) 
     overlayOn,
     pieces,
     PIECE_UNIT,
-    pieceImg,
+    pieceImage,
     QUIET_MOVE_RADIUS,
     radial: radialState,
     ranks,
     selectedMarker,
+    selectedSquare: selected,
+    squareAriaLabel,
     squarePx,
     stateOverlays,
     svg,

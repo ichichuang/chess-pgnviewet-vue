@@ -57,11 +57,19 @@ function pieceToLetter(piece: BoardEditorPiece): string | null {
   return piece.color === 'w' ? normalized : normalized.toLowerCase()
 }
 
-function letterToPiece(letter: string): BoardEditorPiece {
+function letterToPiece(letter: string): BoardEditorPiece | null {
+  const type = letter.toUpperCase()
+
+  if (!isBoardEditorPieceType(type)) return null
+
   return {
     color: letter === letter.toUpperCase() ? 'w' : 'b',
-    type: letter.toUpperCase() as BoardEditorPiece['type'],
+    type,
   }
+}
+
+function isBoardEditorPieceType(value: string): value is BoardEditorPiece['type'] {
+  return VALID_PIECES.has(value)
 }
 
 function castlingToken(rights: BoardEditorCastlingRights): string {

@@ -1,31 +1,41 @@
 <script setup lang="ts">
-import { BOARD_COLOR_WHITE, BOARD_ORIENTATION_WHITE } from './domain/boardTypes'
+import type { AnnotationDrawPayload, BoardAnnotation } from '@/features/annotations/domain/annotationTypes'
+
+import type {
+  BoardEditorDraftSnapshot,
+  BoardMoveRequestDecision,
+  BoardRadialCommand,
+  BoardWheelNavigationDirection,
+  NormalizedChessboardCapabilities,
+} from './domain/boardCapabilities'
+import type { BoardColor, BoardMoveRequest, BoardOrientation } from './domain/boardTypes'
+import type { BoardEditorDraft } from './editor/boardEditorDraft'
 import BoardRadialMenu from './radial-menu/BoardRadialMenu.vue'
 import { useBoardView } from './useBoardView'
 
-const props = defineProps({
-  fen: { type: String, required: true },
-  lastMove: { type: Array, default: undefined },
-  orientation: { type: String, default: BOARD_ORIENTATION_WHITE },
-  turnColor: { type: String, default: BOARD_COLOR_WHITE },
-  dests: { type: Map, default: () => new Map() },
-  check: { type: Boolean, default: false },
-  interactive: { type: Boolean, default: true },
-  annotationTool: { type: String, default: null },
-  annotationColor: { type: String, default: 'draw-red' },
-  annotations: { type: Object, default: () => ({}) },
-  advancedCapabilities: { type: Object, default: undefined },
-  editorDraft: { type: Object, default: null },
-})
+interface BoardViewProps {
+  fen: string
+  lastMove?: readonly [string, string] | undefined
+  orientation: BoardOrientation
+  turnColor: BoardColor
+  dests: ReadonlyMap<string, readonly string[]>
+  check: boolean
+  annotations: BoardAnnotation
+  capabilities: NormalizedChessboardCapabilities
+  editorDraft: BoardEditorDraft
+  requestMove: (payload: BoardMoveRequest) => BoardMoveRequestDecision
+}
 
-const emit = defineEmits([
-  'move',
-  'interaction-active',
-  'annotation-draw',
-  'radial-command',
-  'editor-update',
-  'wheel-navigation',
-])
+interface BoardViewEvents {
+  'interaction-active': [active: boolean]
+  'annotation-draw': [payload: AnnotationDrawPayload]
+  'radial-command': [command: BoardRadialCommand]
+  'editor-update': [snapshot: BoardEditorDraftSnapshot]
+  'wheel-navigation': [direction: BoardWheelNavigationDirection]
+}
+
+const props = defineProps<BoardViewProps>()
+const emit = defineEmits<BoardViewEvents>()
 
 const {
   annotationArrows,
@@ -57,24 +67,39 @@ const {
   overlayOn,
   pieces,
   PIECE_UNIT,
-  pieceImg,
+  pieceImage,
   QUIET_MOVE_RADIUS,
   ranks,
   radial,
   selectedMarker,
+  selectedSquare,
+  squareAriaLabel,
   squarePx,
   stateOverlays,
   svg,
   wrap,
   wheelBindings,
-} = useBoardView(
-  props,
-  emit
-)
+} = useBoardView(props, {
+  onInteractionActive: (active) => emit('interaction-active', active),
+  onAnnotationDraw: (payload) => emit('annotation-draw', payload),
+  onRadialCommand: (command) => emit('radial-command', command),
+  onEditorUpdate: (snapshot) => emit('editor-update', snapshot),
+  onWheelNavigation: (direction) => emit('wheel-navigation', direction),
+})
 </script>
 
 <template>
-  <div class="board-view" data-p1b-board-view>
+  <div
+    class="board-view"
+    :class="[
+      `fit-${capabilities.responsive.fit}`,
+      {
+        'coordinates-hidden': !capabilities.coordinates.visible,
+        'responsive-disabled': !capabilities.responsive.enabled,
+      },
+    ]"
+    data-p1b-board-view
+  >
     <div class="board-frame">
       <div class="coords files files-top" aria-hidden="true">
         <span v-for="file in files" :key="`top-${file}`">{{ file }}</span>
@@ -86,11 +111,22 @@ const {
         ref="wrap"
         class="cg-wrap"
         role="grid"
-        tabindex="0"
+        :tabindex="capabilities.interaction.keyboard ? 0 : -1"
         :aria-label="ariaLabel"
         @keydown="onKeydown"
         v-on="wheelBindings"
       >
+        <div class="sr-board-grid">
+          <div v-for="rank in ranks" :key="`sr-rank-${rank}`" role="row">
+            <span
+              v-for="cell in cells.filter((candidate) => candidate.row === ranks.indexOf(rank))"
+              :key="`sr-${cell.square}`"
+              role="gridcell"
+              :aria-label="squareAriaLabel(cell.square)"
+              :aria-selected="selectedSquare === cell.square"
+            />
+          </div>
+        </div>
         <svg
           ref="svg"
           class="board-svg"
@@ -228,7 +264,7 @@ const {
           <image
             v-for="cell in pieces"
             :key="`pc-${cell.square}`"
-            :href="pieceImg(cell.letter)"
+            :href="pieceImage(cell.letter, cell.square)"
             :x="cell.col"
             :y="cell.row"
             :width="PIECE_UNIT"
@@ -290,7 +326,7 @@ const {
           v-if="ghost"
           ref="ghostEl"
           class="ghost"
-          :src="pieceImg(ghost.letter)"
+          :src="pieceImage(ghost.letter, draggingFrom ?? undefined)"
           :style="{
             left: `${ghost.x}px`,
             top: `${ghost.y}px`,
@@ -308,9 +344,11 @@ const {
           :pointer-x="radial.pointerX.value"
           :pointer-y="radial.pointerY.value"
           :colors="radial.colors.value.slice()"
-          :active-shape="radial.activeShape.value ?? ''"
+          :active-shape="radial.activeShape.value"
           :color-index="radial.colorIndex.value"
           :width="radial.width.value"
+          :custom-items="radial.customItems.value"
+          :reduced-motion="radial.reducedMotion.value"
           @select="onRadialSelect"
         />
       </div>
@@ -336,6 +374,10 @@ const {
   min-height: 0;
 }
 
+.board-view.responsive-disabled {
+  container-type: normal;
+}
+
 .board-frame {
   position: relative;
   display: grid;
@@ -351,7 +393,26 @@ const {
   border: var(--workspace-border-w) solid var(--border);
   border-radius: var(--board-frame-radius);
   background: var(--surface);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--board-instance-shadow, var(--shadow-sm));
+}
+
+.coordinates-hidden .board-frame {
+  grid-template:
+    '. files-top .' 0
+    'ranks-left board ranks-right' minmax(0, 1fr)
+    '. files-bottom .' 0
+    / 0 minmax(0, 1fr) 0;
+  gap: var(--workspace-board-pad-y);
+  padding: var(--workspace-board-pad-y);
+}
+
+.fit-width .board-frame {
+  width: 100%;
+}
+
+.fit-height .board-frame {
+  width: auto;
+  height: 100%;
 }
 
 .cg-wrap {
@@ -383,7 +444,7 @@ const {
   display: flex;
   min-width: 0;
   min-height: 0;
-  color: var(--text);
+  color: var(--board-coordinate-color, var(--text));
   font-family: var(--font-sans);
   font-size: var(--board-coordinate-font-size);
   font-variant-numeric: tabular-nums;
@@ -391,6 +452,10 @@ const {
   line-height: 1;
   text-shadow: var(--board-coordinate-halo);
   user-select: none;
+}
+
+.coordinates-hidden .coords {
+  display: none;
 }
 
 .coords span {
@@ -547,7 +612,6 @@ const {
   filter: var(--board-piece-filter);
   transform-box: fill-box;
   transform-origin: center;
-  transition: opacity var(--workspace-motion-duration-fast) var(--workspace-motion-ease-standard);
   user-select: none;
 }
 
@@ -574,5 +638,14 @@ const {
   pointer-events: none;
   transform: translate(-50%, -50%);
   will-change: left, top, transform;
+}
+
+.sr-board-grid {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
 }
 </style>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { gsap } from 'gsap'
 
 import { formatMoverScore, formatWhiteScore } from '@/features/analysis/domain/formatAnalysis'
+import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
 import { useAnalysisStore, usePgnStore } from '@/stores'
 
 const analysis = useAnalysisStore()
@@ -52,10 +54,101 @@ const workerText = computed(() => {
 })
 
 const candidates = computed(() => analysis.current?.lines ?? [])
+const rootEl = ref<HTMLElement | null>(null)
+const progressEl = ref<HTMLElement | null>(null)
+const resultEl = ref<HTMLElement | null>(null)
+let context: ReturnType<typeof gsap.context> | null = null
+let reducedMotionQuery: MediaQueryList | null = null
+
+async function syncProgress(): Promise<void> {
+  await nextTick()
+  const root = rootEl.value
+  const progress = progressEl.value
+
+  if (!root || !progress || !analysis.running) return
+
+  const duration = motionDuration(root, '--workspace-motion-duration-progress')
+  gsap.killTweensOf(progress)
+
+  if (duration === 0) {
+    gsap.set(progress, { xPercent: 0 })
+    return
+  }
+
+  context?.add(() => {
+    gsap.fromTo(
+      progress,
+      { xPercent: -20 },
+      {
+        xPercent: 160,
+        duration,
+        ease: motionEase(root, '--workspace-motion-ease-progress'),
+        repeat: -1,
+        yoyo: true,
+        overwrite: true,
+      }
+    )
+  })
+}
+
+async function animateResult(): Promise<void> {
+  await nextTick()
+  const root = rootEl.value
+  const result = resultEl.value
+
+  if (!root || !result) return
+
+  const targets = Array.from(result.children)
+  gsap.killTweensOf(targets)
+  context?.add(() => {
+    gsap.fromTo(
+      targets,
+      { autoAlpha: 0, y: motionScalar(root, '--workspace-motion-distance-panel') },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: motionDuration(root, '--workspace-motion-duration-panel'),
+        ease: motionEase(root, '--workspace-motion-ease-enter'),
+        stagger: motionDuration(root, '--workspace-motion-stagger-panel'),
+        overwrite: true,
+        clearProps: 'opacity,transform',
+      }
+    )
+  })
+}
+
+watch(() => analysis.running, () => void syncProgress(), { flush: 'post' })
+watch(() => analysis.current?.requestId, () => void animateResult(), { flush: 'post' })
+
+function onReducedMotionChange(): void {
+  void syncProgress()
+  void animateResult()
+}
+
+onMounted(() => {
+  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
+
+  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    reducedMotionQuery.addEventListener('change', onReducedMotionChange)
+  }
+
+  void syncProgress()
+  void animateResult()
+})
+
+onBeforeUnmount(() => {
+  reducedMotionQuery?.removeEventListener('change', onReducedMotionChange)
+  reducedMotionQuery = null
+  const targets = rootEl.value ? Array.from(rootEl.value.querySelectorAll('*')) : []
+  gsap.killTweensOf(targets)
+  context?.revert()
+  context = null
+})
 </script>
 
 <template>
-  <section class="analysis-panel" aria-labelledby="workspace-analysis-title">
+  <section ref="rootEl" class="analysis-panel" aria-labelledby="workspace-analysis-title">
     <header class="analysis-header">
       <div>
         <h2 id="workspace-analysis-title">AI 分析</h2>
@@ -101,7 +194,7 @@ const candidates = computed(() => analysis.current?.lines ?? [])
     </div>
 
     <div v-if="analysis.running" class="analysis-progress" aria-hidden="true">
-      <span />
+      <span ref="progressEl" />
     </div>
 
     <p
@@ -112,7 +205,7 @@ const candidates = computed(() => analysis.current?.lines ?? [])
       {{ statusText }}
     </p>
 
-    <div v-if="analysis.current" class="analysis-result">
+    <div v-if="analysis.current" ref="resultEl" class="analysis-result">
       <section class="analysis-summary" aria-label="当前局面评估">
         <div>
           <span>白方视角</span>
@@ -255,7 +348,6 @@ const candidates = computed(() => analysis.current?.lines ?? [])
   width: 42%;
   border-radius: var(--r-full);
   background: var(--accent);
-  animation: analysis-progress 0.9s ease-in-out infinite alternate;
 }
 
 .analysis-error {
@@ -349,23 +441,6 @@ const candidates = computed(() => analysis.current?.lines ?? [])
   place-items: center;
   min-height: 0;
   text-align: center;
-}
-
-@keyframes analysis-progress {
-  from {
-    transform: translateX(-20%);
-  }
-
-  to {
-    transform: translateX(160%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .analysis-progress span {
-    animation: none;
-    transform: translateX(0);
-  }
 }
 
 @media (width <= 560px) {

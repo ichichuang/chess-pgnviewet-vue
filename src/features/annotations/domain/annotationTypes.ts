@@ -4,19 +4,19 @@ export type AnnotationShapeKind = 'arrow' | 'square' | 'highlight'
 export type AnnotationColorId =
   'draw-red' | 'draw-green' | 'draw-yellow' | 'draw-orange' | 'draw-purple' | 'draw-dark'
 
-interface AnnotationArrow {
+export interface AnnotationArrow {
   from: string
   to: string
   color: AnnotationColorId
 }
 
-interface AnnotationSquare {
+export interface AnnotationSquare {
   square: string
   color: AnnotationColorId
   kind: Extract<AnnotationShapeKind, 'square' | 'highlight'>
 }
 
-interface UnknownAnnotationField {
+export interface UnknownAnnotationField {
   key: string
   value: string
 }
@@ -71,6 +71,45 @@ export function cloneAnnotation(annotation: BoardAnnotation): BoardAnnotation {
     unknownFields: annotation.unknownFields.map((field) => ({ ...field })),
     plainComments: [...annotation.plainComments],
   }
+}
+
+export function applyAnnotationDraw(
+  annotation: BoardAnnotation,
+  payload: AnnotationDrawPayload
+): BoardAnnotation {
+  const next = cloneAnnotation(annotation)
+
+  if (payload.kind === 'arrow' && payload.to) {
+    const index = next.arrows.findIndex(
+      (arrow) => arrow.from === payload.from && arrow.to === payload.to
+    )
+
+    if (index >= 0) {
+      next.arrows.splice(index, 1)
+    } else {
+      next.arrows.push({ from: payload.from, to: payload.to, color: payload.color })
+    }
+
+    return next
+  }
+
+  if (payload.kind === 'square' || payload.kind === 'highlight') {
+    const index = next.squares.findIndex(
+      (square) => square.square === payload.from && square.kind === payload.kind
+    )
+
+    if (index >= 0) {
+      next.squares.splice(index, 1)
+    } else {
+      next.squares.push({ square: payload.from, color: payload.color, kind: payload.kind })
+    }
+  }
+
+  return next
+}
+
+export function clearAnnotationDrawings(annotation: BoardAnnotation): BoardAnnotation {
+  return { ...cloneAnnotation(annotation), arrows: [], squares: [] }
 }
 
 export function annotationColorToken(color: AnnotationColorId): string {

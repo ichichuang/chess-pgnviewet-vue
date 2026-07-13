@@ -11,7 +11,13 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import AnalysisPanel from '@/features/analysis/components/AnalysisPanel.vue'
 import EvalBar from '@/features/analysis/components/EvalBar.vue'
 import { ANNOTATION_COLORS } from '@/features/annotations/domain/annotationTypes'
-import CanonicalChessBoard from '@/features/board/CanonicalChessBoard.vue'
+import { CanonicalChessBoard } from '@/ui'
+import type {
+  BoardEditorDraftSnapshot,
+  BoardRadialCommand,
+  BoardWheelNavigationDirection,
+  ChessboardCapabilities,
+} from '@/features/board/domain/boardCapabilities'
 import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
 import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
 import { useAnalysisStore, useWorkspaceStore } from '@/stores'
@@ -20,7 +26,9 @@ import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceMode
 import WorkspaceRightPanel from './WorkspaceRightPanel.vue'
 import WorkspaceSplitter from './WorkspaceSplitter.vue'
 import WorkspaceToolbar from './WorkspaceToolbar.vue'
+import { useTeachingWorkspaceMotion } from './useTeachingWorkspaceMotion'
 import { useWorkspaceSplitter } from './useWorkspaceSplitter'
+import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
 const workspaceModeContext = useWorkspaceModeContext()
 const {
@@ -29,7 +37,6 @@ const {
   dragActive,
   fileInput,
   handlePgnAction,
-  onBoardMoveRequest,
   onFiles,
   pgn,
 } = usePgnWorkspaceRuntime()
@@ -37,7 +44,19 @@ const workspace = useWorkspaceStore()
 const analysis = useAnalysisStore()
 const { onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
 const boardEditorActive = ref(false)
-const radialWidth = ref(0.16)
+const radialWidth = ref<0.08 | 0.16 | 0.28>(0.16)
+const {
+  listInnerEl,
+  onOverlayEnter,
+  onOverlayLeave,
+  onPanelEnter,
+  onPanelLeave,
+  rootEl,
+} = useTeachingWorkspaceMotion({
+  boardState: () =>
+    `${workspace.boardOrientation}:${workspace.boardAlignment}:${boardEditorActive.value ? 'editor' : 'board'}`,
+  leftPanelVisible: () => workspace.showLeftSidebar,
+})
 
 const radialColors = ANNOTATION_COLORS.map((id) => ({
   id,
@@ -52,10 +71,44 @@ const radialColorIndex = computed(() =>
   )
 )
 
-const boardAdvancedCapabilities = computed(() => ({
+const boardCapabilities = computed<ChessboardCapabilities>(() => ({
+  position: {
+    visible: true,
+    playable: boardInteractive.value,
+    readOnly: !boardInteractive.value,
+    controlled: true,
+    onMoveRequest: (payload) => pgn.tryMove(payload),
+  },
+  interaction: {
+    click: true,
+    drag: true,
+    touch: true,
+    keyboard: true,
+  },
+  coordinates: { visible: true },
+  orientation: workspace.boardOrientation,
+  promotion: { enabled: true },
   animation: {
     move: { enabled: true },
     snapback: { enabled: true },
+    reducedMotion: 'system',
+  },
+  annotations: {
+    enabled: true,
+    drawing: workspace.annotationTool !== null && !boardEditorActive.value,
+    activeTool: workspace.annotationTool,
+    activeColor: workspace.annotationColor,
+    colors: radialColors,
+    canUndo: pgn.canUndoCurrentDrawing,
+    canRedo: pgn.canRedoCurrentDrawing,
+    canClear: pgn.hasCurrentDrawing,
+    onDraw: pgn.drawAnnotation,
+    onUndo: pgn.undoCurrentDrawing,
+    onRedo: pgn.redoCurrentDrawing,
+    onClear: () => {
+      pgn.clearDrawing()
+      return true
+    },
   },
   radialMenu: {
     enabled: !boardEditorActive.value,
@@ -92,7 +145,7 @@ defineExpose({
   workspace,
 })
 
-function handleWorkspaceAction(name = '') {
+function handleWorkspaceAction(name: WorkspaceToolbarAction): void {
   if (name === 'enterBoardEditor') {
     enterBoardEditor()
     return
@@ -109,7 +162,7 @@ function enterBoardEditor() {
   boardEditorActive.value = true
 }
 
-function finishBoardEditor(snapshot = { fen: '' }) {
+function finishBoardEditor(snapshot: BoardEditorDraftSnapshot): void {
   analysis.stop()
   const ok = pgn.insertPgnFromFen(snapshot.fen)
 
@@ -126,7 +179,7 @@ function cancelBoardEditor() {
   boardEditorActive.value = false
 }
 
-function onBoardRadialCommand(command = { kind: '', shape: null, index: -1, width: 0.16 }) {
+function onBoardRadialCommand(command: BoardRadialCommand): void {
   if (command.kind === 'shape') {
     workspace.setAnnotationTool(command.shape)
     return
@@ -141,10 +194,12 @@ function onBoardRadialCommand(command = { kind: '', shape: null, index: -1, widt
     return
   }
 
-  radialWidth.value = command.width
+  if (command.kind === 'width') {
+    radialWidth.value = command.width
+  }
 }
 
-function onBoardWheelNavigation(direction = '') {
+function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void {
   if (direction === 'next') {
     pgn.stepForward()
     return
@@ -167,7 +222,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="workspace" data-p1a-shell>
+  <div ref="rootEl" class="workspace" data-p1a-shell>
     <WorkspaceToolbar @action="handleWorkspaceAction" />
 
     <main
@@ -182,7 +237,7 @@ onBeforeUnmount(() => {
         :class="{ collapsed: !workspace.showLeftSidebar }"
         aria-label="左侧棋谱列表结构区域"
       >
-        <div v-show="workspace.showLeftSidebar" class="list-inner">
+        <div v-show="workspace.showLeftSidebar" ref="listInnerEl" class="list-inner">
           <PgnGameList @action="handlePgnAction" />
         </div>
         <button
@@ -206,16 +261,11 @@ onBeforeUnmount(() => {
             <h1 id="workspace-board-title" class="board-title">开赛了教学工作区</h1>
             <CanonicalChessBoard
               :position="boardPosition"
-              :last-move="pgn.lastMove ?? []"
-              :orientation="workspace.boardOrientation"
-              :interactive="boardInteractive"
-              :annotation-tool="workspace.annotationTool ?? ''"
-              :annotation-color="workspace.annotationColor"
-              :annotations="pgn.currentAnnotation ?? {}"
-              :advanced-capabilities="boardAdvancedCapabilities"
-              controlled-moves
-              @move-request="onBoardMoveRequest"
-              @annotation-draw="pgn.drawAnnotation"
+              v-bind="{
+                ...(pgn.lastMove === undefined ? {} : { lastMove: pgn.lastMove }),
+                ...(pgn.currentAnnotation === null ? {} : { annotations: pgn.currentAnnotation }),
+              }"
+              :capabilities="boardCapabilities"
               @radial-command="onBoardRadialCommand"
               @editor-commit="finishBoardEditor"
               @editor-cancel="cancelBoardEditor"
@@ -247,26 +297,30 @@ onBeforeUnmount(() => {
           @pointer-down="onSplitterPointerDown"
         />
 
-        <section
-          v-if="workspace.showAnalysisRegion"
-          class="panel-analysis"
-          aria-labelledby="workspace-analysis-title"
-        >
-          <div class="panel-scroll">
-            <AnalysisPanel />
-          </div>
-        </section>
+        <Transition :css="false" @enter="onPanelEnter" @leave="onPanelLeave">
+          <section
+            v-if="workspace.showAnalysisRegion"
+            class="panel-analysis"
+            aria-labelledby="workspace-analysis-title"
+          >
+            <div class="panel-scroll">
+              <AnalysisPanel />
+            </div>
+          </section>
+        </Transition>
       </aside>
     </main>
 
     <input ref="fileInput" type="file" accept=".pgn" multiple hidden @change="onFiles" />
 
-    <div v-if="dragActive" class="drop-overlay" data-p1c-drop-overlay>
-      <div class="drop-card">
-        <strong>拖拽棋谱文件到此处导入</strong>
-        <span>支持 .pgn 文件</span>
+    <Transition :css="false" @enter="onOverlayEnter" @leave="onOverlayLeave">
+      <div v-if="dragActive" class="drop-overlay" data-p1c-drop-overlay>
+        <div class="drop-card">
+          <strong>拖拽棋谱文件到此处导入</strong>
+          <span>支持 .pgn 文件</span>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
@@ -477,7 +531,7 @@ onBeforeUnmount(() => {
 .area-panel {
   display: flex;
   flex-direction: column;
-  height: var(--workspace-viewport-h);
+  height: 100%;
   max-height: 100%;
   min-width: 0;
   min-height: 0;

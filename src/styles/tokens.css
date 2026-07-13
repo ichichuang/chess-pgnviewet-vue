@@ -79,7 +79,19 @@
   --workspace-shell-z-raised: 6;
   --workspace-motion-duration-fast: 0.12s;
   --workspace-motion-duration-base: 0.14s;
+  --workspace-motion-duration-panel: 0.2s;
+  --workspace-motion-duration-shell: 0.24s;
+  --workspace-motion-duration-analysis: 0.28s;
+  --workspace-motion-duration-progress: 0.9s;
+  --workspace-motion-stagger-panel: 0.03s;
+  --workspace-motion-distance-panel: 8px;
+  --workspace-motion-press-scale: 0.96;
+  --workspace-motion-board-scale: 0.992;
+  --workspace-motion-overlay-scale: 0.94;
   --workspace-motion-ease-standard: ease;
+  --workspace-motion-ease-enter: power2.out;
+  --workspace-motion-ease-state: power1.out;
+  --workspace-motion-ease-progress: sine.inOut;
   --workspace-disabled-opacity: 0.5;
 
   /*
@@ -113,8 +125,10 @@
   --board-coordinate-font-size: clamp(22px, min(3.4cqw, 3.4cqh), 36px);
   --board-coordinate-font-weight: 800;
   --board-coordinate-halo: 0 1px 0 var(--surface), 0 0 2px var(--surface);
+  --board-coordinate-color: var(--text);
   --board-frame-radius: calc(var(--r-lg) + var(--board-coordinate-pad));
   --board-square-radius: var(--r-lg);
+  --board-instance-shadow: var(--shadow-sm);
   --board-selected-ring-stroke: 0.055;
   --board-focused-ring-stroke: 0.055;
   --board-move-dot-stroke: 0.045;
@@ -130,14 +144,21 @@
   --board-touch-target-min: 44px;
   --board-promotion-piece-size: 56px;
   --board-promotion-backdrop: rgb(20 35 25 / 0.32);
+  --board-promotion-open-duration: 0.2s;
+  --board-promotion-close-duration: 0.14s;
+  --board-promotion-open-ease: power2.out;
+  --board-promotion-close-ease: power1.in;
   --board-motion-duration-move: 0.28s;
   --board-motion-duration-snapback: 0.22s;
   --board-motion-duration-drag-settle: 0.18s;
   --board-motion-duration-piece-settle: 0.15s;
+  --board-motion-duration-overlay: 0.16s;
+  --board-motion-stagger-overlay: 0.01s;
   --board-motion-ease-move: power3.out;
   --board-motion-ease-snapback: power3.out;
   --board-motion-ease-drag-settle: power2.out;
   --board-motion-ease-piece-settle: power1.out;
+  --board-motion-ease-overlay: power1.out;
   --board-radial-size: 300px;
   --board-radial-center: 150px;
   --board-radial-open-duration: 0.2s;
@@ -191,6 +212,9 @@
   --board-editor-intro-ease: power2.out;
   --board-editor-chip-bg: color-mix(in srgb, var(--surface-2) 76%, transparent);
   --board-editor-button-bg: color-mix(in srgb, var(--surface-2) 82%, transparent);
+  --board-editor-palette-border: var(--border);
+  --board-editor-palette-selected: var(--accent-bg);
+  --board-editor-palette-shadow: var(--shadow-lg);
   --board-wheel-throttle: 60ms;
   --board-drag-threshold: 5px;
 

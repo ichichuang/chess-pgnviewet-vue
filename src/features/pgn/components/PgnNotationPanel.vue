@@ -2,9 +2,12 @@
 import { computed, nextTick, ref, watch } from 'vue'
 
 import { buildMoveRows } from '@/features/pgn/domain/moveRows'
+import type { PgnWorkspaceAction } from '@/features/pgn/pgnWorkspaceTypes'
 import { usePgnStore } from '@/stores'
 
-const emit = defineEmits(['action'])
+const emit = defineEmits<{
+  action: [name: Extract<PgnWorkspaceAction, 'openLocal'>]
+}>()
 
 const store = usePgnStore()
 const expanded = ref(emptyExpanded())

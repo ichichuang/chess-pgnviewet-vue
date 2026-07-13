@@ -2,9 +2,12 @@
 import { computed } from 'vue'
 
 import PgnNotationPanel from '@/features/pgn/components/PgnNotationPanel.vue'
+import type { PgnWorkspaceAction } from '@/features/pgn/pgnWorkspaceTypes'
 import { useAnalysisStore, usePgnStore, useWorkspaceStore } from '@/stores'
 
-const emit = defineEmits(['action'])
+const emit = defineEmits<{
+  action: [name: PgnWorkspaceAction]
+}>()
 
 const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
@@ -15,7 +18,7 @@ const tabs = [
   { key: 'comments', label: '批注' },
   { key: 'annotations', label: '标注' },
   { key: 'analysis', label: '分析' },
-]
+] as const
 
 const currentComments = computed(() => pgn.currentAnnotation?.plainComments ?? [])
 const currentSystemTexts = computed(() => pgn.currentAnnotation?.systemTexts ?? [])

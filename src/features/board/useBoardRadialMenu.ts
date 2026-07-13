@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import type { BoardRadialCommand } from './domain/boardCapabilities'
 import { BOARD_RADIAL_GEOMETRY } from './domain/boardCapabilities'
@@ -18,6 +18,7 @@ export function useBoardRadialMenu(options: BoardRadialMenuOptions) {
   const pointerY = ref(0)
   const selectedCommand = ref<BoardRadialCommand | null>(null)
   let suppressContextMenuUntil = 0
+  let unmountTimer: number | null = null
 
   const active = computed(() => mounted.value || open.value)
 
@@ -85,10 +86,12 @@ export function useBoardRadialMenu(options: BoardRadialMenuOptions) {
       return
     }
 
-    window.setTimeout(() => {
+    if (unmountTimer !== null) window.clearTimeout(unmountTimer)
+    unmountTimer = window.setTimeout(() => {
       if (!open.value) {
         mounted.value = false
       }
+      unmountTimer = null
     }, 140)
   }
 
@@ -101,8 +104,10 @@ export function useBoardRadialMenu(options: BoardRadialMenuOptions) {
     event.stopPropagation()
     openAt(event)
 
+    const currentTarget = event.currentTarget
+
     try {
-      ;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)
+      if (currentTarget instanceof HTMLElement) currentTarget.setPointerCapture(event.pointerId)
     } catch {
       // Pointer capture is optional in embedded browser contexts.
     }
@@ -127,8 +132,10 @@ export function useBoardRadialMenu(options: BoardRadialMenuOptions) {
     updatePointer(event.clientX, event.clientY)
     close(true)
 
+    const currentTarget = event.currentTarget
+
     try {
-      ;(event.currentTarget as HTMLElement).releasePointerCapture(event.pointerId)
+      if (currentTarget instanceof HTMLElement) currentTarget.releasePointerCapture(event.pointerId)
     } catch {
       // Pointer capture is optional in embedded browser contexts.
     }
@@ -179,10 +186,21 @@ export function useBoardRadialMenu(options: BoardRadialMenuOptions) {
 
   function cleanup(): void {
     removeWindowListeners()
+    if (unmountTimer !== null && typeof window !== 'undefined') {
+      window.clearTimeout(unmountTimer)
+      unmountTimer = null
+    }
     open.value = false
     mounted.value = false
     selectedCommand.value = null
   }
+
+  watch(
+    () => options.enabled(),
+    (enabled) => {
+      if (!enabled) cleanup()
+    }
+  )
 
   onBeforeUnmount(cleanup)
 

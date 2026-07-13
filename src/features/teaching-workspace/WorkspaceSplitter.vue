@@ -1,11 +1,18 @@
 <script setup lang="ts">
-defineProps({
-  dragging: { type: Boolean, required: true },
-  disabled: { type: Boolean, default: false },
-  label: { type: String, required: true },
-})
+withDefaults(
+  defineProps<{
+    dragging: boolean
+    disabled?: boolean
+    label: string
+  }>(),
+  {
+    disabled: false,
+  }
+)
 
-const emit = defineEmits(['pointerDown'])
+const emit = defineEmits<{
+  pointerDown: [event: PointerEvent]
+}>()
 </script>
 
 <template>

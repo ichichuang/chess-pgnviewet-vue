@@ -1,7 +1,8 @@
-import { nextTick, onBeforeUnmount, type ComputedRef, type Ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, type ComputedRef, type Ref } from 'vue'
 import { gsap } from 'gsap'
 
 import { squareCenter, squareToDisplay } from './domain/boardGeometry'
+import type { BoardReducedMotionMode } from './domain/boardCapabilities'
 import type { BoardOrientation } from './domain/boardTypes'
 import { detectMoves } from './domain/moveDiff'
 
@@ -12,6 +13,7 @@ interface BoardAnimationControllerOptions {
   orientation: ComputedRef<BoardOrientation>
   moveEnabled: ComputedRef<boolean>
   snapbackEnabled: ComputedRef<boolean>
+  reducedMotion: ComputedRef<BoardReducedMotionMode>
   clearMoveDrag: () => void
 }
 
@@ -25,11 +27,15 @@ const TOKEN_DRAG_SETTLE_EASE = '--board-motion-ease-drag-settle'
 const TOKEN_PIECE_SETTLE_EASE = '--board-motion-ease-piece-settle'
 
 export function useBoardAnimationController(options: BoardAnimationControllerOptions) {
+  let context: ReturnType<typeof gsap.context> | null = null
+  let reducedMotionQuery: MediaQueryList | null = null
+
   function motionDisabled(): boolean {
     return (
-      typeof window !== 'undefined' &&
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      options.reducedMotion.value === 'reduce' ||
+      (typeof window !== 'undefined' &&
+        typeof window.matchMedia === 'function' &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches)
     )
   }
 
@@ -38,7 +44,9 @@ export function useBoardAnimationController(options: BoardAnimationControllerOpt
       return ''
     }
 
-    return window.getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+    const owner = options.svg.value?.parentElement ?? document.documentElement
+
+    return window.getComputedStyle(owner).getPropertyValue(name).trim()
   }
 
   function duration(name: string): number {
@@ -82,11 +90,25 @@ export function useBoardAnimationController(options: BoardAnimationControllerOpt
     const svg = options.svg.value
 
     if (svg) {
-      gsap.killTweensOf(Array.from(svg.querySelectorAll('image[data-square]')))
+      const pieces = Array.from(svg.querySelectorAll<SVGImageElement>('image[data-square]'))
+      gsap.killTweensOf(pieces)
+
+      for (const piece of pieces) {
+        const square = piece.dataset.square
+        const display = square ? squareToDisplay(square, options.orientation.value) : null
+
+        if (display) {
+          piece.setAttribute('x', String(display[1]))
+          piece.setAttribute('y', String(display[0]))
+        }
+
+        gsap.set(piece, { clearProps: 'opacity,transform' })
+      }
     }
 
     if (options.ghostEl.value) {
       gsap.killTweensOf(options.ghostEl.value)
+      gsap.set(options.ghostEl.value, { clearProps: 'opacity' })
     }
   }
 
@@ -124,16 +146,18 @@ export function useBoardAnimationController(options: BoardAnimationControllerOpt
       }
 
       gsap.killTweensOf(el)
-      gsap.fromTo(
-        el,
-        { attr: { x: from[1], y: from[0] } },
-        {
-          attr: { x: to[1], y: to[0] },
-          duration: duration(TOKEN_MOVE_DURATION),
-          ease: ease(TOKEN_MOVE_EASE),
-          overwrite: true,
-        }
-      )
+      context?.add(() => {
+        gsap.fromTo(
+          el,
+          { attr: { x: from[1], y: from[0] } },
+          {
+            attr: { x: to[1], y: to[0] },
+            duration: duration(TOKEN_MOVE_DURATION),
+            ease: ease(TOKEN_MOVE_EASE),
+            overwrite: true,
+          }
+        )
+      })
     }
   }
 
@@ -151,17 +175,19 @@ export function useBoardAnimationController(options: BoardAnimationControllerOpt
     }
 
     gsap.killTweensOf(el)
-    gsap.fromTo(
-      el,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: duration(TOKEN_PIECE_SETTLE_DURATION),
-        ease: ease(TOKEN_PIECE_SETTLE_EASE),
-        clearProps: 'opacity',
-        overwrite: true,
-      }
-    )
+    context?.add(() => {
+      gsap.fromTo(
+        el,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: duration(TOKEN_PIECE_SETTLE_DURATION),
+          ease: ease(TOKEN_PIECE_SETTLE_EASE),
+          clearProps: 'opacity',
+          overwrite: true,
+        }
+      )
+    })
   }
 
   function snapBackGhost(from: string): void {
@@ -174,13 +200,15 @@ export function useBoardAnimationController(options: BoardAnimationControllerOpt
     }
 
     gsap.killTweensOf(el)
-    gsap.to(el, {
-      left: center.x,
-      top: center.y,
-      duration: duration(TOKEN_SNAPBACK_DURATION),
-      ease: ease(TOKEN_SNAPBACK_EASE),
-      overwrite: true,
-      onComplete: options.clearMoveDrag,
+    context?.add(() => {
+      gsap.to(el, {
+        left: center.x,
+        top: center.y,
+        duration: duration(TOKEN_SNAPBACK_DURATION),
+        ease: ease(TOKEN_SNAPBACK_EASE),
+        overwrite: true,
+        onComplete: options.clearMoveDrag,
+      })
     })
   }
 
@@ -194,18 +222,39 @@ export function useBoardAnimationController(options: BoardAnimationControllerOpt
     }
 
     gsap.killTweensOf(el)
-    gsap.to(el, {
-      left: center.x,
-      top: center.y,
-      opacity: 0,
-      duration: duration(TOKEN_DRAG_SETTLE_DURATION),
-      ease: ease(TOKEN_DRAG_SETTLE_EASE),
-      overwrite: true,
-      onComplete,
+    context?.add(() => {
+      gsap.to(el, {
+        left: center.x,
+        top: center.y,
+        opacity: 0,
+        duration: duration(TOKEN_DRAG_SETTLE_DURATION),
+        ease: ease(TOKEN_DRAG_SETTLE_EASE),
+        overwrite: true,
+        onComplete,
+      })
     })
   }
 
-  onBeforeUnmount(killBoardTweens)
+  function onReducedMotionChange(event: MediaQueryListEvent): void {
+    if (event.matches) killBoardTweens()
+  }
+
+  onMounted(() => {
+    if (options.svg.value) context = gsap.context(() => undefined, options.svg.value)
+
+    if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+      reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+      reducedMotionQuery.addEventListener('change', onReducedMotionChange)
+    }
+  })
+
+  onBeforeUnmount(() => {
+    reducedMotionQuery?.removeEventListener('change', onReducedMotionChange)
+    reducedMotionQuery = null
+    killBoardTweens()
+    context?.revert()
+    context = null
+  })
 
   return {
     animateFenChange,

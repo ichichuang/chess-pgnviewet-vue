@@ -107,7 +107,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/**/*.{vue}'],
+    files: ['src/**/*.vue'],
     languageOptions: {
       parser: vueParser,
       parserOptions: {
@@ -116,6 +116,10 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
         extraFileExtensions: ['.vue'],
         sourceType: 'module',
+      },
+      globals: {
+        ...browserGlobals,
+        ...vueCompilerMacros,
       },
     },
     rules: {

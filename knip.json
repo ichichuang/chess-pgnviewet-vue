@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["index.html", "src/router/index.ts"],
+  "entry": ["index.html", "src/router/index.ts", "src/ui/index.ts", "src/types/index.ts"],
   "project": [
     "src/**/*.ts",
     "src/**/*.d.ts",
@@ -8,9 +8,8 @@
     "*.config.{js,mjs,cjs,ts}",
     "scripts/governance/**/*.mjs"
   ],
-  "ignore": ["src/types/index.ts", "src/ui/index.ts"],
   "rules": {
     "duplicates": "off"
   },
-  "ignoreDependencies": ["@tanstack/vue-query", "chess.js", "dexie", "gsap", "naive-ui", "zod"]
+  "ignoreDependencies": ["@tanstack/vue-query", "dexie"]
 }

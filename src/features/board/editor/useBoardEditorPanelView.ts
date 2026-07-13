@@ -1,54 +1,38 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 
-import type { BoardEditorCastlingRights, BoardEditorPiece } from '../domain/boardCapabilities'
+import type {
+  BoardEditorCastlingRights,
+  BoardEditorPiece,
+  BoardPieceResolver,
+  BoardReducedMotionMode,
+} from '../domain/boardCapabilities'
+import { resolvePieceImage } from '../domain/pieceAssets'
 import type { BoardEditorDraft } from './boardEditorDraft'
 
-interface BoardEditorPanelProps {
-  draft: unknown
+export interface BoardEditorPanelProps {
+  draft: BoardEditorDraft
+  palette: readonly BoardEditorPiece[]
+  pieceResolver: BoardPieceResolver
+  reducedMotion: BoardReducedMotionMode
+  freePlacement: boolean
 }
 
 const DEFAULT_PIECE: BoardEditorPiece = { color: 'w', type: 'P' }
-const whitePieces = ['K', 'Q', 'R', 'B', 'N', 'P'] as const
-const blackPieces = ['K', 'Q', 'R', 'B', 'N', 'P'] as const
-
-function tokenValue(name: string): string {
-  if (typeof window === 'undefined') {
-    return ''
-  }
-
-  return window.getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-}
-
-function duration(name: string): number {
-  if (
-    typeof window !== 'undefined' &&
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  ) {
-    return 0
-  }
-
-  const value = tokenValue(name)
-
-  if (value.endsWith('ms')) {
-    return Number.parseFloat(value) / 1000
-  }
-
-  return Number.parseFloat(value) || 0
-}
-
-function ease(name: string): string {
-  return tokenValue(name) || 'none'
-}
 
 export function useBoardEditorPanelView(props: BoardEditorPanelProps) {
   const panelRoot = ref<HTMLElement | null>(null)
-  const editorDraft = computed(() => props.draft as BoardEditorDraft)
+  const editorDraft = computed(() => props.draft)
+  const whitePieces = computed(() => props.palette.filter((piece) => piece.color === 'w'))
+  const blackPieces = computed(() => props.palette.filter((piece) => piece.color === 'b'))
   let gsapContext: ReturnType<typeof gsap.context> | null = null
 
   function pieceLetter(piece: BoardEditorPiece = DEFAULT_PIECE): string {
     return piece.color === 'w' ? piece.type.toUpperCase() : piece.type.toLowerCase()
+  }
+
+  function pieceImage(piece: BoardEditorPiece): string {
+    return resolvePieceImage(props.pieceResolver, pieceLetter(piece))
   }
 
   function isSelected(piece: BoardEditorPiece = DEFAULT_PIECE): boolean {
@@ -59,6 +43,8 @@ export function useBoardEditorPanelView(props: BoardEditorPanelProps) {
   }
 
   function selectPiece(piece: BoardEditorPiece = DEFAULT_PIECE): void {
+    if (!props.freePlacement) return
+
     editorDraft.value.selectedPiece.value = isSelected(piece) ? null : { ...piece }
   }
 
@@ -69,17 +55,35 @@ export function useBoardEditorPanelView(props: BoardEditorPanelProps) {
   function setCastlingRight(key: keyof BoardEditorCastlingRights, event: Event): void {
     const target = event.target
 
-    if (!(target instanceof HTMLInputElement)) {
-      return
+    if (target instanceof HTMLInputElement) {
+      editorDraft.value.castlingRights.value[key] = target.checked
+    }
+  }
+
+  function duration(name: string): number {
+    if (props.reducedMotion === 'reduce') return 0
+
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return 0
     }
 
-    editorDraft.value.castlingRights.value[key] = target.checked
+    const owner = panelRoot.value ?? document.documentElement
+    const value = window.getComputedStyle(owner).getPropertyValue(name).trim()
+
+    return value.endsWith('ms') ? Number.parseFloat(value) / 1000 : Number.parseFloat(value) || 0
+  }
+
+  function ease(name: string): string {
+    const owner = panelRoot.value ?? document.documentElement
+
+    return window.getComputedStyle(owner).getPropertyValue(name).trim() || 'none'
   }
 
   onMounted(() => {
-    if (!panelRoot.value) {
-      return
-    }
+    if (!panelRoot.value) return
 
     gsapContext = gsap.context(() => {
       gsap.fromTo(
@@ -90,6 +94,7 @@ export function useBoardEditorPanelView(props: BoardEditorPanelProps) {
           scale: 1,
           duration: duration('--board-editor-intro-duration'),
           ease: ease('--board-editor-intro-ease'),
+          overwrite: true,
         }
       )
     }, panelRoot.value)
@@ -97,6 +102,7 @@ export function useBoardEditorPanelView(props: BoardEditorPanelProps) {
 
   onBeforeUnmount(() => {
     gsapContext?.revert()
+    gsapContext = null
   })
 
   return {
@@ -104,7 +110,7 @@ export function useBoardEditorPanelView(props: BoardEditorPanelProps) {
     editorDraft,
     isSelected,
     panelRoot,
-    pieceLetter,
+    pieceImage,
     selectPiece,
     setCastlingRight,
     setSideToMove,
