@@ -64,11 +64,10 @@ The owner-approved pre-product sequence was:
 
 Because F3C, F3D, and the dedicated gate review are accepted in the live target,
 P1A, P1B, P1C, P1D, P1E, and P1F have now been implemented and browser
-validated. Owner-mandated reusable-board advanced capability completion is now
-required before P1G. The next required phase is
-`P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`. P1G is
-paused until that implementation closes. This document does not reopen F3C or
-F3D.
+validated. Owner-mandated reusable-board advanced capability completion has now
+closed through P1B3. The next required phase is
+`P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`. This document
+does not reopen F3C or F3D.
 
 The active P1 sequence is:
 
@@ -235,8 +234,27 @@ P1B2 is now design complete:
 - The next required phase is
   `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`.
 
-P1G is temporarily paused until P1B3 implements and validates the advanced board
-capabilities.
+P1B3 is now implemented and browser validated:
+
+- Result:
+  `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_PASS_READY_FOR_P1G`.
+- Report:
+  `.ai/reports/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e`.
+- `/pgnViewer/` now supports the owner-mandated reusable-board advanced
+  capability runtime: GSAP move animation, snapback and drag-settle animation,
+  canonical radial menu, free-placement/editor mode, wheel navigation, unified
+  capability parameters, and a project-owned GSAP Skill.
+- Static checks, typecheck, production build, aggregate static check, and
+  production-bundle browser validation passed.
+- Authentication, production APIs, cloud persistence, settings, live/replay
+  import, tournament integration, report export, final integration, and later P1
+  runtime remain unimplemented.
+- The next required phase is
+  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
 
 ## P1 Product Migration Program
 

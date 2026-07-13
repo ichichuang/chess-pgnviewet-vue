@@ -396,11 +396,31 @@ P1B3 owns implementation of the owner-mandated advanced reusable board runtime:
 - project-owned `.ai/skills/gsap/SKILL.md`;
 - explicit `/pgnViewer/` product enablement and validation.
 
-P1G is paused until P1B3 closes.
+Implementation result:
+
+- Status:
+  `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_PASS_READY_FOR_P1G`.
+- Report:
+  `.ai/reports/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md`.
+- Implementation commit:
+  `9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e`.
+- `/pgnViewer/` now enables the parameter-controlled advanced board runtime:
+  GSAP move animation, snapback and drag-settle animation, radial menu, editor
+  mode, wheel navigation, and project GSAP Skill ownership.
+- Static checks, typecheck, production build, aggregate static check, and
+  production-bundle browser validation passed.
+- Authentication, production APIs, cloud persistence, settings, live/replay
+  import, tournament integration, report export, final integration, and later P1
+  runtime remain unimplemented.
+- Next phase:
+  `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
 
 P1G owns real authentication and production API product capabilities through
-confirmed same-origin boundaries. It is paused until
-`P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL` closes.
+confirmed same-origin boundaries. It starts after
+`P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL` closes;
+that prerequisite is now satisfied by the P1B3 implementation report.
 
 P1H integrates the product into `PRODUCT_COMPLETE_USABLE` with real data, real
 APIs, and accepted browser evidence.

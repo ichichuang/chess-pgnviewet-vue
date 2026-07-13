@@ -1,6 +1,6 @@
 {
     "schemaVersion": 1,
-    "generatedAt": "2026-07-12T02:34:22.133Z",
+    "generatedAt": "2026-07-13T00:00:00.000Z",
     "phase": "F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY",
     "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
     "sourceAuthorities": [
@@ -226,8 +226,8 @@
             "replacementGate": "PRODUCT_UI_MIGRATION_READY",
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
-            "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
-            "p1gStatus": "PAUSED_UNTIL_ADVANCED_BOARD_CAPABILITY_IMPLEMENTATION_CLOSES",
+            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+            "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
             "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
             "p1aCanonicalApplicationShell": {
@@ -289,10 +289,35 @@
                     "canonical wheel navigation",
                     "project GSAP Skill contract"
                 ],
-                "implementationStatus": "NOT_IMPLEMENTED_IN_P1B2",
+                "implementationStatus": "IMPLEMENTED_IN_P1B3",
                 "requiredBeforeCoreRuntimeFoundationClosure": true,
-                "p1gStatus": "PAUSED_UNTIL_ADVANCED_BOARD_CAPABILITY_IMPLEMENTATION_CLOSES",
-                "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL"
+                "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE",
+                "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL_CLOSED"
+            },
+            "p1b3CanonicalBoardAdvancedCapabilityRuntime": {
+                "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+                "phase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
+                "report": ".ai/reports/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_REPORT.json",
+                "baseline": "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+                "implementationCommit": "9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e",
+                "implementationPush": "9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e",
+                "route": "/pgnViewer/",
+                "result": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_PASS_READY_FOR_P1G",
+                "implemented": [
+                    "GSAP move animation",
+                    "GSAP snapback and drag-settle animation",
+                    "canonical radial annotation menu",
+                    "free-placement/editor mode",
+                    "wheel navigation",
+                    "project GSAP Skill contract",
+                    "unified BoardAdvancedCapabilities parameter contract"
+                ],
+                "browserEvidence": "Temporary production build browser validation PASS through MCP Playwright browser for /pgnViewer/: desktop, mobile, reduced-motion, real PGN import, invalid e2-e5 snapback, legal e2-e4, wheel next/previous navigation, radial menu selecting 方框, editor clear/cancel, editor finish inserting a manual FEN PGN, no Vite overlay, no console/page/request errors.",
+                "dependenciesAdded": [],
+                "dependenciesRemoved": [],
+                "existingDependencyUsage": ["gsap"],
+                "directChromeCdpNote": "Installed Google Chrome 149.0.7827.197 did not expose direct TCP/pipe CDP in this environment; validation executed through MCP Playwright browser against the temporary production build.",
+                "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
             }
         },
         "p1bCanonicalBoard": {
@@ -1802,14 +1827,14 @@
             "nextRequiredPhase": "P1C_REAL_PGN_LOADING_NAVIGATION_AND_VARIATION_MIGRATION"
         },
         {
-            "identifier": "product.p1b2_canonical_board_advanced_capability_design",
+            "identifier": "product.p1b3_canonical_board_advanced_capability_runtime",
             "domain": "product UI migration",
-            "requirement": "Design authority for reusable self-developed board advanced capabilities: GSAP move animation, GSAP snapback animation, radial menu, free-placement/editor mode, wheel navigation, and project GSAP Skill ownership.",
+            "requirement": "Implemented reusable self-developed board advanced capabilities: GSAP move animation, GSAP snapback animation, radial menu, free-placement/editor mode, wheel navigation, and project GSAP Skill ownership.",
             "authority": [
                 "docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json",
                 "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
-                ".ai/reports/P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN_REPORT.json",
-                "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+                "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+                ".ai/reports/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_REPORT.json",
                 "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md"
             ],
             "implementationOwner": "P1B3 canonical board advanced capability implementation owner",
@@ -1832,21 +1857,23 @@
                 "wheelNavigation": "REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE",
                 "projectGsapSkill": "REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE"
             },
-            "implementationStatus": "DESIGN_COMPLETE_IMPLEMENTATION_PENDING",
+            "implementationStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
             "validationEvidence": [
-                "P1B2 design inventory created",
-                "P1B2 architecture baseline created",
-                "P1B2 report created",
-                "Browser validation NOT_APPLICABLE because no runtime code changed"
+                "P1B3 implementation commit pushed: 9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e",
+                "mise exec -- pnpm run typecheck PASS",
+                "mise exec -- pnpm run build PASS",
+                "mise exec -- pnpm run check:static PASS",
+                "git diff --check PASS",
+                "temporary production build browser validation PASS"
             ],
-            "browserEvidence": "NOT_APPLICABLE_DESIGN_DOCUMENTS_ONLY",
+            "browserEvidence": "Temporary production build browser validation PASS through MCP Playwright browser for /pgnViewer/: desktop, mobile, reduced-motion, real PGN import, invalid e2-e5 snapback, legal e2-e4, wheel next/previous navigation, radial menu selecting 方框, editor clear/cancel, editor finish inserting a manual FEN PGN, no Vite overlay, no console/page/request errors.",
             "deferredLaterP1Capabilities": [
-                "P1G auth and production API capabilities paused until P1B3 closes",
+                "P1G auth and production API capabilities",
                 "P1H product integration"
             ],
             "blockers": [],
-            "finalVerdict": "P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_PASS_READY_FOR_IMPLEMENTATION",
-            "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL"
+            "finalVerdict": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_PASS_READY_FOR_P1G",
+            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
         }
     ],
     "overallVerdict": "PRODUCT_UI_MIGRATION_GATE_PASS_READY_FOR_P1",
@@ -2234,8 +2261,8 @@
         "PRODUCT_UI_MIGRATION_READY has opened P1A through P1C; annotations, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices.",
         "P1C implements only the real local PGN runtime on top of P1A/P1B; annotations, complete panels/toolbars/splitters, AI, auth, API, persistence, settings, and complete product integration remain future P1 slices."
     ],
-    "plannedNextPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
-    "updatedAt": "2026-07-13T03:49:43Z",
+    "plannedNextPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+    "updatedAt": "2026-07-13T00:00:00.000Z",
     "f2aToolchainDesign": {
         "phase": "F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH",
         "status": "DESIGN_IMPLEMENTED_BY_F2B_NOT_FULL_F2_COMPLETE",
@@ -2979,11 +3006,37 @@
                 "wheel navigation",
                 "project GSAP Skill"
             ],
-            "implementationStatus": "NOT_IMPLEMENTED_IN_P1B2",
+            "implementationStatus": "IMPLEMENTED_IN_P1B3",
             "dependenciesAdded": [],
             "dependenciesRemoved": [],
-            "p1gStatus": "PAUSED_UNTIL_ADVANCED_BOARD_CAPABILITY_IMPLEMENTATION_CLOSES",
-            "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL"
+            "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE",
+            "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL_CLOSED"
+        },
+        "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE",
+        "p1b3CanonicalBoardAdvancedCapabilityRuntime": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
+            "phase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
+            "report": ".ai/reports/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_REPORT.json",
+            "baseline": "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+            "implementationCommit": "9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e",
+            "implementationPush": "9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e",
+            "route": "/pgnViewer/",
+            "result": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_PASS_READY_FOR_P1G",
+            "implemented": [
+                "GSAP move animation",
+                "GSAP snapback and drag-settle animation",
+                "canonical radial annotation menu",
+                "free-placement/editor mode",
+                "wheel navigation",
+                "project GSAP Skill contract",
+                "unified BoardAdvancedCapabilities parameter contract"
+            ],
+            "browserEvidence": "Temporary production build browser validation PASS through MCP Playwright browser for /pgnViewer/: desktop, mobile, reduced-motion, real PGN import, invalid e2-e5 snapback, legal e2-e4, wheel next/previous navigation, radial menu selecting 方框, editor clear/cancel, editor finish inserting a manual FEN PGN, no Vite overlay, no console/page/request errors.",
+            "dependenciesAdded": [],
+            "dependenciesRemoved": [],
+            "existingDependencyUsage": ["gsap"],
+            "directChromeCdpNote": "Installed Google Chrome 149.0.7827.197 did not expose direct TCP/pipe CDP in this environment; validation executed through MCP Playwright browser against the temporary production build.",
+            "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
         }
     }
 }

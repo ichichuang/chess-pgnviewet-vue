@@ -1,9 +1,10 @@
 # Board Advanced Capability Architecture Baseline
 
-Status: `P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_COMPLETE_PENDING_IMPLEMENTATION`
+Status: `P1B3_BOARD_ADVANCED_CAPABILITY_IMPLEMENTED_BROWSER_VALIDATED`
 Phase: `P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN`
 Target route: `/pgnViewer/`
-Next phase: `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
+Implemented by: `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
+Next phase: `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
 
 ## Owner Requirement
 
@@ -15,10 +16,11 @@ runtime with parameter-controlled canonical capabilities:
 - canonical free-placement/editor mode;
 - canonical wheel navigation.
 
-P1B2 is design-first and read-only for runtime code. It changes no runtime
+P1B2 was design-first and read-only for runtime code. It changed no runtime
 source, package file, lockfile, asset, scanner, style, token, Router, Pinia,
-provider, PGN, annotation, or analysis implementation. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
-is paused until the advanced board component implementation closes.
+provider, PGN, annotation, or analysis implementation. P1B3 has since closed the
+advanced board component implementation prerequisite for
+`P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
 
 ## Provenance Findings
 
@@ -336,3 +338,30 @@ the unified parameter model and interaction ownership are unambiguous, no
 independent reimplementation is accepted, implementation files and browser gates
 are defined, validation passes, the design commit is pushed normally, final
 local `HEAD` equals remote `main`, and the worktree is clean.
+
+## P1B3 Implementation Closure
+
+P1B3 implemented this baseline through
+`docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md`
+and `.ai/reports/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_REPORT.json`.
+
+Accepted implementation evidence:
+
+- implementation commit:
+  `9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e`;
+- project GSAP Skill created at `.ai/skills/gsap/SKILL.md`;
+- unified `BoardAdvancedCapabilities` contract added with advanced groups off by
+  default and explicitly enabled by `/pgnViewer/`;
+- GSAP core move, snapback, drag-settle, and piece-settle animation implemented
+  without package or plugin changes;
+- canonical radial menu, editor/free-placement mode, and wheel navigation
+  implemented through store-free board components and explicit workspace/PGN
+  boundaries;
+- `pnpm run typecheck`, `pnpm run build`, `pnpm run check:static`, and
+  `git diff --check` passed;
+- temporary production-build browser validation passed for desktop, mobile,
+  reduced motion, PGN import, invalid snapback, legal move animation, wheel
+  navigation, radial command selection, editor cancel, editor commit, no Vite
+  overlay, and no console/page/request errors.
+
+P1G is no longer paused by this advanced-board prerequisite.

@@ -1,0 +1,176 @@
+{
+  "phase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
+  "startedAt": "2026-07-13T00:00:00Z",
+  "completedAt": "2026-07-13T00:00:00Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+    "/Users/cc/Work/neobv/Chess/pgnViewer",
+    "/Users/cc/Work/neobv/Chess/chess-pgnviewer"
+  ],
+  "authorityFilesRead": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    ".ai/skills/gsap/SKILL.md",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+    ".ai/reports/P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN_REPORT.json"
+  ],
+  "safetyGate": {
+    "targetResolvedExactly": true,
+    "targetIsSymlink": false,
+    "targetIsGitRoot": true,
+    "branch": "main",
+    "authorizedOrigin": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "localHeadBeforeImplementation": "343a5cbc54adfac1bc8d4dc1b2175c6eb5546d90",
+    "originMainBeforeImplementation": "343a5cbc54adfac1bc8d4dc1b2175c6eb5546d90",
+    "liveRemoteMainBeforeImplementation": "343a5cbc54adfac1bc8d4dc1b2175c6eb5546d90",
+    "implementationCommit": "9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e",
+    "implementationPush": "9db1bbef6e1b0cbe0c99d41a62a7baf76a5a046e",
+    "evidenceRootsReadOnly": true
+  },
+  "prerequisiteVerdicts": {
+    "p1b2": "P1B2_BOARD_ADVANCED_CAPABILITY_DESIGN_PASS_READY_FOR_IMPLEMENTATION",
+    "p1f": "P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_PASS_READY_FOR_P1G"
+  },
+  "implementedCapabilities": {
+    "unifiedParameterContract": "BoardAdvancedCapabilities",
+    "defaultReusableBoardBehavior": "ALL_ADVANCED_GROUPS_OFF",
+    "productRouteBehavior": "MOVE_ANIMATION_SNAPBACK_RADIAL_EDITOR_WHEEL_ENABLED",
+    "gsapMoveAnimation": "IMPLEMENTED_GSAP_CORE_ONLY",
+    "gsapSnapbackAnimation": "IMPLEMENTED_GSAP_CORE_ONLY",
+    "dragSettleAnimation": "IMPLEMENTED_GSAP_CORE_ONLY",
+    "radialMenu": "IMPLEMENTED_STORE_FREE_BOARD_COMPONENT",
+    "editorMode": "IMPLEMENTED_TEMPORARY_DRAFT_WITH_EXPLICIT_PGN_FEN_ACCEPTANCE",
+    "wheelNavigation": "IMPLEMENTED_THROTTLED_INTENT_EMIT",
+    "projectGsapSkill": ".ai/skills/gsap/SKILL.md"
+  },
+  "stateOwnership": {
+    "animation": "observes DOM and FEN transitions only",
+    "radialMenu": "transient board pointer and selected command state only",
+    "editor": "temporary draft only until explicit commit",
+    "wheelNavigation": "throttle and navigation intent only",
+    "pgnStore": "authoritative PGN, current node, FEN, branch, promotion, annotation, and navigation owner",
+    "workspaceStore": "authoritative orientation, annotation mode/color, toolbar, panel, and splitter owner",
+    "analysisStore": "unchanged"
+  },
+  "dependencyDecision": {
+    "gsapAlreadyPresent": "3.15.0",
+    "packageJsonChanged": false,
+    "pnpmLockChanged": false,
+    "pluginsUsed": [],
+    "decision": "GSAP_CORE_ONLY_NO_DEPENDENCY_ACTION"
+  },
+  "filesCreated": [
+    ".ai/skills/gsap/SKILL.md",
+    "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+    "src/features/board/domain/boardCapabilities.ts",
+    "src/features/board/domain/moveDiff.ts",
+    "src/features/board/useBoardCapabilityOptions.ts",
+    "src/features/board/useBoardAnimationController.ts",
+    "src/features/board/useBoardRadialMenu.ts",
+    "src/features/board/useBoardWheelNavigation.ts",
+    "src/features/board/editor/boardEditorDraft.ts",
+    "src/features/board/editor/BoardEditorPanel.vue",
+    "src/features/board/editor/useBoardEditorPanelView.ts",
+    "src/features/board/radial-menu/BoardRadialMenu.vue",
+    "src/features/board/radial-menu/useBoardRadialMenuView.ts"
+  ],
+  "filesModified": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "src/features/board/BoardView.vue",
+    "src/features/board/CanonicalChessBoard.vue",
+    "src/features/board/useBoardView.ts",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/stores/pgn.ts",
+    "src/styles/tokens.css",
+    "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+  ],
+  "validation": {
+    "typecheck": "PASS: mise exec -- pnpm run typecheck",
+    "build": "PASS: mise exec -- pnpm run build",
+    "staticAggregate": "PASS: mise exec -- pnpm run check:static",
+    "diffCheck": "PASS: git diff --check",
+    "browser": {
+      "status": "PASS",
+      "buildSource": "temporary production build",
+      "route": "http://127.0.0.1:49285/pgnViewer/",
+      "tooling": "MCP Playwright browser",
+      "directChromeCdp": "BLOCKED: installed Google Chrome 149.0.7827.197 did not expose direct TCP/pipe CDP in this environment",
+      "checks": [
+        "desktop nonblank board",
+        "mobile nonblank board",
+        "reduced-motion nonblank board",
+        "no Vite overlay",
+        "no console errors",
+        "no page errors",
+        "no request failures",
+        "real PGN import",
+        "invalid e2-e5 drag snapback",
+        "legal e2-e4 move",
+        "wheel next and previous navigation",
+        "radial menu selects square annotation tool",
+        "editor clear and cancel",
+        "editor finish inserts manual FEN PGN"
+      ]
+    }
+  },
+  "browserEvidence": {
+    "desktop": {
+      "squares": 64,
+      "pieces": 32,
+      "overlay": false
+    },
+    "mobile": {
+      "squares": 64,
+      "pieces": 32,
+      "overlay": false
+    },
+    "reducedMotion": {
+      "squares": 64,
+      "pieces": 32,
+      "overlay": false
+    },
+    "importResult": {
+      "items": 1,
+      "pieces": 32,
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    },
+    "invalidDrag": {
+      "fenUnchanged": true,
+      "sourcePieceRestored": true,
+      "ghostCleared": true
+    },
+    "validMoveFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+    "wheelNextFen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+    "editorItemsBefore": 1,
+    "editorItemsAfter": 2
+  },
+  "governanceClosure": {
+    "readinessMatrixUpdated": true,
+    "migrationSequenceUpdated": true,
+    "productFirstRebaseUpdated": true,
+    "advancedBoardBaselineUpdated": true,
+    "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE"
+  },
+  "warnings": [
+    "Direct installed-Chrome TCP/pipe CDP launch did not expose a debugger endpoint; MCP Playwright browser validation was used for real-browser evidence."
+  ],
+  "blockers": [],
+  "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
+  "finalVerdict": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_PASS_READY_FOR_P1G"
+}
