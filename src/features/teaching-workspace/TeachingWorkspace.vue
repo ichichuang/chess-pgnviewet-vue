@@ -26,6 +26,7 @@ import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceMode
 import WorkspaceRightPanel from './WorkspaceRightPanel.vue'
 import WorkspaceSplitter from './WorkspaceSplitter.vue'
 import WorkspaceToolbar from './WorkspaceToolbar.vue'
+import { useRemoteReplayLoader } from './useRemoteReplayLoader'
 import { useTeachingWorkspaceMotion } from './useTeachingWorkspaceMotion'
 import { useWorkspaceSplitter } from './useWorkspaceSplitter'
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
@@ -42,6 +43,11 @@ const {
 } = usePgnWorkspaceRuntime()
 const workspace = useWorkspaceStore()
 const analysis = useAnalysisStore()
+const remoteReplay = useRemoteReplayLoader(workspaceModeContext)
+const remoteReplayVisible = remoteReplay.visible
+const remoteReplayMessage = remoteReplay.message
+const remoteReplayDetail = remoteReplay.detail
+const remoteReplayStatus = remoteReplay.status
 const { onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
 const boardEditorActive = ref(false)
 const radialWidth = ref<0.08 | 0.16 | 0.28>(0.16)
@@ -71,11 +77,18 @@ const radialColorIndex = computed(() =>
   )
 )
 
+const workspaceReadOnly = computed(
+  () =>
+    workspaceModeContext.value.readonly ||
+    workspaceModeContext.value.mode === 'replay' ||
+    workspaceModeContext.value.mode === 'live_spectator'
+)
+
 const boardCapabilities = computed<ChessboardCapabilities>(() => ({
   position: {
     visible: true,
-    playable: boardInteractive.value,
-    readOnly: !boardInteractive.value,
+    playable: boardInteractive.value && !workspaceReadOnly.value,
+    readOnly: !boardInteractive.value || workspaceReadOnly.value,
     controlled: true,
     onMoveRequest: (payload) => pgn.tryMove(payload),
   },
@@ -256,6 +269,15 @@ onBeforeUnmount(() => {
         :class="`align-${workspace.boardAlignment}`"
         aria-label="棋盘舞台结构区域"
       >
+        <div
+          v-if="remoteReplayVisible"
+          class="remote-status"
+          :data-state="remoteReplayStatus"
+          aria-live="polite"
+        >
+          <strong>{{ remoteReplayMessage }}</strong>
+          <span v-if="remoteReplayDetail">{{ remoteReplayDetail }}</span>
+        </div>
         <div class="board-stage" :style="{ justifyContent: boardJustifyContent }">
           <section class="board-align-frame" aria-labelledby="workspace-board-title">
             <h1 id="workspace-board-title" class="board-title">开赛了教学工作区</h1>
@@ -434,6 +456,33 @@ onBeforeUnmount(() => {
   max-height: 100%;
   min-width: 0;
   min-height: 0;
+}
+
+.remote-status {
+  display: grid;
+  flex: 0 0 auto;
+  gap: var(--s-1);
+  margin-bottom: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border: var(--workspace-border-w) solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.remote-status[data-state='ready'] {
+  border-color: var(--accent-line);
+  background: var(--accent-bg);
+  color: var(--accent-strong);
+}
+
+.remote-status[data-state='error'] {
+  border-color: var(--danger);
+}
+
+.remote-status span {
+  color: var(--text-muted);
 }
 
 .board-align-frame {

@@ -11,5 +11,5 @@
   "rules": {
     "duplicates": "off"
   },
-  "ignoreDependencies": ["@tanstack/vue-query", "dexie"]
+  "ignoreDependencies": ["dexie"]
 }

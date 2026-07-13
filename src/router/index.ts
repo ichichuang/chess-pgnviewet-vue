@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { useAuthStore } from '@/stores'
+
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -9,10 +11,71 @@ export const router = createRouter({
       component: () => import('@/views/HomeView.vue')
     },
     {
+      path: '/match/:key',
+      name: 'match',
+      component: () => import('@/features/product-api/views/CompatibilityEntryView.vue')
+    },
+    {
+      path: '/share/:uuid',
+      name: 'share',
+      component: () => import('@/features/product-api/views/CompatibilityEntryView.vue')
+    },
+    {
+      path: '/cloud/:fileid',
+      name: 'cloud',
+      component: () => import('@/features/product-api/views/CompatibilityEntryView.vue')
+    },
+    {
+      path: '/competitions',
+      name: 'competitions',
+      component: () => import('@/features/product-api/views/CompetitionListView.vue')
+    },
+    {
+      path: '/competitions/:hdid/display',
+      name: 'competition-display',
+      component: () => import('@/features/product-api/views/CompetitionDisplayView.vue')
+    },
+    {
+      path: '/competitions/:hdid/live',
+      name: 'competition-live',
+      component: () => import('@/features/product-api/views/CompetitionLiveRedirectView.vue')
+    },
+    {
+      path: '/competitions/:hdid',
+      name: 'competition-detail',
+      component: () => import('@/features/product-api/views/CompetitionDetailView.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/features/product-api/views/LoginView.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       redirect: '/'
     }
   ]
+})
+
+router.beforeEach((to) => {
+  const auth = useAuthStore()
+  const absorbed = auth.absorbRouteQuery(to.query)
+
+  if (absorbed.changed) {
+    return {
+      name: to.name ?? 'workspace',
+      params: to.params,
+      query: absorbed.query,
+      hash: to.hash,
+      replace: true
+    }
+  }
+
+  if (!auth.initialized) {
+    auth.restoreStoredSession()
+  }
+
+  return true
 })
 
 export default router
