@@ -2,7 +2,7 @@
     "schemaVersion": 1,
     "status": "ACTIVE_AUTHORITY",
     "effectiveDate": "2026-07-14",
-    "overall": "FINAL_VALIDATION_IN_PROGRESS",
+    "overall": "WEB_API_AUTHORITY_CORRECTED_REQUEST_ARCHITECTURE_UPGRADED_READY_FOR_FULL_PRODUCT_MERGE",
     "capabilities": [
         {
             "id": "authority.source-precedence",
@@ -138,6 +138,6 @@
             "governance-format-lint-knip-secret-mock-json-typecheck-build-pass",
             "narrow-real-browser-validation-pass"
         ],
-        "currentResult": "NOT_READY"
+        "currentResult": "WEB_API_AUTHORITY_CORRECTED_REQUEST_ARCHITECTURE_UPGRADED_READY_FOR_FULL_PRODUCT_MERGE"
     }
 }

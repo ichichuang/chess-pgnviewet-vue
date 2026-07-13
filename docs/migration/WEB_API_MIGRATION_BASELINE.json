@@ -211,13 +211,14 @@
             "id": "W2",
             "scope": "auth-url-token-removal-private-lifecycle-replay-and-ui-states",
             "prerequisite": "W1 committed and remote verified",
-            "status": "IMPLEMENTED_VALIDATED_PENDING_COMMIT"
+            "status": "COMMITTED_REMOTE_VERIFIED",
+            "commit": "92b2ab73962c7cde360af4f25a2558c3797a3e7c"
         },
         {
             "id": "W3",
             "scope": "full-validation-browser-evidence-final-readiness",
             "prerequisite": "W2 committed and remote verified",
-            "status": "PENDING"
+            "status": "IMPLEMENTED_VALIDATED_READY_FOR_PUBLISH"
         }
     ]
 }
