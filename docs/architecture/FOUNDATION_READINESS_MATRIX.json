@@ -390,6 +390,19 @@
                     "MQTT/live streaming remains intentionally closed until an owner-approved read-only transport contract exists."
                 ],
                 "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
+            },
+            "p1g1AxiosHttpClientAndViteProxyCorrection": {
+                "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
+                "phase": "P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION",
+                "report": ".ai/reports/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION_REPORT.json",
+                "baseline": "docs/architecture/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_BASELINE.md",
+                "implementationCommit": "0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf",
+                "implementationPush": "0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf",
+                "axiosVersion": "1.18.1",
+                "httpClientOwner": "src/api/client.ts",
+                "developmentProxy": "/api/ksl -> https://wxapi.kaisaile.org",
+                "result": "P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_PASS_READY_FOR_P1H",
+                "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
             }
         },
         "p1bCanonicalBoard": {
@@ -3218,6 +3231,19 @@
                 "Successful credentialed login and protected replay success were not validated without owner credentials.",
                 "MQTT/live streaming remains intentionally closed until an owner-approved read-only transport contract exists."
             ],
+            "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
+        },
+        "p1g1AxiosHttpClientAndViteProxyCorrection": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_READY_FOR_P1H",
+            "phase": "P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION",
+            "report": ".ai/reports/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION_REPORT.json",
+            "baseline": "docs/architecture/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_BASELINE.md",
+            "implementationCommit": "0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf",
+            "implementationPush": "0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf",
+            "axiosVersion": "1.18.1",
+            "httpClientOwner": "src/api/client.ts",
+            "developmentProxy": "/api/ksl -> https://wxapi.kaisaile.org",
+            "result": "P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_PASS_READY_FOR_P1H",
             "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE"
         }
     }

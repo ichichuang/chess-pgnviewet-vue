@@ -50,7 +50,8 @@ the owning module. It must not imitate real product data.
 8. `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
 9. `P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API`
 10. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
-11. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
+11. `P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION`
+12. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
 
 ## P1A
 
@@ -468,8 +469,32 @@ records:
   without credentials; the unauthenticated protected replay path is blocked in
   UI before issuing a protected request.
 
+P1G1 corrects the P1G browser transport and local-development proxy boundary
+without starting P1H:
+
+- Result:
+  `P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_PASS_READY_FOR_P1H`.
+- Report:
+  `.ai/reports/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_BASELINE.md`.
+- Implementation commit and push:
+  `0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf`.
+- Implemented correction:
+  one private Axios XHR client, request-time session authentication,
+  cancellation/timeout/error taxonomy, strict direct-transport ownership, and
+  the fixed Vite `/api/ksl` proxy to `https://wxapi.kaisaile.org`.
+- Validation:
+  the full static ladder, TypeScript, production build, local development
+  proxy, real API, production-bundle XHR, responsive, theme, reduced-motion,
+  interaction, error, timeout, and cancellation browser evidence passed.
+- Residual boundary:
+  production hosting must provide the same restricted same-origin route or an
+  approved browser-readable HTTPS API base; successful login and protected
+  replay remain unclaimed without owner credentials.
+
 P1H integrates the product into `PRODUCT_COMPLETE_USABLE` with real data, real
-APIs, and accepted browser evidence.
+APIs, and accepted browser evidence. P1H has not started.
 
 ## Feature-Owned Minimum Safety
 

@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "phase": "P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION",
+  "startedAt": "2026-07-13T09:18:09Z",
+  "completedAt": "2026-07-13T09:43:58Z",
+  "baselineCommit": "93c25c8705807deafce3e7cf50ce15d869a663ca",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "authorityFilesRead": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/PERSISTENCE_AND_STORAGE_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_CONTRACTS.md",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/P1G_PRODUCTION_API_CONTRACT_INVENTORY.json",
+    ".ai/reports/P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_REPORT.json",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+  ],
+  "safetyGate": {
+    "status": "PASS",
+    "branch": "main",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "localHead": "93c25c8705807deafce3e7cf50ce15d869a663ca",
+    "originMain": "93c25c8705807deafce3e7cf50ce15d869a663ca",
+    "liveRemoteMain": "93c25c8705807deafce3e7cf50ce15d869a663ca",
+    "worktreeAndIndex": "CLEAN",
+    "gitLocks": "ABSENT"
+  },
+  "dependencyDecision": "Use the newest stable Axios release returned by axios@latest, exact-pin it, select the XHR adapter explicitly, and retain pnpm as the sole package manager.",
+  "axiosVersion": "1.18.1",
+  "dependencyDiff": {
+    "directAdded": ["axios@1.18.1"],
+    "directRemoved": [],
+    "unrelatedDirectChanges": [],
+    "resolvedAxiosVersions": ["1.18.1"]
+  },
+  "nativeFetchAudit": {
+    "before": "src/api/client.ts was the sole approved native fetch owner.",
+    "after": "No authored production browser source calls native fetch; the scanner allowlist is empty.",
+    "result": "PASS"
+  },
+  "XMLHttpRequestAudit": {
+    "after": "No authored production browser source directly uses XMLHttpRequest; Axios owns the selected XHR adapter internally.",
+    "result": "PASS"
+  },
+  "directAxiosImportAudit": {
+    "allowed": ["src/api/client.ts"],
+    "otherAuthoredImports": [],
+    "negativeProbe": "PASS: an external probe was rejected by ARCH_RAW_HTTP_CLIENT.",
+    "result": "PASS"
+  },
+  "httpClientOwnership": {
+    "owner": "src/api/client.ts",
+    "instanceVisibility": "PRIVATE_NOT_EXPORTED",
+    "publicRequestFunction": "requestJson",
+    "adapter": "xhr",
+    "baseURL": "/api/ksl by default through productionApiConfig.chessApiBase",
+    "withCredentials": true,
+    "absoluteUrls": "REJECTED",
+    "dynamicBases": "REJECTED"
+  },
+  "requestInterceptor": {
+    "result": "PASS",
+    "behavior": [
+      "accepts safe relative paths only",
+      "rejects traversal, malformed encoding, protocol-relative paths, backslashes, control characters, and dynamic bases",
+      "reads the current session only for session or session-required requests",
+      "removes project-owned metadata before the adapter",
+      "ejects the interceptor during Vite hot-module disposal"
+    ]
+  },
+  "responseInterceptor": {
+    "result": "PASS",
+    "behavior": [
+      "returns response.data without endpoint-envelope interpretation",
+      "maps transport failures to sanitized ApiClientError values",
+      "does not expose request configuration, headers, credentials, payloads, or stacks",
+      "ejects the interceptor during Vite hot-module disposal"
+    ]
+  },
+  "authHeaderOwnership": {
+    "owner": "src/api/client.ts",
+    "sessionSource": "src/persistence/auth/sessionPersistence.ts",
+    "readTiming": "REQUEST_TIME",
+    "publicRequests": "NO_BEARER_HEADER",
+    "protectedReplay": "session-required",
+    "refreshOrReplay": "NOT_IMPLEMENTED"
+  },
+  "cancellationBehavior": {
+    "signalOwner": "existing Vue Query consumers and replay loader",
+    "axiosCode": "ERR_CANCELED",
+    "mappedKind": "cancelled",
+    "notMisclassifiedAs": ["timeout", "network"],
+    "result": "PASS"
+  },
+  "timeoutBehavior": {
+    "defaultMilliseconds": 8000,
+    "maximumPerRequestMilliseconds": 30000,
+    "axiosCodes": ["ECONNABORTED", "ETIMEDOUT"],
+    "mappedKind": "timeout",
+    "proxyTimeoutDuplicated": false,
+    "result": "PASS"
+  },
+  "errorMapping": {
+    "kinds": [
+      "auth-required",
+      "cancelled",
+      "configuration",
+      "contract-mismatch",
+      "http",
+      "invalid-json",
+      "network",
+      "permission-denied",
+      "rate-limited",
+      "service-unavailable",
+      "timeout",
+      "upstream"
+    ],
+    "httpRules": {
+      "401": "auth-required",
+      "403": "permission-denied",
+      "429": "rate-limited",
+      "502/504": "upstream",
+      "other5xx": "service-unavailable",
+      "otherHttp": "http"
+    },
+    "upstreamMessageSanitization": "control characters removed; length capped; sensitive-field vocabulary rejected",
+    "result": "PASS"
+  },
+  "ZodBoundaryImpact": "Transport-level unknown JSON validation remains in requestJson; endpoint schemas, envelopes, DTO validation, and domain mapping remain in existing auth and product mapper boundaries.",
+  "VueQueryImpact": "TanStack Vue Query remains the server-state owner and continues to call typed product API functions with its AbortSignal; no store or view imports Axios.",
+  "viteDevelopmentProxy": {
+    "browserPrefix": "/api/ksl",
+    "fixedTarget": "https://wxapi.kaisaile.org",
+    "changeOrigin": true,
+    "secure": true,
+    "dynamicTarget": false,
+    "genericForwarder": false,
+    "requestLogging": false
+  },
+  "proxyTarget": "https://wxapi.kaisaile.org",
+  "proxyRewrite": "Remove only the leading /api/ksl prefix; /api/ksl/liveproxy/GetActList becomes /liveproxy/GetActList upstream.",
+  "proxySecurity": "Fixed HTTPS target, TLS verification enabled, no wildcard target, no generic /CALL, no proxyRequest, no credential or body logger.",
+  "productionHostingBoundary": "Vite proxy behavior is development-only. Production hosting must provide the same restricted same-origin /api/ksl route or set an approved browser-readable HTTPS VITE_KSL_CHESS_API_BASE.",
+  "changedConsumers": {
+    "src/api/auth.ts": "unchanged public request contract",
+    "src/api/productApi.ts": "protected replay declares session-required and no longer reads auth persistence directly",
+    "VueQueryProductViews": "unchanged typed product API ownership and cancellation",
+    "useRemoteReplayLoader": "unchanged explicit cancellation and route replacement behavior",
+    "routerPiniaAuthPersistence": "contracts preserved"
+  },
+  "scannerImpact": {
+    "nativeFetch": "FORBIDDEN_IN_ALL_AUTHORED_PRODUCT_SOURCE",
+    "nativeXMLHttpRequest": "FORBIDDEN_IN_ALL_AUTHORED_PRODUCT_SOURCE",
+    "directAxiosImport": "ONLY_src/api/client.ts",
+    "authHeaderOwnership": "ONLY_src/api/client.ts",
+    "genericCallAndProxyRequest": "NO_ALLOWLIST",
+    "negativeProbe": "PASS for raw Axios, fetch, and XMLHttpRequest findings"
+  },
+  "staticValidation": {
+    "check:deps": "PASS",
+    "check:architecture": "PASS",
+    "check:tokens": "PASS",
+    "check:mocks": "PASS",
+    "check:secrets": "PASS",
+    "format:check": "PASS",
+    "lint": "PASS",
+    "lint:style": "PASS",
+    "check:unused": "PASS",
+    "check:governance": "PASS",
+    "typecheck": "PASS",
+    "audit:prod": "PASS_NO_VULNERABILITIES",
+    "pnpmAudit": "PASS_NO_VULNERABILITIES",
+    "check:static": "PASS"
+  },
+  "typecheck": "PASS: mise exec -- pnpm run typecheck",
+  "build": "PASS: mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-p1g1-final-build; 3139 modules transformed; repository dist remained absent.",
+  "localDevelopmentBrowserValidation": {
+    "proxyRequest": "PASS: POST /api/ksl/liveproxy/GetActList returned a real production response.",
+    "workspace": "PASS: nonblank board-centric workspace, no Vite overlay or console-breaking error.",
+    "competitions": "PASS: 20 production rows and 周末Q赛 filter interaction.",
+    "competitionDetail": "PASS: real groups, rounds, and two pairings for competition 47347, including rapid replacement.",
+    "compatibility": "PASS: sanitized handoff and truthful unavailable state.",
+    "invalidLogin": "PASS: deliberately invalid non-secret credentials produced the expected rejected state and cleared the password.",
+    "permissionUnavailableTimeoutCancellation": "PASS through external restricted validation proxies; no overlay or console-breaking error."
+  },
+  "productionBundleValidation": {
+    "hosting": "temporary production build behind an external restricted same-origin /api/ksl proxy",
+    "apiRequests": "five same-origin production API requests observed as XHR, all HTTP 200",
+    "routes": [
+      "/pgnViewer/",
+      "/competitions",
+      "/competitions/47347",
+      "replay handoff",
+      "compatibility handoff"
+    ],
+    "themes": ["light", "dark", "system-dark"],
+    "viewports": ["1440x900", "1024x768", "390x844", "844x390"],
+    "reducedMotion": "PASS",
+    "viteOverlays": 0,
+    "consoleErrors": 0,
+    "runtimeExceptions": 0,
+    "horizontalOverflowFailures": 0
+  },
+  "realApiValidation": "PASS: real GetActList, GetActDetail, GetActGroups, GetMatchRoundlist, and GetMatchPairlist responses flowed through same-origin /api/ksl XHR requests.",
+  "secretAudit": {
+    "result": "PASS",
+    "credentialsReadOrPrinted": false,
+    "secretLogsCreated": false,
+    "ownerCredentialsUsed": false
+  },
+  "filesCreated": [
+    "docs/architecture/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_BASELINE.md",
+    ".ai/reports/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION_REPORT.json"
+  ],
+  "filesModified": [
+    "package.json",
+    "pnpm-lock.yaml",
+    "vite.config.ts",
+    "src/api/client.ts",
+    "src/api/productApi.ts",
+    "scripts/governance/policy.mjs",
+    "scripts/governance/check-architecture-boundaries.mjs",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+  ],
+  "filesDeleted": [],
+  "implementationCommit": "0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf",
+  "implementationPush": "0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf",
+  "governanceCommitPlan": "Commit this report and the three governance indexes with subject: docs(governance): 记录 Axios 请求层与开发代理验收证据",
+  "warnings": [
+    "Successful owner-account login and authenticated protected replay were not validated because owner credentials were unavailable.",
+    "Production hosting must provide the restricted same-origin /api/ksl route or an approved browser-readable HTTPS API base; the Vite proxy is not a production server."
+  ],
+  "blockers": [],
+  "nextRequiredPhase": "P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE",
+  "finalVerdict": "P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_PASS_READY_FOR_P1H"
+}

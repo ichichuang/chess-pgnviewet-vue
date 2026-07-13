@@ -82,7 +82,8 @@ The active P1 sequence is:
 8. `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
 9. `P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API`
 10. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
-11. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
+11. `P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION`
+12. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
 
 `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE` is superseded as a
 separate pre-product gate. Narrow theme browser validation remains mandatory
@@ -305,8 +306,19 @@ P1G is now implemented and browser validated:
 - Successful credentialed login and protected replay remain credential-dependent
   and were not run without owner credentials. MQTT/live streaming remains
   intentionally closed pending owner-approved read-only transport.
+- P1G1 then corrected the browser transport boundary to one private Axios
+  `1.18.1` XHR client, centralized request-time session authentication and safe
+  error mapping, prohibited authored native transports and direct Axios imports,
+  and added the fixed Vite `/api/ksl` development proxy to
+  `https://wxapi.kaisaile.org`.
+- P1G1 implementation commit and push:
+  `0751fc1f10a47ca21ebdf3d7ff50dac589a9f6cf`.
+- P1G1 report:
+  `.ai/reports/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION_REPORT.json`.
+- P1G1 result:
+  `P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_PASS_READY_FOR_P1H`.
 - The next required phase is
-  `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`.
+  `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`; it has not started.
 
 ## P1 Product Migration Program
 
