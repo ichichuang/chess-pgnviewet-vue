@@ -167,6 +167,40 @@ Implementation must not assume unconfirmed API contracts. Confirmed production r
 6. Workspace handoff behavior is defined and referenced by `docs/ui/COMPONENT_SYSTEM_SPEC.md` and `docs/architecture/FRONTEND_ARCHITECTURE_RFC.md`.
 7. The product name "开赛了" is used consistently in user-facing copy defined in `docs/ui/I18N_SPEC.md`.
 
+## P1H usable-product journeys
+
+P1H closes the first usable product delivery. The supported consumer journeys
+are:
+
+1. Open `/pgnViewer/`, import or create a PGN, make legal moves and variations,
+   annotate the board, and inspect local Worker analysis in the single canonical
+   workspace.
+2. Open `/competitions`, commit a search, select a real production competition,
+   choose group and round filters, and open a pairing in the workspace.
+3. Open `/competitions/:hdid/display` for the read-only venue display of the
+   selected production round.
+4. Follow `/match/:key`, `/share/:uuid`, `/cloud/:fileid`, or
+   `/competitions/:hdid/live` through a sanitized handoff into the canonical
+   workspace. Unconfirmed or unavailable sources remain visibly unavailable;
+   they never fall back to fabricated data.
+5. Sign in through `/login` when owner credentials are available. Protected
+   replay data is private Query state and is removed with protected handoffs,
+   analysis work, and protected PGN state on logout or authentication failure.
+
+Public competition filters are URL-owned so refresh and browser navigation
+preserve the selected group and round. Non-sensitive workspace layout is stored
+through the narrow Dexie layout owner. Live payloads, API responses, auth
+credentials, protected replay payloads, and board annotations are not written
+to that layout record.
+
+The MQTT/electronic-board live transport remains intentionally unavailable
+until an owner approves a read-only contract. Successful authenticated replay
+is credential-dependent and is not claimed without owner credentials. These
+truthful unavailable states are part of the accepted product behavior.
+
+Production deployment requirements are defined in
+`docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md`.
+
 ## Open questions / risks
 
 - When the legacy `/competitions/:hdid/live` bridge can be retired depends on external link analytics.

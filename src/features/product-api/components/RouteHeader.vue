@@ -109,5 +109,11 @@ function logout(): void {
   .route-actions {
     flex-wrap: wrap;
   }
+
+  .workspace-link,
+  .route-actions a,
+  .route-actions button {
+    min-height: var(--board-touch-target-min);
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
 import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import { apiErrorMessage } from '@/api/client'
 import {
@@ -10,36 +10,40 @@ import {
   fetchCompetitionPairings,
   fetchCompetitionRounds,
 } from '@/api/productApi'
+import { productQueryKeys } from '@/api/queryClient'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 
 const route = useRoute()
+const router = useRouter()
 const hdid = computed(() => routeText(route.params.hdid))
 const selectedGroupId = ref(routeText(route.query.group))
 const selectedRoundId = ref(routeText(route.query.round))
 
 const detailQuery = useQuery({
-  queryKey: ['competition-display-detail', hdid],
+  queryKey: computed(() => productQueryKeys.displayDetail(hdid.value)),
   queryFn: ({ signal }) => fetchCompetitionDetail(hdid.value, signal),
   enabled: computed(() => Boolean(hdid.value)),
 })
 
 const groupsQuery = useQuery({
-  queryKey: ['competition-display-groups', hdid],
+  queryKey: computed(() => productQueryKeys.displayGroups(hdid.value)),
   queryFn: ({ signal }) => fetchCompetitionGroups(hdid.value, signal),
   enabled: computed(() => Boolean(hdid.value)),
 })
 
 const groups = computed(() => groupsQuery.data.value ?? [])
 const roundsQuery = useQuery({
-  queryKey: ['competition-display-rounds', hdid, selectedGroupId],
+  queryKey: computed(() => productQueryKeys.displayRounds(hdid.value, selectedGroupId.value)),
   queryFn: ({ signal }) => fetchCompetitionRounds(hdid.value, selectedGroupId.value, signal),
   enabled: computed(() => Boolean(hdid.value && selectedGroupId.value)),
 })
 const rounds = computed(() => roundsQuery.data.value ?? [])
 
 const pairingsQuery = useQuery({
-  queryKey: ['competition-display-pairings', hdid, selectedGroupId, selectedRoundId],
+  queryKey: computed(() =>
+    productQueryKeys.displayPairings(hdid.value, selectedGroupId.value, selectedRoundId.value)
+  ),
   queryFn: ({ signal }) =>
     fetchCompetitionPairings(
       {
@@ -56,7 +60,13 @@ const pairingsQuery = useQuery({
 
 const pairings = computed(() => pairingsQuery.data.value?.items ?? [])
 const title = computed(() => detailQuery.data.value?.title || `赛事 ${hdid.value}`)
-const pairingsPending = computed(() => pairingsQuery.isPending.value)
+const pairingsPending = computed(
+  () =>
+    detailQuery.isFetching.value ||
+    groupsQuery.isFetching.value ||
+    roundsQuery.isFetching.value ||
+    pairingsQuery.isFetching.value
+)
 const errorText = computed(
   () =>
     [detailQuery.error.value, groupsQuery.error.value, roundsQuery.error.value, pairingsQuery.error.value]
@@ -72,6 +82,34 @@ watch(
     selectedGroupId.value = items[0]?.ticketId ?? ''
   },
   { immediate: true }
+)
+
+watch(
+  () => [routeText(route.query.group), routeText(route.query.round)] as const,
+  ([groupId, roundId]) => {
+    if (groupId && groupId !== selectedGroupId.value) selectedGroupId.value = groupId
+    if (roundId && roundId !== selectedRoundId.value) selectedRoundId.value = roundId
+  }
+)
+
+watch(
+  [selectedGroupId, selectedRoundId],
+  ([groupId, roundId]) => {
+    if (
+      routeText(route.query.group) === groupId &&
+      routeText(route.query.round) === roundId
+    ) {
+      return
+    }
+
+    const query = { ...route.query }
+    if (groupId) query.group = groupId
+    else delete query.group
+    if (roundId) query.round = roundId
+    else delete query.round
+    void router.replace({ query })
+  },
+  { flush: 'post' }
 )
 
 watch(

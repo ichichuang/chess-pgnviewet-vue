@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 
 import { apiErrorMessage } from '@/api/client'
 import { fetchCompetitionList } from '@/api/productApi'
+import { productQueryKeys } from '@/api/queryClient'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 
@@ -15,19 +16,22 @@ const actflag = ref('21')
 const type = ref('')
 const month = ref(String(now.getMonth() + 1))
 const year = ref(String(now.getFullYear()))
+const appliedFilters = ref({
+  search: search.value,
+  actflag: actflag.value,
+  type: type.value,
+  month: month.value,
+  year: year.value,
+})
 
 const competitionQuery = useQuery({
-  queryKey: ['competitions', search, actflag, type, month, year, page],
+  queryKey: computed(() => productQueryKeys.competitions(appliedFilters.value, page.value)),
   queryFn: ({ signal }) =>
     fetchCompetitionList(
       {
         start: page.value * pageSize,
         max: pageSize,
-        search: search.value,
-        actflag: actflag.value,
-        type: type.value,
-        month: month.value,
-        year: year.value,
+        ...appliedFilters.value,
       },
       signal
     ),
@@ -43,8 +47,18 @@ const errorText = computed(() =>
 )
 
 function applyFilters(): void {
+  const nextFilters = {
+    search: search.value,
+    actflag: actflag.value,
+    type: type.value,
+    month: month.value,
+    year: year.value,
+  }
+  const changed = JSON.stringify(nextFilters) !== JSON.stringify(appliedFilters.value)
+  const pageChanged = page.value !== 0
   page.value = 0
-  void competitionQuery.refetch()
+  appliedFilters.value = nextFilters
+  if (!changed && !pageChanged) void competitionQuery.refetch()
 }
 
 function previousPage(): void {
@@ -202,6 +216,16 @@ td a {
   background: var(--surface-2);
   color: var(--text);
   font: inherit;
+}
+
+@media (pointer: coarse), (width <= 1024px) {
+  .filters input,
+  .filters select,
+  .filters button,
+  .pagination button,
+  td a {
+    min-height: var(--board-touch-target-min);
+  }
 }
 
 .filters button,

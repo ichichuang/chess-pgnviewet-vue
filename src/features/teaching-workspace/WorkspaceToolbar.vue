@@ -7,7 +7,7 @@ import {
 } from '@/features/annotations/domain/annotationTypes'
 import { BOARD_ORIENTATION_BLACK } from '@/features/board/domain/boardTypes'
 import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
-import { usePgnStore, useWorkspaceStore } from '@/stores'
+import { useAuthStore, usePgnStore, useWorkspaceStore } from '@/stores'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 
@@ -19,6 +19,7 @@ const emit = defineEmits<{
 
 const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
+const auth = useAuthStore()
 
 const annotationTools: readonly { key: AnnotationShapeKind; label: string }[] = [
   { key: 'arrow', label: '箭头' },
@@ -137,6 +138,14 @@ onBeforeUnmount(() => {
 
     <Transition :css="false" @enter="onGroupsEnter" @leave="onGroupsLeave">
       <div v-if="!workspace.toolbarCollapsed" class="toolbar-groups">
+        <nav class="toolbar-group" aria-label="产品入口">
+          <RouterLink class="toolbar-button" :to="{ name: 'competitions' }">赛事</RouterLink>
+          <RouterLink v-if="!auth.isAuthenticated" class="toolbar-button" :to="{ name: 'login' }">
+            登录
+          </RouterLink>
+          <button v-else class="toolbar-button" type="button" @click="auth.logout()">退出</button>
+        </nav>
+
         <section class="toolbar-group" aria-label="棋谱文件">
           <button class="toolbar-button" type="button" @click="emit('action', 'openLocal')">
             打开
@@ -329,6 +338,10 @@ onBeforeUnmount(() => {
   color: var(--text);
   font: inherit;
   cursor: pointer;
+}
+
+a.toolbar-button {
+  text-decoration: none;
 }
 
 .toolbar-button.compact {

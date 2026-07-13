@@ -230,6 +230,10 @@ export const usePgnStore = defineStore('pgn', {
   },
 
   actions: {
+    clearPrivateReplay(): void {
+      if (this.source.type !== 'production_api') return
+      this.$reset()
+    },
     openText(text: string, source: DataSource = { type: 'FS' }): boolean {
       try {
         const items = parseStrictCollection(text)

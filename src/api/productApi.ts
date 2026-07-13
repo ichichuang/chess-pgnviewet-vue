@@ -126,7 +126,7 @@ export async function fetchCompetitionPairings(
     .map((item) => mapCompetitionPairing(item, input.hdid, input.ticketid, input.roundId))
     .filter((item): item is CompetitionPairing => item !== null)
 
-  return { items, total: readTotal(raw, items.length), raw }
+  return { items, total: readTotal(raw, items.length) }
 }
 
 export async function fetchFinishedGameReplay(

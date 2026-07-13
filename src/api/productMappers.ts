@@ -274,7 +274,6 @@ function mapCompetition(input: unknown): Competition | null {
     category: firstString(record, ['category', 'catgory', 'ext_catgory', 'ext_category']),
     organizer: firstString(record, ['shoptitle', 'organizer', 'orgname', 'jgname', 'sponsor']),
     countSummary: countSummary(record),
-    raw: record,
   }
 }
 
@@ -290,7 +289,6 @@ export function mapCompetitionDetail(input: unknown, fallbackId: string): Compet
     category: '',
     organizer: '',
     countSummary: '',
-    raw: {},
   }
 
   return {
@@ -319,7 +317,6 @@ export function mapCompetitionGroup(
       firstString(record, ['name', 'groupname', 'group_name', 'title', 'ticketname']) || '默认组别',
     ticketId: ticketId || id,
     countSummary: countSummary(record),
-    raw: record,
   }
 }
 
@@ -348,7 +345,6 @@ export function mapCompetitionRound(
     startTime: firstString(record, ['starttime', 'start_time', 'matchtime', 'time', 'start_date']),
     endTime: firstString(record, ['endtime', 'end_time', 'enddate']),
     sourceCurrentRoundId,
-    raw: record,
   }
 }
 
@@ -417,7 +413,6 @@ export function mapCompetitionPairing(
     result: explicitResult || resultTextFromStatus(statusRaw),
     status: statusTextFromStatus(statusRaw, isBye),
     startTime: firstString(record, ['starttime', 'start_time', 'start_date']),
-    raw: record,
   }
 }
 
@@ -596,7 +591,6 @@ export function mapGameInfoResponse(raw: unknown, gameId: string): FinishedGameR
       initialFen,
       title,
       warnings: [],
-      raw,
     }
   }
 
@@ -615,7 +609,6 @@ export function mapGameInfoResponse(raw: unknown, gameId: string): FinishedGameR
     initialFen,
     title,
     warnings: ['using_production_move_history_without_pgn_text'],
-    raw,
   }
 }
 
@@ -624,5 +617,5 @@ export function mapCompetitionList(raw: unknown): PageResult<Competition> {
   const items = readArrayPayload(raw)
     .map(mapCompetition)
     .filter((item): item is Competition => item !== null)
-  return { items, total: readTotal(raw, items.length), raw }
+  return { items, total: readTotal(raw, items.length) }
 }

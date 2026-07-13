@@ -252,8 +252,10 @@ function storedPayload(): WorkspaceHandoffStoragePayload | null {
     if (isValidStoredPayload(parsed)) return parsed
   } catch {
     clearWorkspaceHandoffContext()
+    return null
   }
 
+  clearWorkspaceHandoffContext()
   return null
 }
 
@@ -386,6 +388,39 @@ function clearWorkspaceHandoffContext(): void {
     storage()?.removeItem(WORKSPACE_HANDOFF_STORAGE_KEY)
   } catch {
     // Nothing to clear.
+  }
+}
+
+export function clearPrivateWorkspaceHandoffContexts(): void {
+  const payload = storedPayload()
+  if (!payload) return
+
+  const publicContexts = Object.fromEntries(
+    Object.entries(payload.contexts).filter(([, context]) => context.mode !== 'replay')
+  )
+  const latestId =
+    payload.latestId && publicContexts[payload.latestId]
+      ? payload.latestId
+      : (Object.keys(publicContexts).at(-1) ?? '')
+
+  latestContextId = latestId
+  memoryContexts = JSON.parse(JSON.stringify(publicContexts)) as Record<
+    string,
+    WorkspaceHandoffContext
+  >
+
+  try {
+    const target = storage()
+    if (Object.keys(publicContexts).length === 0) {
+      target?.removeItem(WORKSPACE_HANDOFF_STORAGE_KEY)
+      return
+    }
+    target?.setItem(
+      WORKSPACE_HANDOFF_STORAGE_KEY,
+      JSON.stringify({ latestId, contexts: publicContexts })
+    )
+  } catch {
+    // Memory state still clears protected handoffs for this page lifecycle.
   }
 }
 

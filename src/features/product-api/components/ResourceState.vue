@@ -61,4 +61,10 @@ const emit = defineEmits<{
   font: inherit;
   cursor: pointer;
 }
+
+@media (pointer: coarse), (width <= 1024px) {
+  .resource-state button {
+    min-height: var(--board-touch-target-min);
+  }
+}
 </style>

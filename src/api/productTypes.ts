@@ -3,7 +3,6 @@ export type RawApiRecord = Record<string, unknown>
 export interface PageResult<T> {
   readonly items: T[]
   readonly total: number
-  readonly raw: unknown
 }
 
 export interface Competition {
@@ -16,7 +15,6 @@ export interface Competition {
   readonly category: string
   readonly organizer: string
   readonly countSummary: string
-  readonly raw: RawApiRecord
 }
 
 export interface CompetitionDetail extends Competition {
@@ -30,7 +28,6 @@ export interface CompetitionGroup {
   readonly name: string
   readonly ticketId: string
   readonly countSummary: string
-  readonly raw: RawApiRecord
 }
 
 export interface CompetitionRound {
@@ -44,7 +41,6 @@ export interface CompetitionRound {
   readonly startTime: string
   readonly endTime: string
   readonly sourceCurrentRoundId: string
-  readonly raw: RawApiRecord
 }
 
 export interface CompetitionPairing {
@@ -62,7 +58,6 @@ export interface CompetitionPairing {
   readonly result: string
   readonly status: string
   readonly startTime: string
-  readonly raw: RawApiRecord
 }
 
 export interface FinishedGameReplay {
@@ -72,7 +67,6 @@ export interface FinishedGameReplay {
   readonly initialFen: string
   readonly title: string
   readonly warnings: string[]
-  readonly raw: unknown
 }
 
 export interface CompetitionListInput {

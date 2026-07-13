@@ -11,6 +11,7 @@ import {
   fetchCompetitionRounds,
   type CompetitionPairing,
 } from '@/api/productApi'
+import { productQueryKeys } from '@/api/queryClient'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import {
@@ -22,18 +23,19 @@ import {
 const route = useRoute()
 const router = useRouter()
 const hdid = computed(() => routeText(route.params.hdid))
-const selectedGroupId = ref('')
-const selectedRoundId = ref('')
+const selectedGroupId = ref(routeText(route.query.group))
+const selectedRoundId = ref(routeText(route.query.round))
 const pairingSearch = ref('')
+const appliedPairingSearch = ref('')
 
 const detailQuery = useQuery({
-  queryKey: ['competition-detail', hdid],
+  queryKey: computed(() => productQueryKeys.competitionDetail(hdid.value)),
   queryFn: ({ signal }) => fetchCompetitionDetail(hdid.value, signal),
   enabled: computed(() => Boolean(hdid.value)),
 })
 
 const groupsQuery = useQuery({
-  queryKey: ['competition-groups', hdid],
+  queryKey: computed(() => productQueryKeys.competitionGroups(hdid.value)),
   queryFn: ({ signal }) => fetchCompetitionGroups(hdid.value, signal),
   enabled: computed(() => Boolean(hdid.value)),
 })
@@ -47,21 +49,30 @@ const selectedGroup = computed(
 )
 
 const roundsQuery = useQuery({
-  queryKey: ['competition-rounds', hdid, selectedGroupId],
+  queryKey: computed(() =>
+    productQueryKeys.competitionRounds(hdid.value, selectedGroupId.value)
+  ),
   queryFn: ({ signal }) => fetchCompetitionRounds(hdid.value, selectedGroupId.value, signal),
   enabled: computed(() => Boolean(hdid.value && selectedGroupId.value)),
 })
 
 const rounds = computed(() => roundsQuery.data.value ?? [])
 const pairingsQuery = useQuery({
-  queryKey: ['competition-pairings', hdid, selectedGroupId, selectedRoundId, pairingSearch],
+  queryKey: computed(() =>
+    productQueryKeys.competitionPairings(
+      hdid.value,
+      selectedGroupId.value,
+      selectedRoundId.value,
+      appliedPairingSearch.value
+    )
+  ),
   queryFn: ({ signal }) =>
     fetchCompetitionPairings(
       {
         hdid: hdid.value,
         ticketid: selectedGroupId.value,
         roundId: selectedRoundId.value,
-        name: pairingSearch.value,
+        name: appliedPairingSearch.value,
       },
       signal
     ),
@@ -73,15 +84,18 @@ const title = computed(() => detailQuery.data.value?.title || `赛事 ${hdid.val
 const detailStatus = computed(() => detailQuery.data.value?.status || '状态未返回')
 const detailStartTime = computed(() => detailQuery.data.value?.startTime || '')
 const loading = computed(
-  () => detailQuery.isPending.value || groupsQuery.isPending.value || roundsQuery.isPending.value
+  () => detailQuery.isFetching.value || groupsQuery.isFetching.value || roundsQuery.isFetching.value
 )
-const pairingsPending = computed(() => pairingsQuery.isPending.value)
-const errorText = computed(
+const pairingsPending = computed(() => pairingsQuery.isFetching.value)
+const primaryErrorText = computed(
   () =>
-    [detailQuery.error.value, groupsQuery.error.value, roundsQuery.error.value, pairingsQuery.error.value]
+    [detailQuery.error.value, groupsQuery.error.value, roundsQuery.error.value]
       .filter(Boolean)
       .map(apiErrorMessage)
       .at(0) ?? ''
+)
+const pairingErrorText = computed(() =>
+  pairingsQuery.error.value ? apiErrorMessage(pairingsQuery.error.value) : ''
 )
 
 watch(
@@ -91,6 +105,34 @@ watch(
     selectedGroupId.value = items[0]?.ticketId ?? ''
   },
   { immediate: true }
+)
+
+watch(
+  () => [routeText(route.query.group), routeText(route.query.round)] as const,
+  ([groupId, roundId]) => {
+    if (groupId && groupId !== selectedGroupId.value) selectedGroupId.value = groupId
+    if (roundId && roundId !== selectedRoundId.value) selectedRoundId.value = roundId
+  }
+)
+
+watch(
+  [selectedGroupId, selectedRoundId],
+  ([groupId, roundId]) => {
+    if (
+      routeText(route.query.group) === groupId &&
+      routeText(route.query.round) === roundId
+    ) {
+      return
+    }
+
+    const query = { ...route.query }
+    if (groupId) query.group = groupId
+    else delete query.group
+    if (roundId) query.round = roundId
+    else delete query.round
+    void router.replace({ query })
+  },
+  { flush: 'post' }
 )
 
 watch(
@@ -109,7 +151,17 @@ function routeText(value: unknown): string {
 }
 
 function refreshPairings(): void {
+  if (pairingSearch.value !== appliedPairingSearch.value) {
+    appliedPairingSearch.value = pairingSearch.value
+    return
+  }
   void pairingsQuery.refetch()
+}
+
+function retryCompetitionData(): void {
+  void detailQuery.refetch()
+  void groupsQuery.refetch()
+  if (selectedGroupId.value) void roundsQuery.refetch()
 }
 
 function displayRoute() {
@@ -167,7 +219,11 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
         <RouterLink :to="displayRoute()">大屏</RouterLink>
       </div>
 
-      <ResourceState :pending="loading" :error-text="errorText" @retry="refreshPairings" />
+      <ResourceState
+        :pending="loading"
+        :error-text="primaryErrorText"
+        @retry="retryCompetitionData"
+      />
 
       <section class="controls" aria-label="赛事筛选">
         <label>
@@ -195,6 +251,7 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
 
       <ResourceState
         :pending="pairingsPending"
+        :error-text="pairingErrorText"
         :empty="!pairingsPending && pairings.length === 0"
         empty-text="没有返回对阵"
         @retry="refreshPairings"
@@ -280,6 +337,16 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
   background: var(--surface-2);
   color: var(--text);
   font: inherit;
+}
+
+@media (pointer: coarse), (width <= 1024px) {
+  .detail-toolbar a,
+  .controls button,
+  .pairing-row button,
+  .controls input,
+  .controls select {
+    min-height: var(--board-touch-target-min);
+  }
 }
 
 .detail-toolbar a,

@@ -2,6 +2,7 @@ import { computed, onBeforeUnmount, ref, watch, type ComputedRef } from 'vue'
 
 import { apiErrorMessage } from '@/api/client'
 import { fetchFinishedGameReplay } from '@/api/productApi'
+import { productQueryKeys, queryClient } from '@/api/queryClient'
 import type { WorkspaceModeContext } from '@/features/workspace-mode/workspaceModeTypes'
 import { useAuthStore, usePgnStore } from '@/stores'
 
@@ -14,17 +15,19 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
   const message = ref('')
   const detail = ref('')
   const visible = computed(() => status.value !== 'idle')
-  let controller: AbortController | null = null
+  let activeQueryKey: ReturnType<typeof productQueryKeys.finishedReplay> | null = null
   let loadedKey = ''
 
   function abortCurrent(): void {
-    controller?.abort()
-    controller = null
+    if (activeQueryKey) {
+      void queryClient.cancelQueries({ queryKey: activeQueryKey, exact: true })
+      activeQueryKey = null
+    }
   }
 
   watch(
-    () => context.value,
-    async (value) => {
+    () => [context.value, auth.isAuthenticated] as const,
+    async ([value]) => {
       abortCurrent()
       detail.value = ''
 
@@ -60,6 +63,7 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
       }
 
       if (!auth.isAuthenticated) {
+        pgn.clearPrivateReplay()
         status.value = 'unavailable'
         message.value = '该回放需要登录后加载。'
         loadedKey = ''
@@ -73,13 +77,18 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
         return
       }
 
-      controller = new AbortController()
+      const queryKey = productQueryKeys.finishedReplay(key)
+      activeQueryKey = queryKey
       status.value = 'loading'
       message.value = '正在加载生产回放。'
 
       try {
-        const replay = await fetchFinishedGameReplay(key, controller.signal)
-        if (controller.signal.aborted) return
+        const replay = await queryClient.fetchQuery({
+          queryKey,
+          queryFn: ({ signal }) => fetchFinishedGameReplay(key, signal),
+          meta: { privacy: 'private' },
+        })
+        if (activeQueryKey !== queryKey) return
         const ok = pgn.openText(replay.pgnText, {
           type: 'production_api',
           filename: `${replay.gameId}.pgn`,
@@ -97,10 +106,12 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
         detail.value = replay.warnings.join('，')
         loadedKey = key
       } catch (error) {
-        if (controller.signal.aborted) return
+        if (activeQueryKey !== queryKey) return
         status.value = 'error'
         message.value = apiErrorMessage(error)
         loadedKey = ''
+      } finally {
+        if (activeQueryKey === queryKey) activeQueryKey = null
       }
     },
     { immediate: true }

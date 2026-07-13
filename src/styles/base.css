@@ -40,3 +40,12 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+@media (pointer: coarse), (width <= 1024px) {
+  #app button,
+  #app input,
+  #app select,
+  #app a[href] {
+    min-height: var(--board-touch-target-min);
+  }
+}

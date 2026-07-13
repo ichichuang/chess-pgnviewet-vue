@@ -257,6 +257,7 @@ export const useAnalysisStore = defineStore('analysis', {
 
       if (
         !force &&
+        this.workerMode !== 'unavailable' &&
         this.current?.nodeKey === context.nodeKey &&
         this.current.positionId === context.positionId
       ) {

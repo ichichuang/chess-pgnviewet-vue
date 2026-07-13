@@ -2,12 +2,17 @@ import { defineStore } from 'pinia'
 import type { LocationQuery } from 'vue-router'
 
 import { absorbSessionQuery, loginWithAccount } from '@/api/auth'
+import { clearPrivateProductQueries } from '@/api/queryClient'
 import {
   clearAuthSession,
   readAuthSession,
   saveAuthSession,
   type AuthSession,
 } from '@/persistence/auth/sessionPersistence'
+import { clearPrivateWorkspaceHandoffContexts } from '@/persistence/workspace/workspaceHandoff'
+
+import { useAnalysisStore } from './analysis'
+import { usePgnStore } from './pgn'
 
 type AuthStatus = 'checking' | 'authenticated' | 'anonymous' | 'submitting' | 'failed'
 
@@ -16,6 +21,13 @@ interface AuthState {
   status: AuthStatus
   lastError: string | null
   initialized: boolean
+}
+
+function clearPrivateProductState(): void {
+  clearPrivateProductQueries()
+  clearPrivateWorkspaceHandoffContexts()
+  useAnalysisStore().dispose()
+  usePgnStore().clearPrivateReplay()
 }
 
 function queryToParams(query: LocationQuery): URLSearchParams {
@@ -106,6 +118,8 @@ export const useAuthStore = defineStore('auth', {
         this.status = 'authenticated'
         this.initialized = true
       } catch (error) {
+        clearPrivateProductState()
+        clearAuthSession()
         this.session = null
         this.status = 'failed'
         this.lastError = error instanceof Error ? error.message : '登录失败'
@@ -113,6 +127,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout(): void {
+      clearPrivateProductState()
       clearAuthSession()
       this.session = null
       this.status = 'anonymous'
