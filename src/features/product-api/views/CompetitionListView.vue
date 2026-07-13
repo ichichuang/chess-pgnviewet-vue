@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/vue-query'
 import { computed, ref } from 'vue'
 
 import { apiErrorMessage } from '@/api/client'
-import { fetchCompetitionList } from '@/api/productApi'
-import { productQueryKeys } from '@/api/queryClient'
+import { tournamentRepository } from '@/api/productApi'
+import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 
@@ -26,8 +26,9 @@ const appliedFilters = ref({
 
 const competitionQuery = useQuery({
   queryKey: computed(() => productQueryKeys.competitions(appliedFilters.value, page.value)),
+  meta: publicQueryMeta,
   queryFn: ({ signal }) =>
-    fetchCompetitionList(
+    tournamentRepository.list(
       {
         start: page.value * pageSize,
         max: pageSize,

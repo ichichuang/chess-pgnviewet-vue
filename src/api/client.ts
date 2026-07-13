@@ -1,11 +1,6 @@
-import axios, {
-  type AxiosRequestConfig,
-  type AxiosResponse,
-  type InternalAxiosRequestConfig,
-} from 'axios'
+import axios, { type AxiosRequestConfig } from 'axios'
 import { z } from 'zod'
 
-import { readAuthSession } from '@/persistence/auth/sessionPersistence'
 import { productionApiConfig } from '@/runtime/config/productionApi'
 
 export type ApiClientErrorKind =
@@ -14,6 +9,7 @@ export type ApiClientErrorKind =
   | 'configuration'
   | 'contract-mismatch'
   | 'http'
+  | 'invalid-input'
   | 'invalid-json'
   | 'network'
   | 'permission-denied'
@@ -35,30 +31,13 @@ export class ApiClientError extends Error {
 }
 
 type JsonRequestMethod = 'GET' | 'POST'
-type RequestAuthMode = 'public' | 'session' | 'session-required'
 
 export interface JsonRequestInput {
-  readonly base?: string
   readonly path: string
   readonly method?: JsonRequestMethod
   readonly body?: unknown
   readonly signal?: AbortSignal | undefined
   readonly timeoutMs?: number
-  readonly auth?: RequestAuthMode
-  readonly authToken?: string | undefined
-}
-
-interface OwnedRequestMetadata {
-  readonly auth: RequestAuthMode
-  readonly authToken?: string | undefined
-}
-
-interface OwnedAxiosRequestConfig extends AxiosRequestConfig {
-  readonly ownedRequest: OwnedRequestMetadata
-}
-
-interface OwnedInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
-  ownedRequest?: OwnedRequestMetadata
 }
 
 const JsonResponseSchema = z.unknown()
@@ -99,7 +78,7 @@ function normalizedRelativePath(path: string): string {
     candidate.includes('\\') ||
     hasControlCharacter(candidate)
   ) {
-    throw configurationError('Production API request path is not a safe relative path.')
+    throw configurationError('Web API request path is not a safe relative path.')
   }
 
   const pathname = candidate.split(/[?#]/u, 1)[0] ?? ''
@@ -108,7 +87,7 @@ function normalizedRelativePath(path: string): string {
   try {
     decodedPathname = decodeURIComponent(pathname)
   } catch {
-    throw configurationError('Production API request path contains invalid encoding.')
+    throw configurationError('Web API request path contains invalid encoding.')
   }
 
   if (
@@ -116,55 +95,41 @@ function normalizedRelativePath(path: string): string {
     decodedPathname.includes('\\') ||
     decodedPathname.split('/').some((segment) => segment === '.' || segment === '..')
   ) {
-    throw configurationError('Production API request path contains an unsafe URL segment.')
+    throw configurationError('Web API request path contains an unsafe URL segment.')
   }
 
   return candidate
 }
 
 function validatedBase(base: string | undefined): string {
-  const candidate = base?.trim() || productionApiConfig.chessApiBase
-
-  if (candidate !== productionApiConfig.chessApiBase) {
-    throw configurationError('Dynamic production API request bases are not allowed.')
+  if (base !== productionApiConfig.chessApiBase) {
+    throw configurationError('Dynamic Web API request bases are not allowed.')
   }
 
-  return candidate
+  return productionApiConfig.chessApiBase
 }
 
 function validatedTimeout(timeoutMs: number | undefined): number {
   const candidate = timeoutMs ?? productionApiConfig.requestTimeoutMs
 
   if (!Number.isInteger(candidate) || candidate < 1 || candidate > 30_000) {
-    throw configurationError('Production API request timeout is invalid.')
+    throw configurationError('Web API request timeout is invalid.')
   }
 
   return candidate
 }
 
-function bearerToken(metadata: OwnedRequestMetadata): string {
-  if (metadata.auth === 'public') {
-    if (metadata.authToken) {
-      throw configurationError('Public production API requests cannot carry authentication.')
-    }
-
-    return ''
+function assertBrowserTransportAvailable(): void {
+  if (productionApiConfig.configurationIssue) {
+    throw configurationError(productionApiConfig.configurationIssue)
   }
 
-  const token = metadata.authToken?.trim() || readAuthSession()?.loginValue.trim() || ''
-
-  if (/[\r\n]/u.test(token)) {
-    throw configurationError('Production API authentication is malformed.')
-  }
-
-  if (!token && metadata.auth === 'session-required') {
+  if (productionApiConfig.browserAccess === 'cross-origin-unconfirmed') {
     throw new ApiClientError({
-      kind: 'auth-required',
-      message: 'This production API request requires authentication.',
+      kind: 'service-unavailable',
+      message: '当前部署未获得已验证 Web API 的跨域访问权限。',
     })
   }
-
-  return token
 }
 
 function classifyHttpStatus(status: number): ApiClientErrorKind {
@@ -177,9 +142,7 @@ function classifyHttpStatus(status: number): ApiClientErrorKind {
 }
 
 function messageFromBody(body: unknown): string {
-  if (!body || typeof body !== 'object' || Array.isArray(body)) {
-    return ''
-  }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return ''
 
   const record = body as Record<string, unknown>
   const message = record.msg ?? record.errmsg ?? record.message ?? record.error
@@ -200,45 +163,33 @@ function httpFallback(kind: ApiClientErrorKind, status: number): string {
   if (kind === 'auth-required') return 'Authentication is required.'
   if (kind === 'permission-denied') return 'Permission was denied.'
   if (kind === 'rate-limited') return 'Too many requests. Please try again later.'
-  if (kind === 'service-unavailable') return 'Production API is unavailable.'
-  if (kind === 'upstream') return 'Production API upstream failed.'
+  if (kind === 'service-unavailable') return 'Web API is unavailable.'
+  if (kind === 'upstream') return 'Web API upstream failed.'
   return `HTTP ${status}`
 }
 
 function toApiClientError(error: unknown): ApiClientError {
-  if (error instanceof ApiClientError) {
-    return error
-  }
+  if (error instanceof ApiClientError) return error
 
   if (!axios.isAxiosError(error)) {
-    return new ApiClientError({
-      kind: 'network',
-      message: 'Production API request failed.',
-    })
+    return new ApiClientError({ kind: 'network', message: 'Web API request failed.' })
   }
 
   if (error.code === 'ERR_CANCELED') {
-    return new ApiClientError({
-      kind: 'cancelled',
-      message: 'Production API request was cancelled.',
-    })
+    return new ApiClientError({ kind: 'cancelled', message: 'Web API request was cancelled.' })
   }
 
   if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
-    return new ApiClientError({
-      kind: 'timeout',
-      message: 'Production API request timed out.',
-    })
+    return new ApiClientError({ kind: 'timeout', message: 'Web API request timed out.' })
   }
 
   const status = error.response?.status
 
   if (typeof status === 'number') {
     const kind = classifyHttpStatus(status)
-    const fallback = httpFallback(kind, status)
     return new ApiClientError({
       kind,
-      message: sanitizedMessage(error.response?.data, fallback),
+      message: sanitizedMessage(error.response?.data, httpFallback(kind, status)),
       status,
     })
   }
@@ -246,7 +197,7 @@ function toApiClientError(error: unknown): ApiClientError {
   if (error.code === 'ERR_BAD_RESPONSE') {
     return new ApiClientError({
       kind: 'invalid-json',
-      message: 'Production API returned malformed JSON.',
+      message: 'Web API returned malformed JSON.',
     })
   }
 
@@ -255,13 +206,10 @@ function toApiClientError(error: unknown): ApiClientError {
     error.code === 'ERR_BAD_OPTION_VALUE' ||
     error.code === 'ERR_INVALID_URL'
   ) {
-    return configurationError('Production API request configuration is invalid.')
+    return configurationError('Web API request configuration is invalid.')
   }
 
-  return new ApiClientError({
-    kind: 'network',
-    message: 'Production API network request failed.',
-  })
+  return new ApiClientError({ kind: 'network', message: 'Web API network request failed.' })
 }
 
 const httpClient = axios.create({
@@ -278,29 +226,17 @@ const httpClient = axios.create({
     clarifyTimeoutError: true,
     silentJSONParsing: false,
   },
-  withCredentials: true,
+  withCredentials: false,
 })
 
 const requestInterceptorId = httpClient.interceptors.request.use((config) => {
-  const ownedConfig = config as OwnedInternalAxiosRequestConfig
-  const metadata = ownedConfig.ownedRequest ?? { auth: 'public' }
-  delete ownedConfig.ownedRequest
-
-  ownedConfig.baseURL = validatedBase(ownedConfig.baseURL)
-  ownedConfig.url = normalizedRelativePath(ownedConfig.url ?? '')
-  const token = bearerToken(metadata)
-
-  if (token) {
-    ownedConfig.headers.set('Authorization', `Bearer ${token}`)
-  } else {
-    ownedConfig.headers.delete('Authorization')
-  }
-
-  return ownedConfig
+  config.baseURL = validatedBase(config.baseURL)
+  config.url = normalizedRelativePath(config.url ?? '')
+  return config
 })
 
 const responseInterceptorId = httpClient.interceptors.response.use(
-  (response) => response.data as AxiosResponse,
+  (response) => response,
   (error: unknown) => Promise.reject(toApiClientError(error))
 )
 
@@ -312,33 +248,23 @@ if (import.meta.hot) {
 }
 
 export async function requestJson<T = unknown>(input: JsonRequestInput): Promise<T> {
-  const request: OwnedAxiosRequestConfig = {
-    baseURL: validatedBase(input.base),
+  assertBrowserTransportAvailable()
+
+  const request: AxiosRequestConfig = {
+    baseURL: productionApiConfig.chessApiBase,
     method: input.method ?? DEFAULT_JSON_METHOD,
-    ownedRequest: {
-      auth: input.auth ?? 'public',
-      authToken: input.authToken,
-    },
     timeout: validatedTimeout(input.timeoutMs),
     url: normalizedRelativePath(input.path),
   }
 
-  if (input.body !== undefined && request.method !== 'GET') {
-    request.data = input.body
-  }
+  if (input.body !== undefined && request.method !== 'GET') request.data = input.body
+  if (input.signal) request.signal = input.signal
 
-  if (input.signal) {
-    request.signal = input.signal
-  }
-
-  const raw = (await httpClient.request(request)) as unknown
-  return JsonResponseSchema.parse(raw) as T
+  const response = await httpClient.request<unknown>(request)
+  return JsonResponseSchema.parse(response.data) as T
 }
 
 export function apiErrorMessage(error: unknown): string {
-  if (error instanceof ApiClientError) {
-    return error.message
-  }
-
+  if (error instanceof ApiClientError) return error.message
   return error instanceof Error ? error.message : '请求失败'
 }

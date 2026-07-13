@@ -4,14 +4,9 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { apiErrorMessage } from '@/api/client'
-import {
-  fetchCompetitionDetail,
-  fetchCompetitionGroups,
-  fetchCompetitionPairings,
-  fetchCompetitionRounds,
-  type CompetitionPairing,
-} from '@/api/productApi'
-import { productQueryKeys } from '@/api/queryClient'
+import { tournamentRepository } from '@/api/productApi'
+import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
+import type { CompetitionPairing } from '@/api/productTypes'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import {
@@ -30,13 +25,15 @@ const appliedPairingSearch = ref('')
 
 const detailQuery = useQuery({
   queryKey: computed(() => productQueryKeys.competitionDetail(hdid.value)),
-  queryFn: ({ signal }) => fetchCompetitionDetail(hdid.value, signal),
+  meta: publicQueryMeta,
+  queryFn: ({ signal }) => tournamentRepository.detail(hdid.value, signal),
   enabled: computed(() => Boolean(hdid.value)),
 })
 
 const groupsQuery = useQuery({
   queryKey: computed(() => productQueryKeys.competitionGroups(hdid.value)),
-  queryFn: ({ signal }) => fetchCompetitionGroups(hdid.value, signal),
+  meta: publicQueryMeta,
+  queryFn: ({ signal }) => tournamentRepository.groups(hdid.value, signal),
   enabled: computed(() => Boolean(hdid.value)),
 })
 
@@ -52,7 +49,9 @@ const roundsQuery = useQuery({
   queryKey: computed(() =>
     productQueryKeys.competitionRounds(hdid.value, selectedGroupId.value)
   ),
-  queryFn: ({ signal }) => fetchCompetitionRounds(hdid.value, selectedGroupId.value, signal),
+  meta: publicQueryMeta,
+  queryFn: ({ signal }) =>
+    tournamentRepository.rounds(hdid.value, selectedGroupId.value, signal),
   enabled: computed(() => Boolean(hdid.value && selectedGroupId.value)),
 })
 
@@ -66,8 +65,9 @@ const pairingsQuery = useQuery({
       appliedPairingSearch.value
     )
   ),
+  meta: publicQueryMeta,
   queryFn: ({ signal }) =>
-    fetchCompetitionPairings(
+    tournamentRepository.pairings(
       {
         hdid: hdid.value,
         ticketid: selectedGroupId.value,
@@ -265,12 +265,12 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
           </div>
           <div class="players">
             <strong>{{ pairing.whiteName }}</strong>
-            <span>{{ pairing.whitePoints || pairing.whiteRating || '白方' }}</span>
+            <span>{{ pairing.whiteRating || '白方' }}</span>
           </div>
           <div class="result">{{ pairing.result || '未定' }}</div>
           <div class="players">
             <strong>{{ pairing.blackName }}</strong>
-            <span>{{ pairing.blackPoints || pairing.blackRating || '黑方' }}</span>
+            <span>{{ pairing.blackRating || '黑方' }}</span>
           </div>
           <button type="button" @click="openReplay(pairing)">打开回放</button>
         </article>

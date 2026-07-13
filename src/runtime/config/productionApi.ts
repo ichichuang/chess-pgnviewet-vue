@@ -1,17 +1,18 @@
+type BrowserApiAccess = 'same-origin' | 'cross-origin-unconfirmed' | 'non-browser'
+
 export interface ProductionApiRuntimeConfig {
   readonly chessApiBase: string
-  readonly mainApiBase: string
   readonly loginAppId: string
   readonly requestTimeoutMs: number
+  readonly browserAccess: BrowserApiAccess
+  readonly configurationIssue: string
 }
 
-const DEFAULT_CHESS_API_BASE = '/api/ksl'
-const DEFAULT_MAIN_API_BASE = 'https://manage.yoursclass.com'
+const CONFIRMED_CHESS_API_BASE = 'https://wxapi.kaisaile.org'
 const PUBLIC_LOGIN_APP_ID = 'wx670cc0af39c366e0'
-const DEFAULT_REQUEST_TIMEOUT_MS = 8000
+const DEFAULT_REQUEST_TIMEOUT_MS = 8_000
 
-type ProductionEnvKey =
-  'VITE_KSL_CHESS_API_BASE' | 'VITE_KSL_MAIN_API_BASE' | 'VITE_KSL_REQUEST_TIMEOUT_MS'
+type ProductionEnvKey = 'VITE_KSL_CHESS_API_BASE' | 'VITE_KSL_REQUEST_TIMEOUT_MS'
 
 function envText(key: ProductionEnvKey): string {
   const env = import.meta.env as Partial<Record<ProductionEnvKey, string>>
@@ -19,59 +20,67 @@ function envText(key: ProductionEnvKey): string {
   return typeof value === 'string' ? value.trim() : ''
 }
 
-function hasUnsafeBaseCharacter(text: string): boolean {
-  for (const character of text) {
-    const code = character.charCodeAt(0)
-
-    if (code <= 31 || character === '<' || character === '>' || character === '`') {
-      return true
-    }
-  }
-
-  return false
-}
-
-function sameOriginApiBase(value: string): string {
-  if (!value.startsWith('/api/') || value.startsWith('//') || hasUnsafeBaseCharacter(value)) {
-    return ''
-  }
-
-  return value.replace(/\/+$/u, '')
-}
-
-function productionApiBase(value: string, fallback: string): string {
-  const candidate = value || fallback
-
-  if (candidate.startsWith('/')) {
-    return sameOriginApiBase(candidate) || fallback
+function sourceConfirmedBase(value: string): {
+  readonly base: string
+  readonly issue: string
+} {
+  if (!value) {
+    return { base: CONFIRMED_CHESS_API_BASE, issue: '' }
   }
 
   try {
-    const url = new URL(candidate)
+    const candidate = new URL(value)
+    const confirmed = new URL(CONFIRMED_CHESS_API_BASE)
+    const hasUnexpectedParts =
+      candidate.username !== '' ||
+      candidate.password !== '' ||
+      candidate.search !== '' ||
+      candidate.hash !== '' ||
+      !['', '/'].includes(candidate.pathname)
 
-    if (url.protocol !== 'https:') {
-      return fallback
+    if (
+      candidate.protocol !== 'https:' ||
+      candidate.origin !== confirmed.origin ||
+      hasUnexpectedParts
+    ) {
+      return {
+        base: CONFIRMED_CHESS_API_BASE,
+        issue: 'The configured Web API base is not a source-confirmed production origin.',
+      }
     }
 
-    url.hash = ''
-    url.search = ''
-    url.pathname = url.pathname.replace(/\/+$/u, '')
-    return url.toString().replace(/\/$/u, '')
+    return { base: CONFIRMED_CHESS_API_BASE, issue: '' }
   } catch {
-    return fallback
+    return {
+      base: CONFIRMED_CHESS_API_BASE,
+      issue: 'The configured Web API base is not a valid HTTPS origin.',
+    }
   }
 }
 
 function requestTimeoutMs(value: string): number {
+  if (!value) return DEFAULT_REQUEST_TIMEOUT_MS
+
   const parsed = Number(value)
-  return Number.isInteger(parsed) && parsed >= 3000 && parsed <= 30000
+  return Number.isInteger(parsed) && parsed >= 3_000 && parsed <= 30_000
     ? parsed
     : DEFAULT_REQUEST_TIMEOUT_MS
 }
 
+function browserAccess(base: string): BrowserApiAccess {
+  if (typeof window === 'undefined') return 'non-browser'
+
+  return new URL(base).origin === window.location.origin
+    ? 'same-origin'
+    : 'cross-origin-unconfirmed'
+}
+
+const configuredBase = sourceConfirmedBase(envText('VITE_KSL_CHESS_API_BASE'))
+
 export const productionApiConfig: ProductionApiRuntimeConfig = Object.freeze({
-  chessApiBase: productionApiBase(envText('VITE_KSL_CHESS_API_BASE'), DEFAULT_CHESS_API_BASE),
-  mainApiBase: productionApiBase(envText('VITE_KSL_MAIN_API_BASE'), DEFAULT_MAIN_API_BASE),
+  chessApiBase: configuredBase.base,
   loginAppId: PUBLIC_LOGIN_APP_ID,
   requestTimeoutMs: requestTimeoutMs(envText('VITE_KSL_REQUEST_TIMEOUT_MS')),
+  browserAccess: browserAccess(configuredBase.base),
+  configurationIssue: configuredBase.issue,
 })

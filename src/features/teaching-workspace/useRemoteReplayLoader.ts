@@ -1,8 +1,8 @@
 import { computed, onBeforeUnmount, ref, watch, type ComputedRef } from 'vue'
 
 import { apiErrorMessage } from '@/api/client'
-import { fetchFinishedGameReplay } from '@/api/productApi'
-import { productQueryKeys, queryClient } from '@/api/queryClient'
+import { replayRepository } from '@/api/productApi'
+import { privateQueryMeta, productQueryKeys, queryClient } from '@/api/queryClient'
 import type { WorkspaceModeContext } from '@/features/workspace-mode/workspaceModeTypes'
 import { useAuthStore, usePgnStore } from '@/stores'
 
@@ -85,8 +85,8 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
       try {
         const replay = await queryClient.fetchQuery({
           queryKey,
-          queryFn: ({ signal }) => fetchFinishedGameReplay(key, signal),
-          meta: { privacy: 'private' },
+          queryFn: ({ signal }) => replayRepository.finishedGame(key, signal),
+          meta: privateQueryMeta,
         })
         if (activeQueryKey !== queryKey) return
         const ok = pgn.openText(replay.pgnText, {

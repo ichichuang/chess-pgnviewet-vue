@@ -5,6 +5,7 @@ export const projectRoot = path.resolve(import.meta.dirname, '../..')
 export const evidenceSourceRoots = [
   '/Users/cc/Work/neobv/Chess/pgnViewer-new',
   '/Users/cc/Work/neobv/Chess/pgnViewer',
+  '/Users/cc/Work/neobv/Chess/chess-main-overseas',
   '/Users/cc/Work/neobv/Chess/chess-pgnviewer',
 ]
 
@@ -146,7 +147,7 @@ export const architecturePolicy = {
   iconAllowlist: ['src/ui/icons/', 'src/ui/', 'src/app/providers/'],
   apiAllowlist: ['src/api/', 'src/repositories/', 'src/sources/', 'src/runtime/http/'],
   axiosImportAllowlist: ['src/api/client.ts'],
-  browserAuthHeaderAllowlist: ['src/api/client.ts'],
+  browserAuthHeaderAllowlist: [],
   nativeHttpAllowlist: [],
   persistenceAllowlist: [
     'src/persistence/',

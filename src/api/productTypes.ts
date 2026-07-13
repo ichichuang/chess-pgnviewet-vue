@@ -1,5 +1,3 @@
-export type RawApiRecord = Record<string, unknown>
-
 export interface PageResult<T> {
   readonly items: T[]
   readonly total: number
@@ -53,11 +51,8 @@ export interface CompetitionPairing {
   readonly blackName: string
   readonly whiteRating: string
   readonly blackRating: string
-  readonly whitePoints: string
-  readonly blackPoints: string
   readonly result: string
   readonly status: string
-  readonly startTime: string
 }
 
 export interface FinishedGameReplay {

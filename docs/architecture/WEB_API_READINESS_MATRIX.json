@@ -15,23 +15,23 @@
         {
             "id": "transport.single-axios-owner",
             "contract": "CONFIRMED_TARGET_ARCHITECTURE",
-            "runtime": "PARTIAL_LEGACY_AUTH_ASSUMPTIONS",
-            "browser": "NOT_YET_REVALIDATED",
+            "runtime": "IMPLEMENTED_VALIDATED_PUBLIC_REQUESTS_ONLY",
+            "browser": "FAILS_CLOSED_WHEN_CROSS_ORIGIN_UNCONFIRMED",
             "classification": "MERGE",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "transport.production-base",
             "contract": "CONFIRMED_HTTPS_ORIGIN",
-            "runtime": "INVENTED_PROXY_DEFAULT_PRESENT",
+            "runtime": "EXACT_CONFIRMED_ORIGIN_PROXY_REMOVED",
             "browser": "BLOCKED_UNCONFIRMED_CORS",
             "classification": "REPLACE",
-            "readyForMerge": false
+            "readyForMerge": true
         },
         {
             "id": "tournament.list",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
-            "runtime": "PERMISSIVE_MAPPER",
+            "runtime": "STRICT_ZOD_REPOSITORY",
             "browser": "BLOCKED_UNCONFIRMED_CORS",
             "classification": "MERGE",
             "readyForMerge": false
@@ -39,7 +39,7 @@
         {
             "id": "tournament.detail",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
-            "runtime": "PERMISSIVE_MAPPER",
+            "runtime": "STRICT_ZOD_REPOSITORY",
             "browser": "BLOCKED_UNCONFIRMED_CORS",
             "classification": "MERGE",
             "readyForMerge": false
@@ -47,7 +47,7 @@
         {
             "id": "tournament.groups",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
-            "runtime": "PERMISSIVE_MAPPER",
+            "runtime": "STRICT_ZOD_REPOSITORY",
             "browser": "BLOCKED_UNCONFIRMED_CORS",
             "classification": "MERGE",
             "readyForMerge": false
@@ -55,7 +55,7 @@
         {
             "id": "tournament.rounds",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
-            "runtime": "PERMISSIVE_MAPPER",
+            "runtime": "STRICT_ZOD_REPOSITORY",
             "browser": "BLOCKED_UNCONFIRMED_CORS",
             "classification": "MERGE",
             "readyForMerge": false
@@ -63,7 +63,7 @@
         {
             "id": "tournament.pairings",
             "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
-            "runtime": "PERMISSIVE_MAPPER",
+            "runtime": "STRICT_ZOD_REPOSITORY",
             "browser": "BLOCKED_UNCONFIRMED_CORS",
             "classification": "MERGE",
             "readyForMerge": false
@@ -87,7 +87,7 @@
         {
             "id": "replay.finished-game",
             "contract": "BLOCKED_GUEST_TOKEN_LIFECYCLE",
-            "runtime": "INCORRECT_ACCOUNT_BEARER_ASSUMPTION",
+            "runtime": "TRUTHFULLY_BLOCKED_NO_REQUEST",
             "browser": "UNVERIFIED",
             "classification": "BLOCKED_UNCONFIRMED",
             "readyForMerge": false

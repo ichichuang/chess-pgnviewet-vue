@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "phase": "W1_WEB_REQUEST_TRANSPORT_AND_TOURNAMENT_REPOSITORY_UPGRADE",
+  "completedAt": "2026-07-14T07:03:03+08:00",
+  "status": "IMPLEMENTED_VALIDATED_READY_FOR_AUTH_CORRECTION",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "safetyGate": {
+    "localHead": "d37249cd3a2483ba88c3fd151969cde5bbed449f",
+    "originMain": "d37249cd3a2483ba88c3fd151969cde5bbed449f",
+    "liveRemoteMain": "d37249cd3a2483ba88c3fd151969cde5bbed449f",
+    "ahead": 0,
+    "behind": 0,
+    "worktreeCount": 1,
+    "gitLocks": [],
+    "writableRepositoryFileDescriptors": 0,
+    "result": "PASS"
+  },
+  "implemented": {
+    "transport": [
+      "One private Axios instance remains the only HTTP owner.",
+      "The invented /api/ksl base and Vite proxy were removed.",
+      "Only the exact confirmed https://wxapi.kaisaile.org origin is accepted.",
+      "Cross-origin browser access fails closed because upstream CORS is unconfirmed.",
+      "Relative paths, timeouts, JSON parsing, AbortSignal cancellation, and redacted error classification are centralized.",
+      "Generic browser Bearer headers, dynamic request bases, cookie credentials, and session metadata were removed."
+    ],
+    "repository": [
+      "tournamentRepository owns the five confirmed public tournament paths.",
+      "Input schemas normalize pagination, filters, identifiers, month arrays, and optional player search.",
+      "Endpoint-specific Zod schemas validate exact response envelopes before DTO-to-domain mapping.",
+      "Recursive raw-payload discovery and speculative field aliases were removed.",
+      "Public list uid and empty pairing uid/jgid fields were removed.",
+      "Invented pairing points, start times, and synthetic replay PGN reconstruction were removed.",
+      "Finished replay is a no-request blocked repository result pending a verified guest-token lifecycle."
+    ],
+    "query": [
+      "Query keys use typed normalized inputs and the web-api-v2 namespace.",
+      "Every tournament query is explicitly public and replay is explicitly private.",
+      "Only transient network, timeout, service-unavailable, and upstream failures retry once.",
+      "Private-query cleanup is metadata-based."
+    ],
+    "governance": [
+      "chess-main-overseas is registered as a read-only evidence source.",
+      "No browser Authorization-header allowlist remains."
+    ]
+  },
+  "implementationHashes": {
+    "src/runtime/config/productionApi.ts": "78abdf1ad0fcf04412c61196554f0ba029b7cb612d0b92e3a53671ed29736725",
+    "vite.config.ts": "215b178752629cf0013e714fc83d4f183046b16d1ffa95f3e5a5f7b2c97f7550",
+    "src/api/client.ts": "a6db87bdfbfbd02f21815a29e91ada6efcfa653b2cbed439e243ec1ccdc4fe23",
+    "src/api/productApi.ts": "3197d79c2e80aa97ccdb9db98c606fa4c9a9c599fa39c1cc49b587b2d249fb83",
+    "src/api/productMappers.ts": "cc72bc45aa8dd6646f74f1b2d3f0a98ed784286ddb02ed623e3850598d9b55f9",
+    "src/api/productTypes.ts": "0f1ee8f1e8803ef7633ffb29abf33b7c0173a7e3b3164b8989ba657e132c24ff",
+    "src/api/queryClient.ts": "12b7b30409a9023ed45876b614e7fa150737d90fa4a8cf09b9a56f03bc06d1ed",
+    "scripts/governance/policy.mjs": "e07eaf6428800bc0b03cbc53ee0495cdb197b21a1db09cb0724909114c1d60f6"
+  },
+  "validation": [
+    {
+      "command": "pnpm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "PASS_INCLUDING_STYLELINT_KNIP_AND_PRODUCTION_AUDIT"
+    },
+    {
+      "command": "pnpm run build",
+      "result": "PASS"
+    },
+    {
+      "command": "jq empty docs/architecture/*.json docs/migration/*.json .ai/reports/*.json",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "residualBlocks": [
+    "The password-login and URL-token absorption runtime still require removal in W2.",
+    "The confirmed upstream still grants no verified cross-origin browser CORS contract.",
+    "Finished replay still lacks an approved guest-token lifecycle.",
+    "Truthful auth, permission, unavailable, and retry UI states require W2 browser validation."
+  ],
+  "result": "WEB_REQUEST_TRANSPORT_AND_PUBLIC_TOURNAMENT_REPOSITORY_UPGRADED"
+}
