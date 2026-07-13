@@ -1,6 +1,11 @@
 # P1G1 Axios HTTP Client and Vite Proxy Baseline
 
-Status: `IMPLEMENTED_VALIDATED`
+Status: `HISTORICAL_SUPERSEDED`
+
+Superseded by: `docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md`
+
+This file preserves P1G1 execution history. `/api/ksl`, generic browser Bearer
+injection, and inferred production proxy behavior are not active authority.
 
 ## Owner decision
 

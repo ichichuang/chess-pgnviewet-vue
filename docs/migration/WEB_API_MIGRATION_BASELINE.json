@@ -1,0 +1,222 @@
+{
+    "schemaVersion": 1,
+    "status": "ACTIVE_AUTHORITY",
+    "effectiveDate": "2026-07-14",
+    "objective": "Correct Web API authority and replace invented request/auth architecture without changing accepted product UI or chess domains.",
+    "sourcePrecedence": [
+        {
+            "source": "/Users/cc/Work/neobv/Chess/pgnViewer",
+            "scope": "web-api-auth-request-environment-production-evidence",
+            "mode": "read-only"
+        },
+        {
+            "source": "/Users/cc/Work/neobv/Chess/chess-main-overseas",
+            "scope": "web-api-auth-request-environment-production-evidence",
+            "mode": "read-only"
+        },
+        {
+            "source": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+            "scope": "board-pgn-annotation-ai-workspace-layout-motion-visual-only",
+            "mode": "read-only"
+        }
+    ],
+    "targetAudit": [
+        {
+            "path": "docs/architecture/API_BOUNDARY_ADR.md",
+            "classification": "REPLACE",
+            "reason": "Invents same-origin handlers, BFF ownership, cookie session, and server credential vault."
+        },
+        {
+            "path": "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+            "classification": "REPLACE",
+            "reason": "Invents production /api/ksl hosting behavior and arbitrary browser-readable override."
+        },
+        {
+            "path": "docs/architecture/PERSISTENCE_ADR.md",
+            "classification": "MERGE",
+            "reason": "Non-auth persistence rules remain valid; opaque cookie session is unverified and must be removed."
+        },
+        {
+            "path": "docs/architecture/SOURCE_ADAPTER_ADR.md",
+            "classification": "MERGE",
+            "reason": "Adapter model remains; API source precedence is incomplete."
+        },
+        {
+            "path": "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+            "classification": "MERGE",
+            "reason": "Vue topology remains; cookie/same-origin and forbidden source-authority statements are replaced."
+        },
+        {
+            "path": "docs/architecture/P1G_PRODUCTION_API_CONTRACT_INVENTORY.json",
+            "classification": "REPLACE",
+            "reason": "Names a forbidden authority, treats /api/ksl as a contract, absorbs URL tokens, and conflates account auth with replay auth."
+        },
+        {
+            "path": "docs/architecture/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_BASELINE.md",
+            "classification": "REPLACE",
+            "reason": "Historical implementation evidence only; the proxy and browser Bearer architecture are not Web-source contracts."
+        },
+        {
+            "path": "docs/architecture/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_BASELINE.md",
+            "classification": "MERGE",
+            "reason": "Accepted UI/chess integration remains; API/auth completion claims become historical."
+        },
+        {
+            "path": "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+            "classification": "MERGE",
+            "reason": "Preserve historical phase ledger; active Web API readiness moves to WEB_API_READINESS_MATRIX.json."
+        },
+        {
+            "path": "docs/architecture/FOUNDATION_HARDENING_CURRENT_STATE.md",
+            "classification": "MERGE",
+            "reason": "Recovered H0 security evidence is preserved as a superseded baseline; its invented server-session recommendation is not authority."
+        },
+        {
+            "path": "docs/architecture/FOUNDATION_HARDENING_REMAINING_MATRIX.json",
+            "classification": "MERGE",
+            "reason": "Recovered H0 planning evidence remains historical and is superseded for Web API work."
+        },
+        {
+            "path": "docs/migration/SOURCE_PROVENANCE.md",
+            "classification": "REPLACE",
+            "reason": "Names the forbidden chess-pgnviewer tree as API authority and omits chess-main-overseas."
+        },
+        {
+            "path": "docs/migration/API_AUTHORITY_MAP.json",
+            "classification": "REPLACE",
+            "reason": "Derived from the forbidden source and invented same-origin server contracts."
+        },
+        {
+            "path": "docs/migration/CAPABILITY_MATRIX.json",
+            "classification": "MERGE",
+            "reason": "Product capability coverage remains; API authority fields need a correction overlay rather than historical deletion."
+        },
+        {
+            "path": ".ai/reports/P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_REPORT.json",
+            "classification": "KEEP",
+            "reason": "Preserve immutable historical execution evidence; do not treat its authority claims as current."
+        },
+        {
+            "path": ".ai/reports/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION_REPORT.json",
+            "classification": "KEEP",
+            "reason": "Preserve immutable historical development-proxy evidence."
+        },
+        {
+            "path": ".ai/reports/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE_REPORT.json",
+            "classification": "KEEP",
+            "reason": "Preserve immutable historical UI acceptance evidence; API/auth claims are superseded."
+        },
+        {
+            "path": "src/runtime/config/productionApi.ts",
+            "classification": "REPLACE",
+            "reason": "Defaults to invented /api/ksl and accepts arbitrary HTTPS or /api/* bases."
+        },
+        {
+            "path": "vite.config.ts",
+            "classification": "REPLACE",
+            "reason": "The /api/ksl proxy is development-only and has no Web-source production contract."
+        },
+        {
+            "path": "src/api/client.ts",
+            "classification": "MERGE",
+            "reason": "Keep one Axios owner, path validation, cancellation, timeout, and error normalization; remove generic browser Bearer and cookie assumptions."
+        },
+        {
+            "path": "src/api/auth.ts",
+            "classification": "REPLACE",
+            "reason": "Speculative response aliases, empty openid, and URL-session absorption are not authoritative."
+        },
+        {
+            "path": "src/persistence/auth/sessionPersistence.ts",
+            "classification": "REPLACE",
+            "reason": "Indefinite localStorage tokens and legacy compatibility keys violate minimum-state ownership."
+        },
+        {
+            "path": "src/stores/auth.ts",
+            "classification": "MERGE",
+            "reason": "Keep scoped private cleanup and local logout; remove route-query absorption and add deterministic auth-loss ownership."
+        },
+        {
+            "path": "src/router/index.ts",
+            "classification": "REMOVE_MINIAPP_ONLY",
+            "reason": "Remove token/query absorption while preserving the single Router owner and canonical routes."
+        },
+        {
+            "path": "src/api/productApi.ts",
+            "classification": "REPLACE",
+            "reason": "Use project repositories with endpoint-owned request schemas and confirmed payload fields; disable blocked replay."
+        },
+        {
+            "path": "src/api/productMappers.ts",
+            "classification": "REPLACE",
+            "reason": "Recursive envelope search, speculative aliases, and synthesized replay success are not field-level contracts."
+        },
+        {
+            "path": "src/api/productTypes.ts",
+            "classification": "MERGE",
+            "reason": "Keep domain intent; remove fields that cannot be mapped from confirmed DTOs."
+        },
+        {
+            "path": "src/api/queryClient.ts",
+            "classification": "MERGE",
+            "reason": "Keep one QueryClient and private cleanup; type/normalize keys and deterministic retry/privacy."
+        },
+        {
+            "path": "src/features/product-api/views/CompetitionListView.vue",
+            "classification": "MERGE",
+            "reason": "Keep accepted UI; connect to strict repository and truthful unavailable/refresh states."
+        },
+        {
+            "path": "src/features/product-api/views/CompetitionDetailView.vue",
+            "classification": "MERGE",
+            "reason": "Keep route/UI state; use strict group/round/pairing repositories and preserve independent errors."
+        },
+        {
+            "path": "src/features/product-api/views/CompetitionDisplayView.vue",
+            "classification": "MERGE",
+            "reason": "Keep read-only display; polling must stop on deterministic unavailable state."
+        },
+        {
+            "path": "src/features/product-api/views/LoginView.vue",
+            "classification": "REPLACE",
+            "reason": "Render a truthful blocked state until the non-openid Web login contract is verified."
+        },
+        {
+            "path": "src/features/teaching-workspace/useRemoteReplayLoader.ts",
+            "classification": "MERGE",
+            "reason": "Keep cancellation/private cleanup; remove incorrect account-auth replay request and expose blocked contract."
+        },
+        {
+            "path": "src/features/product-api/views/CompatibilityEntryView.vue",
+            "classification": "KEEP",
+            "reason": "Sanitized handoff and explicit unavailable resolution are truthful; no blocked API is called."
+        }
+    ],
+    "writePhases": [
+        {
+            "id": "W0",
+            "scope": "authority-documents-inventories-coverage-migration-readiness",
+            "prerequisite": "complete"
+        },
+        {
+            "id": "W1",
+            "scope": "transport-config-axios-query-runtime",
+            "prerequisite": "W0 committed and remote verified"
+        },
+        {
+            "id": "W2",
+            "scope": "strict-tournament-repositories-dtos-ui-states",
+            "prerequisite": "W1 committed and remote verified"
+        },
+        {
+            "id": "W3",
+            "scope": "auth-url-token-removal-private-lifecycle-replay-blocking",
+            "prerequisite": "W2 committed and remote verified"
+        },
+        {
+            "id": "W4",
+            "scope": "full-validation-browser-evidence-final-readiness",
+            "prerequisite": "W3 committed and remote verified"
+        }
+    ]
+}

@@ -1,0 +1,182 @@
+{
+    "schemaVersion": 1,
+    "status": "ACTIVE_AUTHORITY",
+    "effectiveDate": "2026-07-14",
+    "matrix": [
+        {
+            "id": "transport.base",
+            "targetBefore": "/api/ksl with arbitrary HTTPS or /api/* override",
+            "pgnViewer": "https://wxapi.kaisaile.org via rejected proxyRequest",
+            "chessMainOverseas": "VITE_API_URL via rejected /CALL and browser HMAC",
+            "liveEvidence": "Direct HTTPS works server-side; cross-origin browser CORS grant is empty",
+            "classification": "REPLACE",
+            "targetDecision": "Exact confirmed HTTPS origin only; no repository proxy; cross-origin browser state unavailable"
+        },
+        {
+            "id": "transport.timeout",
+            "targetBefore": "8000ms configurable",
+            "pgnViewer": "8000ms",
+            "chessMainOverseas": "15000ms",
+            "classification": "KEEP",
+            "targetDecision": "Keep 8000ms default; retain bounded public timeout override"
+        },
+        {
+            "id": "transport.credentials",
+            "targetBefore": "withCredentials true for all calls",
+            "pgnViewer": "varies by client; Cloudreve true",
+            "chessMainOverseas": "withCredentials true plus browser HMAC",
+            "classification": "REPLACE",
+            "targetDecision": "Public reads omit browser credentials; no cookie auth is claimed"
+        },
+        {
+            "id": "transport.authenticationHeader",
+            "targetBefore": "browser Bearer from persisted account token",
+            "pgnViewer": "legacy bearer or proxy token depending on client",
+            "chessMainOverseas": "browser HMAC Authorization; replay token is in request body",
+            "classification": "REJECTED_OBSOLETE",
+            "targetDecision": "Remove generic browser auth-header injection"
+        },
+        {
+            "id": "transport.response",
+            "targetBefore": "transport z.unknown plus recursive endpoint aliases",
+            "pgnViewer": "legacy interceptor unwraps data",
+            "chessMainOverseas": "request interceptor returns response.data",
+            "classification": "REPLACE",
+            "targetDecision": "Axios returns unknown; each repository validates one exact envelope and strips unknown fields"
+        },
+        {
+            "id": "auth.login.request",
+            "targetBefore": "PostLoginByPhone with empty openid",
+            "pgnViewer": "no independent password-login implementation used by target",
+            "chessMainOverseas": "MD5 digest duplicated in code/pwd; mobile/tel; Type/type 0; login_func appid/func and hard-coded openid",
+            "classification": "BLOCKED_UNCONFIRMED",
+            "targetDecision": "Do not submit until non-openid, non-HMAC Web request is verified; never persist password/digest"
+        },
+        {
+            "id": "auth.login.response",
+            "targetBefore": "speculative token/jwttoken/jwtToken/loginToken aliases",
+            "pgnViewer": "legacy token families through Mini Program handoff",
+            "chessMainOverseas": "content.token and content.uid",
+            "classification": "REPLACE",
+            "targetDecision": "Only content.token/content.uid are Web-source fields; runtime remains blocked with request contract"
+        },
+        {
+            "id": "auth.restore",
+            "targetBefore": "indefinite legacy localStorage keys plus URL absorption",
+            "pgnViewer": "localStorage and URL-token/Mini Program handoff",
+            "chessMainOverseas": "web-storage-cache token/user records with default expiry wrapper",
+            "classification": "REPLACE",
+            "targetDecision": "Remove URL absorption and legacy keys; no restored session until a safe Web login lifecycle is verified"
+        },
+        {
+            "id": "auth.logout",
+            "targetBefore": "local clear with correct private-state cleanup",
+            "pgnViewer": "legacy local clear",
+            "chessMainOverseas": "local user clear; token-key cleanup is internally inconsistent; no remote endpoint",
+            "classification": "MERGE",
+            "targetDecision": "Keep scoped target cleanup; clear centralized local session; do not invent remote logout"
+        },
+        {
+            "id": "auth.401-403-expiry",
+            "targetBefore": "HTTP classification only; no store invalidation or expiry",
+            "pgnViewer": "partial refresh and Cloudreve error handling",
+            "chessMainOverseas": "no centralized lifecycle",
+            "classification": "MERGE",
+            "targetDecision": "401 invalidates accepted private session/cache; 403 remains permission-denied; deterministic expiry fails closed when a future verified token supplies it"
+        },
+        {
+            "id": "tournament.list.request",
+            "targetBefore": "start/max/search/type/uid/month/year/actflag with speculative scalar/null conversion",
+            "pgnViewer": "start/max/search/type/uid/month/year",
+            "chessMainOverseas": "actflag/max/month[]/search/start/type/year and conditional uid",
+            "liveEvidence": "Both numeric scalar month and source array form were accepted; array is the Web consumer contract",
+            "classification": "MERGE",
+            "targetDecision": "Typed normalized filters; month is an integer array when selected; no uid for public list"
+        },
+        {
+            "id": "tournament.list.response",
+            "targetBefore": "recursive Details/content/data/list aliases and speculative field aliases",
+            "pgnViewer": "consumer treats returned value as list after proxy unwrapping",
+            "chessMainOverseas": "resp plus content.Total/content.Details",
+            "liveEvidence": "Exact envelope and 12 detail fields verified",
+            "classification": "REPLACE",
+            "targetDecision": "Endpoint-specific Zod schema and explicit mapping only"
+        },
+        {
+            "id": "tournament.detail",
+            "targetBefore": "route hdid body id with recursive aliases",
+            "pgnViewer": "not used in the same direct Web path",
+            "chessMainOverseas": "source function incorrectly hard-codes one id",
+            "liveEvidence": "body.id using current route hdid returned matching detail envelope",
+            "classification": "MERGE",
+            "targetDecision": "Keep route hdid correction; validate explicit content fields"
+        },
+        {
+            "id": "tournament.groups",
+            "targetBefore": "recursive array discovery and id/name aliases",
+            "pgnViewer": "body {hdid}",
+            "chessMainOverseas": "body {hdid}; content[] uses ticketid/ticketname",
+            "liveEvidence": "Exact envelope and item fields verified",
+            "classification": "REPLACE",
+            "targetDecision": "Use ticketid as group identifier and ticketname as label"
+        },
+        {
+            "id": "tournament.rounds",
+            "targetBefore": "recursive aliases and invented round number/status/end fields",
+            "pgnViewer": "body {hdid,ticketid}",
+            "chessMainOverseas": "content.roundinfo and content.cur_round",
+            "liveEvidence": "roundinfo items contain round_id/starttime",
+            "classification": "REPLACE",
+            "targetDecision": "Map only round_id/starttime and cur_round; derive display ordinal from list position"
+        },
+        {
+            "id": "tournament.pairings",
+            "targetBefore": "body includes empty uid/jgid/name and speculative DTO aliases",
+            "pgnViewer": "hdid/ticketid/round_id/st/plen/type",
+            "chessMainOverseas": "adds name and jgid variants; content[] direct",
+            "liveEvidence": "Exact 15 item fields verified",
+            "classification": "MERGE",
+            "targetDecision": "Keep source-confirmed filters only; map id/sort_id/names/ratings/status; no invented points/startTime"
+        },
+        {
+            "id": "replay.requestAuth",
+            "targetBefore": "account token as browser Bearer; body {gameid}",
+            "pgnViewer": "generic proxy forwards caller data",
+            "chessMainOverseas": "body {gameid,token}; token comes from fingerprint guest login",
+            "classification": "BLOCKED_UNCONFIRMED",
+            "targetDecision": "Remove incorrect account-Bearer request and keep replay unavailable"
+        },
+        {
+            "id": "replay.response",
+            "targetBefore": "speculative PGN/move aliases and synthesized PGN",
+            "pgnViewer": "gameServerSdk consumes returned game object",
+            "chessMainOverseas": "durinGame consumes datas.fen, datas.moves[].m, gametype.parameters, result object",
+            "classification": "REPLACE",
+            "targetDecision": "Inventory exact game shape; do not synthesize success until authenticated real variants are verified"
+        },
+        {
+            "id": "query.keys-cache-cancellation",
+            "targetBefore": "stable prefix but unknown key arguments; AbortSignal present; private meta only on replay",
+            "pgnViewer": "not a Query authority",
+            "chessMainOverseas": "not a Query authority",
+            "classification": "MERGE",
+            "targetDecision": "Typed normalized keys, signals everywhere, deterministic retry, explicit public/private metadata, scoped private cleanup"
+        },
+        {
+            "id": "compatibility.cloud-share-match",
+            "targetBefore": "sanitized handoff followed by truthful unavailable workspace state",
+            "pgnViewer": "remote storage and Cloudreve paths with legacy credentials and writes",
+            "chessMainOverseas": "no complete compatible resolver",
+            "classification": "KEEP",
+            "targetDecision": "Keep unavailable handoff; do not call blocked source contracts"
+        },
+        {
+            "id": "live.mqtt-hardware",
+            "targetBefore": "truthful unavailable state",
+            "pgnViewer": "credential endpoint plus publish-capable client",
+            "chessMainOverseas": "hard-coded credential/signing material and publish-capable client",
+            "classification": "KEEP",
+            "targetDecision": "Keep unavailable until a subscribe-only credential lifecycle is verified; publish remains rejected"
+        }
+    ]
+}

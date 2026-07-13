@@ -1,6 +1,12 @@
 # P1H Product Complete Usable Integration Baseline
 
-Status: `PRODUCT_COMPLETE_USABLE`
+Status: `HISTORICAL_UI_ACCEPTANCE_API_SUPERSEDED`
+
+API/auth supersession: `docs/architecture/WEB_API_SOURCE_AUTHORITY.md`
+
+Accepted board, PGN, annotation, AI, workspace, layout, theme, and product UI
+evidence remains historical acceptance. API/auth/proxy completion claims are
+not active authority.
 
 Result: `P1H_PRODUCT_COMPLETE_USABLE_PASS`
 

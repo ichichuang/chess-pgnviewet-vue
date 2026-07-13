@@ -1,0 +1,519 @@
+{
+    "schemaVersion": 1,
+    "status": "ACTIVE_AUTHORITY",
+    "effectiveDate": "2026-07-14",
+    "allowedClassifications": [
+        "KEEP",
+        "REPLACE",
+        "REMOVE_MINIAPP_ONLY",
+        "MERGE",
+        "BLOCKED_UNCONFIRMED",
+        "REJECTED_OBSOLETE"
+    ],
+    "sourceAuthorities": [
+        {
+            "id": "pgnViewer",
+            "root": "/Users/cc/Work/neobv/Chess/pgnViewer",
+            "role": "WEB_API_AUTHORITY_READ_ONLY"
+        },
+        {
+            "id": "chess-main-overseas",
+            "root": "/Users/cc/Work/neobv/Chess/chess-main-overseas",
+            "role": "WEB_API_AUTHORITY_READ_ONLY"
+        }
+    ],
+    "nonAuthorities": [
+        "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+        "mini-program-api-documents",
+        "wx.request-flows",
+        "openid-flows",
+        "derived-api-inventories"
+    ],
+    "bases": [
+        {
+            "id": "chessApi",
+            "value": "https://wxapi.kaisaile.org",
+            "evidence": ["pgnViewer/src/config/index.js", "pgnViewer/src/api/chessivy.js"],
+            "classification": "MERGE",
+            "browserDeployment": "BLOCKED_UNCONFIRMED_CORS"
+        },
+        {
+            "id": "managementApi",
+            "value": "https://manage.yoursclass.com",
+            "evidence": ["pgnViewer/src/config/index.js", "pgnViewer/src/api/cloudreve.js"],
+            "classification": "BLOCKED_UNCONFIRMED",
+            "browserDeployment": "CREDENTIAL_AND_CORS_CONTRACT_UNCONFIRMED"
+        },
+        {
+            "id": "cloudreveApi",
+            "value": "https://manage.yoursclass.com/cloudreve/api/v3",
+            "evidence": ["pgnViewer/src/api/cloudreve.js"],
+            "classification": "BLOCKED_UNCONFIRMED",
+            "browserDeployment": "BEARER_AND_CREDENTIAL_CONTRACT_UNCONFIRMED"
+        },
+        {
+            "id": "genericCall",
+            "value": "/CALL",
+            "evidence": [
+                "chess-main-overseas/vite.config.js",
+                "chess-main-overseas/src/utils/request.js"
+            ],
+            "classification": "REJECTED_OBSOLETE"
+        },
+        {
+            "id": "genericProxyRequest",
+            "value": "/yike_mgr/v1/chessivy/proxyRequest",
+            "evidence": ["pgnViewer/src/api/chessivy.js"],
+            "classification": "REJECTED_OBSOLETE"
+        }
+    ],
+    "transportEvidence": {
+        "pgnViewer": {
+            "timeoutMs": 8000,
+            "responseBehavior": "legacy-data-envelope-unwrapping",
+            "cancellation": "NOT_CONFIRMED",
+            "credentials": "legacy-browser-token",
+            "classification": "MERGE"
+        },
+        "chessMainOverseas": {
+            "timeoutMs": 15000,
+            "responseBehavior": "return-response-data",
+            "cancellation": "NOT_CONFIRMED",
+            "credentials": "withCredentials-and-browser-HMAC",
+            "classification": "REPLACE",
+            "rejectedParts": [
+                "browser-hmac",
+                "hard-coded-credential-like-material",
+                "generic-/CALL"
+            ]
+        },
+        "liveProbe": {
+            "date": "2026-07-14",
+            "origin": "https://wxapi.kaisaile.org",
+            "credentialUse": "NONE",
+            "retainedEvidence": "status-envelope-keys-field-names-field-types-row-counts-only",
+            "cors": {
+                "preflightStatus": 200,
+                "allowOrigin": "EMPTY",
+                "allowCredentials": "EMPTY",
+                "allowMethods": "EMPTY",
+                "allowHeaders": "EMPTY",
+                "classification": "BLOCKED_UNCONFIRMED"
+            }
+        }
+    },
+    "endpoints": [
+        {
+            "id": "auth.passwordLogin",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/liveproxy/PostLoginByPhone",
+            "requestFields": [
+                "Type",
+                "code",
+                "login_func.appid",
+                "login_func.func",
+                "login_func.openid",
+                "mobile",
+                "pwd",
+                "tel",
+                "type"
+            ],
+            "responseEnvelope": ["resp", "content"],
+            "responseFieldsConsumedBySource": ["content.token", "content.uid", "resp.msg"],
+            "auth": "PUBLIC_LOGIN",
+            "evidence": [
+                "chess-main-overseas/src/utils/api.js",
+                "chess-main-overseas/src/view/login/index.vue"
+            ],
+            "classification": "BLOCKED_UNCONFIRMED",
+            "reason": "The Web source couples this request to a disallowed hard-coded openid compatibility field and browser HMAC transport. No non-openid Web request is verified."
+        },
+        {
+            "id": "auth.userDetail",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/ucenter/GetUserDetail",
+            "requestFields": ["showall", "token", "uid"],
+            "responseEnvelope": ["resp", "content"],
+            "auth": "KAISAILE_TOKEN_IN_BODY",
+            "evidence": ["chess-main-overseas/src/utils/api.js", "pgnViewer/src/api/chessivy.js"],
+            "classification": "BLOCKED_UNCONFIRMED",
+            "reason": "Depends on the blocked password-login lifecycle; exhaustive response schema and safe browser transport are unverified."
+        },
+        {
+            "id": "auth.userCenterInfo",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/ucenter/GetUserCenterInfo",
+            "requestFields": ["token"],
+            "responseEnvelope": ["resp", "content"],
+            "auth": "KAISAILE_TOKEN_IN_BODY",
+            "evidence": ["chess-main-overseas/src/utils/api.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "auth.guestChessService",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/user/loginGuest",
+            "requestFields": ["visitorId"],
+            "auth": "BROWSER_FINGERPRINT",
+            "evidence": [
+                "chess-main-overseas/src/utils/api.js",
+                "chess-main-overseas/src/utils/userInfoService.js"
+            ],
+            "classification": "REJECTED_OBSOLETE",
+            "reason": "Fingerprint-derived guest authentication and automatic module-load login are not approved."
+        },
+        {
+            "id": "tournament.list",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/liveproxy/GetActList",
+            "requestFields": ["actflag", "max", "month", "search", "start", "type", "uid", "year"],
+            "responseEnvelope": ["resp", "content.Total", "content.Details"],
+            "responseItemFields": [
+                "act_endtime",
+                "act_sign",
+                "act_starttime",
+                "actflag",
+                "delaymatchtime",
+                "ext_catgory",
+                "hdid",
+                "poster",
+                "sign_endtime",
+                "sponsor",
+                "sponsorLogo",
+                "title"
+            ],
+            "auth": "PUBLIC",
+            "pagination": "start-max",
+            "evidence": [
+                "pgnViewer/src/api/chessivy.js",
+                "chess-main-overseas/src/utils/api.js",
+                "2026-07-14-no-credential-live-probe"
+            ],
+            "classification": "MERGE",
+            "runtimeLimit": "Cross-origin browser CORS is not granted."
+        },
+        {
+            "id": "tournament.detail",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/award/c-GetActDetail?token=&type=10",
+            "requestFields": ["id", "sid"],
+            "responseEnvelope": ["resp", "content"],
+            "responseFieldsConsumedByTarget": [
+                "act_addr",
+                "act_endtime",
+                "act_starttime",
+                "description",
+                "ext_catgory",
+                "id",
+                "isfinish",
+                "shoptitle",
+                "sponsor",
+                "state",
+                "title",
+                "type"
+            ],
+            "auth": "PUBLIC_EMPTY_LEGACY_QUERY_TOKEN",
+            "evidence": [
+                "chess-main-overseas/src/utils/api.js",
+                "2026-07-14-no-credential-live-probe"
+            ],
+            "classification": "MERGE",
+            "correction": "The source implementation hard-codes one event id; the live probe verified that the route hdid in body.id returns the requested event."
+        },
+        {
+            "id": "tournament.groups",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/liveproxy/GetActGroups",
+            "requestFields": ["hdid"],
+            "responseEnvelope": ["resp", "content[]"],
+            "responseItemFields": [
+                "cur_state",
+                "fieldinfo",
+                "hdid",
+                "isoffline",
+                "merge_id",
+                "needsign",
+                "round_ajust_time",
+                "sign_anytime",
+                "sign_end_time",
+                "sign_start_time",
+                "signcount",
+                "ticketeloeffect",
+                "ticketid",
+                "ticketname",
+                "ticketpair"
+            ],
+            "auth": "PUBLIC",
+            "evidence": [
+                "pgnViewer/src/api/chessivy.js",
+                "chess-main-overseas/src/utils/api.js",
+                "2026-07-14-no-credential-live-probe"
+            ],
+            "classification": "MERGE"
+        },
+        {
+            "id": "tournament.rounds",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/award/c-GetMatchRoundlist",
+            "requestFields": ["hdid", "ticketid"],
+            "responseEnvelope": [
+                "resp",
+                "content.cur_round",
+                "content.roundfinish",
+                "content.roundinfo"
+            ],
+            "responseItemFields": ["round_id", "starttime"],
+            "auth": "PUBLIC",
+            "evidence": [
+                "pgnViewer/src/api/chessivy.js",
+                "chess-main-overseas/src/utils/api.js",
+                "2026-07-14-no-credential-live-probe"
+            ],
+            "classification": "MERGE"
+        },
+        {
+            "id": "tournament.pairings",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/award/c-GetMatchPairlist",
+            "requestFields": [
+                "hdid",
+                "jgid",
+                "name",
+                "plen",
+                "round_id",
+                "st",
+                "ticketid",
+                "type",
+                "uid"
+            ],
+            "responseEnvelope": ["resp", "content[]"],
+            "responseItemFields": [
+                "belo",
+                "bfaceimg",
+                "bfieldid",
+                "bjgname",
+                "black",
+                "blackname",
+                "id",
+                "sort_id",
+                "status",
+                "welo",
+                "wfaceimg",
+                "wfieldid",
+                "white",
+                "whitename",
+                "wjgname"
+            ],
+            "auth": "PUBLIC",
+            "pagination": "st-plen",
+            "identifierSemantics": "content[].id is the candidate individual game id; hdid, ticketid, and round_id are scopes, not game ids.",
+            "evidence": [
+                "pgnViewer/src/api/chessivy.js",
+                "chess-main-overseas/src/utils/api.js",
+                "2026-07-14-no-credential-live-probe"
+            ],
+            "classification": "MERGE"
+        },
+        {
+            "id": "tournament.scoreList",
+            "method": "GET",
+            "base": "chessApi",
+            "path": "/award/ShowScoreList",
+            "requestQueryFields": ["id", "name", "plen", "st", "token", "type"],
+            "auth": "PUBLIC_EMPTY_LEGACY_QUERY_TOKEN",
+            "evidence": ["chess-main-overseas/src/utils/api.js"],
+            "classification": "REJECTED_OBSOLETE",
+            "reason": "The active product definition retires personal results/score-list runtime."
+        },
+        {
+            "id": "replay.finishedGame",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/gameapi/gamemgr/getgameinfo",
+            "requestFields": ["gameid", "token"],
+            "responseShape": [
+                "datas.fen",
+                "datas.moves[].m",
+                "gametype.parameters",
+                "id",
+                "players",
+                "result.reason",
+                "result.score",
+                "status"
+            ],
+            "auth": "CHESS_SERVICE_GUEST_TOKEN_IN_BODY",
+            "evidence": [
+                "pgnViewer/src/api/chessivy.js",
+                "chess-main-overseas/src/utils/api.js",
+                "chess-main-overseas/src/utils/userInfoService.js",
+                "chess-main-overseas/src/utils/durinGameSDK/durinGame.js"
+            ],
+            "classification": "BLOCKED_UNCONFIRMED",
+            "reason": "The source token is created by the rejected fingerprint guest flow and is distinct from account login. Safe replay auth and side-effect behavior are not verified."
+        },
+        {
+            "id": "live.hardwareBoardMap",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/chess-api-mgr/hwcb/hwcb_get_match_chessboard",
+            "requestFields": ["hdid", "token"],
+            "auth": "CHESS_SERVICE_TOKEN_IN_BODY",
+            "evidence": ["chess-main-overseas/src/utils/api.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "live.hardwarePgnHistoryOne",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/chess-api-mgr/hwcb/get_pgn_history_one",
+            "requestFields": ["id", "token"],
+            "auth": "CHESS_SERVICE_TOKEN_IN_BODY",
+            "evidence": ["chess-main-overseas/src/utils/api.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "live.hardwarePgnHistoryByGame",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/chess-api-mgr/hwcb/hwcb_get_pgnhistory",
+            "requestFields": ["gameid", "token"],
+            "auth": "CHESS_SERVICE_TOKEN_IN_BODY",
+            "evidence": ["chess-main-overseas/src/utils/api.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "live.mqttCredentials",
+            "method": "POST",
+            "base": "chessApi",
+            "path": "/chess-api-kaisaile/getMqttAuthPwd",
+            "requestFields": ["ClientId"],
+            "auth": "LEGACY_PROXY_OR_BROWSER_CREDENTIAL",
+            "evidence": ["pgnViewer/src/api/chessivy.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "cloud.fileContent",
+            "method": "GET",
+            "base": "cloudreveApi",
+            "path": "/file/content/:fileid",
+            "responseType": "arraybuffer",
+            "auth": "BROWSER_BEARER_AND_COOKIES",
+            "evidence": ["pgnViewer/src/api/cloudreve.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "cloud.fileId",
+            "method": "GET",
+            "base": "cloudreveApi",
+            "path": "/file/tmpfileid/:encodedPath",
+            "auth": "BROWSER_BEARER_AND_COOKIES",
+            "evidence": ["pgnViewer/src/api/cloudreve.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "cloud.directoryList",
+            "method": "GET",
+            "base": "cloudreveApi",
+            "path": "/directory:encodedPath",
+            "auth": "BROWSER_BEARER_AND_COOKIES",
+            "evidence": ["pgnViewer/src/api/cloudreve.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "cloud.writes",
+            "methods": ["POST", "PUT"],
+            "base": "cloudreveApi",
+            "paths": ["/file/create", "/file/update/:fileid", "/directory"],
+            "auth": "BROWSER_BEARER_AND_COOKIES",
+            "evidence": ["pgnViewer/src/api/cloudreve.js"],
+            "classification": "REJECTED_OBSOLETE"
+        },
+        {
+            "id": "sharing.personalRead",
+            "method": "POST",
+            "base": "managementApi",
+            "path": "/storage/personal/get2",
+            "requestFields": ["key"],
+            "evidence": ["pgnViewer/src/api/remoteStorage.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "sharing.organizationRead",
+            "method": "POST",
+            "base": "managementApi",
+            "path": "/storage/org/get2",
+            "requestFields": ["key", "orgId"],
+            "evidence": ["pgnViewer/src/api/remoteStorage.js"],
+            "classification": "BLOCKED_UNCONFIRMED"
+        },
+        {
+            "id": "sharing.remoteStorageWrites",
+            "method": "POST",
+            "base": "managementApi",
+            "paths": ["/storage/personal/set2", "/storage/org/set2"],
+            "requestFields": ["expire", "key", "orgId", "value"],
+            "evidence": ["pgnViewer/src/api/remoteStorage.js"],
+            "classification": "REJECTED_OBSOLETE"
+        },
+        {
+            "id": "game.writeLifecycle",
+            "method": "POST",
+            "base": "chessApi",
+            "paths": [
+                "/gameapi/gamemgr/creategame",
+                "/gameapi/gamemgr/joingame",
+                "/gameapi/gamemgr/quickstartgame",
+                "/gameapi/gamemgr/startgame",
+                "/chess-api-kaisaile/setquizresult",
+                "/chess-api-mgr/hwcb/hwcb_pgn_set_matchinfo"
+            ],
+            "evidence": ["pgnViewer/src/api/chessivy.js", "chess-main-overseas/src/utils/api.js"],
+            "classification": "REJECTED_OBSOLETE"
+        },
+        {
+            "id": "account.queryTokenChessbooks",
+            "method": "GET",
+            "base": "chessApi",
+            "paths": ["/mychessbooks", "/chessbooks/:id"],
+            "auth": "token_pc-query-string",
+            "evidence": ["chess-main-overseas/src/utils/api.js"],
+            "classification": "REJECTED_OBSOLETE"
+        },
+        {
+            "id": "miniapp.wechatAndUrlToken",
+            "method": "POST",
+            "base": "managementApi",
+            "paths": [
+                "UC/loginusetoken",
+                "UC/wxlogin",
+                "common/wx/wx_getuserinfo",
+                "common/wx/wx_getsign",
+                "userinfo/refreshToken"
+            ],
+            "evidence": ["pgnViewer/src/api/UC.js"],
+            "classification": "REMOVE_MINIAPP_ONLY"
+        },
+        {
+            "id": "admin.orgRoleSurveyLogs",
+            "method": "POST",
+            "base": "managementApi",
+            "pathFamilies": ["Org/*", "Role/*", "SurveyMgr/*", "logs/*"],
+            "evidence": [
+                "pgnViewer/src/api/Org.js",
+                "pgnViewer/src/api/Role.js",
+                "pgnViewer/src/api/Survey.js",
+                "pgnViewer/src/api/Logs.js"
+            ],
+            "classification": "REJECTED_OBSOLETE"
+        }
+    ]
+}

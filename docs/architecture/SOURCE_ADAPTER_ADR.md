@@ -1,7 +1,6 @@
 # Source Adapter ADR
 
-Status: `ACTIVE_AUTHORITY`  
-Runtime implementation: `NOT_IN_P0`
+Status: `ACTIVE_AUTHORITY`
 
 ## Decision
 
@@ -36,10 +35,24 @@ Raw DTOs never reach Vue UI. Presentational components receive typed domain prop
 
 ## Authority and migration
 
-`pgnViewer-new` is the visual and interaction authority for the teaching workspace and the canonical source for active domain behavior. Its source is inventoried in `docs/migration/CANONICAL_RUNTIME_CLOSURE.json`; P0 copies none of it. Legacy `pgnViewer` supplies only capabilities absent or incomplete in the canonical source and never overrides teaching visuals or interactions.
+`pgnViewer-new` is the visual and interaction authority for the teaching
+workspace and the canonical source for board, PGN, annotation, AI, workspace,
+layout, motion, and domain behavior. It does not establish Web API contracts.
+
+`pgnViewer` and `chess-main-overseas` are the only read-only Web API,
+authentication, request, environment, and production authorities. Their
+field-level decisions are reconciled by
+`docs/architecture/WEB_API_SOURCE_AUTHORITY.md`. `chess-pgnviewer`, Mini
+Program documents, `wx.request`, `openid` flows, and derived API inventories
+are non-authoritative for adapters.
 
 Tournament pages create a sanitized, versioned handoff and navigate into `/pgnViewer/`. Compatibility routes resolve the same handoff and never render a duplicate workspace. Live and replay buffers are read-only; import into analysis requires explicit user action.
 
 ## Rejection rules
 
-Reject adapters that require generic proxying, unconfirmed endpoints, browser credentials, fake data, duplicated domain implementations, unlicensed assets, or a second application/component/token system.
+Reject adapters that require generic proxying, unconfirmed endpoints, browser
+HMAC or upstream shared credentials, URL/query-token auth, fake data,
+duplicated domain implementations, unlicensed assets, or a second
+application/component/token system. A source-confirmed but unavailable
+capability renders an unavailable state; it is not coerced into an empty or
+synthetic success.

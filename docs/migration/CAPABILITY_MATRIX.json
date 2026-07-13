@@ -1,5 +1,12 @@
 {
     "schemaVersion": 1,
+    "apiAuthorityCorrection": {
+        "status": "SUPERSEDED_FOR_WEB_API_FIELDS",
+        "effectiveDate": "2026-07-14",
+        "authority": "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+        "migrationBaseline": "docs/migration/WEB_API_MIGRATION_BASELINE.json",
+        "note": "Preserve product capability history; ignore chess-pgnviewer, same-origin gateway, cookie-session, and server-HMAC claims for Web API decisions."
+    },
     "productDirections": [
         "TEACHER_CHESS_TEACHING_WORKSPACE",
         "TOURNAMENT_GAME_SELECTION_AND_COMMENTARY",

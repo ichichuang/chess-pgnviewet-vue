@@ -1,54 +1,67 @@
 # API Boundary ADR
 
-Status: `ACTIVE_AUTHORITY`  
-Runtime implementation: `NOT_IN_P0`
+Status: `ACTIVE_AUTHORITY`
+
+Supersedes: the P1G/P1G1 same-origin `/api/ksl`, BFF, cookie-session, and
+browser-Bearer assumptions.
 
 ## Decision
 
-Browser code talks only to explicit same-origin handlers owned by a server/BFF boundary. Repositories use typed request/response contracts and Zod validation. Upstream credentials, account identifiers, tokens, HMAC keys, signing, and compatibility aliases remain server-side.
+The target has one browser HTTP owner and explicit project repositories. API
+facts come only from the two Web authorities named in
+`WEB_API_SOURCE_AUTHORITY.md`.
 
-## Confirmed read capabilities
+The browser does not own a generic gateway. `/CALL`, `proxyRequest`, `/api/ksl`,
+arbitrary `/api/*` prefixes, arbitrary HTTPS bases, browser HMAC, secret-bearing
+URLs, and invented BFF/cookie-session handlers are forbidden.
 
-| Capability        | Browser method/path                     | Confirmed identifier/request semantics                                                                      |
-| ----------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Tournament list   | `POST /api/liveproxy/getactlist`        | body keys `actflag`, `max`, `search`, `start`, `type`                                                       |
-| Tournament groups | `POST /api/liveproxy/getactgroups`      | body `{ hdid }`                                                                                             |
-| Tournament rounds | `POST /api/award/c-getmatchroundlist`   | body `{ hdid, ticketid }`; round numeric constraints remain unresolved                                      |
-| Pairings          | `POST /api/award/c-getmatchpairlist`    | `hdid`, `ticketid`, `round_id`, pagination/type fields; optional discovery fields require contract evidence |
-| Finished replay   | `POST /api/gameapi/gamemgr/getgameinfo` | browser sends only `{ gameid }`; pairing row `id` is the high-confidence game identifier                    |
+## Confirmed boundary
 
-Identifier chain: `hdid` → `ticketid` → `round_id` → pairing `id` → replay `gameid`. Aggregate team-match records are never treated as individual game IDs.
+- One private Axios instance: `src/api/client.ts`.
+- One source-confirmed chess origin: `https://wxapi.kaisaile.org`.
+- Repository-owned constant endpoint paths.
+- Endpoint-specific request and response Zod schemas.
+- DTO-to-domain mapping before Query or UI state.
+- AbortSignal, bounded timeout, normalized errors, and no raw response caching.
+- TanStack Vue Query is the sole server-state owner.
+- Public/private Query metadata and private-only cleanup.
 
-Only confirmed ongoing and completed tournaments may appear. Finished games use real replay data. Ongoing games require a separately confirmed live transport. AI is disabled during ongoing games.
+The confirmed public tournament endpoints and exact fields are recorded in
+`WEB_API_ENDPOINT_INVENTORY.json`. Direct no-credential HTTPS verification
+confirmed the endpoints but did not confirm cross-origin browser CORS. The
+browser must therefore expose an unavailable/error state when deployed on a
+different origin; this repository does not invent infrastructure to bypass it.
 
-## Auth decision
+## Authentication boundary
 
-The only owner-approved browser auth surface is the dedicated same-origin contract:
+The authoritative Web password-login source combines a real endpoint with a
+disallowed `openid` compatibility field and rejected browser HMAC transport.
+Password login is therefore `BLOCKED_UNCONFIRMED`.
 
-- `POST /api/auth/login`
-- `GET /api/auth/session`
-- `POST /api/auth/logout`
+- Remove URL-token absorption.
+- Never persist a password or password digest.
+- Do not create browser HMAC or a generic Bearer interceptor.
+- Do not treat the account token as the chess-service replay token.
+- Do not invent login/session/logout/refresh endpoints.
+- Preserve local logout and scoped private-state cleanup.
+- Keep protected replay unavailable until its separate guest/session token
+  lifecycle is replaced by a verified Web contract.
 
-The browser login body contains only `account` and `password`. The server performs compatibility hashing/signing and stores upstream token/uid in a bounded server vault. Browser responses expose only derived authentication status and a non-personal label. Real production login/session/replay/logout verification remains incomplete, so runtime implementation requires its own gate.
+## Read/write policy
 
-## Required repository behavior
+Only confirmed read operations may enter runtime repositories. POST is not
+treated as a write when the source-confirmed endpoint is a read, but generic
+POST access is not exposed.
 
-- One typed repository owner per API capability.
-- Validate every external response with Zod before mapping it to a domain model.
-- Distinguish transport, authentication, contract, empty, stale, and unavailable errors.
-- Treat POST-based tournament/replay calls as product reads, not authorization for writes.
-- Never add undocumented fields, headers, identifiers, aliases, retries, or side-effect flags.
-- Never expose upstream response fields such as credentials or MQTT material to browser state.
+Game creation/join/start, quiz-result writes, Cloudreve writes, remote-storage
+writes, hardware match mutation, admin, role, organization, survey, logging,
+MQTT publish, and token-query chessbook calls are `REJECTED_OBSOLETE`.
 
-## Prohibited
+## Supporting authorities
 
-- Generic legacy `/CALL` transport.
-- `proxyRequest` restoration or generic tunnels.
-- Browser-side HMAC, upstream credentials, signing secrets, bearer tokens, or uid storage.
-- Write/admin endpoints without explicit project-owner approval.
-- MQTT connect/subscribe/publish until a read-only contract, credential boundary, recovery model, and owner approval exist. MQTT publish remains forbidden.
-- Fake API clients, fixture success fallbacks, fake replay/live/AI data, or sample tournament runtime states.
-
-## Unresolved
-
-Live online-game/electronic-board transport, MQTT, hardware history, handoff storage/resolution, match/share/cloud compatibility contracts, exhaustive schemas, round numeric constraints, auth end-to-end verification, replay token lifetime, server hosting/operations, and the side-effect-free guarantee for constrained `getgameinfo` remain blocked.
+- `docs/architecture/WEB_API_SOURCE_AUTHORITY.md`
+- `docs/architecture/WEB_API_ENDPOINT_INVENTORY.json`
+- `docs/architecture/WEB_API_CONTRACT_COVERAGE_MATRIX.json`
+- `docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md`
+- `docs/architecture/WEB_API_READINESS_MATRIX.json`
+- `docs/migration/WEB_API_MIGRATION_BASELINE.json`

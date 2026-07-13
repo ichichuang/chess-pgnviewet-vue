@@ -1,35 +1,61 @@
 # Persistence ADR
 
-Status: `ACTIVE_AUTHORITY`  
-Runtime implementation: `NOT_IN_P0`
+Status: `ACTIVE_AUTHORITY`
 
 ## Decision
 
-Dexie is the single structured browser-persistence boundary. Pinia owns active client state; TanStack Vue Query owns server reads; explicit adapters serialize approved non-secret records to Dexie. Zod validates every persisted version before hydration.
+Dexie is the single structured browser-persistence boundary for approved
+non-secret product records. Pinia owns active client state; TanStack Vue Query
+owns server reads; explicit adapters serialize versioned records. Zod validates
+every persisted version before hydration.
+
+Authentication is not a Dexie or Query-persistence category. No cookie session
+or BFF is assumed. The currently verified Web sources do not provide a safe,
+complete account session contract, so the runtime must not restore or retain a
+claimed authenticated session from legacy keys.
 
 ## Categories
 
-1. Durable preferences.
-2. Workspace session.
-3. Recoverable drafts.
-4. URL-shareable state.
-5. API query cache.
-6. Live transient state.
-7. Sensitive auth/session state.
+1. Durable public preferences.
+2. Workspace layout/session metadata.
+3. Recoverable local drafts.
+4. Sanitized URL-shareable selection state.
+5. Memory-only API Query cache.
+6. Memory-only live state.
+7. Minimum accepted auth state, only after a Web contract is verified.
 8. Never-persist state.
 
-Every new field must name exactly one category, owner, schema version, expiration, recovery behavior, reset behavior, and security classification before implementation.
+Every new field names exactly one category, owner, schema version, expiration,
+recovery behavior, reset behavior, and security classification.
 
 ## Rules
 
-- Auth tokens, upstream credentials, HMAC secrets, MQTT material, cookies, and sensitive response fields never enter Dexie, localStorage, sessionStorage, URLs, reports, screenshots, or persisted query caches.
-- The browser owns no credential vault; authentication uses an opaque HttpOnly same-origin cookie.
-- Live stream state is memory-only. Refresh reconnects from a non-secret selection; it does not persist a live payload or credential.
-- Workspace mode/source, selections, PGN position, panel geometry, theme/language, analysis preferences, drafts, and display configuration recover after refresh when their contracts are approved.
-- Logout clears auth/private caches and secrets while preserving non-sensitive public tournament selection, workspace layout, and public replay context.
-- Invalid or unknown persisted versions fail closed, retain no secret material, and surface a recoverable reset path.
-- P0 installs Dexie/Zod only; it creates no database, tables, localStorage fallback, or sample state.
+- Passwords and password digests are never persisted.
+- URL/query tokens, upstream shared credentials, HMAC secrets, MQTT material,
+  cookies, raw API responses, and credential-bearing URLs are never persisted.
+- Legacy `logintoken`, `ksllogintoken`, `jwttoken`, `passtoken`, user-info, and
+  ChessService guest-token keys are not restoration authorities.
+- Until the password-login lifecycle is unblocked, auth restoration produces an
+  anonymous state and clears only obsolete auth keys through the auth adapter.
+- If a later verified Web contract requires browser token restoration, the
+  adapter stores one schema-validated minimum record, honors verified expiry,
+  and never duplicates the token across compatibility keys.
+- Live payloads and replay API data are memory-only. Private Query entries are
+  never dehydrated or written to Dexie.
+- Workspace handoffs reject token-like fields and store only sanitized source
+  selection context.
+- Logout/auth loss clears private Query entries, protected replay, protected
+  handoffs, and active analysis. It preserves local/public PGN work, theme,
+  language, layout, and public tournament selection.
+- Invalid or unknown persisted versions fail closed and expose a recoverable
+  reset path without fabricating state.
 
-## Migration gate
+## Existing approved persistence
 
-Any legacy storage import requires an explicit allowlist, versioned parser, Zod schema, dry-run evidence, rollback behavior, and tests. Raw browser databases and profiles are never migration sources.
+- theme preference through the project preference adapter;
+- non-sensitive workspace layout through the versioned Dexie adapter;
+- sanitized short-lived workspace handoff context through its project adapter.
+
+Any new cloud/share persistence remains blocked by
+`WEB_API_ENDPOINT_INVENTORY.json` until its credential and response contracts
+are verified.

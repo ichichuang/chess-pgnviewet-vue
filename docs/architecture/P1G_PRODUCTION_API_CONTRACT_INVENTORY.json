@@ -1,5 +1,9 @@
 {
     "schemaVersion": 2,
+    "status": "HISTORICAL_SUPERSEDED",
+    "supersededAt": "2026-07-14",
+    "supersededBy": "docs/architecture/WEB_API_ENDPOINT_INVENTORY.json",
+    "authorityWarning": "Preserved as P1G history only. Its source precedence, /api/ksl, URL-token, browser-Bearer, and session claims are not active authority.",
     "phase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
     "generatedAt": "2026-07-13T08:40:57.354Z",
     "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",

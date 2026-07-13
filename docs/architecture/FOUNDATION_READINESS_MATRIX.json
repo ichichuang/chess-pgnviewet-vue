@@ -1,5 +1,12 @@
 {
     "schemaVersion": 1,
+    "webApiAuthorityCorrection": {
+        "status": "SUPERSEDED_FOR_WEB_API_FIELDS",
+        "effectiveDate": "2026-07-14",
+        "authority": "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+        "readiness": "docs/architecture/WEB_API_READINESS_MATRIX.json",
+        "note": "Preserve the foundation and phase ledger. Ignore chess-pgnviewer, /api/ksl, same-origin gateway, cookie-session, and browser-Bearer claims for current Web API decisions."
+    },
     "generatedAt": "2026-07-13T00:00:00.000Z",
     "phase": "F0_FOUNDATION_READINESS_AUDIT_DEPENDENCY_INVENTORY_AND_REMOTE_GIT_SAFETY",
     "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",

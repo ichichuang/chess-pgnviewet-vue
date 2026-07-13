@@ -1,0 +1,404 @@
+{
+    "schemaVersion": 1,
+    "status": "HISTORICAL_SUPERSEDED_FOR_WEB_API_AUTHORITY",
+    "supersededAt": "2026-07-14",
+    "supersededBy": "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "phase": "H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION",
+    "startedAt": "2026-07-13T22:29:01+08:00",
+    "completedAt": "2026-07-13T22:50:35+08:00",
+    "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "branch": "main",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "localHeadBefore": "d4a09957457ece39e57d6bed3a802a378480aa16",
+    "originMainBefore": "d4a09957457ece39e57d6bed3a802a378480aa16",
+    "liveRemoteMainBefore": "d4a09957457ece39e57d6bed3a802a378480aa16",
+    "aheadBehindBefore": {
+        "ahead": 0,
+        "behind": 0
+    },
+    "worktreeBefore": {
+        "branchLine": "## main...origin/main",
+        "trackedChanges": [],
+        "untrackedPaths": [
+            ".ai/reports/H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION_REPORT.json",
+            "docs/architecture/FOUNDATION_HARDENING_CURRENT_STATE.md",
+            "docs/architecture/FOUNDATION_HARDENING_REMAINING_MATRIX.json"
+        ],
+        "stagedDiff": "EMPTY",
+        "unstagedDiff": "EMPTY",
+        "status": "IMPLEMENTED_VALIDATED"
+    },
+    "preexistingOutputProvenance": {
+        "classification": "SAME_H0_PARTIAL_RECOVERABLE",
+        "classificationBasis": [
+            "all three files identify H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION",
+            "target directory, repository owner/name, authorized origin spelling, branch, and audited SHAs match the live baseline",
+            "both JSON files parsed and had recognizable H0 matrix/report structures",
+            "no foreign project or conflicting execution scope was found",
+            "no writable repository file descriptor, Git lock, active Git writer, formatter, generator, build, install, or AI write command was found",
+            "source hashes remained stable through provenance inspection"
+        ],
+        "partialReason": "The drafts predated this recovery run and omitted the required provenanceRecovery/report provenance fields and several current stale-authority contradictions.",
+        "captureTimestampUtc": "2026-07-13T14:29:01Z",
+        "backupVerification": "IMPLEMENTED_VALIDATED",
+        "sourceStability": "IMPLEMENTED_VALIDATED",
+        "activeWriter": "IMPLEMENTED_VALIDATED"
+    },
+    "backupDirectory": "/tmp/chess-pgnviewer-vue-h0-preexisting-recovery/20260713T142901Z",
+    "originalFileHashes": {
+        "docs/architecture/FOUNDATION_HARDENING_CURRENT_STATE.md": "c53bd3ea61a4b7eab171d85f872a2f89f7d64b858b8a4b17fc8e48c42018c1fa",
+        "docs/architecture/FOUNDATION_HARDENING_REMAINING_MATRIX.json": "d4a143e554295299c2048b181c296658d7ec07d051a69c0fcd2b98b2a4d9d60a",
+        ".ai/reports/H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION_REPORT.json": "a23bf39865afd7b235fb6c7b74bb0c3bc9ffb7b6b7f4df505e395a65a0b4fe38"
+    },
+    "backupFileHashes": {
+        "docs/architecture/FOUNDATION_HARDENING_CURRENT_STATE.md": "c53bd3ea61a4b7eab171d85f872a2f89f7d64b858b8a4b17fc8e48c42018c1fa",
+        "docs/architecture/FOUNDATION_HARDENING_REMAINING_MATRIX.json": "d4a143e554295299c2048b181c296658d7ec07d051a69c0fcd2b98b2a4d9d60a",
+        ".ai/reports/H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION_REPORT.json": "a23bf39865afd7b235fb6c7b74bb0c3bc9ffb7b6b7f4df505e395a65a0b4fe38"
+    },
+    "authorityFilesRead": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        ".ai/skills/gsap/SKILL.md",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        ".mise.toml",
+        "tsconfig.json",
+        "vite.config.ts",
+        "eslint.config.mjs",
+        "stylelint.config.mjs",
+        ".prettierrc.json",
+        ".prettierignore",
+        "knip.json",
+        "index.html",
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/PERSISTENCE_ADR.md",
+        "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+        "docs/architecture/SOURCE_ADAPTER_ADR.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+        "docs/architecture/F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_CLOSURE.md",
+        "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+        "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+        "docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md",
+        "docs/architecture/P1A_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_BASELINE.md",
+        "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md",
+        "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+        "docs/architecture/P1B4_REUSABLE_CHESSBOARD_COMPONENT_BASELINE.md",
+        "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+        "docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md",
+        "docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md",
+        "docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md",
+        "docs/architecture/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_PROXY_BASELINE.md",
+        "docs/architecture/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_BASELINE.md",
+        "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+        "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
+        "docs/migration/API_AUTHORITY_MAP.json",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+        "docs/migration/CAPABILITY_MATRIX.json",
+        "docs/migration/DOCUMENT_INVENTORY.json",
+        "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md",
+        "docs/migration/SOURCE_PROVENANCE.md",
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/product/WORKSPACE_MODES.md",
+        "docs/ui/ACCESSIBILITY_SPEC.md",
+        "docs/ui/CHESSBOARD_COMPONENT_API.md",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+        "docs/ui/I18N_SPEC.md",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+        "docs/ui/PAGE_STYLE_SPEC.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+        "docs/ui/THEME_SYSTEM_SPEC.md",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+        ".ai/reports/P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES_REPORT.json",
+        ".ai/reports/P1G1_AXIOS_HTTP_CLIENT_AND_VITE_LOCAL_PROXY_CORRECTION_REPORT.json",
+        ".ai/reports/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE_REPORT.json"
+    ],
+    "sourceFilesInspected": {
+        "repositoryWideSearchScope": [
+            "src/**",
+            "scripts/governance/**",
+            ".github/workflows/**",
+            "docs/architecture/**",
+            "docs/product/**",
+            "docs/ui/**",
+            "docs/migration/**",
+            ".ai/reports/**"
+        ],
+        "targetedFiles": [
+            "src/main.ts",
+            "src/App.vue",
+            "src/router/index.ts",
+            "src/stores/index.ts",
+            "src/stores/auth.ts",
+            "src/stores/theme.ts",
+            "src/stores/workspace.ts",
+            "src/stores/pgn.ts",
+            "src/stores/analysis.ts",
+            "src/api/auth.ts",
+            "src/api/client.ts",
+            "src/api/md5.ts",
+            "src/api/productApi.ts",
+            "src/api/productMappers.ts",
+            "src/api/productTypes.ts",
+            "src/api/queryClient.ts",
+            "src/runtime/config/productionApi.ts",
+            "src/persistence/auth/sessionPersistence.ts",
+            "src/persistence/workspace/workspaceHandoff.ts",
+            "src/persistence/workspace/workspaceLayoutPersistence.ts",
+            "src/bootstrap/preferences/themePreference.ts",
+            "src/ui/index.ts",
+            "src/app/providers/AppProviders.vue",
+            "src/app/providers/naiveTheme.ts",
+            "src/app/providers/naiveThemeOverrides.ts",
+            "src/styles/base.css",
+            "src/styles/tokens.css",
+            "src/theme/runtime.ts",
+            "src/features/board/CanonicalChessBoard.vue",
+            "src/features/board/BoardView.vue",
+            "src/features/board/PromotionChooser.vue",
+            "src/features/board/useBoardView.ts",
+            "src/features/board/useBoardAnimationController.ts",
+            "src/features/board/useBoardOverlayAnimation.ts",
+            "src/features/board/pgn/PgnChessBoard.vue",
+            "src/features/board/pgn/usePgnChessBoard.ts",
+            "src/features/pgn/domain/parsePgn.ts",
+            "src/features/pgn/components/PgnNotationPanel.vue",
+            "src/features/annotations/domain/annotationTypes.ts",
+            "src/features/annotations/domain/ycdw.ts",
+            "src/features/analysis/domain/searchEngine.ts",
+            "src/features/analysis/domain/search.worker.ts",
+            "src/features/analysis/components/AnalysisPanel.vue",
+            "src/features/teaching-workspace/TeachingWorkspace.vue",
+            "src/features/teaching-workspace/WorkspaceSplitter.vue",
+            "src/features/workspace-mode/workspaceModeContext.ts",
+            "src/features/teaching-workspace/useWorkspaceSplitter.ts",
+            "src/features/teaching-workspace/useRemoteReplayLoader.ts",
+            "src/features/product-api/views/LoginView.vue",
+            "src/features/product-api/views/CompetitionListView.vue",
+            "src/features/product-api/views/CompetitionDetailView.vue",
+            "src/features/product-api/views/CompetitionDisplayView.vue",
+            "src/features/product-api/components/ResourceState.vue",
+            "scripts/governance/check-architecture-boundaries.mjs",
+            "scripts/governance/check-dependency-policy.mjs",
+            "scripts/governance/check-forbidden-mock-data.mjs",
+            "scripts/governance/check-raw-visual-values.mjs",
+            "scripts/governance/check-secret-patterns.mjs",
+            "scripts/governance/policy.mjs",
+            "scripts/governance/utils.mjs"
+        ]
+    },
+    "safetyGate": {
+        "directory": "IMPLEMENTED_VALIDATED",
+        "branch": "IMPLEMENTED_VALIDATED",
+        "remote": "IMPLEMENTED_VALIDATED",
+        "fetch": "IMPLEMENTED_VALIDATED",
+        "headEquality": "IMPLEMENTED_VALIDATED",
+        "worktree": "IMPLEMENTED_VALIDATED",
+        "gitLocks": "IMPLEMENTED_VALIDATED",
+        "activeRepositoryWriter": "IMPLEMENTED_VALIDATED",
+        "githubMetadata": "IMPLEMENTED_VALIDATED",
+        "details": {
+            "pwd": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+            "fetchCommand": "git fetch --prune origin",
+            "fetchExitCode": 0,
+            "gitLockFiles": [],
+            "writableRepositoryFileDescriptors": 0,
+            "readOnlyCwdProcessesObserved": true,
+            "authorizedPreexistingUntrackedPaths": [
+                ".ai/reports/H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION_REPORT.json",
+                "docs/architecture/FOUNDATION_HARDENING_CURRENT_STATE.md",
+                "docs/architecture/FOUNDATION_HARDENING_REMAINING_MATRIX.json"
+            ],
+            "githubCli": "authenticated read-only gh available",
+            "githubFallback": "NOT_REQUIRED",
+            "openPullRequests": 0,
+            "openIssues": 0,
+            "defaultBranch": "main",
+            "branchProtection": "ABSENT_404_BRANCH_NOT_PROTECTED",
+            "rulesets": []
+        },
+        "status": "IMPLEMENTED_VALIDATED"
+    },
+    "currentStateFindings": [
+        {
+            "id": "product-runtime",
+            "status": "IMPLEMENTED_VALIDATED",
+            "finding": "P1H PRODUCT_COMPLETE_USABLE runtime exists and must be preserved."
+        },
+        {
+            "id": "authentication-security",
+            "status": "BLOCKED",
+            "finding": "Browser-readable tokens, URL absorption, and browser bearer creation are active conflicts."
+        },
+        {
+            "id": "production-deployment",
+            "status": "BLOCKED",
+            "finding": "Development proxy exists; production host/API/CORS/cookie/header contract is absent."
+        },
+        {
+            "id": "i18n",
+            "status": "MISSING",
+            "finding": "No runtime, locales, persistence, formatter, or governance exists."
+        },
+        {
+            "id": "ui-provider-feedback",
+            "status": "PARTIAL",
+            "finding": "NConfigProvider/NGlobalStyle exist; adapters and feedback/locale/overlay providers do not."
+        },
+        {
+            "id": "query-repository",
+            "status": "PARTIAL",
+            "finding": "One QueryClient/key factory/mappers/private cleanup exist; broad policy and DTO schemas remain."
+        },
+        {
+            "id": "persistence",
+            "status": "PARTIAL",
+            "finding": "One Dexie layout schema, theme localStorage, handoff sessionStorage, and sensitive auth localStorage exist."
+        },
+        {
+            "id": "accessibility-motion-layout",
+            "status": "PARTIAL",
+            "finding": "Strong current feature behavior exists; generic overlay, board announcement, safe-area, and keyboard splitter gaps remain."
+        },
+        {
+            "id": "github-gates",
+            "status": "MISSING",
+            "finding": "No workflows, branch protection, required checks, or rulesets exist."
+        },
+        {
+            "id": "documentation",
+            "status": "PARTIAL",
+            "finding": "Current P1H verdict coexists with stale P0-era capability statements."
+        }
+    ],
+    "filesCreated": [],
+    "filesModified": [
+        "docs/architecture/FOUNDATION_HARDENING_CURRENT_STATE.md",
+        "docs/architecture/FOUNDATION_HARDENING_REMAINING_MATRIX.json",
+        ".ai/reports/H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION_REPORT.json"
+    ],
+    "filesDeleted": [],
+    "dependenciesAdded": "NONE",
+    "dependenciesRemoved": "NONE",
+    "architectureChanges": "NONE",
+    "securityImpact": "AUDIT_ONLY: confirmed active browser-readable authentication tokens, URL token absorption, browser-created bearer headers, missing production security headers, and unresolved deployment/auth contracts; no runtime security behavior changed.",
+    "persistenceImpact": "NONE: inventoried existing theme localStorage, auth localStorage, workspace handoff sessionStorage, and Dexie workspace layout; no storage code, database, table, version, or migration changed.",
+    "i18nImpact": "NONE: confirmed i18n runtime is missing; no dependency, locale, key, or string changed.",
+    "uiFrameworkImpact": "NONE: provider, adapter, overlay, native-control, and icon ownership inventoried; no component migrated.",
+    "tokenImpact": "NONE: src/styles/tokens.css and theme behavior unchanged.",
+    "mockDataAudit": {
+        "currentProductMockRecordsFound": 0,
+        "addedByH0": 0,
+        "fallbackProductDataAdded": false,
+        "scannerAssessment": "PARTIAL: current repository passes, but lexical marker dependence does not prove detection of every unlabeled hard-coded successful record."
+    },
+    "automatedTestAudit": {
+        "testDependencies": [],
+        "testScripts": [],
+        "testFiles": [],
+        "snapshots": [],
+        "fixtures": [],
+        "coverageTools": [],
+        "browserAutomationSuites": [],
+        "pnpmTestRun": false,
+        "status": "IMPLEMENTED_VALIDATED"
+    },
+    "staticChecks": {
+        "mise exec -- pnpm exec prettier --write docs/architecture/FOUNDATION_HARDENING_CURRENT_STATE.md docs/architecture/FOUNDATION_HARDENING_REMAINING_MATRIX.json .ai/reports/H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION_REPORT.json": "PASS_EXIT_0",
+        "mise exec -- pnpm run check:deps": "PASS_EXIT_0_dependency-policy_PASS",
+        "mise exec -- pnpm run check:architecture": "PASS_EXIT_0_architecture-boundaries_PASS",
+        "mise exec -- pnpm run check:tokens": "PASS_EXIT_0_raw-visual-values_PASS",
+        "mise exec -- pnpm run check:mocks": "PASS_EXIT_0_forbidden-mock-data_PASS",
+        "mise exec -- pnpm run check:secrets": "PASS_EXIT_0_secret-patterns_PASS",
+        "mise exec -- pnpm run format:check": "PASS_EXIT_0_all_matched_files_formatted",
+        "mise exec -- pnpm run lint": "PASS_EXIT_0_no_warnings",
+        "mise exec -- pnpm run lint:style": "PASS_EXIT_0",
+        "mise exec -- pnpm run check:unused": "PASS_EXIT_0",
+        "mise exec -- pnpm run check:governance": "PASS_EXIT_0_all_five_governance_scanners_PASS",
+        "mise exec -- pnpm run typecheck": "PASS_EXIT_0_vue-tsc_noEmit",
+        "mise exec -- pnpm run audit:prod": "PASS_EXIT_0_no_known_vulnerabilities",
+        "mise exec -- pnpm audit": "PASS_EXIT_0_no_known_vulnerabilities",
+        "mise exec -- pnpm list --depth 0": "PASS_EXIT_0_28_packages",
+        "mise exec -- pnpm run check:static": "PASS_EXIT_0",
+        "strictJsonParse": "PASS_BOTH_NEW_JSON_FILES",
+        "jsonFiniteAndSyntax": "PASS_NO_COMMENTS_TRAILING_COMMAS_NaN_OR_INFINITY",
+        "semanticDuplicateCheck": "PASS_48_capabilities_40_owners_5_storage_17_auth_20_stale_7_decisions_10_phases_6_blockers_20_preserved_runtime",
+        "statusEnumCheck": "PASS",
+        "matrixPathCheck": "PASS_79_unique_owner_and_authority_paths_exist_at_audited_commit",
+        "git diff --check": "PASS_EXIT_0",
+        "newOutputWhitespaceCheck": "PASS_NO_WHITESPACE_ERRORS_AFTER_CORRECTION"
+    },
+    "typecheck": "PASS: mise exec -- pnpm run typecheck; vue-tsc --noEmit; exit 0",
+    "productionBuild": {
+        "command": "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-h0-recovery-build --emptyOutDir",
+        "result": "PASS_EXIT_0",
+        "viteVersion": "8.1.4",
+        "modulesTransformed": 3142,
+        "outputDirectory": "/tmp/chess-pgnviewer-vue-h0-recovery-build",
+        "repositoryDist": "ABSENT"
+    },
+    "securityAudit": {
+        "mise exec -- pnpm run audit:prod": "PASS_NO_KNOWN_VULNERABILITIES",
+        "mise exec -- pnpm audit": "PASS_NO_KNOWN_VULNERABILITIES",
+        "mise exec -- pnpm run check:secrets": "PASS",
+        "architectureFinding": "BLOCKED_BROWSER_READABLE_AUTHENTICATION_VALUES_AND_UNRESOLVED_PRODUCTION_SECURITY_CONTRACTS"
+    },
+    "browserValidation": "NOT_APPLICABLE_AUDIT_ONLY_NO_RUNTIME_CHANGE",
+    "gitOperations": [
+        {
+            "operation": "git fetch --prune origin before and after validation",
+            "result": "PASS_EXIT_0"
+        },
+        {
+            "operation": "read-only status/diff/log/show/rev-parse/ls-remote/branch inspection",
+            "result": "PERFORMED"
+        },
+        {
+            "operation": "gh read-only repository/PR/issue/protection/ruleset inspection",
+            "result": "PERFORMED"
+        }
+    ],
+    "commit": "NOT_PERFORMED_H0_FORBIDS_COMMIT",
+    "push": "NOT_PERFORMED_H0_FORBIDS_PUSH",
+    "localHeadAfter": "d4a09957457ece39e57d6bed3a802a378480aa16",
+    "originMainAfter": "d4a09957457ece39e57d6bed3a802a378480aa16",
+    "liveRemoteMainAfter": "d4a09957457ece39e57d6bed3a802a378480aa16",
+    "remoteMainAfter": "d4a09957457ece39e57d6bed3a802a378480aa16",
+    "worktreeAfter": {
+        "branchLine": "## main...origin/main",
+        "ahead": 0,
+        "behind": 0,
+        "trackedChanges": [],
+        "stagedPaths": [],
+        "unstagedTrackedPaths": [],
+        "untrackedPaths": [
+            ".ai/reports/H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION_REPORT.json",
+            "docs/architecture/FOUNDATION_HARDENING_CURRENT_STATE.md",
+            "docs/architecture/FOUNDATION_HARDENING_REMAINING_MATRIX.json"
+        ],
+        "expectedState": "EXACTLY_THREE_UNSTAGED_UNTRACKED_H0_OUTPUTS",
+        "status": "IMPLEMENTED_VALIDATED"
+    },
+    "warnings": [
+        "Three expected untracked H0 drafts were recovered only after verified byte-for-byte backup and SAME_H0_PARTIAL_RECOVERABLE classification.",
+        "P1H browserSecrets ABSENT is contradicted by live browser-readable auth values and must not be treated as current security truth.",
+        "The existing FOUNDATION_READINESS_MATRIX.json remains unchanged and contains mixed historical/current statements.",
+        "No production hosting, CORS/cookie, CSP/header, source-map/debug, MQTT, or compatibility PGN contract is proved.",
+        "Serena semantic inspection was attempted, but the activated project exposed no active language server; repository-wide rg searches and line-numbered source reads provided the fallback evidence.",
+        "No evidence repository outside the target was accessed by the recovery run."
+    ],
+    "blockers": [
+        "Backend/authentication owner decision for the server session, expiry, refresh/auth-loss, CSRF, URL handoff, and credentialed validation.",
+        "Production hosting/operator decision for the real host and restricted /api/ksl boundary.",
+        "Security/hosting decision for CSP/security headers and source-map/debug policy.",
+        "Product/API decision for live MQTT/electronic-board and compatibility/cloud PGN contracts.",
+        "Product decision for primary/fallback locale and canonical display name."
+    ],
+    "nextRequiredPhase": "H1_AUTHENTICATION_AND_PRODUCTION_BOUNDARY_HARDENING",
+    "finalVerdict": "H0_FOUNDATION_HARDENING_CURRENT_STATE_CANONICALIZATION_PASS"
+}

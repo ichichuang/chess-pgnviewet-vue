@@ -1,75 +1,70 @@
 # Production Deployment Boundary
 
-Status: `P1H_ACCEPTED`
+Status: `ACTIVE_AUTHORITY`
 
-## Purpose
+## Confirmed facts
 
-This document defines the minimum production hosting contract for the P1H
-usable product. It does not create a generic gateway, backend, credential
-forwarder, or deployment platform.
+- The Web source identifies `https://wxapi.kaisaile.org` as the production
+  chess API origin.
+- The five public tournament reads respond to direct server-side HTTPS without
+  credentials.
+- On `2026-07-14`, upstream `OPTIONS` and `POST` responses for a localhost
+  `Origin` supplied empty `Access-Control-Allow-Origin`,
+  `Access-Control-Allow-Credentials`, `Access-Control-Allow-Methods`, and
+  `Access-Control-Allow-Headers` values.
+- Vite's development server is not a production server or deployment contract.
 
-## Application hosting
+## Repository behavior
 
-- Serve the production Vite output over HTTPS.
-- Serve `index.html` for canonical routes and compatibility deep links,
-  including `/pgnViewer/*`, `/competitions/*`, `/login`, `/match/*`,
-  `/share/*`, and `/cloud/*`.
-- Serve hashed JavaScript, CSS, images, piece assets, and Worker assets with
-  their emitted paths intact. Do not rewrite asset requests to `index.html`.
-- Keep the application and its restricted API boundary on the same trusted
-  site when cookie-backed authentication is used.
+The repository ships static Vue assets and no production API server. It does
+not define or assume:
 
-## Restricted production API route
+- `/api/ksl`;
+- `/CALL`;
+- `proxyRequest`;
+- a reverse proxy, BFF, edge function, or Node server;
+- cookie-session login/session/logout handlers;
+- upstream HMAC or shared credentials;
+- a dynamic target or arbitrary HTTPS base.
 
-The Vite development proxy is not present in a production bundle. Production
-hosting must provide one of these approved boundaries:
+`src/runtime/config/productionApi.ts` may expose only public, non-secret
+configuration. A Vite-exposed variable is always browser-readable. It must
+never contain an API secret, HMAC material, account token, MQTT credential,
+cookie, or secret-bearing URL.
 
-1. Map the same-origin prefix `/api/ksl` to the fixed HTTPS upstream
-   `https://wxapi.kaisaile.org`, removing only the leading `/api/ksl` prefix.
-2. Set `VITE_KSL_CHESS_API_BASE` to an owner-approved browser-readable HTTPS
-   API base with the same documented read-only contracts.
+## Browser readiness
 
-The deployment must not accept a caller-controlled target, wildcard upstream,
-generic `/CALL`, `proxyRequest`, credential-bearing URL, arbitrary header
-forwarding, request-body logging, or secret logging. TLS verification remains
-enabled. Browser code never receives an upstream secret, HMAC key, MQTT
-credential, or privileged backend token.
+A browser deployment is API-ready only when one of these source-backed facts is
+true and runtime evidence is recorded:
 
-`VITE_KSL_MAIN_API_BASE` and `VITE_KSL_REQUEST_TIMEOUT_MS` must pass the
-runtime validation already owned by `src/config/productionApi.ts`. Environment
-values are deployment configuration, not a mechanism to bypass the fixed API
-contract.
+1. The application is served from the exact confirmed API origin; or
+2. the API owner changes the upstream CORS policy and a real browser validates
+   the exact target origin, methods, headers, and credential mode.
 
-## Runtime behavior
+No such production browser contract is currently confirmed. Cross-origin
+deployments must render the documented unavailable/error state and must not
+substitute mock records or silent empty success.
 
-- The application uses one private Axios XHR client and the configured
-  same-origin base. Production routes must not require direct browser access to
-  an uncontrolled upstream.
-- Public tournament reads remain public. Protected replay requires an active
-  authenticated session and must preserve the hosting platform's cookie and
-  credential policy.
-- The product must present network, timeout, permission, empty,
-  invalid-contract, and unavailable states without substituting mock or cached
-  private payloads.
-- MQTT/electronic-board live remains unavailable until a separate owner-approved
-  read-only transport contract exists. Hosting must not invent one.
+## Authentication and credentials
 
-## Operational acceptance
+Account login, replay token issuance, Cloudreve credentials, and MQTT
+credentials are separate unresolved contracts. Production configuration must
+not conflate them. Browser HMAC, hard-coded identity values, fingerprint guest
+login, URL tokens, query-token auth, and MQTT publish are forbidden.
 
-Before promoting a build, validate the production bundle on the deployed
-origin:
+## Required production validation
 
-1. `/pgnViewer/` and every canonical route return a nonblank application with
-   no error overlay or console-breaking error.
-2. `/api/ksl/liveproxy/GetActList` reaches only the approved upstream and
-   returns the documented response shape.
-3. A competition list, detail, selected round, display route, and workspace
-   handoff complete without document-level horizontal overflow.
-4. Worker assets load and stop on route teardown; repeated workspace navigation
-   does not accumulate boards or Workers.
-5. No response, URL, log, or client storage exposes credentials or private
-   replay payloads.
+- production build served as static assets, never Vite dev/preview;
+- nonblank intended route with no Vite overlay or console-breaking error;
+- actual browser network evidence for any capability claimed available;
+- CORS and credential behavior observed from the real deployment origin;
+- no secret values in source, built assets, URLs, logs, reports, or browser
+  storage;
+- loading, empty, unavailable, permission, retry, and error states remain
+  truthful;
+- typecheck, production build, governance, secret/mock scans, lint, formatting,
+  Knip, JSON parsing, and dependency audits pass.
 
-Credentialed login, protected replay success, logout, and post-logout denial
-must be revalidated in the deployment environment when the owner supplies a
-test account. Absence of such credentials must not be worked around locally.
+Until the browser boundary is independently confirmed, server-side endpoint
+probes establish contract evidence only; they do not establish a usable browser
+deployment.

@@ -109,17 +109,17 @@ This document governs:
 
 ### 7. Sensitive session/auth state
 
-| Attribute        | Value                                                                                                |
-| ---------------- | ---------------------------------------------------------------------------------------------------- |
-| Storage          | `httpOnly` cookie / secure session storage only; never Dexie, localStorage, or URL                   |
-| Example fields   | Session ID, refresh token handle, OAuth state nonce                                                  |
-| Versioning       | Managed by identity provider                                                                         |
-| Migration        | Managed by identity provider                                                                         |
-| Expiration       | Server-controlled                                                                                    |
-| Security         | Must not be readable by JavaScript; transmit only over HTTPS                                         |
-| Refresh recovery | Browser sends cookie automatically; app derives auth status from secure `/me` or equivalent endpoint |
-| Reset behavior   | Cleared by server logout or cookie expiry                                                            |
-| Tests            | Cookie `httpOnly`/`Secure`/`SameSite` audit, no-token-in-storage audit                               |
+| Attribute        | Value                                                                                                    |
+| ---------------- | -------------------------------------------------------------------------------------------------------- |
+| Storage          | No accepted auth persistence until the Web login lifecycle is verified; never Dexie, URL, or Query cache |
+| Example fields   | Future minimum source-confirmed token and identity fields only                                           |
+| Versioning       | Project-owned strict schema after contract approval                                                      |
+| Migration        | Legacy token/user-info keys are cleanup inputs, never restoration authority                              |
+| Expiration       | Verified token/server expiry when present; otherwise no durable restoration                              |
+| Security         | No password/digest, HMAC, shared credential, URL token, or duplicated compatibility key                  |
+| Refresh recovery | Anonymous until an approved minimum record and expiry contract exist                                     |
+| Reset behavior   | Local logout or HTTP 401 clears private state; no remote endpoint is invented                            |
+| Validation       | Secret scan, storage audit, typecheck, production build, and narrow browser evidence                     |
 
 ### 8. Never-persist state
 
@@ -197,9 +197,12 @@ Each table has a `schemaVersion` constant. Migrations run inside Dexie `upgrade`
 
 Every field stored on the client must belong to one of the eight categories above.
 
-### R2. Auth secrets never touch client storage
+### R2. Auth state is contract-gated
 
-Tokens and session secrets live in `httpOnly` cookies / secure session storage only.
+No auth persistence is accepted until a Web-only lifecycle is verified. Cookie
+sessions, BFFs, refresh endpoints, and browser token storage are not invented.
+Passwords, digests, HMAC material, shared credentials, and URL tokens never
+touch client storage.
 
 ### R3. Version and migrate every persisted table
 
@@ -260,7 +263,7 @@ Each category documents what clears it: logout, new workspace, explicit reset, o
     "url_query_params": ["url_shareable_state"],
     "tanstack_query_cache": ["api_query_cache"],
     "in_memory": ["live_stream_transient_state", "never_persist_state"],
-    "httpOnly_cookie_secure_session": ["sensitive_session_auth_state"]
+    "contract_gated_auth_adapter": ["sensitive_session_auth_state"]
   },
   "refresh_recovery_sequence": [
     "prepaint_preferences",

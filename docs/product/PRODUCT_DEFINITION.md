@@ -155,7 +155,11 @@ Refreshing the page must preserve user selections and UI state. See `docs/ui/PER
 
 ### R6. API contract-confirmation mode
 
-Implementation must not assume unconfirmed API contracts. Confirmed production reads use typed repositories behind the same-origin server boundary; every unconfirmed capability remains explicitly unavailable. Runtime mock or fixture fallbacks are forbidden.
+Implementation must not assume unconfirmed API contracts. Confirmed production
+reads use typed repositories and the exact source-confirmed Web origin. A
+same-origin proxy, BFF, or cookie session is not inferred. When the deployment
+origin lacks confirmed browser access, the capability remains explicitly
+unavailable. Runtime mock or fixture fallbacks are forbidden.
 
 ## Acceptance criteria
 
@@ -175,17 +179,20 @@ are:
 1. Open `/pgnViewer/`, import or create a PGN, make legal moves and variations,
    annotate the board, and inspect local Worker analysis in the single canonical
    workspace.
-2. Open `/competitions`, commit a search, select a real production competition,
-   choose group and round filters, and open a pairing in the workspace.
+2. Open `/competitions`, commit a search, and browse source-confirmed production
+   competitions when the deployment has verified browser access. Otherwise the
+   route renders the explicit unavailable/retry state.
 3. Open `/competitions/:hdid/display` for the read-only venue display of the
    selected production round.
 4. Follow `/match/:key`, `/share/:uuid`, `/cloud/:fileid`, or
    `/competitions/:hdid/live` through a sanitized handoff into the canonical
    workspace. Unconfirmed or unavailable sources remain visibly unavailable;
    they never fall back to fabricated data.
-5. Sign in through `/login` when owner credentials are available. Protected
-   replay data is private Query state and is removed with protected handoffs,
-   analysis work, and protected PGN state on logout or authentication failure.
+5. `/login` remains unavailable until the Web-only password request is verified
+   without `openid` compatibility or browser HMAC. Protected replay remains
+   unavailable until its separate chess-service token lifecycle is verified.
+   Any later private Query data is removed with protected handoffs, analysis
+   work, and protected PGN state on logout or authentication failure.
 
 Public competition filters are URL-owned so refresh and browser navigation
 preserve the selected group and round. Non-sensitive workspace layout is stored

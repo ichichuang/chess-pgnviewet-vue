@@ -1,0 +1,143 @@
+{
+    "schemaVersion": 1,
+    "status": "ACTIVE_AUTHORITY",
+    "effectiveDate": "2026-07-14",
+    "overall": "IMPLEMENTATION_IN_PROGRESS",
+    "capabilities": [
+        {
+            "id": "authority.source-precedence",
+            "contract": "CONFIRMED",
+            "runtime": "NOT_APPLICABLE",
+            "browser": "NOT_APPLICABLE",
+            "classification": "REPLACE",
+            "readyForMerge": true
+        },
+        {
+            "id": "transport.single-axios-owner",
+            "contract": "CONFIRMED_TARGET_ARCHITECTURE",
+            "runtime": "PARTIAL_LEGACY_AUTH_ASSUMPTIONS",
+            "browser": "NOT_YET_REVALIDATED",
+            "classification": "MERGE",
+            "readyForMerge": false
+        },
+        {
+            "id": "transport.production-base",
+            "contract": "CONFIRMED_HTTPS_ORIGIN",
+            "runtime": "INVENTED_PROXY_DEFAULT_PRESENT",
+            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "classification": "REPLACE",
+            "readyForMerge": false
+        },
+        {
+            "id": "tournament.list",
+            "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
+            "runtime": "PERMISSIVE_MAPPER",
+            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "classification": "MERGE",
+            "readyForMerge": false
+        },
+        {
+            "id": "tournament.detail",
+            "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
+            "runtime": "PERMISSIVE_MAPPER",
+            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "classification": "MERGE",
+            "readyForMerge": false
+        },
+        {
+            "id": "tournament.groups",
+            "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
+            "runtime": "PERMISSIVE_MAPPER",
+            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "classification": "MERGE",
+            "readyForMerge": false
+        },
+        {
+            "id": "tournament.rounds",
+            "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
+            "runtime": "PERMISSIVE_MAPPER",
+            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "classification": "MERGE",
+            "readyForMerge": false
+        },
+        {
+            "id": "tournament.pairings",
+            "contract": "CONFIRMED_LIVE_NO_CREDENTIAL",
+            "runtime": "PERMISSIVE_MAPPER",
+            "browser": "BLOCKED_UNCONFIRMED_CORS",
+            "classification": "MERGE",
+            "readyForMerge": false
+        },
+        {
+            "id": "auth.password-login",
+            "contract": "BLOCKED_OPENID_AND_BROWSER_HMAC_CONFLICT",
+            "runtime": "INCORRECTLY_CLAIMS_USABLE",
+            "browser": "UNVERIFIED",
+            "classification": "BLOCKED_UNCONFIRMED",
+            "readyForMerge": false
+        },
+        {
+            "id": "auth.restore-logout-loss",
+            "contract": "LOCAL_LOGOUT_ONLY_PARTIAL",
+            "runtime": "LEGACY_LOCALSTORAGE_AND_URL_TOKEN",
+            "browser": "SECURITY_CONFLICT",
+            "classification": "REPLACE",
+            "readyForMerge": false
+        },
+        {
+            "id": "replay.finished-game",
+            "contract": "BLOCKED_GUEST_TOKEN_LIFECYCLE",
+            "runtime": "INCORRECT_ACCOUNT_BEARER_ASSUMPTION",
+            "browser": "UNVERIFIED",
+            "classification": "BLOCKED_UNCONFIRMED",
+            "readyForMerge": false
+        },
+        {
+            "id": "compatibility.match-share-cloud",
+            "contract": "BLOCKED_UNCONFIRMED",
+            "runtime": "TRUTHFUL_UNAVAILABLE_HANDOFF",
+            "browser": "ACCEPTED_UNAVAILABLE_STATE",
+            "classification": "KEEP",
+            "readyForMerge": true
+        },
+        {
+            "id": "live.hardware-mqtt",
+            "contract": "BLOCKED_UNCONFIRMED",
+            "runtime": "TRUTHFUL_UNAVAILABLE",
+            "browser": "ACCEPTED_UNAVAILABLE_STATE",
+            "classification": "KEEP",
+            "readyForMerge": true
+        },
+        {
+            "id": "write-admin-game-lobby",
+            "contract": "OUT_OF_SCOPE",
+            "runtime": "ABSENT",
+            "browser": "ABSENT",
+            "classification": "REJECTED_OBSOLETE",
+            "readyForMerge": true
+        },
+        {
+            "id": "miniapp-url-token-openid",
+            "contract": "NON_AUTHORITY",
+            "runtime": "URL_TOKEN_ABSORPTION_PRESENT",
+            "browser": "SECURITY_CONFLICT",
+            "classification": "REMOVE_MINIAPP_ONLY",
+            "readyForMerge": false
+        }
+    ],
+    "mergeGate": {
+        "required": [
+            "active-authority-documents-published",
+            "invented-proxy-removed",
+            "strict-endpoint-dto-validation",
+            "raw-payload-removal",
+            "typed-query-keys-and-cancellation",
+            "url-token-absorption-removed",
+            "blocked-auth-and-replay-truthful-ui",
+            "private-cache-cleanup-preserved",
+            "governance-format-lint-knip-secret-mock-json-typecheck-build-pass",
+            "narrow-real-browser-validation-pass"
+        ],
+        "currentResult": "NOT_READY"
+    }
+}

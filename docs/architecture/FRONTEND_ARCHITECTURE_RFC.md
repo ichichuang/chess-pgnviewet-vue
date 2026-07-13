@@ -31,19 +31,25 @@ src/
 
 ## State boundaries
 
-| State                         | Owner                                        | Persistence                                         |
-| ----------------------------- | -------------------------------------------- | --------------------------------------------------- |
-| Client interaction/session    | feature-owned Pinia store                    | categorized Dexie record when approved              |
-| Server reads                  | typed repository + TanStack Vue Query        | re-fetch by default; sensitive cache never persists |
-| Live transport                | explicit service/composable                  | memory only                                         |
-| Auth                          | server session; minimal derived Pinia status | opaque HttpOnly cookie only                         |
-| Chess/PGN/annotation/analysis | framework-free domain                        | explicit versioned persistence adapter              |
+| State                         | Owner                                 | Persistence                                                   |
+| ----------------------------- | ------------------------------------- | ------------------------------------------------------------- |
+| Client interaction/session    | feature-owned Pinia store             | categorized Dexie record when approved                        |
+| Server reads                  | typed repository + TanStack Vue Query | re-fetch by default; sensitive cache never persists           |
+| Live transport                | explicit service/composable           | memory only                                                   |
+| Auth                          | feature-owned Pinia status            | no accepted persisted session until Web contract verification |
+| Chess/PGN/annotation/analysis | framework-free domain                 | explicit versioned persistence adapter                        |
 
 ## I/O boundary
 
 Feature and UI code never call `fetch`, MQTT, Cloudreve, upstream services, `/CALL`, or `proxyRequest` directly. Repositories map confirmed DTOs to domain objects, validate with Zod, and expose explicit unavailable/error states. Unconfirmed capabilities remain blocked; they are not replaced by mock success data.
 
-The browser calls same-origin handlers only. Upstream credentials and HMAC signing remain server-side. P0 implements no API, gateway, auth, persistence, or live runtime.
+The browser uses one project-owned Axios client and explicit repositories. The
+only confirmed chess API origin is `https://wxapi.kaisaile.org`; current CORS
+evidence does not establish cross-origin browser availability. The repository
+does not invent same-origin handlers, a BFF, cookie sessions, `/api/ksl`,
+`/CALL`, `proxyRequest`, or server-side credential ownership. Browser HMAC,
+shared upstream credentials, URL-token auth, and query-token auth are
+forbidden. See `WEB_REQUEST_ARCHITECTURE_BASELINE.md`.
 
 ## Source migration
 
@@ -53,7 +59,13 @@ Canonical runtime feature migration must remain mechanical before refactoring. P
 
 The authoritative Vue compiler is the newest stable official TypeScript 6.x package while stable Vue TypeScript 7 integration is unavailable. This follows official TypeScript guidance for Vue and other embedded-language projects. `@typescript/typescript6` is not used because the current stable Volar and `vue-tsc` stack cannot consume its shim. TypeScript 7 is not an active dependency during this compatibility period; adoption is a future gated upgrade only after stable TypeScript programmatic API support, stable Vue Language Tools support, stable `vue-tsc` support, full typecheck/build/browser validation, and owner acceptance.
 
-Legacy `/Users/cc/Work/neobv/Chess/pgnViewer` supplies secondary capability evidence only. `/Users/cc/Work/neobv/Chess/chess-pgnviewer` supplies reconciled product, UI, and confirmed API evidence, not React runtime authority.
+`/Users/cc/Work/neobv/Chess/pgnViewer` and
+`/Users/cc/Work/neobv/Chess/chess-main-overseas` are the only read-only Web
+API/auth/request/environment/production authorities.
+`/Users/cc/Work/neobv/Chess/pgnViewer-new` remains the board, PGN, annotation,
+AI, workspace, layout, motion, visual, and domain authority.
+`/Users/cc/Work/neobv/Chess/chess-pgnviewer` and Mini Program API material are
+non-authoritative for Web API work.
 
 ## Error and lifecycle behavior
 
