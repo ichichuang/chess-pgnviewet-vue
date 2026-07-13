@@ -227,7 +227,7 @@
             "f3cLiveStatus": "IMPLEMENTED_VALIDATED",
             "f3dLiveStatus": "IMPLEMENTED_VALIDATED",
             "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
-            "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE",
+            "p1gStatus": "NOT_STARTED_READY_AFTER_P1B4_REUSABLE_BOARD_CLOSURE",
             "broadFoundationPolicy": "Comprehensive generalized foundation programs are deferred until PRODUCT_COMPLETE_USABLE unless a real product feature needs a narrow boundary earlier.",
             "productUiGateStatus": "PRODUCT_UI_MIGRATION_READY",
             "p1aCanonicalApplicationShell": {
@@ -317,6 +317,36 @@
                 "dependenciesRemoved": [],
                 "existingDependencyUsage": ["gsap"],
                 "directChromeCdpNote": "Installed Google Chrome 149.0.7827.197 did not expose direct TCP/pipe CDP in this environment; validation executed through MCP Playwright browser against the temporary production build.",
+                "nextRequiredPhase": "P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API"
+            },
+            "p1b4ReusableChessboardComponent": {
+                "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_GOVERNANCE_CLOSED",
+                "phase": "P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API",
+                "report": ".ai/reports/P1B4_REUSABLE_CHESSBOARD_COMPONENT_IMPLEMENTATION_REPORT.json",
+                "baseline": "docs/architecture/P1B4_REUSABLE_CHESSBOARD_COMPONENT_BASELINE.md",
+                "publicApi": "docs/ui/CHESSBOARD_COMPONENT_API.md",
+                "implementationCommit": "22f9cddc191b4f7cb4e91f466526918a08e165b0",
+                "implementationPush": "22f9cddc191b4f7cb4e91f466526918a08e165b0",
+                "route": "/pgnViewer/",
+                "result": "P1B4_BOARD_COMPONENT_FULLY_PARAMETERIZED_REUSABLE_TYPESAFE_AND_MOTION_READY",
+                "implemented": [
+                    "public CanonicalChessBoard component",
+                    "public PgnChessBoard wrapper",
+                    "strict ChessboardCapabilities contract",
+                    "typed props, events, models, commands, callbacks, and exposed methods",
+                    "controlled and uncontrolled position and annotation ownership",
+                    "text and parsed PGN input with dynamic replacement and removal",
+                    "main-line and nested-variation navigation",
+                    "truthful invalid PGN preservation",
+                    "per-instance appearance and piece resolution",
+                    "multiple-instance state, listener, DOM, event, and GSAP isolation",
+                    "scoped GSAP board, workspace, overlay, promotion, editor, radial, and analysis motion"
+                ],
+                "browserEvidence": "Real system Chrome validation PASS for disabled, independent, and all-enabled capability profiles; keyboard/click/drag/drawing/promotion/radial/editor/wheel/orientation; text and parsed PGN lifecycle; invalid input; nested variations; two independent PGN boards; position-only and read-only modes; custom colors, appearance, menu, and piece resolver; desktop, large desktop, tablet portrait/landscape, mobile portrait/landscape; light, dark, system-dark, reduced motion; component and route unload/remount; zero clean-run Vite overlays, console errors, page errors, failed requests, long tasks, layout-shift entries, overflow, active pointer state, or active GSAP children.",
+                "dependenciesAdded": [],
+                "dependenciesRemoved": [],
+                "existingDependencyUsage": ["gsap"],
+                "p1gStatus": "NOT_STARTED_READY_AFTER_P1B4_REUSABLE_BOARD_CLOSURE",
                 "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
             }
         },
@@ -1873,6 +1903,48 @@
             ],
             "blockers": [],
             "finalVerdict": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_PASS_READY_FOR_P1G",
+            "nextRequiredPhase": "P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API"
+        },
+        {
+            "identifier": "product.p1b4_reusable_chessboard_component_public_api",
+            "domain": "product UI migration",
+            "requirement": "One production-ready reusable Vue chessboard architecture with strict typed capabilities, position and PGN modes, controlled ownership, per-instance customization, multiple-instance isolation, and lifecycle-scoped motion.",
+            "authority": [
+                "docs/architecture/P1B4_REUSABLE_CHESSBOARD_COMPONENT_BASELINE.md",
+                "docs/ui/CHESSBOARD_COMPONENT_API.md",
+                ".ai/reports/P1B4_REUSABLE_CHESSBOARD_COMPONENT_IMPLEMENTATION_REPORT.json",
+                "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+                "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+            ],
+            "implementationOwner": "P1B4 reusable chessboard component and public API owner",
+            "runtimeFiles": [
+                "src/features/board/index.ts",
+                "src/features/board/CanonicalChessBoard.vue",
+                "src/features/board/domain/boardCapabilities.ts",
+                "src/features/board/pgn/PgnChessBoard.vue",
+                "src/features/board/pgn/pgnChessBoardTypes.ts",
+                "src/features/board/pgn/usePgnChessBoard.ts",
+                "src/features/board/useBoardAppearance.ts",
+                "src/features/board/useBoardOverlayAnimation.ts",
+                "src/features/motion/gsapTokens.ts",
+                "src/ui/index.ts",
+                "src/types/index.ts"
+            ],
+            "implementationStatus": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_GOVERNANCE_CLOSED",
+            "implementationCommit": "22f9cddc191b4f7cb4e91f466526918a08e165b0",
+            "validationEvidence": [
+                "all dependency, architecture, token, mock, secret, format, lint, style, unused, governance, typecheck, audit, static, and dependency-list gates PASS",
+                "temporary outDir production build PASS with repository dist absent",
+                "real system Chrome complete capability and multi-instance matrix PASS",
+                "temporary production-bundle browser route PASS",
+                "clean-run console, page, request, HTTP, long-task, layout-shift, overflow, pointer, and GSAP diagnostics all zero"
+            ],
+            "browserEvidence": "Real Chrome PASS for disabled, independent, and all-enabled capabilities; dynamic/invalid/parsed PGN and nested variations; custom menu, colors, appearance, and pieces; position-only/read-only/editor/wheel/orientation; two isolated boards; desktop/tablet/mobile; light/dark/system/reduced motion; component and route cleanup.",
+            "dependenciesAdded": [],
+            "dependenciesRemoved": [],
+            "blockers": [],
+            "p1gStatus": "NOT_STARTED",
+            "finalVerdict": "P1B4_BOARD_COMPONENT_FULLY_PARAMETERIZED_REUSABLE_TYPESAFE_AND_MOTION_READY",
             "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
         }
     ],
@@ -3012,7 +3084,7 @@
             "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE",
             "nextRequiredPhase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL_CLOSED"
         },
-        "p1gStatus": "READY_AFTER_P1B3_ADVANCED_BOARD_CAPABILITY_CLOSURE",
+        "p1gStatus": "NOT_STARTED_READY_AFTER_P1B4_REUSABLE_BOARD_CLOSURE",
         "p1b3CanonicalBoardAdvancedCapabilityRuntime": {
             "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED",
             "phase": "P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL",
@@ -3036,6 +3108,32 @@
             "dependenciesRemoved": [],
             "existingDependencyUsage": ["gsap"],
             "directChromeCdpNote": "Installed Google Chrome 149.0.7827.197 did not expose direct TCP/pipe CDP in this environment; validation executed through MCP Playwright browser against the temporary production build.",
+            "nextRequiredPhase": "P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API"
+        },
+        "p1b4ReusableChessboardComponent": {
+            "status": "IMPLEMENTED_BROWSER_VALIDATED_PUSHED_GOVERNANCE_CLOSED",
+            "phase": "P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API",
+            "report": ".ai/reports/P1B4_REUSABLE_CHESSBOARD_COMPONENT_IMPLEMENTATION_REPORT.json",
+            "baseline": "docs/architecture/P1B4_REUSABLE_CHESSBOARD_COMPONENT_BASELINE.md",
+            "publicApi": "docs/ui/CHESSBOARD_COMPONENT_API.md",
+            "implementationCommit": "22f9cddc191b4f7cb4e91f466526918a08e165b0",
+            "implementationPush": "22f9cddc191b4f7cb4e91f466526918a08e165b0",
+            "route": "/pgnViewer/",
+            "result": "P1B4_BOARD_COMPONENT_FULLY_PARAMETERIZED_REUSABLE_TYPESAFE_AND_MOTION_READY",
+            "implemented": [
+                "public CanonicalChessBoard component",
+                "public PgnChessBoard wrapper",
+                "strict ChessboardCapabilities contract",
+                "controlled state and isolated PGN ownership",
+                "per-instance appearance and piece resolution",
+                "multiple-instance and lifecycle cleanup",
+                "scoped GSAP motion coverage"
+            ],
+            "browserEvidence": "Real system Chrome P1B4 capability, PGN, multi-instance, responsive, theme, reduced-motion, cleanup, and stability matrix PASS with zero clean-run runtime diagnostics.",
+            "dependenciesAdded": [],
+            "dependenciesRemoved": [],
+            "existingDependencyUsage": ["gsap"],
+            "p1gStatus": "NOT_STARTED_READY_AFTER_P1B4_REUSABLE_BOARD_CLOSURE",
             "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES"
         }
     }

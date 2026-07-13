@@ -48,8 +48,9 @@ the owning module. It must not imitate real product data.
 6. `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`
 7. `P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN`
 8. `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
-9. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
-10. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
+9. `P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API`
+10. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
+11. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
 
 ## P1A
 
@@ -415,12 +416,36 @@ Implementation result:
   import, tournament integration, report export, final integration, and later P1
   runtime remain unimplemented.
 - Next phase:
+  `P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API`.
+
+P1B4 closes the reusable public component boundary over the accepted P1B-P1B3
+runtime:
+
+- Result:
+  `P1B4_BOARD_COMPONENT_FULLY_PARAMETERIZED_REUSABLE_TYPESAFE_AND_MOTION_READY`.
+- Report:
+  `.ai/reports/P1B4_REUSABLE_CHESSBOARD_COMPONENT_IMPLEMENTATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1B4_REUSABLE_CHESSBOARD_COMPONENT_BASELINE.md`.
+- Public API:
+  `docs/ui/CHESSBOARD_COMPONENT_API.md`.
+- Implementation commit:
+  `22f9cddc191b4f7cb4e91f466526918a08e165b0`.
+- The project now exposes one strictly typed position-driven board and one
+  isolated PGN-driven wrapper with controlled state boundaries, per-instance
+  appearance and pieces, typed events and commands, dynamic PGN lifecycle,
+  multiple-instance isolation, and scoped motion/listener cleanup.
+- Full static gates, temporary-outDir production build, and real Chrome
+  capability, responsive, theme, reduced-motion, isolation, and unload/remount
+  validation passed.
+- P1G remains not started. Next phase:
   `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
 
 P1G owns real authentication and production API product capabilities through
 confirmed same-origin boundaries. It starts after
-`P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL` closes;
-that prerequisite is now satisfied by the P1B3 implementation report.
+`P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API` closes; that
+prerequisite is now satisfied by the P1B4 implementation report. P1G has not
+started in P1B4.
 
 P1H integrates the product into `PRODUCT_COMPLETE_USABLE` with real data, real
 APIs, and accepted browser evidence.

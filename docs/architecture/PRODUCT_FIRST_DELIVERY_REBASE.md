@@ -65,7 +65,8 @@ The owner-approved pre-product sequence was:
 Because F3C, F3D, and the dedicated gate review are accepted in the live target,
 P1A, P1B, P1C, P1D, P1E, and P1F have now been implemented and browser
 validated. Owner-mandated reusable-board advanced capability completion has now
-closed through P1B3. The next required phase is
+closed through P1B4, including the stable public component and PGN-wrapper
+boundary. The next required phase is
 `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`. This document
 does not reopen F3C or F3D.
 
@@ -79,8 +80,9 @@ The active P1 sequence is:
 6. `P1F_CANONICAL_AI_ANALYSIS_AND_WORKER_MIGRATION`
 7. `P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN`
 8. `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
-9. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
-10. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
+9. `P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API`
+10. `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
+11. `P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_AND_ACCEPTANCE`
 
 `F3E_TOKEN_THEME_BROWSER_VALIDATION_AND_FINAL_CLOSURE` is superseded as a
 separate pre-product gate. Narrow theme browser validation remains mandatory
@@ -254,6 +256,30 @@ P1B3 is now implemented and browser validated:
   import, tournament integration, report export, final integration, and later P1
   runtime remain unimplemented.
 - The next required phase is
+  `P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API`.
+
+P1B4 is now implemented and browser validated:
+
+- Result:
+  `P1B4_BOARD_COMPONENT_FULLY_PARAMETERIZED_REUSABLE_TYPESAFE_AND_MOTION_READY`.
+- Report:
+  `.ai/reports/P1B4_REUSABLE_CHESSBOARD_COMPONENT_IMPLEMENTATION_REPORT.json`.
+- Baseline:
+  `docs/architecture/P1B4_REUSABLE_CHESSBOARD_COMPONENT_BASELINE.md`.
+- Public API:
+  `docs/ui/CHESSBOARD_COMPONENT_API.md`.
+- Implementation commit:
+  `22f9cddc191b4f7cb4e91f466526918a08e165b0`.
+- `CanonicalChessBoard` and `PgnChessBoard` now form one store-free public board
+  boundary with strict capability, event, model, exposed-instance, PGN,
+  appearance, and piece-resolver types.
+- Real Chrome validation passed for capability independence, all-capabilities
+  operation, dynamic and invalid PGN, nested variations, controlled annotations,
+  editor, wheel boundaries, promotion, typed custom radial commands, two-board
+  isolation, orientation, resize, themes, reduced motion, and unload/remount
+  cleanup with no clean-run console, page, request, long-task, layout-shift,
+  overflow, pointer, or GSAP residue.
+- P1G remains not started. The next required phase is
   `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
 
 ## P1 Product Migration Program
@@ -271,10 +297,11 @@ a narrower adjustment:
    persisted user layout only when directly required by the workspace;
 6. canonical AI analysis runtime and Web Worker behavior;
 7. owner-mandated advanced reusable board capabilities and project GSAP Skill;
-8. real production authentication and API-backed product capabilities;
-9. real product error, unavailable, loading, permission, and retry behavior only
-   as required by implemented product flows;
-10. final complete product flow integration.
+8. reusable public board and PGN-wrapper component closure;
+9. real production authentication and API-backed product capabilities;
+10. real product error, unavailable, loading, permission, and retry behavior only
+    as required by implemented product flows;
+11. final complete product flow integration.
 
 P1 must use `/Users/cc/Work/neobv/Chess/pgnViewer-new` as the canonical runtime
 authority and migrate working behavior mechanically before refactoring. It must
