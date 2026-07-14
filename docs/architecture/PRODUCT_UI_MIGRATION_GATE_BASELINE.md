@@ -2,7 +2,7 @@
 
 Status: `ACCEPTED`
 
-Gate: `PRODUCT_UI_MIGRATION_READY`
+Gate: `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`
 
 ## Accepted evidence
 

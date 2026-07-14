@@ -2,16 +2,17 @@
 
 ## Purpose
 
-Define how the product supports multiple languages, key naming, namespaces, formatting, and the guard around the product name "开赛了".
+Define the project-owned Vue i18n boundary for languages, key naming, namespaces, formatting, locale synchronization, and the guard around the product name "开赛了". This specification does not select or claim an implemented runtime package.
 
 ## Scope
 
 This document governs:
 
 - Supported languages and fallback rules.
-- i18next namespace layout.
+- Project-owned Vue i18n namespace layout.
 - Key naming conventions.
 - Date, time, number, and plural formatting.
+- Typed locale identifiers, HTML `lang`, and Naive UI locale/date-locale synchronization.
 - Right-to-left future considerations.
 - Code patterns and validation.
 
@@ -31,9 +32,9 @@ Additional languages may be added without changing the key structure.
 
 ## Fallback rules
 
-1. If a key is missing for the selected language, fall back to `zh-CN`.
-2. If a key is missing in `zh-CN`, fall back to the key name as a last resort and log a missing-translation warning in development.
-3. `i18next` `fallbackLng` is set to `['zh-CN', 'en']` with `zh-CN` as the ultimate fallback.
+1. The default locale is `zh-CN`.
+2. `en` is the required fallback locale when the selected locale cannot resolve a key.
+3. If neither the selected locale nor the English fallback resolves a key, use the key name as a last resort and report a missing-translation warning in development.
 
 ## Namespace layout
 
@@ -66,10 +67,17 @@ public/locales/
 
 ## Formatting
 
-- Dates and times: `Intl.DateTimeFormat` via i18next `interpolation` or a project formatter.
+- Dates and times: `Intl.DateTimeFormat` through the project-owned Vue i18n boundary or a project formatter.
 - Numbers: `Intl.NumberFormat`.
-- Plurals: ICU plural syntax through i18next plural keys (`key_one`, `key_other`).
+- Plurals: the project-owned Vue i18n boundary maps typed plural keys through `Intl.PluralRules` or an equivalent `Intl`-based formatter.
 - Relative time: `Intl.RelativeTimeFormat` for "5 minutes ago".
+
+## Locale synchronization
+
+- Locale identifiers are the typed union `zh-CN | en` until an approved phase extends it.
+- The project-owned Vue i18n boundary synchronizes the active locale to `html[lang]`.
+- The same active locale synchronizes Naive UI locale and date-locale providers.
+- The package implementing this boundary remains unselected until a dedicated implementation phase records it.
 
 ## Code patterns
 
@@ -120,7 +128,7 @@ Dates, numbers, and plurals use `Intl` formatters, not manual string constructio
 
 ### R5. Fallback chain is predictable
 
-Selected language → `zh-CN` → key name, with warnings logged.
+Selected language → English fallback → key name, with `zh-CN` as the default locale and warnings logged.
 
 ## Acceptance criteria
 
@@ -128,8 +136,8 @@ Selected language → `zh-CN` → key name, with warnings logged.
 2. Namespace layout is defined.
 3. Key naming conventions and product-name guard are documented.
 4. Formatting strategy uses `Intl` APIs.
-5. Code patterns for the project-owned Vue i18n boundary are provided.
-6. Validation rules for translation files are documented.
+5. Code patterns for the project-owned Vue i18n boundary are provided without selecting a runtime package.
+6. Typed locale identifiers, HTML `lang`, Naive UI locale/date-locale synchronization, and validation rules are documented.
 
 ## Open questions / risks
 
@@ -150,7 +158,10 @@ Selected language → `zh-CN` → key name, with warnings logged.
     "fallback_chain_predictable"
   ],
   "languages": ["zh-CN", "en"],
-  "fallback_chain": ["selected", "zh-CN", "key_name"],
+  "default_locale": "zh-CN",
+  "fallback_chain": ["selected", "en", "key_name"],
+  "runtime_package": "UNSELECTED",
+  "boundary": "project-owned-vue-i18n",
   "namespaces": ["common", "workspace", "board", "pgn", "analysis", "competition", "display"],
   "forbidden_homophone": "U+51EF U+8D5B U+4E50",
   "related_docs": [

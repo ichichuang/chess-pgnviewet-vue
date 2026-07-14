@@ -197,7 +197,7 @@
             "migrationPhase": "P3_BOARD_MIGRATION",
             "migrationPriority": "BLOCKING",
             "canonicalStatus": "CANONICAL_ACTIVE_NO_DIRECT_MOUNT_TEST",
-            "knownUnsafeInfrastructureBoundary": "No direct BoardView mount/behavior test; piece licenses unresolved.",
+            "knownUnsafeInfrastructureBoundary": "The canonical source lacks direct BoardView mount/behavior runtime evidence; piece licenses remain unresolved.",
             "notes": "No third-party chessboard library exists in the canonical manifest."
         },
         {
@@ -255,7 +255,7 @@
             "migrationPriority": "MEDIUM",
             "canonicalStatus": "CANONICAL_ACTIVE_CLOSURE",
             "knownUnsafeInfrastructureBoundary": null,
-            "notes": "Rendered coordinate accessibility needs a future direct board test."
+            "notes": "Rendered coordinate accessibility requires manual-browser and manual-review evidence."
         },
         {
             "domainIdentifier": "click_interaction",
@@ -277,7 +277,7 @@
             "migrationPhase": "P3_BOARD_INTERACTION",
             "migrationPriority": "HIGH",
             "canonicalStatus": "CANONICAL_ACTIVE_NO_DIRECT_MOUNT_TEST",
-            "knownUnsafeInfrastructureBoundary": "No direct rendered click behavior test.",
+            "knownUnsafeInfrastructureBoundary": "The canonical source has no direct rendered click evidence; the target requires manual-browser interaction validation.",
             "notes": null
         },
         {
@@ -294,7 +294,7 @@
             "migrationPhase": "P3_BOARD_INTERACTION",
             "migrationPriority": "HIGH",
             "canonicalStatus": "CANONICAL_ACTIVE_NO_DIRECT_MOUNT_TEST",
-            "knownUnsafeInfrastructureBoundary": "No direct rendered drag behavior test.",
+            "knownUnsafeInfrastructureBoundary": "The canonical source has no direct rendered drag evidence; the target requires manual-browser interaction validation.",
             "notes": null
         },
         {
@@ -367,7 +367,7 @@
             "migrationPriority": "HIGH",
             "canonicalStatus": "CANONICAL_ACTIVE_CLOSURE",
             "knownUnsafeInfrastructureBoundary": null,
-            "notes": "Requires future direct rendered-state test."
+            "notes": "Rendered check state requires manual-browser validation."
         },
         {
             "domainIdentifier": "radial_drawing_menu",
@@ -450,7 +450,7 @@
             "runtimeRole": "Maps canonical annotation colors between YCDW and rendered shapes.",
             "stateDependencies": ["brushStore", "YCDW annotation"],
             "assetDependencies": [],
-            "styleDependencies": ["future global annotation token namespace"],
+            "styleDependencies": ["src/styles/tokens.css annotation token namespace"],
             "testEvidence": ["tests/colors.spec.ts", "tests/ycdw.spec.ts"],
             "migrationPhase": "P1_DOMAIN_THEN_P3_TOKENS",
             "migrationPriority": "HIGH",
@@ -467,7 +467,7 @@
             "runtimeRole": "Parses and serializes width-bearing YCDW annotation fields.",
             "stateDependencies": ["PGN node annotation"],
             "assetDependencies": [],
-            "styleDependencies": ["future annotation width token namespace"],
+            "styleDependencies": ["src/styles/tokens.css annotation width tokens"],
             "testEvidence": ["tests/ycdw.spec.ts", "tests/serializePgn.spec.ts"],
             "migrationPhase": "P1_ANNOTATION_DOMAIN",
             "migrationPriority": "HIGH",
@@ -484,7 +484,7 @@
             "runtimeRole": "Preserves canonical annotation style metadata through YCDW round trips.",
             "stateDependencies": ["PGN node annotation"],
             "assetDependencies": [],
-            "styleDependencies": ["future annotation style token namespace"],
+            "styleDependencies": ["src/styles/tokens.css annotation style tokens"],
             "testEvidence": ["tests/ycdw.spec.ts", "tests/serializePgn.spec.ts"],
             "migrationPhase": "P1_ANNOTATION_DOMAIN",
             "migrationPriority": "HIGH",
@@ -754,7 +754,7 @@
             "migrationPhase": "P3_PGN_UI",
             "migrationPriority": "HIGH",
             "canonicalStatus": "CANONICAL_ACTIVE_CLOSURE",
-            "knownUnsafeInfrastructureBoundary": "Rendered navigation has no direct component test in the inspected evidence.",
+            "knownUnsafeInfrastructureBoundary": "The inspected canonical source lacks direct rendered-navigation evidence; the target requires manual-browser navigation validation.",
             "notes": null
         },
         {
@@ -846,7 +846,10 @@
             "runtimeRole": "Renders current evaluation using canonical orientation/state behavior.",
             "stateDependencies": ["analysisStore derived evaluation", "board orientation"],
             "assetDependencies": [],
-            "styleDependencies": ["EvalBar.vue scoped style", "future evaluation tokens"],
+            "styleDependencies": [
+                "EvalBar.vue scoped style",
+                "src/styles/tokens.css evaluation tokens"
+            ],
             "testEvidence": ["tests/analysis.spec.ts", "tests/moveAssessment.spec.ts"],
             "migrationPhase": "P5_AI_UI",
             "migrationPriority": "MEDIUM",
@@ -920,8 +923,8 @@
             "testEvidence": ["tests/search.spec.ts (pure search only)"],
             "migrationPhase": "P5_AI_ENGINE",
             "migrationPriority": "HIGH",
-            "canonicalStatus": "CANONICAL_ACTIVE_WITH_TEST_GAP",
-            "knownUnsafeInfrastructureBoundary": "No direct Worker/CSP/bundle test; main-thread fallback can cause UI latency.",
+            "canonicalStatus": "CANONICAL_ACTIVE_WITH_RUNTIME_EVIDENCE_GAP",
+            "knownUnsafeInfrastructureBoundary": "The canonical source lacks direct Worker/CSP/bundle runtime evidence; main-thread fallback can cause UI latency.",
             "notes": "No WASM, Stockfish, Lozza, or model asset is in the active closure."
         },
         {
@@ -938,7 +941,7 @@
             "migrationPhase": "P5_AI_ENGINE",
             "migrationPriority": "BLOCKING",
             "canonicalStatus": "CANONICAL_ACTIVE_CLOSURE",
-            "knownUnsafeInfrastructureBoundary": "Exact cancellation guarantees must be proven in a dedicated migration test; current file is orchestration, not the Worker entry.",
+            "knownUnsafeInfrastructureBoundary": "Exact cancellation guarantees require contract evidence and manual-browser runtime validation during migration; the current file is orchestration, not the Worker entry.",
             "notes": null
         },
         {
@@ -977,7 +980,7 @@
             "migrationPhase": "P1_THROUGH_P5_PER_SLICE",
             "migrationPriority": "BLOCKING",
             "canonicalStatus": "CANONICAL_TEST_EVIDENCE",
-            "knownUnsafeInfrastructureBoundary": "No direct BoardView mount, Worker entry/CSP, rendered CSS, or favicon/base-path test.",
+            "knownUnsafeInfrastructureBoundary": "The canonical evidence lacks direct BoardView mount, Worker entry/CSP, rendered CSS, and favicon/base-path runtime evidence.",
             "notes": "P0 target does not copy product fixtures or tests."
         },
         {
@@ -997,7 +1000,7 @@
             "migrationPhase": "P3_TOKEN_EXTRACTION",
             "migrationPriority": "BLOCKING",
             "canonicalStatus": "CANONICAL_STYLE_EVIDENCE_NOT_COPY_AUTHORITY",
-            "knownUnsafeInfrastructureBoundary": "Values must be extracted/reconciled into one target registry; source has no dedicated rendered-CSS test.",
+            "knownUnsafeInfrastructureBoundary": "Values must be extracted/reconciled into one target registry; the source has no dedicated rendered-CSS runtime evidence.",
             "notes": "src/styles/board.css contains comments/registration only; BoardView scoped CSS is authoritative for the board."
         },
         {

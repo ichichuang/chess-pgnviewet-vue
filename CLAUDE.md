@@ -15,7 +15,7 @@ Compatibility routes resolve a sanitized handoff into the unified workspace; the
 
 ## Stack authority
 
-pnpm is the sole package manager. Vue 3, TypeScript strict, Vite, Vue Router, Pinia, project-owned Vue UI adapters, canonical-only Naive UI use, GSAP/Vue transitions, chess.js plus reviewed canonical chess-domain logic, Dexie, Zod, and TanStack Vue Query define the approved target stack. P0E removes automated-test infrastructure from the active target stack; product UI migration proceeds through `PRODUCT_UI_MIGRATION_READY` as defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
+pnpm is the sole package manager. Vue 3, TypeScript strict, Vite, Vue Router, Pinia, project-owned Vue UI adapters, canonical-only Naive UI use, GSAP/Vue transitions, chess.js plus reviewed canonical chess-domain logic, Dexie, Zod, and TanStack Vue Query define the approved target stack. Automated-test infrastructure is absent from the active target stack, and product development proceeds under `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS` as defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
 
 Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph, not as unrelated package maxima. The newest stable version that passes the required architecture contract is authoritative. Exceptions require upstream evidence, explicit recording, owner, review trigger, and removal condition; silent or unexplained downgrades remain forbidden.
 
@@ -41,4 +41,4 @@ Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, r
 - Confirmed reads use typed repositories and the exact source-confirmed HTTPS origin. Cross-origin browser deployments fail closed until the upstream origin grants them; unknown contracts remain blocked, never faked.
 - Browser code never owns upstream credentials or signing secrets.
 - Do not modify any evidence-source repository.
-- `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden. The accepted product runtime remains governed by `PRODUCT_UI_MIGRATION_READY` in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
+- `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden. The accepted product runtime remains governed by `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS` in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.

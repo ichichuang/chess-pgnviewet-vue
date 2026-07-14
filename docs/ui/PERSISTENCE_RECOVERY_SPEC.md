@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Define how user preferences, workspace session state, draft state, URL state, API cache, live transient state, auth state, and never-persist state are stored, versioned, migrated, expired, secured, recovered, reset, and tested.
+Define how user preferences, workspace session state, draft state, URL state, API cache, live transient state, auth state, and never-persist state are stored, versioned, migrated, expired, secured, recovered, reset, and validated.
 
 ## Scope
 
@@ -13,7 +13,7 @@ This document governs:
 - Refresh recovery sequence.
 - Security constraints for sensitive data.
 - Migration and versioning rules.
-- Test requirements.
+- Validation requirements.
 
 ## Non-goals
 
@@ -35,7 +35,7 @@ This document governs:
 | Security         | Non-sensitive; may be read by app                                                                                           |
 | Refresh recovery | Rehydrated before first paint; theme mode applied to `html`                                                                 |
 | Reset behavior   | Reset to defaults via settings; clears table rows                                                                           |
-| Tests            | Rehydration test, migration test, reset test                                                                                |
+| Validation       | Static ownership scan, Zod schema inspection, TypeScript checking, and storage/reset/reload inspection in a real browser    |
 
 ### 2. Workspace session state
 
@@ -49,63 +49,63 @@ This document governs:
 | Security         | Non-sensitive; auth-bound private references are forbidden and must live in a separate private cache                                                                                                                                                                                |
 | Refresh recovery | Rehydrated before workspace render; stale sources fall back safely                                                                                                                                                                                                                  |
 | Reset behavior   | New workspace clears non-pinned tabs; logout retains public selections/layout while clearing auth-bound private state                                                                                                                                                               |
-| Tests            | Refresh recovery E2E, fallback test, logout public-state-retention/private-state-clear test                                                                                                                                                                                         |
+| Validation       | Static ownership scan, TypeScript checking, refresh/reload inspection, and logout public/private-state inspection in a real browser                                                                                                                                                 |
 
 ### 3. Recoverable draft state
 
-| Attribute        | Value                                                                                       |
-| ---------------- | ------------------------------------------------------------------------------------------- |
-| Storage          | Dexie `drafts` table                                                                        |
-| Example fields   | `teachingNotesDraft`, `pendingAnnotationEdits`, `unsavedPgnMutations`, `cloudSavePathDraft` |
-| Versioning       | Schema version per draft type                                                               |
-| Migration        | Validate against draft schema; discard unrecoverable drafts                                 |
-| Expiration       | 7 days or until explicitly saved/discarded                                                  |
-| Security         | Non-sensitive; may reference cloud paths                                                    |
-| Refresh recovery | Restored when the same PGN/source is reopened; conflicts prompt user                        |
-| Reset behavior   | Discard on successful save or explicit discard                                              |
-| Tests            | Draft restore test, conflict prompt test, discard test                                      |
+| Attribute        | Value                                                                                                                                    |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Storage          | Dexie `drafts` table                                                                                                                     |
+| Example fields   | `teachingNotesDraft`, `pendingAnnotationEdits`, `unsavedPgnMutations`, `cloudSavePathDraft`                                              |
+| Versioning       | Schema version per draft type                                                                                                            |
+| Migration        | Validate against draft schema; discard unrecoverable drafts                                                                              |
+| Expiration       | 7 days or until explicitly saved/discarded                                                                                               |
+| Security         | Non-sensitive; may reference cloud paths                                                                                                 |
+| Refresh recovery | Restored when the same PGN/source is reopened; conflicts prompt user                                                                     |
+| Reset behavior   | Discard on successful save or explicit discard                                                                                           |
+| Validation       | Zod schema inspection, TypeScript checking, and manual restore/conflict/discard validation in a real browser without creating test files |
 
 ### 4. URL-shareable state
 
-| Attribute        | Value                                                                          |
-| ---------------- | ------------------------------------------------------------------------------ |
-| Storage          | URL query parameters                                                           |
-| Example fields   | `handoff`, `mode`, `source` (only when shareable), `moveIndex`, `panelVisible` |
-| Versioning       | Project-owned handoff context identifiers and URL params are versioned by app  |
-| Migration        | Unknown params ignored; deprecated params mapped once                          |
-| Expiration       | Lives with URL                                                                 |
-| Security         | Must not contain tokens, MQTT credentials, or PII                              |
-| Refresh recovery | Re-read safe URL state; resolve a local handoff context when present           |
-| Reset behavior   | Browser back/forward updates URL state                                         |
-| Tests            | URL round-trip test, handoff resolution test, no-secret-in-URL audit           |
+| Attribute        | Value                                                                                                               |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Storage          | URL query parameters                                                                                                |
+| Example fields   | `handoff`, `mode`, `source` (only when shareable), `moveIndex`, `panelVisible`                                      |
+| Versioning       | Project-owned handoff context identifiers and URL params are versioned by app                                       |
+| Migration        | Unknown params ignored; deprecated params mapped once                                                               |
+| Expiration       | Lives with URL                                                                                                      |
+| Security         | Must not contain tokens, MQTT credentials, or PII                                                                   |
+| Refresh recovery | Re-read safe URL state; resolve a local handoff context when present                                                |
+| Reset behavior   | Browser back/forward updates URL state                                                                              |
+| Validation       | Static URL-secret scan, TypeScript checking, manual URL round-trip/handoff resolution, and contract-evidence review |
 
 ### 5. API query cache
 
-| Attribute        | Value                                                                                                              |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Storage          | TanStack Query cache (in-memory with optional persistence)                                                         |
-| Example fields   | Competition list, pairing data, game info, PGN history, user profile                                               |
-| Versioning       | Query key includes endpoint version tag                                                                            |
-| Migration        | Invalidate keys on schema version change                                                                           |
-| Expiration       | Per-query `staleTime`/`gcTime`; typically minutes to hours                                                         |
-| Security         | May contain user data; persistence disabled for sensitive queries unless encrypted                                 |
-| Refresh recovery | Re-fetched automatically using restored query keys; cache rehydration optional                                     |
-| Reset behavior   | Logout evicts authenticated/private entries and replay reads; public tournament queries remain and must revalidate |
-| Tests            | Cache invalidation test, re-fetch on refresh test                                                                  |
+| Attribute        | Value                                                                                                                         |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Storage          | TanStack Query cache (in-memory with optional persistence)                                                                    |
+| Example fields   | Competition list, pairing data, game info, PGN history, user profile                                                          |
+| Versioning       | Query key includes endpoint version tag                                                                                       |
+| Migration        | Invalidate keys on schema version change                                                                                      |
+| Expiration       | Per-query `staleTime`/`gcTime`; typically minutes to hours                                                                    |
+| Security         | May contain user data; persistence disabled for sensitive queries unless encrypted                                            |
+| Refresh recovery | Re-fetched automatically using restored query keys; cache rehydration optional                                                |
+| Reset behavior   | Logout evicts authenticated/private entries and replay reads; public tournament queries remain and must revalidate            |
+| Validation       | Static ownership scan, TypeScript checking, production build, and manual refresh/re-fetch/logout inspection in a real browser |
 
 ### 6. Live stream transient state
 
-| Attribute        | Value                                                                                           |
-| ---------------- | ----------------------------------------------------------------------------------------------- |
-| Storage          | In-memory Pinia state and explicit service/composable state only                                |
-| Example fields   | Current live board FEN, last move, clock, connection status, pending moves                      |
-| Versioning       | Not persisted                                                                                   |
-| Migration        | Not applicable                                                                                  |
-| Expiration       | Cleared when leaving live mode or on disconnect                                                 |
-| Security         | May contain live credentials; never persisted                                                   |
-| Refresh recovery | Re-establish stream from persisted selection; replay recent moves from API history if available |
-| Reset behavior   | Clear on disconnect, mode switch, or logout                                                     |
-| Tests            | Disconnect recovery test, no-persistence audit                                                  |
+| Attribute        | Value                                                                                                                                  |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Storage          | In-memory Pinia state and explicit service/composable state only                                                                       |
+| Example fields   | Current live board FEN, last move, clock, connection status, pending moves                                                             |
+| Versioning       | Not persisted                                                                                                                          |
+| Migration        | Not applicable                                                                                                                         |
+| Expiration       | Cleared when leaving live mode or on disconnect                                                                                        |
+| Security         | May contain live credentials; never persisted                                                                                          |
+| Refresh recovery | Re-establish stream from persisted selection; replay recent moves from API history if available                                        |
+| Reset behavior   | Clear on disconnect, mode switch, or logout                                                                                            |
+| Validation       | Static no-persistence scan, TypeScript checking, contract-evidence review, and manual disconnect/recovery inspection in a real browser |
 
 ### 7. Sensitive session/auth state
 
@@ -133,7 +133,7 @@ This document governs:
 | Security         | Must not contain secrets                                                                                            |
 | Refresh recovery | Reset to defaults on refresh                                                                                        |
 | Reset behavior   | Always resets                                                                                                       |
-| Tests            | No-persistence audit                                                                                                |
+| Validation       | Static ownership/no-persistence scan and manual reload inspection                                                   |
 
 ## Fields preserved across refresh
 
@@ -225,7 +225,7 @@ Each category documents what clears it: logout, new workspace, explicit reset, o
 
 ## Acceptance criteria
 
-1. Eight persistence categories are defined with storage location, example fields, versioning, migration, expiration, security, refresh recovery, reset behavior, and tests.
+1. Eight persistence categories are defined with storage location, example fields, versioning, migration, expiration, security, refresh recovery, reset behavior, and explicit validation evidence.
 2. The list of fields preserved across refresh matches the user requirement.
 3. Dexie table design and refresh recovery sequence are documented.
 4. Auth data is excluded from Dexie, persisted Query cache, and URL; only the strict `kaisaile.auth.v1` record is accepted in `localStorage`.

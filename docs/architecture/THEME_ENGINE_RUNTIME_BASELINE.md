@@ -166,13 +166,10 @@ later phases.
 
 ## Completion Gate
 
-F3C is complete only while the implementation remains limited to the ownership
-files above, all static and build validation passes, real-browser no-flash
-startup restoration passes, no dependency or token-registry value changes are
-introduced, no Naive UI provider or product UI appears, and the next phase
-remains `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`.
+F3C closure remains accepted while the ownership files above retain a single
+theme engine, all static and build validation passes, real-browser no-flash
+startup restoration remains valid, and no duplicate theme owner is introduced.
 
-## Next Phase
+## Current Development Gate
 
-Next required phase:
-`F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`.
+`PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`

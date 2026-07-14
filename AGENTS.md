@@ -24,7 +24,7 @@ Before changing UI, architecture, persistence, API, or migration code, read:
 - One unified board-centric workspace; mode/source differences use typed adapters and conditional composition, not duplicate shells.
 - Framework-free chess, PGN, annotation, and analysis domains remain independent of Vue UI.
 - Pinia owns client state. TanStack Vue Query is the sole approved server-state boundary.
-- Dexie owns later structured persistence; Zod validates persisted and transport data at boundaries.
+- Project-owned persistence adapters own current persisted state; Dexie owns approved structured persistence, and Zod validates persisted and transport data at boundaries.
 - Naive UI may appear only behind project-owned Vue UI adapters where canonical behavior requires it. It is not the token or product-component authority.
 - `src/styles/tokens.css` is the only global token registry. Feature files must not contain raw colors or parallel token definitions.
 - GSAP animation, animated board interaction, and later animated UI work must read and obey `.ai/skills/gsap/SKILL.md` in addition to the project UI authority.
@@ -45,7 +45,7 @@ Never inspect or copy environment files, credentials, certificates, keys, databa
 ## Implementation gates
 
 - P0 is baseline-only: no teaching, board, PGN, AI, tournament, auth, gateway, persistence, or settings feature implementation.
-- P1 product UI migration remains blocked until `PRODUCT_UI_MIGRATION_READY` is set by `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`; P0E remains accepted but is no longer the only pre-product gate.
+- Product UI development is open under `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`; further slices remain subject to source provenance, architecture, validation, and truthful contract gates.
 - Later feature migration requires an approved closure node, source provenance, architecture compatibility, mandatory typecheck/build validation, narrow real-browser runtime evidence, and a narrow implementation report.
 - Canonical runtime feature migration must be mechanical before refactoring: preserve canonical layout, interaction, density, board focus, panel geometry, keyboard behavior, and motion before any refactor.
 - Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph, not as unrelated package maxima. The newest stable version that passes the required architecture contract is authoritative.

@@ -1,12 +1,12 @@
 # Naive UI Theme Provider Baseline
 
-Status: `F3D_NAIVE_UI_THEME_PROVIDER_IMPLEMENTED_PENDING_VALIDATION`
+Status: `F3D_NAIVE_UI_THEME_PROVIDER_IMPLEMENTED_VALIDATED`
 Phase: `F3D_NAIVE_UI_THEME_PROVIDER_AND_TOKEN_OVERRIDE_IMPLEMENTATION`
 
 ## Scope
 
-F3D installs the minimum project-owned Naive UI root provider boundary needed before
-`PRODUCT_UI_MIGRATION_GATE_REVIEW`. It does not implement product UI, reusable UI
+F3D installed the project-owned Naive UI root provider boundary retained by the
+current product baseline. Its phase scope did not own product UI, reusable UI
 adapters, icon adapters, i18n, Dexie, QueryClient, repositories, generalized error
 handling, accessibility hardening, foundation previews, or broad final integration.
 
@@ -140,7 +140,7 @@ The following remain intentionally unmapped in F3D:
 ## Static Governance Relationship
 
 Direct Naive UI imports are allowed only under the approved provider boundary
-or future `src/ui` adapters. Product feature files must not import
+or current `src/ui` adapters. Product feature files must not import
 `NConfigProvider`, `NGlobalStyle`, `darkTheme`, `GlobalThemeOverrides`, theme
 contexts, or theme override objects directly.
 
@@ -183,4 +183,4 @@ validation passes, real-browser provider validation passes, implementation and
 governance commits are pushed, local `HEAD` equals remote `main`, and the
 tracked worktree is clean.
 
-Next required phase: `PRODUCT_UI_MIGRATION_GATE_REVIEW`.
+Current development gate: `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`.

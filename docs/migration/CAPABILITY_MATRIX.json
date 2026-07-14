@@ -24,7 +24,12 @@
             "source": "target product architecture"
         },
         {
-            "id": "accountAndProtectedReplay",
+            "id": "account.loginAndIdentity",
+            "runtime": "IMPLEMENTED_OWNER_VALIDATED",
+            "source": "pgnViewer and chess-main-overseas"
+        },
+        {
+            "id": "protectedReplay",
             "runtime": "BLOCKED_TRUTHFUL_UNAVAILABLE",
             "source": "Web contract incomplete"
         },

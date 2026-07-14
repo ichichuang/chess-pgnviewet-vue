@@ -179,16 +179,28 @@ export const architecturePolicy = {
   ],
   runtimeConfigAllowlist: ['src/runtime/config/', 'src/config/runtime.ts', 'src/router/index.ts'],
   writeEndpointAllowlist: ['src/api/client.ts', 'vite.config.ts'],
-  futureAllowlists: {
-    naiveUi: ['src/ui/', 'src/app/providers/', 'src/providers/'],
-    icons: ['src/ui/icons/'],
-    api: ['src/api/', 'src/repositories/'],
-    persistence: ['src/persistence/', 'src/bootstrap/preferences/'],
-    runtimeConfig: ['src/runtime/config/'],
-  },
 }
 
 export const obsoleteArchitecturePolicy = {
+  activeAuthorityExactPaths: [
+    '.ai/skills/project-ui/SKILL.md',
+    'AGENTS.md',
+    'CLAUDE.md',
+    'docs/migration/CANONICAL_RUNTIME_CLOSURE.json',
+    'docs/migration/CAPABILITY_MATRIX.json',
+    'docs/migration/SOURCE_PROVENANCE.md',
+    'package.json',
+    'scripts/governance/check-architecture-boundaries.mjs',
+    'scripts/governance/check-obsolete-architecture-residue.mjs',
+    'scripts/governance/check-user-visible-copy.mjs',
+    'scripts/governance/policy.mjs',
+  ],
+  activeAuthorityPrefixes: ['docs/architecture/', 'docs/product/', 'docs/ui/'],
+  authorityPatternDefinitionAllowlist: [
+    'scripts/governance/check-obsolete-architecture-residue.mjs',
+    'scripts/governance/check-user-visible-copy.mjs',
+    'scripts/governance/policy.mjs',
+  ],
   historicalAuthStatusAllowlist: [
     '.ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTATION_REPORT.json',
   ],

@@ -7,11 +7,7 @@ Closure date: `2026-07-12`
 
 ## Final F2 Status
 
-F2 is complete for toolchain and static governance only. This closure does not complete the overall foundation, does not authorize F3 implementation, and does not open product UI migration.
-
-Next required phase: `F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN`.
-
-Remaining foundation gaps include token/theme design, provider and UI adapter design, i18n, Dexie persistence, TanStack Vue Query setup, typed repositories, API/environment/security runtime boundaries, accessibility and responsive implementation, motion policy implementation, and product UI migration gates.
+F2 remains complete for toolchain and static governance. Subsequent accepted phases implemented the token/theme engine, provider/UI boundaries, QueryClient, typed repositories, API/auth boundaries, product workspace, board, PGN, annotation, and AI runtime. The current development gate is `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`; the project-owned Vue i18n boundary remains unimplemented until a package is formally selected.
 
 ## Accepted Phase Sequence
 
@@ -44,9 +40,11 @@ The active dependency graph is the exact `package.json` graph validated by `scri
 Runtime dependencies:
 
 - `@tanstack/vue-query@5.101.2`
+- `axios@1.18.1`
 - `chess.js@1.4.0`
 - `dexie@4.4.4`
 - `gsap@3.15.0`
+- `js-md5@0.8.3`
 - `naive-ui@2.44.1`
 - `pinia@3.0.4`
 - `vue@3.5.39`
@@ -56,6 +54,7 @@ Runtime dependencies:
 Direct development dependencies:
 
 - `@eslint/js@10.0.1`
+- `@types/js-md5@0.8.0`
 - `@types/node@26.1.1`
 - `@vitejs/plugin-vue@6.0.7`
 - `@vue/tsconfig@0.9.1`
@@ -103,9 +102,11 @@ The implemented script inventory is:
 
 - `check:deps`
 - `check:architecture`
+- `check:residue`
 - `check:tokens`
 - `check:mocks`
 - `check:secrets`
+- `check:copy`
 - `check:governance`
 - `lint`
 - `lint:style`
@@ -117,20 +118,22 @@ The implemented script inventory is:
 - `typecheck`
 - `build`
 
-No `test` script exists. `check:governance` invokes each project-owned scanner exactly once. `check:static` remains read-only and does not invoke `format:write`, dependency mutation, automated tests, Vite development mode, preview mode, browser automation, or missing future commands. The normal `build` script writes `dist`; F2E production build validation used a temporary output directory outside the repository.
+No `test` script exists. `check:governance` invokes each project-owned scanner exactly once. `check:static` remains read-only and does not invoke `format:write`, dependency mutation, automated tests, Vite development mode, preview mode, or browser automation. The normal `build` script writes `dist`; F2E production build validation used a temporary output directory outside the repository.
 
 ## Scanner Inventory
 
-| Domain                  | Path                                                   | Script               | Blocking rules |
-| ----------------------- | ------------------------------------------------------ | -------------------- | -------------: |
-| Dependency policy       | `scripts/governance/check-dependency-policy.mjs`       | `check:deps`         |             12 |
-| Architecture boundaries | `scripts/governance/check-architecture-boundaries.mjs` | `check:architecture` |             19 |
-| Raw visual values       | `scripts/governance/check-raw-visual-values.mjs`       | `check:tokens`       |             10 |
-| Mock product data       | `scripts/governance/check-forbidden-mock-data.mjs`     | `check:mocks`        |              9 |
-| Secret patterns         | `scripts/governance/check-secret-patterns.mjs`         | `check:secrets`      |             11 |
-| Shared invalid JSON     | `scripts/governance/utils.mjs`                         | shared               |              1 |
+| Domain                  | Path                                                         | Script               | Blocking rules |
+| ----------------------- | ------------------------------------------------------------ | -------------------- | -------------: |
+| Dependency policy       | `scripts/governance/check-dependency-policy.mjs`             | `check:deps`         |             12 |
+| Obsolete authority      | `scripts/governance/check-obsolete-architecture-residue.mjs` | `check:residue`      |             17 |
+| Architecture boundaries | `scripts/governance/check-architecture-boundaries.mjs`       | `check:architecture` |             33 |
+| Raw visual values       | `scripts/governance/check-raw-visual-values.mjs`             | `check:tokens`       |             10 |
+| Mock product data       | `scripts/governance/check-forbidden-mock-data.mjs`           | `check:mocks`        |              9 |
+| Secret patterns         | `scripts/governance/check-secret-patterns.mjs`               | `check:secrets`      |             11 |
+| Product copy            | `scripts/governance/check-user-visible-copy.mjs`             | `check:copy`         |              1 |
+| Shared invalid JSON     | `scripts/governance/utils.mjs`                               | shared               |              1 |
 
-Total blocking rule inventory: 62.
+Total blocking rule inventory: 94.
 
 Rule identifiers were derived from scanner source and reconciled with `docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md`. No missing, duplicated, undocumented, renamed, or unreachable required rule was found.
 
@@ -138,13 +141,14 @@ Rule identifiers were derived from scanner source and reconciled with `docs/arch
 
 Permanent scanner exclusions are `.git`, `node_modules`, `.pnpm-store`, `dist`, `.vite`, `coverage`, `.serena`, local logs, local databases, generated output, dependency stores, browser state, and read-only evidence-source repositories. The secret scanner additionally excludes `.ai/reports/`, `docs/archive/`, `pnpm-lock.yaml`, binary assets, and approved placeholder-only `.env.example` patterns.
 
-Future exact-path ownership allowlists remain:
+Active exact-path ownership allowlists are:
 
-- Naive UI: `src/ui/`, `src/app/providers/`, `src/providers/`
-- Icons: `src/ui/icons/`
-- API/repositories: `src/api/`, `src/repositories/`
+- Naive UI: `src/ui/`, `src/app/providers/`
+- API: `src/api/`
 - Persistence/preferences: `src/persistence/`, `src/bootstrap/preferences/`
 - Runtime config: `src/runtime/config/`
+
+Reserved exact-path ownership boundaries that do not claim an implemented directory are `src/providers/`, `src/ui/icons/`, and `src/repositories/`.
 
 Secret findings must contain only path, line, stable rule id, category when applicable, redacted excerpt, and redacted fingerprint. Complete secret-like values must not be printed.
 
@@ -157,7 +161,7 @@ Secret findings must contain only path, line, stable rule id, category when appl
 | Raw visual scanner         | `mise exec -- pnpm run check:tokens`                                                       | PASS                                              |
 | Mock-data scanner          | `mise exec -- pnpm run check:mocks`                                                        | PASS                                              |
 | Secret scanner             | `mise exec -- pnpm run check:secrets`                                                      | PASS                                              |
-| JSON scanner mode          | all five scanner entrypoints with `--json`                                                 | PASS, schema-valid, zero findings, zero skipped   |
+| JSON scanner mode          | all current scanner entrypoints with `--json`                                              | PASS, schema-valid, zero findings, zero skipped   |
 | Controlled negative probes | temporary roots under `/tmp`                                                               | PASS, nonzero exits with expected stable rule ids |
 | Controlled clean probes    | temporary roots under `/tmp`                                                               | PASS, zero findings                               |
 | Redaction                  | synthetic secret probe                                                                     | PASS, complete synthetic value absent             |

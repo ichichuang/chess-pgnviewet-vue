@@ -1,11 +1,11 @@
 # F2A Toolchain And Static Governance Baseline
 
-Status: `ACTIVE_DESIGN_AUTHORITY`
+Status: `ACTIVE_AUTHORITY`
 Phase: `F2A_TOOLCHAIN_TARGET_DESIGN_AND_DEPENDENCY_GRAPH`
 Created: `2026-07-12T04:30:22Z`
 Target: `/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue`
 
-## Current Baseline
+## F2A Starting Baseline
 
 The accepted starting point is branch `main` at local and remote SHA `8b16c0bbc17a9fd489ccb55731959add5139353f`, subject `docs(governance): 记录 F1 建仓与首次推送验收证据`, with tracked worktree clean and remote `https://github.com/ichichuang/chess-pgnviewet-vue.git`.
 
@@ -23,11 +23,11 @@ Prerequisite report hashes:
 
 Known F1 warning: `git diff --cached --check` reported pre-existing Markdown whitespace. Current tracked debt is limited to trailing two-space hard-break lines at line 3 in `docs/architecture/API_BOUNDARY_ADR.md`, `docs/architecture/PERSISTENCE_ADR.md`, `docs/architecture/SOURCE_ADAPTER_ADR.md`, and `docs/architecture/TECH_STACK_DECISION.md`.
 
-## Selected Future Tooling
+## Current Tooling Graph
 
-F2 selects a non-overlapping graph for later installation:
+F2 selected and installed the following non-overlapping graph:
 
-| Owner                       | Future Packages                                                                                                 | Recommended Compatible Versions                            | Responsibility                                                                                                                   |
+| Owner                       | Packages                                                                                                        | Compatible Versions                                        | Responsibility                                                                                                                   |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | ESLint validation           | `eslint`, `@eslint/js`, `typescript-eslint`, `eslint-plugin-vue`, `vue-eslint-parser`, `eslint-config-prettier` | `10.7.0`, `10.0.1`, `8.63.0`, `10.9.2`, `10.4.1`, `10.1.8` | JS/TS/Vue correctness, import restrictions, runtime-global restrictions, unused variables, Vue macro handling, no-fix validation |
 | Formatting                  | `prettier`                                                                                                      | `3.9.5`                                                    | Stable formatting for supported text files in check and explicit write modes                                                     |
@@ -66,7 +66,7 @@ Version exception: `typescript` stays at `6.0.3` although registry `latest` is `
 
 ## ESLint Ownership
 
-Future `eslint.config.mjs` owns lint validation for `src/**/*.{ts,vue}`, root JS/MJS/CJS config files, and project-owned tooling scripts. It must ignore dependency stores, generated output, caches, `.git`, evidence sources, browser profiles, coverage, and local agent state.
+`eslint.config.mjs` owns lint validation for `src/**/*.{ts,vue}`, root JS/MJS/CJS config files, and project-owned tooling scripts. It ignores dependency stores, generated output, caches, `.git`, evidence sources, browser profiles, coverage, and local agent state.
 
 Required policy:
 
@@ -95,7 +95,7 @@ The authoritative F2BR2 Prettier scan reported the exact count recorded in `docs
 
 `pnpm-lock.yaml` is permanently outside Prettier ownership because it is generated and structurally owned exclusively by the project-pinned pnpm package manager. Prettier must never format, rewrite, normalize, or directly validate `pnpm-lock.yaml`; manual editing of `pnpm-lock.yaml` remains forbidden. Lockfile integrity is governed by package-manager pinning, package-manager exclusivity checks, manifest and lockfile diff review after authorized dependency operations, security audit, frozen-lockfile validation where authorized, and Git review.
 
-Every other existing authored formatting violation is exact-path temporary debt. The temporary debt list expires in `F2C_FORMATTING_DEBT_REMEDIATION`; F2 remains incomplete until those paths are formatted, reviewed, removed from `.prettierignore`, and the active authored-file format check passes without temporary debt exclusions.
+F2C formatted and reviewed the exact-path temporary debt, removed the temporary exclusions, and restored the active authored-file format check without temporary debt allowances.
 
 ## F2C Embedded-Code Policy Correction And Debt Closure
 
@@ -109,7 +109,7 @@ New authored files must pass formatting immediately. Project-owned architecture,
 
 ## Stylelint Ownership
 
-Future `stylelint.config.mjs` owns `src/**/*.css` and Vue style blocks via `postcss-html`. It extends `stylelint-config-standard`, applies Vue overrides only where needed, and ignores generated/external paths.
+`stylelint.config.mjs` owns `src/**/*.css` and Vue style blocks via `postcss-html`. It extends `stylelint-config-standard`, applies Vue overrides only where needed, and ignores generated/external paths.
 
 Stylelint enforces CSS validity, duplicate properties, selector sanity, custom-property patterns, and fixable CSS hygiene. It does not own product-specific raw visual-value policy beyond generic CSS correctness; the raw visual-value scanner owns cross-language value governance.
 
@@ -166,56 +166,61 @@ Implemented project-owned files:
 
 `check:static` includes `format:check`, `check:governance`, `check:unused`, `lint`, `lint:style`, and `audit:prod`. It remains read-only.
 
-Final F2E validation confirmed all five scanner domains, JSON mode, controlled negative and clean probes, redacted secret handling, `check:governance`, `check:static`, typecheck, temporary-output production build, production audit, full audit, and isolated frozen-lockfile validation.
+Final F2E validation confirmed the five scanners that existed in that phase. The current governance aggregate contains seven scanner domains, including obsolete-authority residue and rendered-copy enforcement.
 
 Permanent scanner exclusions are `.git`, `node_modules`, `.pnpm-store`, `dist`, `.vite`, `coverage`, `.serena`, local logs, local databases, generated output, dependency stores, browser state, and read-only evidence-source repositories. Secret scanning additionally excludes immutable historical reports, archived evidence, generated lockfile content, binary assets, and approved placeholder-only `.env.example` values.
 
-Future allowlists are exact paths or directories only and do not create placeholder runtime files. The current future ownership paths are `src/ui/`, `src/app/providers/`, `src/providers/`, `src/ui/icons/`, `src/api/`, `src/repositories/`, `src/persistence/`, `src/bootstrap/preferences/`, and `src/runtime/config/`.
+Active ownership allowlists are exact paths or directories only: `src/ui/`, `src/app/providers/`, `src/api/`, `src/persistence/`, `src/bootstrap/preferences/`, and `src/runtime/config/`.
+
+Reserved paths `src/providers/`, `src/ui/icons/`, and `src/repositories/` do not claim implemented directories and may be activated only by a future approved slice.
 
 All scanner findings are blocking and include a stable rule id, file, line when available, redacted excerpt, reason, and remediation owner. JSON mode emits to stdout and creates no repository artifact. Secret findings include redacted fingerprints only.
 
-## Future Package Scripts
+## Current Package Scripts
 
-| Script               | Responsibility                           | Expected Command Shape                                                                                                            | Read-only                                                                                                                                                        |
-| -------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dev`                | Existing Vite dev server                 | `vite`                                                                                                                            | no                                                                                                                                                               |
-| `preview`            | Existing Vite preview                    | `vite preview`                                                                                                                    | no                                                                                                                                                               |
-| `typecheck`          | Existing Vue SFC type check              | `pnpm run typecheck:vue`                                                                                                          | yes                                                                                                                                                              |
-| `typecheck:vue`      | Existing `vue-tsc` invocation            | `vue-tsc --noEmit`                                                                                                                | yes                                                                                                                                                              |
-| `build`              | Existing typecheck plus production build | `pnpm run typecheck:vue && vite build`                                                                                            | writes `dist` unless temporary outDir is used by validation                                                                                                      |
-| `lint`               | ESLint validation                        | `eslint . --max-warnings=0`                                                                                                       | yes                                                                                                                                                              |
-| `lint:style`         | Stylelint validation                     | `stylelint "src/**/*.{css,vue}"`                                                                                                  | yes                                                                                                                                                              |
-| `format:check`       | Prettier check                           | `prettier . --check`                                                                                                              | yes                                                                                                                                                              |
-| `format:write`       | Explicit formatting write                | `prettier . --write`                                                                                                              | no                                                                                                                                                               |
-| `check:deps`         | Dependency policy                        | `node scripts/governance/check-dependency-policy.mjs`                                                                             | yes                                                                                                                                                              |
-| `check:unused`       | Knip unused analysis                     | `knip --no-progress`                                                                                                              | yes                                                                                                                                                              |
-| `check:architecture` | Architecture boundaries                  | `node scripts/governance/check-architecture-boundaries.mjs`                                                                       | yes                                                                                                                                                              |
-| `check:tokens`       | Raw visual values                        | `node scripts/governance/check-raw-visual-values.mjs`                                                                             | yes                                                                                                                                                              |
-| `check:mocks`        | Mock/fake fallback                       | `node scripts/governance/check-forbidden-mock-data.mjs`                                                                           | yes                                                                                                                                                              |
-| `check:secrets`      | Redacted secret patterns                 | `node scripts/governance/check-secret-patterns.mjs`                                                                               | yes                                                                                                                                                              |
-| `audit:prod`         | Production dependency security audit     | `pnpm audit --prod`                                                                                                               | yes                                                                                                                                                              |
-| `check:static`       | Static governance aggregate              | `run-s lint lint:style format:check check:deps check:unused check:architecture check:tokens check:mocks check:secrets audit:prod` | yes                                                                                                                                                              |
-| `verify:foundation`  | Full foundation gate                     | `run-s typecheck build check:static`                                                                                              | yes except normal `build` writes `dist`; CI/local gate should use the established temporary build-output method when strict no-repo-write validation is required |
+| Script               | Responsibility                           | Expected Command Shape                                                                                | Read-only                                                   |
+| -------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `dev`                | Existing Vite dev server                 | `vite`                                                                                                | no                                                          |
+| `preview`            | Existing Vite preview                    | `vite preview`                                                                                        | no                                                          |
+| `typecheck`          | Existing Vue SFC type check              | `pnpm run typecheck:vue`                                                                              | yes                                                         |
+| `typecheck:vue`      | Existing `vue-tsc` invocation            | `vue-tsc --noEmit`                                                                                    | yes                                                         |
+| `build`              | Existing typecheck plus production build | `pnpm run typecheck:vue && vite build`                                                                | writes `dist` unless temporary outDir is used by validation |
+| `lint`               | ESLint validation                        | `eslint . --max-warnings=0`                                                                           | yes                                                         |
+| `lint:style`         | Stylelint validation                     | `stylelint "src/**/*.{css,vue}"`                                                                      | yes                                                         |
+| `format:check`       | Prettier check                           | `prettier . --check`                                                                                  | yes                                                         |
+| `format:write`       | Explicit formatting write                | `prettier . --write`                                                                                  | no                                                          |
+| `check:deps`         | Dependency policy                        | `node scripts/governance/check-dependency-policy.mjs`                                                 | yes                                                         |
+| `check:residue`      | Active-authority consistency             | `node scripts/governance/check-obsolete-architecture-residue.mjs`                                     | yes                                                         |
+| `check:unused`       | Knip unused analysis                     | `knip --no-progress`                                                                                  | yes                                                         |
+| `check:architecture` | Architecture boundaries                  | `node scripts/governance/check-architecture-boundaries.mjs`                                           | yes                                                         |
+| `check:tokens`       | Raw visual values                        | `node scripts/governance/check-raw-visual-values.mjs`                                                 | yes                                                         |
+| `check:mocks`        | Mock/fake fallback                       | `node scripts/governance/check-forbidden-mock-data.mjs`                                               | yes                                                         |
+| `check:secrets`      | Redacted secret patterns                 | `node scripts/governance/check-secret-patterns.mjs`                                                   | yes                                                         |
+| `check:copy`         | Rendered product copy                    | `node scripts/governance/check-user-visible-copy.mjs`                                                 | yes                                                         |
+| `check:governance`   | Governance aggregate                     | `run-s check:deps check:architecture check:residue check:tokens check:mocks check:secrets check:copy` | yes                                                         |
+| `audit:prod`         | Production dependency security audit     | `pnpm audit --prod`                                                                                   | yes                                                         |
+| `check:static`       | Static governance aggregate              | `run-s lint lint:style format:check check:governance check:unused audit:prod`                         | yes                                                         |
 
 No `test` script is permitted.
 
-## Proposed Files For Later Phases
+## Implemented Tooling Files
 
-| Path                                                   | Phase      | Owner                   |
-| ------------------------------------------------------ | ---------- | ----------------------- |
-| `eslint.config.mjs`                                    | F2B        | ESLint validation       |
-| `prettier.config.mjs`                                  | F2B        | Prettier formatting     |
-| `.prettierignore`                                      | F2B or F2C | Prettier scope          |
-| `stylelint.config.mjs`                                 | F2B        | Stylelint validation    |
-| `knip.json`                                            | F2B        | unused-code analysis    |
-| `scripts/governance/check-dependency-policy.mjs`       | F2D        | dependency policy       |
-| `scripts/governance/check-architecture-boundaries.mjs` | F2D        | architecture scanner    |
-| `scripts/governance/check-raw-visual-values.mjs`       | F2D        | token/raw-value scanner |
-| `scripts/governance/check-forbidden-mock-data.mjs`     | F2D        | mock-data scanner       |
-| `scripts/governance/check-secret-patterns.mjs`         | F2D        | secret scanner          |
-| `docs/architecture/DEPENDENCY_VERSION_EXCEPTIONS.json` | superseded | dependency exceptions   |
+| Path                                                         | Owner                        |
+| ------------------------------------------------------------ | ---------------------------- |
+| `eslint.config.mjs`                                          | ESLint validation            |
+| `prettier.config.mjs`                                        | Prettier formatting          |
+| `.prettierignore`                                            | Prettier scope               |
+| `stylelint.config.mjs`                                       | Stylelint validation         |
+| `knip.json`                                                  | unused-code analysis         |
+| `scripts/governance/check-dependency-policy.mjs`             | dependency policy            |
+| `scripts/governance/check-architecture-boundaries.mjs`       | architecture scanner         |
+| `scripts/governance/check-obsolete-architecture-residue.mjs` | active-authority consistency |
+| `scripts/governance/check-raw-visual-values.mjs`             | token/raw-value scanner      |
+| `scripts/governance/check-forbidden-mock-data.mjs`           | mock-data scanner            |
+| `scripts/governance/check-secret-patterns.mjs`               | secret scanner               |
+| `scripts/governance/check-user-visible-copy.mjs`             | rendered-copy scanner        |
 
-The proposed `docs/architecture/DEPENDENCY_VERSION_EXCEPTIONS.json` path is superseded by the implemented `versionExceptions` authority in `scripts/governance/policy.mjs`. The active exceptions for `typescript@6.0.3` and `pnpm@11.11.0` record authority, rationale, risk, review trigger, removal condition, selected version, and compatibility evidence through `policy.mjs` and this baseline.
+Version exceptions are implemented directly in `scripts/governance/policy.mjs`. The active exceptions for `typescript@6.0.3` and `pnpm@11.11.0` record authority, rationale, risk, review trigger, removal condition, selected version, and compatibility evidence through `policy.mjs` and this baseline.
 
 ## Implementation Slices
 
@@ -232,4 +237,4 @@ F2 is complete: selected dependencies are installed intentionally, configs and s
 
 Final F2 status: `F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_COMPLETE`.
 
-Next required phase: `F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN`.
+Current development gate: `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`.

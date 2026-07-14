@@ -61,8 +61,8 @@ Before implementing a feature, require:
 - no duplicate implementation already present in the target;
 - a narrow validation plan using typecheck, production build, and real-browser runtime evidence without automated test files, fixtures, snapshots, or scripted E2E suites.
 
-The product UI gate is satisfied by `PRODUCT_UI_MIGRATION_READY` in
-`docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`. Further migration must
+The current product-development gate is `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`
+in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`. Further development must
 preserve the accepted canonical layout, interaction, density, board focus,
 panel geometry, keyboard behavior, and motion before refactoring. Stable
 latest versions are preferred, but dependency selection is evaluated as one

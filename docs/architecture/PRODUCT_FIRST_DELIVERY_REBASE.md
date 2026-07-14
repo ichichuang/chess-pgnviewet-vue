@@ -1,6 +1,6 @@
 # Product-First Delivery Authority
 
-Status: `PRODUCT_UI_MIGRATION_READY`
+Status: `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`
 
 ## Decision
 

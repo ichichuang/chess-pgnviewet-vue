@@ -60,7 +60,7 @@ No alias chain exceeds one level. No alias contains a raw visual value.
 
 ## Consumer Migration
 
-Current target consumers remain limited to the neutral bootstrap:
+The F3B validation consumer set was limited to the neutral bootstrap:
 
 - `src/styles/index.css` imports `src/styles/tokens.css` exactly once.
 - `src/styles/base.css` consumes `--font-sans`, `--fs-base`, `--text`, `--bg`,
@@ -73,16 +73,16 @@ The only mechanical consumer migration in F3B is replacing the old
 
 ## Governance Rules
 
-Future token additions require canonical source evidence, an approved inventory
+Subsequent token additions require canonical source evidence, an approved inventory
 entry, a project-owned semantic name, owner review, and validation through the
 raw visual-value scanner. Raw feature values, parallel namespaces, feature-local
 palettes, and Naive UI literal theme overrides are prohibited.
 
 The raw visual-value scanner permits raw visual values only in the token
-authority and approved evidence documents. Future Naive UI mappings must derive
-from project tokens through a project-owned provider in F3D. Future theme engine
-work in F3C owns preference resolution, startup markers, persistence boundaries,
-system listeners, cross-tab behavior, and runtime document color metadata.
+authority and approved evidence documents. Current Naive UI mappings derive
+from project tokens through the project-owned F3D provider. The F3C theme engine
+owns preference resolution, startup markers, persistence boundaries, system
+listeners, cross-tab behavior, and runtime document color metadata.
 
 Missing domains remain unimplemented unless a later approved inventory adds
 evidence-backed entries: player and connection states, z-index, motion and
@@ -106,5 +106,4 @@ F3B completion requires:
 - `pnpm` static validation, typecheck, production build, production and full
   audits, and real-browser token-loading validation.
 
-Next phase:
-`F3C_THEME_ENGINE_PREFERENCE_AND_NO_FLASH_BOOTSTRAP_IMPLEMENTATION`.
+Current development gate: `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`.

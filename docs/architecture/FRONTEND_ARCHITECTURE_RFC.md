@@ -18,12 +18,12 @@ src/
   ui/          project-owned presentational Vue adapters
   types/       shared typed contracts
   views/       route-level composition only
-  domains/     future framework-free chess/PGN/annotation/analysis logic
-  features/    future feature containers and composables
-  api/         future typed repositories and DTO mappers
+  features/*/domain/  current framework-free chess/PGN/annotation/analysis logic
+  features/           current feature containers, views, components, and composables
+  api/                current Axios client, repositories, DTO mapping, Query, and auth boundaries
 ```
 
-- `domains/` imports no Vue, Pinia, UI, router, storage, or transport code.
+- Feature-local `domain/` modules import no Vue, Pinia, UI, router, storage, or transport code.
 - `ui/` imports no feature store or repository.
 - Feature containers may consume their own Pinia store, domain contracts, project UI adapters, and typed repositories.
 - Cross-feature access uses typed public contracts; direct cross-store mutation is forbidden.
@@ -55,9 +55,9 @@ adapter; URL-token and query-token authentication remain forbidden. See
 
 ## Source migration
 
-`pgnViewer-new` is the canonical teaching visual/interaction/runtime source. Later migration follows `docs/migration/CANONICAL_RUNTIME_CLOSURE.json` node by node. Runtime files are never bulk-copied. Each slice must prove imports, consumers, styles, assets, framework compatibility, unsafe-boundary removal, typecheck/build validation, and narrow real-browser runtime evidence before implementation.
+`pgnViewer-new` is the canonical teaching visual/interaction/runtime source. Continuing source-confirmed development follows `docs/migration/CANONICAL_RUNTIME_CLOSURE.json` node by node. Runtime files are never bulk-copied. Each slice must prove imports, consumers, styles, assets, framework compatibility, unsafe-boundary removal, typecheck/build validation, and narrow real-browser runtime evidence before implementation.
 
-Canonical runtime feature migration must remain mechanical before refactoring. P1 product UI migration remains blocked until `PRODUCT_UI_MIGRATION_READY` is set by `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`; P0E remains accepted but is no longer the only pre-product gate. P1 must prioritize mechanical migration of the canonical visible interface from `pgnViewer-new`, preserving canonical layout, interaction, density, board focus, panel geometry, keyboard behavior, and motion before refactoring. Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph, not as unrelated package maxima. The newest stable version that passes the required architecture contract is authoritative. Exceptions require upstream evidence, explicit recording, owner, review trigger, and removal condition; silent or unexplained downgrades remain forbidden.
+Canonical runtime feature migration remains mechanical before refactoring. Product development is open under `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`; continuing slices preserve the canonical visible interface from `pgnViewer-new`, including layout, interaction, density, board focus, panel geometry, keyboard behavior, and motion. Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph, not as unrelated package maxima. The newest stable version that passes the required architecture contract is authoritative. Exceptions require upstream evidence, explicit recording, owner, review trigger, and removal condition; silent or unexplained downgrades remain forbidden.
 
 The authoritative Vue compiler is the newest stable official TypeScript 6.x package while stable Vue TypeScript 7 integration is unavailable. This follows official TypeScript guidance for Vue and other embedded-language projects. `@typescript/typescript6` is not used because the current stable Volar and `vue-tsc` stack cannot consume its shim. TypeScript 7 is not an active dependency during this compatibility period; adoption is a future gated upgrade only after stable TypeScript programmatic API support, stable Vue Language Tools support, stable `vue-tsc` support, full typecheck/build/browser validation, and owner acceptance.
 

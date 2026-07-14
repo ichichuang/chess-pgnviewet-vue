@@ -42,20 +42,21 @@ Permanent exclusions:
 
 The secret scanner additionally excludes `.ai/reports/`, `docs/archive/`, `pnpm-lock.yaml`, binary assets, and approved placeholder-only `.env.example` patterns.
 
-## Future Allowlists
+## Ownership Allowlists
 
-Future ownership allowlists are exact paths or directories only. They authorize future adapter ownership without creating placeholder runtime files:
+Active ownership allowlists are exact paths or directories only:
 
-- Naive UI: `src/ui/`, `src/app/providers/`, `src/providers/`
-- Icons: `src/ui/icons/`
-- API/repositories: `src/api/`, `src/repositories/`
+- Naive UI: `src/ui/`, `src/app/providers/`
+- API: `src/api/`
 - Persistence/preferences: `src/persistence/`, `src/bootstrap/preferences/`
 - Runtime config: `src/runtime/config/`
 
+Reserved paths `src/providers/`, `src/ui/icons/`, and `src/repositories/` do not claim implemented directories and require an approved slice before use.
+
 ## Rule Inventory
 
-Current inventory: 87 blocking rules. The current totals are dependency policy
-12, obsolete authority residue 10, architecture boundaries 33, raw visual
+Current inventory: 94 blocking rules. The current totals are dependency policy
+12, obsolete authority residue 17, architecture boundaries 33, raw visual
 values 10, mock product data 9, secret patterns 11, rendered product copy 1,
 and shared invalid JSON handling 1.
 
@@ -118,6 +119,13 @@ Obsolete authority residue:
 - `RESIDUE_DELETED_SESSION_ADAPTER`
 - `RESIDUE_AUTH_OWNER_VALIDATION_REQUIRED_MARKER`
 - `RESIDUE_AUTH_LOGIN_SUCCESS_UNCLAIMED`
+- `RESIDUE_AUTOMATED_TEST_REQUIREMENT`
+- `RESIDUE_TEST_COMMAND_REQUIREMENT`
+- `RESIDUE_MANDATORY_I18NEXT`
+- `RESIDUE_STALE_PRODUCT_UI_GATE`
+- `RESIDUE_IMPLEMENTED_OWNER_MARKED_FUTURE`
+- `RESIDUE_STALE_PHASE_SUCCESSOR`
+- `RESIDUE_STALE_IMPLEMENTED_STATUS`
 - `RESIDUE_INTERNAL_PROXY`
 - `RESIDUE_GENERIC_CALL`
 - `RESIDUE_SECRET_AUTH_ARCHITECTURE`
@@ -205,6 +213,7 @@ The secret scanner prints only redacted fingerprints and redacted excerpts. It m
 Required F2D validation commands:
 
 - `pnpm run check:deps`
+- `pnpm run check:residue`
 - `pnpm run check:architecture`
 - `pnpm run check:tokens`
 - `pnpm run check:mocks`
@@ -228,10 +237,10 @@ Browser validation is not applicable to F2D because no runtime UI behavior chang
 
 F2E final validation additionally confirmed JSON mode for all scanner entrypoints, deterministic sorted findings, zero real-repository findings, zero skipped paths, controlled negative and clean probes in operating-system temporary directories, redacted secret output, isolated frozen-lockfile validation, `check:governance`, `check:static`, typecheck, temporary-output production build, production audit, full audit, and no dependency, lockfile, scanner source, runtime source, token-value, automated-test, product UI, or evidence-source mutation.
 
-Maintenance ownership remains active in `scripts/governance/policy.mjs`, `scripts/governance/utils.mjs`, and the five scanner entrypoints. Future false-positive changes must be made only through the owning scanner, policy, package script, ESLint Node-context configuration, or this authority document.
+Maintenance ownership remains active in `scripts/governance/policy.mjs`, `scripts/governance/utils.mjs`, and the seven scanner entrypoints. Subsequent false-positive changes must be made only through the owning scanner, policy, package script, ESLint Node-context configuration, or this authority document.
 
 ## F2 Completion Gate
 
 F2D passed when every scanner passed independently, negative and clean probes proved blocking and allowed behavior with redaction, `check:governance` and `check:static` passed, static tool validation passed, audits passed, no dependency or lockfile change occurred, no automated test infrastructure existed, no runtime source or token value changed, and the implementation and governance evidence commits were pushed normally.
 
-F2E final closure passed and closes F2 toolchain/static governance. The next phase after F2E is `F3A_CANONICAL_TOKEN_THEME_INVENTORY_AND_TARGET_DESIGN`.
+F2E final closure passed and closes F2 toolchain/static governance. The current development gate is `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`.

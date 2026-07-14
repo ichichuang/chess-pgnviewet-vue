@@ -1,0 +1,287 @@
+{
+  "phase": "GLOBAL_ACTIVE_AUTHORITY_CONSISTENCY_PURGE_AND_PUSH",
+  "startedAt": "2026-07-14T02:25:14Z",
+  "completedAt": "2026-07-14T02:55:28Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "localHeadBefore": "9539860e5896644fa4687ecfd6bd345b78ab3aa7",
+  "originMainBefore": "9539860e5896644fa4687ecfd6bd345b78ab3aa7",
+  "liveRemoteMainBefore": "9539860e5896644fa4687ecfd6bd345b78ab3aa7",
+  "aheadBehindBefore": "0/0",
+  "worktreeBefore": {
+    "indexFiles": 0,
+    "trackedWorktreeFiles": 0,
+    "untrackedFiles": 0,
+    "gitLocks": 0,
+    "activeTrackedFileWriters": 0
+  },
+  "authorityFilesScanned": {
+    "count": 57,
+    "scopes": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".ai/skills/project-ui/SKILL.md",
+      "docs/product/**",
+      "docs/ui/**",
+      "docs/architecture/**",
+      "docs/migration/SOURCE_PROVENANCE.md",
+      "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+      "docs/migration/CAPABILITY_MATRIX.json",
+      "scripts/governance/policy.mjs",
+      "scripts/governance/check-obsolete-architecture-residue.mjs",
+      "scripts/governance/check-architecture-boundaries.mjs",
+      "scripts/governance/check-user-visible-copy.mjs",
+      "package.json"
+    ],
+    "historicalReportsExcludedFromCurrentRuleCorrection": true
+  },
+  "occurrencesReviewed": {
+    "classificationUnit": "semantic occurrence group; repeated checklist rows and generated inventory fields remain counted within their owning group",
+    "semanticGroups": 12
+  },
+  "occurrenceClassifications": [
+    {
+      "classification": "ACTIVE_INCORRECT_RULE",
+      "group": "ui-checklist-automated-verification-methods",
+      "matchedRowsOrFields": 34,
+      "disposition": "rewritten"
+    },
+    {
+      "classification": "ACTIVE_INCORRECT_RULE",
+      "group": "persistence-test-terminology-and-evidence",
+      "matchedRowsOrFields": 10,
+      "disposition": "rewritten"
+    },
+    {
+      "classification": "ACTIVE_INCORRECT_RULE",
+      "group": "canonical-closure-direct-automated-evidence-requirements",
+      "matchedRowsOrFields": 11,
+      "disposition": "rewritten"
+    },
+    {
+      "classification": "ACTIVE_INCORRECT_RULE",
+      "group": "mandatory-unselected-i18n-library",
+      "matchedRowsOrFields": 5,
+      "disposition": "rewritten"
+    },
+    {
+      "classification": "ACTIVE_STALE_STATUS",
+      "group": "obsolete-product-gates-successor-phases-and-pending-statuses",
+      "matchedRowsOrFields": 26,
+      "disposition": "rewritten"
+    },
+    {
+      "classification": "ACTIVE_STALE_STATUS",
+      "group": "implemented-runtime-owners-described-as-future-or-missing",
+      "disposition": "rewritten-at-owning-authorities"
+    },
+    {
+      "classification": "VALID_PROHIBITION_TEXT",
+      "group": "explicit-no-automated-test-and-no-mock-policy",
+      "disposition": "retained"
+    },
+    {
+      "classification": "VALID_CURRENT_RULE",
+      "group": "static-lint-stylelint-typecheck-build-audit-and-manual-browser-validation",
+      "disposition": "retained"
+    },
+    {
+      "classification": "HISTORICAL_REFERENCE",
+      "group": "canonical-source-testEvidence-and-explicit-phase-scope",
+      "disposition": "retained-as-source-or-phase-evidence"
+    },
+    {
+      "classification": "NON_TEST_MEANING",
+      "group": "state-snapshot-and-contract-coverage-language",
+      "disposition": "retained"
+    },
+    {
+      "classification": "NON_RUNTIME_DESIGN_REQUIREMENT",
+      "group": "future-approved-token-extensions-and-unselected-i18n-boundary",
+      "disposition": "retained"
+    },
+    {
+      "classification": "VALID_CURRENT_RULE",
+      "group": "truthfully-blocked-protected-replay-cloud-share-and-hardware-live-contracts",
+      "disposition": "retained"
+    }
+  ],
+  "activeIncorrectRulesBefore": 60,
+  "activeStaleStatusesBefore": {
+    "gateSuccessorAndPendingMarkers": 26,
+    "additionalArchitectureAndMachineSummaryGroups": [
+      "frontend directory ownership",
+      "toolchain ownership",
+      "theme and provider ownership",
+      "canonical token inventory current-state labels",
+      "account versus protected-replay capability"
+    ]
+  },
+  "automatedTestRequirementsRemoved": {
+    "totalRowsOrFields": 55,
+    "uiAcceptanceChecklist": 34,
+    "persistenceSpecification": 10,
+    "canonicalRuntimeClosure": 11
+  },
+  "staleArchitectureStatementsRemoved": [
+    "implemented feature-local domains, feature containers, Axios repositories, DTO mapping, Query, and authentication marked future",
+    "implemented toolchain configurations and package scripts marked future",
+    "implemented theme engine, provider, token, board, PGN, annotation, AI, API, and product owners marked missing or pending",
+    "account login grouped with still-blocked protected replay",
+    "F3A token inventory fields presented as current target values"
+  ],
+  "staleGateStatementsRemoved": {
+    "matchedRows": 26,
+    "replacement": "PRODUCT_UI_DEVELOPMENT_BASELINE_PASS"
+  },
+  "i18nTerminologyCorrections": {
+    "mandatoryLibraryReferencesRemoved": 5,
+    "boundary": "project-owned Vue i18n boundary",
+    "defaultLocale": "zh-CN",
+    "fallbackLocale": "en",
+    "runtimePackage": "UNSELECTED",
+    "synchronization": [
+      "typed locale identifiers",
+      "HTML lang",
+      "Naive UI locale",
+      "Naive UI date-locale",
+      "Intl formatting"
+    ]
+  },
+  "filesCreated": [
+    ".ai/reports/GLOBAL_ACTIVE_AUTHORITY_CONSISTENCY_PURGE_AND_PUSH_REPORT.json"
+  ],
+  "filesModified": [
+    ".ai/skills/project-ui/SKILL.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+    "docs/architecture/F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_CLOSURE.md",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md",
+    "docs/architecture/P1A_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_BASELINE.md",
+    "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+    "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md",
+    "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+    "docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md",
+    "docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md",
+    "docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
+    "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md",
+    "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+    "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+    "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    "docs/ui/I18N_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+    "scripts/governance/check-obsolete-architecture-residue.mjs",
+    "scripts/governance/policy.mjs"
+  ],
+  "filesDeleted": [],
+  "referencesUpdated": [],
+  "scannerChanges": {
+    "newRules": [
+      "RESIDUE_AUTOMATED_TEST_REQUIREMENT",
+      "RESIDUE_TEST_COMMAND_REQUIREMENT",
+      "RESIDUE_MANDATORY_I18NEXT",
+      "RESIDUE_STALE_PRODUCT_UI_GATE",
+      "RESIDUE_IMPLEMENTED_OWNER_MARKED_FUTURE",
+      "RESIDUE_STALE_PHASE_SUCCESSOR",
+      "RESIDUE_STALE_IMPLEMENTED_STATUS"
+    ],
+    "activeAuthorityScope": "exact files plus docs/architecture, docs/product, and docs/ui prefixes",
+    "exactPatternDefinitionExceptions": [
+      "scripts/governance/check-obsolete-architecture-residue.mjs",
+      "scripts/governance/check-user-visible-copy.mjs",
+      "scripts/governance/policy.mjs"
+    ],
+    "blockingRuleTotal": 94
+  },
+  "protectedHashesBefore": {
+    "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+    "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+    "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d",
+    "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+    "src/App.vue": "44f3160cb33fa0a7847f6311798cb1f7a9c71a289e83ad35a865a5b21da64ad7",
+    "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+    "src/stores/index.ts": "00760ba4ac0d4e771426293a4754c9315939403551249810779b6d02d09ff90e",
+    "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+    "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+    "src/api/queryClient.ts": "517851be812d32a1b906fafd68d114c9c76b43423472a04f1670258100987b30",
+    "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+    "src/styles/tokens.css": "54b172c48deaaf305fe31fe57d9fed68b8b6b9d1126337a3ef904df5c8e7574a"
+  },
+  "protectedHashesAfter": {
+    "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+    "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+    "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d",
+    "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+    "src/App.vue": "44f3160cb33fa0a7847f6311798cb1f7a9c71a289e83ad35a865a5b21da64ad7",
+    "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+    "src/stores/index.ts": "00760ba4ac0d4e771426293a4754c9315939403551249810779b6d02d09ff90e",
+    "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+    "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+    "src/api/queryClient.ts": "517851be812d32a1b906fafd68d114c9c76b43423472a04f1670258100987b30",
+    "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+    "src/styles/tokens.css": "54b172c48deaaf305fe31fe57d9fed68b8b6b9d1126337a3ef904df5c8e7574a"
+  },
+  "protectedRuntimeUnchanged": true,
+  "mockDataAudit": "PASS_ZERO_FINDINGS_NO_MOCK_OR_FAKE_PRODUCT_DATA_INTRODUCED",
+  "automatedTestAudit": "PASS_ZERO_ACTIVE_REQUIREMENTS_ZERO_INFRASTRUCTURE_ZERO_TEST_SCRIPTS",
+  "staticValidation": {
+    "checkResidue": "PASS",
+    "checkDeps": "PASS",
+    "checkArchitecture": "PASS",
+    "checkTokens": "PASS",
+    "checkMocks": "PASS",
+    "checkSecrets": "PASS",
+    "checkCopy": "PASS",
+    "checkGovernance": "PASS",
+    "formatCheck": "PASS",
+    "lint": "PASS",
+    "lintStyle": "PASS",
+    "checkUnused": "PASS",
+    "checkStatic": "PASS"
+  },
+  "typecheck": "PASS_VUE_TSC_NO_EMIT",
+  "productionBuild": {
+    "status": "PASS",
+    "outDir": "OPERATING_SYSTEM_TEMPORARY_DIRECTORY_OUTSIDE_REPOSITORY_REMOVED",
+    "generatedFiles": 27,
+    "authoritativeSfcTypecheck": "PASS"
+  },
+  "securityAudits": {
+    "production": "PASS_NO_KNOWN_VULNERABILITIES",
+    "full": "PASS_NO_KNOWN_VULNERABILITIES"
+  },
+  "jsonValidation": "PASS_4_MODIFIED_OR_CREATED_JSON_FILES_STRICTLY_PARSED",
+  "markdownReferenceValidation": "PASS_23_MODIFIED_MARKDOWN_FILES_ZERO_BROKEN_RELATIVE_LINKS",
+  "browserValidation": "NOT_RUN_DOCUMENTATION_AND_GOVERNANCE_ONLY_PROTECTED_RUNTIME_UNCHANGED",
+  "gitDiffCheck": "PASS",
+  "commit": {
+    "subject": "docs(governance): 清除残留测试规则并校准当前架构权威",
+    "status": "PASS_ENCLOSING_PHASE_COMMIT"
+  },
+  "push": {
+    "remote": "origin",
+    "branch": "main",
+    "status": "PASS_LOCAL_ORIGIN_AND_LIVE_REMOTE_EQUAL"
+  },
+  "localHeadAfter": "ENCLOSING_PHASE_COMMIT",
+  "remoteMainAfter": "ENCLOSING_PHASE_COMMIT",
+  "localRemoteEqual": true,
+  "worktreeAfter": {
+    "indexClean": true,
+    "trackedWorktreeClean": true,
+    "unexpectedUntrackedFiles": []
+  },
+  "remainingActiveIncorrectRules": 0,
+  "remainingActiveStaleStatuses": 0,
+  "finalDevelopmentGate": "PRODUCT_UI_DEVELOPMENT_BASELINE_PASS",
+  "finalVerdict": "GLOBAL_ACTIVE_AUTHORITY_CONSISTENCY_PURGE_AND_PUSH_PASS"
+}
