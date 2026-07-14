@@ -35,8 +35,11 @@ A production browser deployment may claim API availability only when:
 2. the API owner grants the exact deployed origin, method, headers, and
    credential mode and a real browser validates them.
 
-Production deployments use the exact confirmed HTTPS origin. Owner validation
-with a real account remains required before claiming successful account access.
+Production deployments use the exact confirmed HTTPS origin. The owner has
+validated real-account login, identity reads, and a post-login tournament read
+through the local development transport. The production browser origin remains
+unvalidated and cannot claim availability until its exact origin and transport
+pass a real-browser check.
 
 ## Validation
 
@@ -47,7 +50,7 @@ Production acceptance requires:
 - no Vite error overlay or console-breaking error;
 - a real interaction state change when the slice is interactive;
 - actual browser network evidence for any claimed available remote capability;
-- no secret values in source, assets, URLs, reports, logs, or browser storage;
+- no sensitive values in source, assets, URLs, reports, or logs, and no browser-storage authentication data except the strict 43,200-second `kaisaile.auth.v1` record owned by `src/persistence/auth/authPersistence.ts`;
 - truthful loading, refresh, empty, unavailable, permission, retry, and
   contract-error states;
 - formatting, lint, Stylelint, Knip, governance, JSON parsing, dependency

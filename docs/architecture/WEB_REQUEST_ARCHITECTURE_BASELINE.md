@@ -70,7 +70,9 @@ Pinia or TanStack Vue Query.
 Protected replay, cloud/share, hardware, and live transports remain unavailable
 until their separate read contracts are confirmed. Password login and the two
 account identity reads are implemented through `authRepository`; they do not
-authorize any other protected capability.
+authorize any other protected capability. The owner validated those account
+requests and a subsequent public tournament request in a real browser; the
+production browser origin remains unvalidated.
 
 ## UI states
 

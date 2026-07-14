@@ -157,6 +157,57 @@ function scanBoundaries(file, text) {
         'Raw browser storage is allowed only inside approved persistence or bootstrap-preference adapters.',
     },
     {
+      ruleId: 'ARCH_AUTH_STORAGE_KEY_OWNER',
+      pattern: /\bkaisaile\.auth\.v1\b/gu,
+      allowlist: [architecturePolicy.authPersistenceOwner],
+      reason:
+        'The account-session storage key is owned only by the approved auth persistence adapter.',
+    },
+    {
+      ruleId: 'ARCH_AUTH_LOCAL_STORAGE_OWNER',
+      pattern:
+        /(?:\b(?:auth|account|session|token)\w*\b[\s\S]{0,160}\blocalStorage\b|\blocalStorage\b[\s\S]{0,160}\b(?:auth|account|session|token)\w*\b)/giu,
+      allowlist: [architecturePolicy.authPersistenceOwner],
+      reason:
+        'Authentication localStorage access is owned only by the approved auth persistence adapter.',
+    },
+    {
+      ruleId: 'ARCH_PASSWORD_PERSISTENCE',
+      pattern:
+        /\b(?:localStorage|sessionStorage)\.setItem\s*\([^)]{0,320}\b(?:password|passwd|pwd|passwordDigest|digest)\b|\b(?:persist\w*|put|add)\s*\(\s*\{[^}]{0,320}\b(?:password|passwd|pwd|passwordDigest|digest)\s*:/giu,
+      allowlist: [],
+      reason:
+        'Passwords and password digests are submission-only and must never enter persistence.',
+    },
+    {
+      ruleId: 'ARCH_AUTH_DEXIE_PERSISTENCE',
+      pattern:
+        /(?:\b(?:auth|accountToken|authToken)\w*\b[\s\S]{0,160}\b(?:Dexie|indexedDB)\b|\b(?:Dexie|indexedDB)\b[\s\S]{0,160}\b(?:auth|accountToken|authToken)\w*\b)/giu,
+      allowlist: [],
+      reason: 'Authentication data must not enter Dexie or IndexedDB.',
+    },
+    {
+      ruleId: 'ARCH_AUTH_QUERY_PERSISTENCE',
+      pattern:
+        /(?:\b(?:auth|accountToken|authToken)\w*\b[\s\S]{0,160}\b(?:persistQuery|dehydrate|hydrate)\w*\b|\b(?:persistQuery|dehydrate|hydrate)\w*\b[\s\S]{0,160}\b(?:auth|accountToken|authToken)\w*\b)/giu,
+      allowlist: [],
+      reason: 'Authentication data must not enter persisted Query state.',
+    },
+    {
+      ruleId: 'ARCH_PROTECTED_AUTH_OWNER',
+      pattern:
+        /\b(?:kaisaileAuth|privateAuthToken|withTransientPrivateAuthToken|PersistedAuthSession|persistAuthSession|readPersistedAuthSession|clearPersistedAuthSession)\b|\bauth\s*:\s*['"]protected['"]/gu,
+      allowlist: architecturePolicy.protectedAuthBoundaryAllowlist,
+      reason:
+        'Protected token handling must stay inside the approved repository, Axios, auth-state, and persistence boundaries.',
+    },
+    {
+      ruleId: 'ARCH_COMPATIBILITY_CONSTANT_OWNER',
+      pattern: /\b(?:LOGIN_APP_ID|LOGIN_OPEN_ID|REQUEST_SIGNING_SEED|REQUEST_SIGNING_USERNAME)\b/gu,
+      allowlist: [architecturePolicy.browserCompatibilityConstantOwner],
+      reason: 'Browser compatibility constants must remain centralized in the approved signer.',
+    },
+    {
       ruleId: 'ARCH_IMPORT_META_ENV_OUTSIDE_CONFIG',
       pattern: /\bimport\.meta\.env\b/gu,
       allowlist: architecturePolicy.runtimeConfigAllowlist,

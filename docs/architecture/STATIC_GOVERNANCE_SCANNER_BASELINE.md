@@ -12,6 +12,7 @@ Project-owned scanners live in `scripts/governance/` and run read-only with Node
 | Domain             | Owner                                                         | Package script       |
 | ------------------ | ------------------------------------------------------------- | -------------------- |
 | Dependency policy  | `scripts/governance/check-dependency-policy.mjs`              | `check:deps`         |
+| Obsolete authority | `scripts/governance/check-obsolete-architecture-residue.mjs`  | `check:residue`      |
 | Architecture       | `scripts/governance/check-architecture-boundaries.mjs`        | `check:architecture` |
 | Raw visual values  | `scripts/governance/check-raw-visual-values.mjs`              | `check:tokens`       |
 | Mock product data  | `scripts/governance/check-forbidden-mock-data.mjs`            | `check:mocks`        |
@@ -53,11 +54,10 @@ Future ownership allowlists are exact paths or directories only. They authorize 
 
 ## Rule Inventory
 
-Current inventory: 63 blocking rules. F2E originally verified 62; the account
-compatibility phase adds one rendered-copy rule. The current totals are:
-dependency policy 12, architecture boundaries 19, raw visual values 10, mock
-product data 9, secret patterns 11, rendered product copy 1, and shared invalid
-JSON handling 1.
+Current inventory: 87 blocking rules. The current totals are dependency policy
+12, obsolete authority residue 10, architecture boundaries 33, raw visual
+values 10, mock product data 9, secret patterns 11, rendered product copy 1,
+and shared invalid JSON handling 1.
 
 Dependency policy:
 
@@ -84,9 +84,23 @@ Architecture boundaries:
 - `ARCH_RAW_FETCH_OUTSIDE_API`
 - `ARCH_RAW_XMLHTTPREQUEST_OUTSIDE_API`
 - `ARCH_RAW_BROWSER_STORAGE`
+- `ARCH_AUTH_STORAGE_KEY_OWNER`
+- `ARCH_AUTH_LOCAL_STORAGE_OWNER`
+- `ARCH_PASSWORD_PERSISTENCE`
+- `ARCH_AUTH_DEXIE_PERSISTENCE`
+- `ARCH_AUTH_QUERY_PERSISTENCE`
+- `ARCH_PROTECTED_AUTH_OWNER`
+- `ARCH_COMPATIBILITY_CONSTANT_OWNER`
 - `ARCH_IMPORT_META_ENV_OUTSIDE_CONFIG`
 - `ARCH_GENERIC_CALL_ENDPOINT`
 - `ARCH_PROXY_REQUEST_USAGE`
+- `ARCH_INTERNAL_API_PROXY`
+- `ARCH_NODE_SERVER_RUNTIME`
+- `ARCH_COOKIE_SESSION_AUTH`
+- `ARCH_URL_TOKEN_AUTH`
+- `ARCH_DEVICE_GUEST_IDENTITY`
+- `ARCH_MINI_PROGRAM_TRANSPORT`
+- `ARCH_SECRET_HEADER`
 - `ARCH_MQTT_PUBLISH`
 - `ARCH_BROWSER_SECRET_OWNERSHIP`
 - `ARCH_WRITE_ADMIN_ENDPOINT`
@@ -95,6 +109,19 @@ Architecture boundaries:
 - `ARCH_DUPLICATE_PINIA_OWNER`
 - `ARCH_DUPLICATE_ROUTER_INSTALLATION`
 - `ARCH_DUPLICATE_PINIA_INSTALLATION`
+
+Obsolete authority residue:
+
+- `RESIDUE_REJECTED_API_PHASE`
+- `RESIDUE_DELETED_AUTHORITY_ARTIFACT`
+- `RESIDUE_REJECTED_HARDENING_PHASE`
+- `RESIDUE_DELETED_SESSION_ADAPTER`
+- `RESIDUE_AUTH_OWNER_VALIDATION_REQUIRED_MARKER`
+- `RESIDUE_AUTH_LOGIN_SUCCESS_UNCLAIMED`
+- `RESIDUE_INTERNAL_PROXY`
+- `RESIDUE_GENERIC_CALL`
+- `RESIDUE_SECRET_AUTH_ARCHITECTURE`
+- `RESIDUE_MINI_PROGRAM_AUTHORITY`
 
 Raw visual values:
 
@@ -156,6 +183,11 @@ The scanners never modify package manifests, lockfiles, runtime source, assets, 
 ## Exceptions And False Positives
 
 Exceptions must be encoded in `scripts/governance/policy.mjs` with exact file or directory scope, authority, rationale, risk, review trigger, and removal condition. Broad rule suppression is forbidden.
+
+The immutable historical implementation report
+`.ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTATION_REPORT.json` is the sole
+exact-path exception for pre-owner-validation status markers. Current
+authorities and new reports receive no such exception.
 
 Version exceptions currently cover:
 

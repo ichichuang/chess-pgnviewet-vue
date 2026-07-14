@@ -1,8 +1,9 @@
 {
-    "schemaVersion": 2,
+    "schemaVersion": 3,
     "status": "CURRENT",
     "effectiveDate": "2026-07-14",
-    "overall": "PRODUCT_RUNTIME_ACCEPTED_WEB_API_PUBLIC_READ_FOUNDATION_COMPLETE",
+    "overall": "PRODUCT_UI_DEVELOPMENT_BASELINE_PASS",
+    "authenticationStatus": "LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_AND_OWNER_VALIDATED",
     "owners": {
         "viteRoot": "vite.config.ts",
         "vueRoot": "src/main.ts",
@@ -10,6 +11,11 @@
         "pinia": "src/stores/index.ts",
         "queryClient": "src/api/queryClient.ts",
         "axiosClient": "src/api/client.ts",
+        "authRepository": "src/api/authRepository.ts",
+        "compatibilitySigner": "src/api/legacyWebCompatibility.ts",
+        "authPersistence": "src/persistence/auth/authPersistence.ts",
+        "authState": "src/stores/auth.ts",
+        "routeGuard": "src/router/index.ts",
         "tokenRegistry": "src/styles/tokens.css",
         "applicationShell": "src/App.vue"
     },
@@ -36,8 +42,13 @@
         },
         {
             "id": "publicTournamentReads",
-            "status": "READY_FAIL_CLOSED",
+            "status": "IMPLEMENTED_OWNER_VALIDATED_LOCAL_DEVELOPMENT_TRANSPORT",
             "evidence": "docs/architecture/WEB_API_READINESS_MATRIX.json"
+        },
+        {
+            "id": "accountLoginAndIdentity",
+            "status": "IMPLEMENTED_OWNER_VALIDATED",
+            "evidence": ".ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_OWNER_REAL_ACCOUNT_VALIDATION_REPORT.json"
         },
         {
             "id": "protectedRemoteCapabilities",
@@ -45,6 +56,32 @@
             "evidence": "docs/architecture/WEB_API_SOURCE_AUTHORITY.md"
         }
     ],
+    "authenticationCapabilities": [
+        { "id": "passwordLogin", "status": "IMPLEMENTED_OWNER_VALIDATED" },
+        { "id": "accountTokenExtraction", "status": "IMPLEMENTED_OWNER_VALIDATED" },
+        { "id": "userDetail", "status": "IMPLEMENTED_OWNER_VALIDATED" },
+        { "id": "userCenter", "status": "IMPLEMENTED_OWNER_VALIDATED" },
+        {
+            "id": "tournamentRequestAfterLogin",
+            "status": "IMPLEMENTED_OWNER_VALIDATED"
+        },
+        { "id": "compatibilitySession12Hour", "status": "IMPLEMENTED_VALIDATED" },
+        { "id": "urlTokenPersistence", "status": "ABSENT" },
+        { "id": "passwordPersistence", "status": "ABSENT" },
+        { "id": "passwordDigestPersistence", "status": "ABSENT" },
+        { "id": "http401Cleanup", "status": "IMPLEMENTED_VALIDATED" },
+        { "id": "http403Preservation", "status": "IMPLEMENTED_VALIDATED" },
+        { "id": "localLogout", "status": "IMPLEMENTED_VALIDATED" },
+        { "id": "productionBrowserOrigin", "status": "NOT_VALIDATED" },
+        { "id": "protectedReplay", "status": "NOT_IMPLEMENTED" },
+        { "id": "cloudShare", "status": "NOT_IMPLEMENTED" },
+        { "id": "hardwareLiveMqtt", "status": "BLOCKED_INCOMPLETE_CONTRACT" }
+    ],
+    "productDevelopmentState": {
+        "mockOrFakeData": "ABSENT",
+        "automatedTestInfrastructure": "ABSENT",
+        "i18nAndGeneralizedUiFoundations": "FUTURE_PRODUCT_DEVELOPMENT"
+    },
     "validation": [
         "formatting",
         "lint",

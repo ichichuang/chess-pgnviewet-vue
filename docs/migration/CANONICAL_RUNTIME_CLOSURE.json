@@ -53,7 +53,7 @@
             "migrationPhase": "P1_ROUTE_CONTRACT",
             "migrationPriority": "HIGH",
             "canonicalStatus": "CANONICAL_ACTIVE_CLOSURE",
-            "knownUnsafeInfrastructureBoundary": "Canonical auth/query handoff persists browser tokens in legacy infrastructure; target must use the server/session ADR.",
+            "knownUnsafeInfrastructureBoundary": "Canonical auth/query handoff persists browser tokens in legacy infrastructure; the target discards that storage and uses only its strict 43,200-second kaisaile.auth.v1 record owned by src/persistence/auth/authPersistence.ts.",
             "notes": "P0 target creates only a neutral root route. Product routes are documented, not implemented."
         },
         {

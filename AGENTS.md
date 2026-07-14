@@ -28,7 +28,7 @@ Before changing UI, architecture, persistence, API, or migration code, read:
 - Naive UI may appear only behind project-owned Vue UI adapters where canonical behavior requires it. It is not the token or product-component authority.
 - `src/styles/tokens.css` is the only global token registry. Feature files must not contain raw colors or parallel token definitions.
 - GSAP animation, animated board interaction, and later animated UI work must read and obey `.ai/skills/gsap/SKILL.md` in addition to the project UI authority.
-- Browser code never stores upstream credentials, HMAC secrets, auth tokens, MQTT credentials, or secret-bearing URLs.
+- Browser code may persist only the strict 43,200-second `kaisaile.auth.v1` account-session record owned by `src/persistence/auth/authPersistence.ts`. Passwords, password digests, signing material, upstream credentials, URL tokens, uncontrolled auth records, Dexie auth data, persisted Query auth data, MQTT credentials, and secret-bearing URLs remain forbidden.
 - Generic `/CALL`, `proxyRequest`, write/admin endpoints, MQTT publish, invented contracts, and mock/fake runtime fallbacks are forbidden.
 
 ## Source safety

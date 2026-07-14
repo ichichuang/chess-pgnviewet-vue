@@ -41,6 +41,22 @@ const staleAuthorityRules = [
   },
 ]
 
+const staleCurrentAuthStatusRules = [
+  {
+    ruleId: 'RESIDUE_AUTH_OWNER_VALIDATION_REQUIRED_MARKER',
+    pattern:
+      /\b(?:LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_OWNER_REAL_ACCOUNT_VALIDATION_REQUIRED|LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_READY_FOR_OWNER_REAL_ACCOUNT_VALIDATION|IMPLEMENTED_READY_FOR_OWNER_REAL_ACCOUNT_VALIDATION|READY_FOR_OWNER_REAL_ACCOUNT_VALIDATION)\b/gu,
+    reason: 'Owner-validation-required authentication status must not remain in current authority.',
+  },
+  {
+    ruleId: 'RESIDUE_AUTH_LOGIN_SUCCESS_UNCLAIMED',
+    pattern:
+      /\b(?:successful account (?:access|login)|account login)[^\n]{0,100}\b(?:unclaimed|required|waiting)\b|\bowner validation[^\n]{0,100}\brequired\b/giu,
+    reason:
+      'Owner validation has passed; current authority must not retain an unvalidated login claim.',
+  },
+]
+
 const rejectedArchitectureRules = [
   {
     ruleId: 'RESIDUE_INTERNAL_PROXY',
@@ -93,6 +109,10 @@ for (const file of files) {
   }
 
   scanRules(file, text, staleAuthorityRules)
+
+  if (!obsoleteArchitecturePolicy.historicalAuthStatusAllowlist.includes(file)) {
+    scanRules(file, text, staleCurrentAuthStatusRules)
+  }
 
   if (!obsoleteArchitecturePolicy.explicitProhibitionAllowlist.includes(file)) {
     scanRules(file, text, rejectedArchitectureRules)

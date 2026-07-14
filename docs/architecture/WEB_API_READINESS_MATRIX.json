@@ -1,8 +1,9 @@
 {
-    "schemaVersion": 3,
+    "schemaVersion": 4,
     "status": "ACTIVE_AUTHORITY",
     "effectiveDate": "2026-07-14",
-    "overall": "LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_OWNER_REAL_ACCOUNT_VALIDATION_REQUIRED",
+    "overall": "LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_AND_OWNER_VALIDATED",
+    "currentValidationAuthority": ".ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_OWNER_REAL_ACCOUNT_VALIDATION_REPORT.json",
     "capabilities": [
         {
             "id": "singleAxiosOwner",
@@ -36,7 +37,7 @@
             "id": "publicTournamentReads",
             "contract": "FIVE_READS_CONFIRMED_NO_CREDENTIAL",
             "runtime": "IMPLEMENTED",
-            "browser": "LOCAL_DEVELOPMENT_PROXY",
+            "browser": "OWNER_REAL_BROWSER_VALIDATION_PASS_LOCAL_DEVELOPMENT_PROXY",
             "ready": true
         },
         {
@@ -50,13 +51,27 @@
             "id": "accountLoginAndIdentity",
             "contract": "SOURCE_CONFIRMED_BROWSER_COMPATIBILITY",
             "runtime": "IMPLEMENTED",
-            "browser": "READY_FOR_OWNER_REAL_ACCOUNT_VALIDATION",
+            "browser": "OWNER_REAL_ACCOUNT_VALIDATION_PASS",
             "ready": true
         },
         {
-            "id": "replayCloudShareHardwareLive",
+            "id": "protectedReplay",
             "contract": "BLOCKED_INCOMPLETE",
             "runtime": "NO_PROTECTED_REQUEST",
+            "browser": "TRUTHFUL_UNAVAILABLE_STATE",
+            "ready": true
+        },
+        {
+            "id": "cloudShare",
+            "contract": "BLOCKED_INCOMPLETE",
+            "runtime": "NO_PROTECTED_REQUEST",
+            "browser": "TRUTHFUL_UNAVAILABLE_STATE",
+            "ready": true
+        },
+        {
+            "id": "hardwareLiveMqtt",
+            "contract": "BLOCKED_INCOMPLETE_CONTRACT",
+            "runtime": "NO_PROTECTED_REQUEST_OR_SUBSCRIPTION",
             "browser": "TRUTHFUL_UNAVAILABLE_STATE",
             "ready": true
         }
@@ -81,7 +96,8 @@
     ],
     "externalBlocks": [
         "Production cross-origin availability depends on the deployed browser origin; localhost uses only the fixed development proxy.",
-        "A successful account login remains unclaimed until the owner enters a real account.",
-        "Replay, cloud/share, hardware, and live capabilities still lack complete compatible read contracts."
+        "Protected replay still lacks a complete compatible read contract.",
+        "Cloud/share reads still lack complete compatible read contracts.",
+        "Hardware and live/MQTT capabilities still lack complete compatible read and subscribe-only contracts."
     ]
 }

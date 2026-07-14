@@ -37,7 +37,7 @@ Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, r
 - No body scroll; modules declare scroll ownership and preserve geometry.
 - No raw visual values in feature files.
 - GSAP animation, animated board interaction, and later animated UI work must read and obey `.ai/skills/gsap/SKILL.md`.
-- Persist only categorized, non-secret state; logout clears private/auth state while preserving non-sensitive public workspace context.
+- Persist only categorized non-secret state plus the strict 43,200-second `kaisaile.auth.v1` account-session record owned by `src/persistence/auth/authPersistence.ts`; logout clears that record and private state while preserving non-sensitive public workspace context.
 - Confirmed reads use typed repositories and the exact source-confirmed HTTPS origin. Cross-origin browser deployments fail closed until the upstream origin grants them; unknown contracts remain blocked, never faked.
 - Browser code never owns upstream credentials or signing secrets.
 - Do not modify any evidence-source repository.

@@ -109,17 +109,17 @@ This document governs:
 
 ### 7. Sensitive session/auth state
 
-| Attribute        | Value                                                                                           |
-| ---------------- | ----------------------------------------------------------------------------------------------- |
-| Storage          | Project-owned local-storage adapter only; never Dexie, URL, or Query cache                      |
-| Example fields   | Source-confirmed account token, uid, display label, schema version, and expiry                  |
-| Versioning       | Strict Zod-validated `kaisaile.auth.v1` record                                                  |
-| Migration        | Legacy token/user-info keys are not restored                                                    |
-| Expiration       | 43,200 seconds from successful login, matching the tracked browser source                       |
-| Security         | No password/digest, signing input, URL token, or duplicated compatibility constant              |
-| Refresh recovery | Restore only when the record is valid and unexpired; otherwise remove it and remain anonymous   |
-| Reset behavior   | Local logout, expiry, or HTTP 401 clears auth and private state; HTTP 403 preserves the session |
-| Validation       | Secret scan, storage inspection, typecheck, production build, and narrow browser evidence       |
+| Attribute        | Value                                                                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Storage          | `localStorage` key `kaisaile.auth.v1`, owned only by `src/persistence/auth/authPersistence.ts`; never Dexie, URL, or persisted Query cache |
+| Example fields   | `token`, `uid`, `accountLabel`, and `expiresAt` plus the literal schema `version: 1`                                                       |
+| Versioning       | Strict Zod version 1 record; unknown fields are rejected                                                                                   |
+| Migration        | Legacy token/user-info keys are not restored                                                                                               |
+| Expiration       | 43,200 seconds from successful login, matching the tracked browser source                                                                  |
+| Security         | No password/digest, signing input, URL token, or duplicated compatibility constant                                                         |
+| Refresh recovery | Restore only when the record is valid and unexpired; otherwise remove it and remain anonymous                                              |
+| Reset behavior   | Local logout, expiry, or HTTP 401 clears auth and private state; HTTP 403 preserves the session                                            |
+| Validation       | Secret scan, storage inspection, typecheck, production build, and narrow browser evidence                                                  |
 
 ### 8. Never-persist state
 
@@ -199,10 +199,13 @@ Every field stored on the client must belong to one of the eight categories abov
 
 ### R2. Auth state is narrowly owned
 
-Only the versioned minimum compatibility record is accepted. Cookie sessions,
-BFFs, refresh endpoints, and alternate browser stores are not invented.
-Passwords, digests, signing inputs, and URL credentials never touch client
-storage.
+Only the strict 43,200-second `kaisaile.auth.v1` compatibility record owned by
+`src/persistence/auth/authPersistence.ts` is accepted in `localStorage`. Its
+data fields are `token`, `uid`, `accountLabel`, and `expiresAt`; the schema also
+requires literal `version: 1`. Cookie sessions, BFFs, refresh endpoints, and
+alternate browser stores are not invented. Passwords, password digests,
+signing inputs, complete profiles or responses, and URL credentials never
+touch client storage.
 
 ### R3. Version and migrate every persisted table
 
@@ -225,7 +228,7 @@ Each category documents what clears it: logout, new workspace, explicit reset, o
 1. Eight persistence categories are defined with storage location, example fields, versioning, migration, expiration, security, refresh recovery, reset behavior, and tests.
 2. The list of fields preserved across refresh matches the user requirement.
 3. Dexie table design and refresh recovery sequence are documented.
-4. Auth secrets are explicitly excluded from Dexie, localStorage, and URL.
+4. Auth data is excluded from Dexie, persisted Query cache, and URL; only the strict `kaisaile.auth.v1` record is accepted in `localStorage`.
 5. URL state security constraints are documented.
 6. Live stream state is classified as transient and in-memory only.
 
@@ -242,7 +245,7 @@ Each category documents what clears it: logout, new workspace, explicit reset, o
   "version": "1.0.0",
   "rules": [
     "categorize_every_persisted_field",
-    "auth_secrets_never_touch_client_storage",
+    "only_strict_kaisaile_auth_v1_may_persist_in_local_storage",
     "version_and_migrate_every_persisted_table",
     "url_state_no_secrets",
     "live_state_is_transient",
@@ -263,7 +266,7 @@ Each category documents what clears it: logout, new workspace, explicit reset, o
     "url_query_params": ["url_shareable_state"],
     "tanstack_query_cache": ["api_query_cache"],
     "in_memory": ["live_stream_transient_state", "never_persist_state"],
-    "contract_gated_auth_adapter": ["sensitive_session_auth_state"]
+    "local_storage_kaisaile_auth_v1": ["sensitive_session_auth_state"]
   },
   "refresh_recovery_sequence": [
     "prepaint_preferences",

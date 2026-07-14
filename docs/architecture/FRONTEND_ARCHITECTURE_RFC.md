@@ -31,13 +31,13 @@ src/
 
 ## State boundaries
 
-| State                         | Owner                                 | Persistence                                         |
-| ----------------------------- | ------------------------------------- | --------------------------------------------------- |
-| Client interaction/session    | feature-owned Pinia store             | categorized Dexie record when approved              |
-| Server reads                  | typed repository + TanStack Vue Query | re-fetch by default; sensitive cache never persists |
-| Live transport                | explicit service/composable           | memory only                                         |
-| Auth                          | feature-owned Pinia status            | strict 12-hour minimum compatibility record         |
-| Chess/PGN/annotation/analysis | framework-free domain                 | explicit versioned persistence adapter              |
+| State                         | Owner                                 | Persistence                                                                                       |
+| ----------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Client interaction/session    | feature-owned Pinia store             | categorized Dexie record when approved                                                            |
+| Server reads                  | typed repository + TanStack Vue Query | re-fetch by default; sensitive cache never persists                                               |
+| Live transport                | explicit service/composable           | memory only                                                                                       |
+| Auth                          | `src/stores/auth.ts` Pinia owner      | strict 43,200-second `kaisaile.auth.v1` record owned by `src/persistence/auth/authPersistence.ts` |
+| Chess/PGN/annotation/analysis | framework-free domain                 | explicit versioned persistence adapter                                                            |
 
 ## I/O boundary
 

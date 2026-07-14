@@ -76,13 +76,13 @@ This document covers all `docs/ui/*` specifications. Each item includes the veri
 
 ## Persistence and recovery
 
-| #   | Check                                                                                                                           | Source                    | Method      |
-| --- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------- |
-| PR1 | All persisted fields are categorized in one of the eight persistence categories                                                 | PERSISTENCE_RECOVERY_SPEC | manual      |
-| PR2 | Refresh preserves workspace tabs, mode, source, selections, layout, theme, language, analysis state, drafts, and display config | PERSISTENCE_RECOVERY_SPEC | e2e         |
-| PR3 | Auth tokens are not stored in Dexie, localStorage, or URL parameters                                                            | PERSISTENCE_RECOVERY_SPEC | lint, audit |
-| PR4 | Dexie tables have schema versions and Zod-validated migrations                                                                  | PERSISTENCE_RECOVERY_SPEC | unit        |
-| PR5 | Stale sources fall back safely after refresh without data loss                                                                  | PERSISTENCE_RECOVERY_SPEC | e2e         |
+| #   | Check                                                                                                                                                | Source                    | Method      |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- | ----------- |
+| PR1 | All persisted fields are categorized in one of the eight persistence categories                                                                      | PERSISTENCE_RECOVERY_SPEC | manual      |
+| PR2 | Refresh preserves workspace tabs, mode, source, selections, layout, theme, language, analysis state, drafts, and display config                      | PERSISTENCE_RECOVERY_SPEC | e2e         |
+| PR3 | Auth data is absent from Dexie, persisted Query cache, and URLs; only the strict 43,200-second `kaisaile.auth.v1` record is stored in `localStorage` | PERSISTENCE_RECOVERY_SPEC | lint, audit |
+| PR4 | Dexie tables have schema versions and Zod-validated migrations                                                                                       | PERSISTENCE_RECOVERY_SPEC | unit        |
+| PR5 | Stale sources fall back safely after refresh without data loss                                                                                       | PERSISTENCE_RECOVERY_SPEC | e2e         |
 
 ## Accessibility
 

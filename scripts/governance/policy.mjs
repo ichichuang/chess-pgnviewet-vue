@@ -160,6 +160,16 @@ export const architecturePolicy = {
   axiosImportAllowlist: ['src/api/client.ts'],
   browserAuthHeaderAllowlist: ['src/api/client.ts', 'src/api/legacyWebCompatibility.ts'],
   browserCompatibilityIdentityAllowlist: ['src/api/legacyWebCompatibility.ts'],
+  browserCompatibilityConstantOwner: 'src/api/legacyWebCompatibility.ts',
+  authPersistenceOwner: 'src/persistence/auth/authPersistence.ts',
+  protectedAuthBoundaryAllowlist: [
+    'src/api/authRepository.ts',
+    'src/api/client.ts',
+    'src/api/legacyWebCompatibility.ts',
+    'src/api/privateAuthLifecycle.ts',
+    'src/persistence/auth/authPersistence.ts',
+    'src/stores/auth.ts',
+  ],
   urlTokenCompatibilityAllowlist: ['vite.config.ts'],
   nativeHttpAllowlist: [],
   persistenceAllowlist: [
@@ -179,6 +189,9 @@ export const architecturePolicy = {
 }
 
 export const obsoleteArchitecturePolicy = {
+  historicalAuthStatusAllowlist: [
+    '.ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTATION_REPORT.json',
+  ],
   explicitProhibitionAllowlist: [
     'AGENTS.md',
     'docs/architecture/API_BOUNDARY_ADR.md',

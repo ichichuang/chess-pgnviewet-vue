@@ -1,0 +1,110 @@
+{
+  "reportType": "WEB_LOGIN_TOKEN_AUTH_FLOW_OWNER_REAL_ACCOUNT_VALIDATION",
+  "date": "2026-07-14",
+  "status": "OWNER_REAL_ACCOUNT_VALIDATION_PASS",
+  "authorityStatus": "CURRENT_VALIDATION_AUTHORITY",
+  "targetRepository": {
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "branch": "main",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git"
+  },
+  "validatedImplementationCommit": "95446fbc219e62e1e5eff715a23b9b67e379a009",
+  "validationAuthority": "PROJECT_OWNER_MANUAL_REAL_BROWSER_VALIDATION",
+  "manualValidationEnvironment": "ACTUAL_BROWSER_LOGIN_PAGE_WITH_LOCAL_DEVELOPMENT_TRANSPORT",
+  "realAccountUsed": true,
+  "sensitiveValuesRecorded": false,
+  "observedRequestNames": [
+    "PostLoginByPhone",
+    "GetUserDetail",
+    "GetUserCenterInfo",
+    "GetActList"
+  ],
+  "loginSucceeded": true,
+  "userDetailSucceeded": true,
+  "userCenterSucceeded": true,
+  "tournamentRequestSucceeded": true,
+  "tournamentResponseEvidence": {
+    "respErr": 0,
+    "total": 18362
+  },
+  "tokenAbsentFromUrl": true,
+  "passwordPersisted": false,
+  "passwordDigestPersisted": false,
+  "tokenVisibleInUi": false,
+  "fullRequestRecorded": false,
+  "fullResponseRecorded": false,
+  "runtimeChanges": false,
+  "activeAuthoritiesCorrected": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+    "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+  ],
+  "obsoleteAuthoritiesDeleted": [],
+  "staleStatusesRemoved": {
+    "activeOwnerValidationRequiredMarkers": 2,
+    "activeUnclaimedLoginStatements": 2,
+    "historicalReportFactsChanged": false
+  },
+  "protectedRuntimeHashes": {
+    "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+    "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+    "src/api/privateAuthLifecycle.ts": "927fc4e1fea5235a006b1518df746ba79a7676efda9855f25f47450cb909848e",
+    "src/api/legacyWebCompatibility.ts": "eac7f43ff224f0f9fb852db61fe2977eeffebd357e52d363130979780cc23cd9",
+    "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+    "src/stores/auth.ts": "b859834af1f3048ecbae17020bfc3d1aff328504d8679c22b490056416451e5f",
+    "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+    "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+    "src/features/product-api/views/LoginView.vue": "45bac2b956b358c2b00650327eed41a41eebc2720435a4bb734b85a9892ecd20",
+    "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+    "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+    "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d"
+  },
+  "staticValidation": {
+    "status": "PASS",
+    "checks": [
+      "check:residue",
+      "check:deps",
+      "check:architecture",
+      "check:tokens",
+      "check:mocks",
+      "check:secrets",
+      "check:copy",
+      "check:governance",
+      "format:check",
+      "lint",
+      "lint:style",
+      "check:unused",
+      "check:static",
+      "typecheck",
+      "production-build-external-outdir",
+      "audit-prod",
+      "audit-full",
+      "strict-json-parse",
+      "modified-reference-validation",
+      "active-authority-stale-search",
+      "git-diff-check"
+    ],
+    "browserValidation": "NOT_RUN_GOVERNANCE_ONLY_PROTECTED_RUNTIME_UNCHANGED"
+  },
+  "gitCommit": {
+    "subject": "docs(auth): 清除错误认证规则并闭合真实账号验收",
+    "status": "PASS_ENCLOSING_PHASE_COMMIT"
+  },
+  "gitPush": {
+    "remote": "origin",
+    "branch": "main",
+    "status": "PASS_LOCAL_ORIGIN_AND_LIVE_REMOTE_EQUAL"
+  },
+  "completionMarker": "LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_AND_OWNER_VALIDATED"
+}

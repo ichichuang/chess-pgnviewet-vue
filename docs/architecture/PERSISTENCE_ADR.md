@@ -11,8 +11,10 @@ every persisted version before hydration.
 
 Authentication is not a Dexie or Query-persistence category. No cookie session
 or BFF is assumed. The confirmed compatibility lifecycle uses one project-owned
-local-storage adapter with a strict Zod schema and a 43,200-second expiry. It
-retains only the account token, uid, and display label.
+`localStorage` adapter at `src/persistence/auth/authPersistence.ts` with the key
+`kaisaile.auth.v1`, a strict Zod version 1 schema, and a maximum 43,200-second
+lifetime. Its data fields are `token`, `uid`, `accountLabel`, and `expiresAt`;
+no other authentication persistence is approved.
 
 ## Categories
 

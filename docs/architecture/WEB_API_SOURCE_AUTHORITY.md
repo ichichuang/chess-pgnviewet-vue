@@ -58,11 +58,19 @@ chess origin:
 - `POST /ucenter/GetUserDetail` receives `showall`, `uid`, and the account token
   in the JSON body. `POST /ucenter/GetUserCenterInfo` receives the account token
   in the JSON body.
-- The target retains only the validated token, uid, and display label for the
-  source-proven 43,200-second browser-storage lifetime. Passwords and digests
-  are submission-only. There is no refresh or remote logout call.
+- The target persists only the strict Zod version 1 `kaisaile.auth.v1` record
+  owned by `src/persistence/auth/authPersistence.ts`. Its data fields are
+  `token`, `uid`, `accountLabel`, and `expiresAt`, with a maximum
+  source-proven 43,200-second lifetime. Passwords and digests are
+  submission-only. There is no refresh or remote logout call.
 - HTTP 401 clears the local session and private state. HTTP 403 reports a
   permission failure without clearing a valid session. Logout is local.
+
+The project owner validated the real-account login, both identity reads, and a
+subsequent tournament read in a real browser against implementation commit
+`95446fbc219e62e1e5eff715a23b9b67e379a009`. The current validation authority is
+`.ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_OWNER_REAL_ACCOUNT_VALIDATION_REPORT.json`.
+No sensitive value is recorded there.
 
 The exact tracked browser constants live only in
 `src/api/legacyWebCompatibility.ts`. They are not environment credentials and
@@ -79,6 +87,9 @@ cross-origin grant. Local browser validation therefore uses the development-only
 Vite prefix `/__kaisaile_web`, a fixed upstream target, POST-only enforcement,
 and the closed endpoint allowlist. Production output remains static and uses
 the confirmed HTTPS origin directly.
+
+Local development authentication transport and public tournament reads are
+validated. The production browser origin remains unvalidated.
 
 ## Blocked capabilities
 

@@ -1,0 +1,277 @@
+{
+  "phase": "AUTH_OWNER_VALIDATION_ACTIVE_AUTHORITY_PURGE_CORRECTION_AND_PUSH",
+  "startedAt": "2026-07-14T09:48:45+08:00",
+  "completedAt": "2026-07-14T10:03:24+08:00",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "localHeadBefore": "95446fbc219e62e1e5eff715a23b9b67e379a009",
+  "originMainBefore": "95446fbc219e62e1e5eff715a23b9b67e379a009",
+  "liveRemoteMainBefore": "95446fbc219e62e1e5eff715a23b9b67e379a009",
+  "aheadBehindBefore": {
+    "ahead": 0,
+    "behind": 0
+  },
+  "worktreeBefore": {
+    "indexClean": true,
+    "trackedWorktreeClean": true,
+    "untrackedFiles": [],
+    "gitLocks": [],
+    "activeTrackedFileWriters": []
+  },
+  "authorityFilesScanned": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/WEB_API_CONTRACT_COVERAGE_MATRIX.json",
+    "docs/architecture/WEB_API_ENDPOINT_INVENTORY.json",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "scripts/governance/policy.mjs",
+    "scripts/governance/check-architecture-boundaries.mjs",
+    "scripts/governance/check-obsolete-architecture-residue.mjs",
+    "scripts/governance/check-secret-patterns.mjs",
+    "scripts/governance/check-user-visible-copy.mjs",
+    ".ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/WEB_PASSWORD_LOGIN_CONTRACT_BLOCKER_REPORT.json",
+    "src/api/authRepository.ts",
+    "src/api/client.ts",
+    "src/api/privateAuthLifecycle.ts",
+    "src/api/legacyWebCompatibility.ts",
+    "src/persistence/auth/authPersistence.ts",
+    "src/stores/auth.ts",
+    "src/router/index.ts",
+    "src/main.ts"
+  ],
+  "occurrenceClassifications": [
+    {
+      "classification": "ACTIVE_INCORRECT_RULE",
+      "paths": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+        "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md"
+      ],
+      "occurrences": 7
+    },
+    {
+      "classification": "ACTIVE_STALE_STATUS",
+      "paths": [
+        "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+        "docs/architecture/WEB_API_READINESS_MATRIX.json"
+      ],
+      "occurrences": 4
+    },
+    {
+      "classification": "VALID_CURRENT_RULE",
+      "paths": [
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/PERSISTENCE_ADR.md",
+        "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+        "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md"
+      ],
+      "summary": "Single repository, Axios, signer, persistence, Pinia, and route-guard ownership was source-confirmed and retained."
+    },
+    {
+      "classification": "HISTORICAL_FACT",
+      "paths": [
+        ".ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTATION_REPORT.json",
+        ".ai/reports/WEB_PASSWORD_LOGIN_CONTRACT_BLOCKER_REPORT.json"
+      ],
+      "summary": "Pre-validation and pre-implementation facts remain immutable historical evidence and are not current status authority."
+    },
+    {
+      "classification": "REJECTED_ARCHITECTURE_REFERENCE",
+      "paths": ["docs/migration/CANONICAL_RUNTIME_CLOSURE.json"],
+      "summary": "The active migration closure's server/session instruction was removed and replaced at its ownership boundary."
+    },
+    {
+      "classification": "PROHIBITION_TEXT",
+      "paths": [
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/architecture/API_BOUNDARY_ADR.md",
+        "docs/architecture/PERSISTENCE_ADR.md",
+        "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+        "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+        "scripts/governance/check-architecture-boundaries.mjs",
+        "scripts/governance/check-obsolete-architecture-residue.mjs"
+      ],
+      "summary": "Rejected authentication, gateway, and duplicate-ownership terms remain only where they define active prohibitions or scanner patterns."
+    },
+    {
+      "classification": "NON_AUTH_MEANING",
+      "summary": "Theme-token and design-token occurrences were excluded from authentication classification."
+    }
+  ],
+  "activeIncorrectRulesFound": 7,
+  "activeStaleStatusesFound": 4,
+  "activeRulesDeleted": 11,
+  "activeRulesRewritten": 14,
+  "obsoleteDocumentsDeleted": [],
+  "referencesUpdated": [
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json"
+  ],
+  "historicalReportsPreserved": [
+    ".ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/WEB_PASSWORD_LOGIN_CONTRACT_BLOCKER_REPORT.json"
+  ],
+  "ownerValidationEvidence": {
+    "authority": "PROJECT_OWNER_MANUAL_REAL_BROWSER_VALIDATION",
+    "validatedImplementationCommit": "95446fbc219e62e1e5eff715a23b9b67e379a009",
+    "login": "PASS",
+    "userDetail": "PASS",
+    "userCenter": "PASS",
+    "tournamentRequestAfterLogin": "PASS",
+    "tournamentResponseRespErr": 0,
+    "tournamentResponseTotal": 18362,
+    "tokenAbsentFromUrl": true
+  },
+  "sensitiveDataAudit": {
+    "sensitiveValuesRecorded": false,
+    "fullRequestRecorded": false,
+    "fullResponseRecorded": false,
+    "browserStorageInspected": false,
+    "ownerCredentialsRequested": false,
+    "realAccountLoginRepeated": false
+  },
+  "matricesCorrected": [
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+  ],
+  "governanceScannersCorrected": [
+    "scripts/governance/policy.mjs",
+    "scripts/governance/check-architecture-boundaries.mjs",
+    "scripts/governance/check-obsolete-architecture-residue.mjs",
+    "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md"
+  ],
+  "filesCreated": [
+    ".ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_OWNER_REAL_ACCOUNT_VALIDATION_REPORT.json",
+    ".ai/reports/AUTH_OWNER_VALIDATION_ACTIVE_AUTHORITY_PURGE_CORRECTION_AND_PUSH_REPORT.json"
+  ],
+  "filesModified": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+    "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+    "scripts/governance/check-architecture-boundaries.mjs",
+    "scripts/governance/check-obsolete-architecture-residue.mjs",
+    "scripts/governance/policy.mjs"
+  ],
+  "filesDeleted": [],
+  "protectedRuntimeHashesBefore": {
+    "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+    "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+    "src/api/privateAuthLifecycle.ts": "927fc4e1fea5235a006b1518df746ba79a7676efda9855f25f47450cb909848e",
+    "src/api/legacyWebCompatibility.ts": "eac7f43ff224f0f9fb852db61fe2977eeffebd357e52d363130979780cc23cd9",
+    "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+    "src/stores/auth.ts": "b859834af1f3048ecbae17020bfc3d1aff328504d8679c22b490056416451e5f",
+    "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+    "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+    "src/features/product-api/views/LoginView.vue": "45bac2b956b358c2b00650327eed41a41eebc2720435a4bb734b85a9892ecd20",
+    "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+    "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+    "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d"
+  },
+  "protectedRuntimeHashesAfter": {
+    "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+    "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+    "src/api/privateAuthLifecycle.ts": "927fc4e1fea5235a006b1518df746ba79a7676efda9855f25f47450cb909848e",
+    "src/api/legacyWebCompatibility.ts": "eac7f43ff224f0f9fb852db61fe2977eeffebd357e52d363130979780cc23cd9",
+    "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+    "src/stores/auth.ts": "b859834af1f3048ecbae17020bfc3d1aff328504d8679c22b490056416451e5f",
+    "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+    "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+    "src/features/product-api/views/LoginView.vue": "45bac2b956b358c2b00650327eed41a41eebc2720435a4bb734b85a9892ecd20",
+    "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+    "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+    "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d"
+  },
+  "protectedRuntimeUnchanged": true,
+  "mockDataAudit": "PASS_NO_MOCK_OR_FAKE_PRODUCT_DATA_INTRODUCED",
+  "automatedTestAudit": "PASS_NO_AUTOMATED_TEST_INFRASTRUCTURE_INTRODUCED",
+  "staticValidation": {
+    "checkResidue": "PASS",
+    "checkDependencies": "PASS",
+    "checkArchitecture": "PASS",
+    "checkTokens": "PASS",
+    "checkMocks": "PASS",
+    "checkSecrets": "PASS",
+    "checkCopy": "PASS",
+    "checkGovernance": "PASS",
+    "formatCheck": "PASS",
+    "eslint": "PASS",
+    "stylelint": "PASS",
+    "unused": "PASS",
+    "checkStatic": "PASS"
+  },
+  "typecheck": "PASS_VUE_TSC_NO_EMIT",
+  "productionBuild": {
+    "status": "PASS",
+    "output": "OS_TEMPORARY_DIRECTORY_OUTSIDE_REPOSITORY",
+    "generatedFiles": 27,
+    "temporaryOutputRemoved": true,
+    "browserValidation": "NOT_RUN_GOVERNANCE_ONLY_PROTECTED_RUNTIME_UNCHANGED"
+  },
+  "securityAudit": {
+    "secretScan": "PASS",
+    "productionDependencies": "PASS_NO_KNOWN_VULNERABILITIES",
+    "allDependencies": "PASS_NO_KNOWN_VULNERABILITIES"
+  },
+  "jsonValidation": "PASS_5_MODIFIED_OR_CREATED_JSON_FILES",
+  "markdownReferenceValidation": "PASS_37_MODIFIED_TRACKED_REFERENCES",
+  "gitDiffCheck": "PASS",
+  "commit": {
+    "subject": "docs(auth): 清除错误认证规则并闭合真实账号验收",
+    "status": "PASS_ENCLOSING_PHASE_COMMIT"
+  },
+  "push": {
+    "remote": "origin",
+    "branch": "main",
+    "status": "PASS_LOCAL_ORIGIN_AND_LIVE_REMOTE_EQUAL"
+  },
+  "localHeadAfter": "ENCLOSING_PHASE_COMMIT",
+  "remoteMainAfter": "ENCLOSING_PHASE_COMMIT",
+  "localRemoteEqual": true,
+  "worktreeAfter": {
+    "indexClean": true,
+    "trackedWorktreeClean": true,
+    "unexpectedUntrackedFiles": []
+  },
+  "remainingCurrentAuthorityConflicts": 0,
+  "remainingProductCapabilityBlocks": [
+    "PRODUCTION_BROWSER_ORIGIN_NOT_VALIDATED",
+    "PROTECTED_REPLAY_NOT_IMPLEMENTED",
+    "CLOUD_SHARE_NOT_IMPLEMENTED",
+    "HARDWARE_LIVE_MQTT_BLOCKED_INCOMPLETE_CONTRACT",
+    "I18N_AND_GENERALIZED_UI_FOUNDATIONS_FUTURE_PRODUCT_DEVELOPMENT"
+  ],
+  "finalDevelopmentGate": "PRODUCT_UI_DEVELOPMENT_BASELINE_PASS",
+  "finalVerdict": "AUTH_OWNER_VALIDATION_ACTIVE_AUTHORITY_PURGE_CORRECTION_AND_PUSH_PASS"
+}

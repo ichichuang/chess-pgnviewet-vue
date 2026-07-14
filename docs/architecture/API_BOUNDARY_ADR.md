@@ -31,7 +31,10 @@ The source-confirmed fixed compatibility object, MD5 transformation, and request
 signing algorithm are centralized in `legacyWebCompatibility.ts`. One Axios
 interceptor injects the account token into JSON bodies only for protected
 repository calls. Route guards are UX gates; upstream authorization remains
-authoritative.
+authoritative. The owner validated login, user-detail, user-center, and
+post-login tournament requests in a real browser. Only
+`src/persistence/auth/authPersistence.ts` may persist the strict 43,200-second
+`kaisaile.auth.v1` record; no other authentication persistence is approved.
 
 ## Read policy
 
