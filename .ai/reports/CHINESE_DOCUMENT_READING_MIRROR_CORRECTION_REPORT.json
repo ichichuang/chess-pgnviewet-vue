@@ -1,30 +1,28 @@
 {
-  "mirrorRoot": "docs/zh-cn",
-  "sourceRoots": [
-    "docs/architecture",
-    "docs/archive",
-    "docs/design",
-    "docs/migration",
-    "docs/product",
-    "docs/ui"
-  ],
-  "baselineCommit": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
-  "parentCommit": "7d1da65d9eebe8bb8c8b755da1c9dca00e38d898",
-  "generatedAt": "2026-07-14T12:28:50.015840+00:00",
-  "summary": {
-    "totalMirrored": 24,
-    "markdownMirrored": 21,
-    "jsonMirrored": 3,
-    "bySourceRoot": {
-      "docs/design": 19,
-      "docs/product": 5,
-      "docs/architecture": 0,
-      "docs/archive": 0,
-      "docs/migration": 0,
-      "docs/ui": 0
-    }
+  "reportType": "CHINESE_DOCUMENT_READING_MIRROR_CORRECTION_REPORT",
+  "generatedAt": "2026-07-14T12:28:50.015971+00:00",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "baseline": {
+    "expectedSha": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
+    "verifiedHead": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
+    "verifiedOriginMain": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
+    "verifiedLiveRemoteMain": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
+    "aheadBehind": "0/0",
+    "worktreeClean": true,
+    "indexClean": true,
+    "noUntrackedFiles": true,
+    "noGitLocks": true
   },
-  "mappings": [
+  "correctionsApplied": [
+    "Added non-authoritative source notice to all 21 mirrored Markdown documents.",
+    "Rewrote Markdown links to resolve from mirror locations; links to non-mirrored canonical targets point back to original source paths.",
+    "Moved 7 page specifications from docs/zh-cn/设计/ into docs/zh-cn/设计/页面/.",
+    "Added visible 说明.md to empty category directories (架构, 归档, 迁移, 界面).",
+    "Updated docs/zh-cn/说明.md, docs/zh-cn/中文文档总索引.md, and docs/zh-cn/中文文档映射.json to reflect the corrected structure and counts.",
+    "Left the 3 JSON mirror documents byte-identical to their canonical sources.",
+    "Preserved all canonical source documents, runtime files, and governance files unchanged."
+  ],
+  "mirroredFiles": [
     {
       "source_path": "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
       "target_path": "docs/zh-cn/设计/通用浮层与对话框规范.md",
@@ -193,5 +191,23 @@
       "source_sha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6",
       "target_sha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6"
     }
+  ],
+  "validation": {
+    "totalMirrored": 24,
+    "markdownCount": 21,
+    "jsonCount": 3,
+    "jsonByteIdentical": true,
+    "jsonMismatches": [],
+    "noSourceFilesModified": true,
+    "onlyAuthorizedPathsChanged": true
+  },
+  "authorizedWriteScope": [
+    "docs/zh-cn/**",
+    ".ai/reports/CHINESE_DOCUMENT_READING_MIRROR_CORRECTION_REPORT.json"
+  ],
+  "notes": [
+    "The previous execution report remains immutable and was not modified.",
+    "docs/zh-cn is a non-authoritative human-reading mirror only.",
+    "Canonical authority remains at each original source path."
   ]
 }

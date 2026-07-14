@@ -1,3 +1,6 @@
+> **非权威性阅读镜像提示**
+> 本文档是原始文件 `docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md` 的中文阅读镜像，仅供人工浏览。产品、设计、架构与实现权威仍保留在原始源路径，请勿将本镜像作为实施或自动化编辑的依据。
+
 # 开赛了产品逐页 UI 设计文档索引
 
 | 字段         | 值                                                                                     |
@@ -18,14 +21,14 @@
 
 ## 权威层级
 
-1. [产品设计蓝图](../product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md)拥有产品定位、用户、模式、旅程、信息架构、需求、页面责任和验收概念。
-2. [所有者需求基线](../product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md)记录稳定的所有者来源；`OD-01` 至 `OD-11` 全部保持 `OPEN`。
-3. [产品定义](../product/PRODUCT_DEFINITION.md)、[技术工作区模式](../product/WORKSPACE_MODES.md)、[需求追踪](../product/PRODUCT_REQUIREMENT_TRACEABILITY.json)、[模式能力矩阵](../product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json)与[产品信息架构](../product/PRODUCT_INFORMATION_ARCHITECTURE.json)分别拥有其声明范围。
+1. [产品设计蓝图](../产品/产品设计蓝图.md)拥有产品定位、用户、模式、旅程、信息架构、需求、页面责任和验收概念。
+2. [所有者需求基线](../产品/产品负责人需求基线.md)记录稳定的所有者来源；`OD-01` 至 `OD-11` 全部保持 `OPEN`。
+3. [产品定义](../../product/PRODUCT_DEFINITION.md)、[技术工作区模式](../../product/WORKSPACE_MODES.md)、[需求追踪](../产品/产品需求可追溯性.json)、[模式能力矩阵](../产品/产品模式与能力矩阵.json)与[产品信息架构](../产品/产品信息架构.json)分别拥有其声明范围。
 4. 当前 `docs/ui/**`、`docs/architecture/**` 与当前运行时代码拥有 Token、组件、状态、数据、持久化和安全的实现事实。
 5. 本目录拥有页面级显示、区域内容、交互、状态、响应式、组件组合和实施验收决定；不得覆盖以上权威。
 6. `.ai/reports/**`、旧计划和源项目只作证据，不是本目录的活动设计权威。
 
-发现冲突时，停止扩写冲突结论，将其登记到[实施纠正清单](./PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md)，并按上述层级处理。不得以视觉便利越过合同、安全或持久化边界。
+发现冲突时，停止扩写冲突结论，将其登记到[实施纠正清单](实现修正待办清单.md)，并按上述层级处理。不得以视觉便利越过合同、安全或持久化边界。
 
 ## 能力分类
 
@@ -62,29 +65,29 @@
 
 | 文档                                                                      | 唯一责任                                                |
 | ------------------------------------------------------------------------- | ------------------------------------------------------- |
-| [产品 UI 设计系统](./PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md)                   | `静稳棋室`视觉语言、现有 Token、控件与模块状态表达      |
-| [设计表面清单](./PRODUCT_SCREEN_INVENTORY.zh-CN.md)                       | 31 个正式设计表面及其页面、状态、响应式、OD 和依赖      |
-| [全局布局规范](./PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md)                     | 应用壳、页面壳、工作区与赛事/大屏几何、滚动与覆盖层空间 |
-| [全局交互规范](./PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md)                | 动作、输入方式、焦点、键盘、触控、取消与恢复            |
-| [全局状态规范](./PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md)                      | 加载、刷新、错误、权限、实时、AI 和确认状态的唯一模型   |
-| [响应式规范](./PRODUCT_RESPONSIVE_SPEC.zh-CN.md)                          | 桌面、紧凑桌面、平板、窄屏、1080p、4K 与 21:9 组合      |
-| [组件责任规范](./PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md)          | 当前组件、概念责任和页面组合边界                        |
-| [Naive UI 映射](./PRODUCT_NAIVE_UI_MAPPING.zh-CN.md)                      | 候选基础控件、项目适配器与必须自有的产品责任            |
-| [共用覆盖层与对话框](./PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md) | 登录、确认、导入、设置、抽屉、权限和错误覆盖层          |
-| [实施纠正清单](./PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md)      | 当前实现与目标页面设计之间的可追踪差异                  |
-| [UI 实施交接](./PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md)               | 实施顺序、依赖、验收所有权、禁止假设和完成标准          |
+| [产品 UI 设计系统](UI设计系统.md)                   | `静稳棋室`视觉语言、现有 Token、控件与模块状态表达      |
+| [设计表面清单](屏幕清单.md)                       | 31 个正式设计表面及其页面、状态、响应式、OD 和依赖      |
+| [全局布局规范](全局布局规范.md)                     | 应用壳、页面壳、工作区与赛事/大屏几何、滚动与覆盖层空间 |
+| [全局交互规范](全局交互规范.md)                | 动作、输入方式、焦点、键盘、触控、取消与恢复            |
+| [全局状态规范](全局状态规范.md)                      | 加载、刷新、错误、权限、实时、AI 和确认状态的唯一模型   |
+| [响应式规范](响应式规范.md)                          | 桌面、紧凑桌面、平板、窄屏、1080p、4K 与 21:9 组合      |
+| [组件责任规范](组件职责规范.md)          | 当前组件、概念责任和页面组合边界                        |
+| [Naive UI 映射](Naive%20UI映射.md)                      | 候选基础控件、项目适配器与必须自有的产品责任            |
+| [共用覆盖层与对话框](通用浮层与对话框规范.md) | 登录、确认、导入、设置、抽屉、权限和错误覆盖层          |
+| [实施纠正清单](实现修正待办清单.md)      | 当前实现与目标页面设计之间的可追踪差异                  |
+| [UI 实施交接](UI实现交接.md)               | 实施顺序、依赖、验收所有权、禁止假设和完成标准          |
 
 ## 页面族文档
 
 | 页面族       | 路由责任                                                                    | 设计文档                                                                                 |
 | ------------ | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| 登录         | `/login`                                                                    | [登录页规范](./pages/LOGIN_PAGE_SPEC.zh-CN.md)                                           |
-| 统一工作区   | `/`                                                                         | [统一工作区规范](./pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md)                           |
-| 赛事列表     | `/competitions`                                                             | [赛事列表页规范](./pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md)                            |
-| 赛事详情     | `/competitions/:hdid`                                                       | [赛事详情页规范](./pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md)                          |
-| 场外大屏     | `/competitions/:hdid/display`                                               | [场外大屏页规范](./pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md)                               |
-| 全局设置     | 受治理的覆盖表面，不新增路由                                                | [设置表面规范](./pages/SETTINGS_SURFACE_SPEC.zh-CN.md)                                   |
-| 兼容与不可用 | `/competitions/:hdid/live`、`/match/:key`、`/share/:uuid`、`/cloud/:fileid` | [兼容入口与不可用表面规范](./pages/COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md) |
+| 登录         | `/login`                                                                    | [登录页规范](页面/登录页规范.md)                                           |
+| 统一工作区   | `/`                                                                         | [统一工作区规范](页面/统一工作区页规范.md)                           |
+| 赛事列表     | `/competitions`                                                             | [赛事列表页规范](页面/比赛列表页规范.md)                            |
+| 赛事详情     | `/competitions/:hdid`                                                       | [赛事详情页规范](页面/比赛详情页规范.md)                          |
+| 场外大屏     | `/competitions/:hdid/display`                                               | [场外大屏页规范](页面/赛场展示页规范.md)                               |
+| 全局设置     | 受治理的覆盖表面，不新增路由                                                | [设置表面规范](页面/设置界面规范.md)                                   |
+| 兼容与不可用 | `/competitions/:hdid/live`、`/match/:key`、`/share/:uuid`、`/cloud/:fileid` | [兼容入口与不可用表面规范](页面/兼容性与不可用界面规范.md) |
 
 页面责任不得互换：赛事浏览保持独立；单局讲解、回放与实时只通过交接进入统一工作区；场外大屏不导入教学外壳；兼容入口不渲染第二工作区。
 

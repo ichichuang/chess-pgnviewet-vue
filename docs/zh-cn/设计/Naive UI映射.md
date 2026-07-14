@@ -1,16 +1,19 @@
+> **非权威性阅读镜像提示**
+> 本文档是原始文件 `docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md` 的中文阅读镜像，仅供人工浏览。产品、设计、架构与实现权威仍保留在原始源路径，请勿将本镜像作为实施或自动化编辑的依据。
+
 # 产品 Naive UI 映射
 
 ## 1. 文档定位
 
 本文把通用界面责任映射到 Naive UI 候选组件，同时明确项目层仍须保留的行为。Naive UI 是实现工具，不是产品组件、Token、信息架构或交互权威。
 
-- 总入口：[产品 UI 设计索引](./PRODUCT_UI_DESIGN_INDEX.zh-CN.md)
-- Token 与视觉角色：[产品 UI 设计系统](./PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md)
-- 组件所有权：[产品组件责任规范](./PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md)
-- 交互和焦点：[产品全局交互规范](./PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md)
-- 状态表达：[产品全局状态规范](./PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md)
-- 公共覆盖层：[产品公共覆盖层与对话框规范](./PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md)
-- 当前缺口：[产品实现纠正清单](./PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md)
+- 总入口：[产品 UI 设计索引](UI设计索引.md)
+- Token 与视觉角色：[产品 UI 设计系统](UI设计系统.md)
+- 组件所有权：[产品组件责任规范](组件职责规范.md)
+- 交互和焦点：[产品全局交互规范](全局交互规范.md)
+- 状态表达：[产品全局状态规范](全局状态规范.md)
+- 公共覆盖层：[产品公共覆盖层与对话框规范](通用浮层与对话框规范.md)
+- 当前缺口：[产品实现纠正清单](实现修正待办清单.md)
 
 候选映射均为 `APPROVED_TARGET`，除非明确写为 `CURRENT_IMPLEMENTED`。候选组件名不表示当前页面已经使用它。
 
@@ -78,7 +81,7 @@
 1. `AppProviders.vue` 继续是唯一 Naive UI 主题入口。
 2. 若采用 dialog/message/notification/loading-bar，先在项目 provider 层建立单一 owner；页面不得各自挂 provider。
 3. 适配器只接受语义 variant，如 `primary`、`danger`、`warning`，不得接受任意 palette 字符串。
-4. adapter 的 props/emits 必须在[组件责任规范](./PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md)登记。
+4. adapter 的 props/emits 必须在[组件责任规范](组件职责规范.md)登记。
 5. `teleport` 覆盖层必须继承主题属性，并遵守 safe area、focus trap、return focus 和 scroll lock。
 6. 暗色模式不得用组件局部修色；所有映射回到 `src/styles/tokens.css` 和项目主题 overrides。
 
