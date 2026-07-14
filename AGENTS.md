@@ -4,7 +4,7 @@
 
 This repository is the single-runtime Vue implementation of the 开赛了 chess teaching, PGN analysis, tournament commentary, replay, read-only live viewing, and venue-display product. It is not an administration console, generic dashboard, online-game lobby, mini-program replacement, cloud drive, or 3D-first product.
 
-The current product-design status is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`. Page work may proceed only under `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`. Decisions `OD-01` through `OD-11` remain open and must stay visibly tracked; page design may use provisional values only when the owning decision remains explicit.
+The product-design baseline is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`; the page-design documentation package has been completed and is now active authority. The active implementation gate is `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`. Decisions `OD-01` through `OD-11` remain open and must stay visibly tracked; page implementation may use provisional values only when the owning decision remains explicit.
 
 ## Active authority order
 
@@ -14,10 +14,30 @@ Before changing UI, architecture, persistence, API, or product behavior, read:
 2. `.ai/skills/project-ui/SKILL.md`
 3. `docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md`
 4. `docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md`
-5. the relevant current `docs/product/**`, `docs/ui/**`, and `docs/architecture/**` authorities
-6. `docs/migration/SOURCE_PROVENANCE.md` when source evidence is required
+5. `docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md`
+6. `docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md`
+7. the relevant target page specification under `docs/design/pages/**` and the global design documents it links
+8. `docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md`
+9. the relevant current `docs/product/**`, `docs/ui/**`, `docs/architecture/**`, and other active authorities
+10. `docs/migration/SOURCE_PROVENANCE.md` when source evidence is required
+
+`docs/design/**` is the active page-implementation authority for layout, region composition, information hierarchy, action priority, page and module states, interaction behavior, focus and keyboard behavior, touch behavior, scrolling, responsive compositions, component responsibilities, Naive UI mappings, implementation correction dependencies, and page-specific acceptance criteria. It remains subordinate to product, security, API, architecture, persistence, and Token authorities within their respective ownership scopes.
 
 Current repository code and current authorities override older plans. `.ai/reports/**` is immutable implementation evidence, not active authority. Source projects are read-only evidence and cannot override current product, security, API, or architecture contracts.
+
+## Page implementation workflow
+
+Every page slice must:
+
+1. identify the target page family and design-surface IDs from `docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md`;
+2. read the target page specification under `docs/design/pages/**` and all global design documents it links (`PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md`, `PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md`, `PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md`, `PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md`, `PRODUCT_RESPONSIVE_SPEC.zh-CN.md`, `PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md`, `PRODUCT_NAIVE_UI_MAPPING.zh-CN.md`, `PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md`);
+3. identify all affected `COR-*` entries in `docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md`;
+4. classify every capability as one of `CURRENT_IMPLEMENTED`, `APPROVED_TARGET`, `CONTRACT_BLOCKED`, `OPEN_OWNER_DECISION`, or `PROHIBITED`;
+5. preserve `OD-01` through `OD-11` as open and mark only provisional values allowed by the owning decision;
+6. implement only the selected page slice and required shared prerequisites;
+7. avoid unrelated refactors, reformatting, or renaming;
+8. run the page-specific static and narrow browser acceptance path; and
+9. close a `COR-*` item only with the evidence required by `docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md` and `docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md`.
 
 ## Page-by-page product contract
 

@@ -9,7 +9,7 @@ description: Govern page-by-page product design, Vue UI implementation, review, 
 
 Use this skill for every product page design, UI implementation, refactor, review, or browser-validation task in this repository.
 
-The product design status is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`. Work may proceed only under `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`. `OD-01` through `OD-11` remain open; no page slice may silently resolve them.
+The product-design baseline is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`; the completed page-design documentation package is now active authority. Work may proceed only under `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`. `OD-01` through `OD-11` remain open; no page slice may silently resolve them.
 
 ## Required pre-reads
 
@@ -17,13 +17,20 @@ The product design status is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIG
 2. `CLAUDE.md`
 3. `docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md`
 4. `docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md`
-5. relevant current `docs/product/**`, `docs/ui/**`, and `docs/architecture/**`
-6. `docs/migration/SOURCE_PROVENANCE.md` when source evidence is needed
-7. `.ai/skills/gsap/SKILL.md` for animation or animated interaction
+5. `docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md`
+6. `docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md`
+7. the relevant target page specification under `docs/design/pages/**`
+8. the global design documents linked by that page (`PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md`, `PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md`, `PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md`, `PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md`, `PRODUCT_RESPONSIVE_SPEC.zh-CN.md`, `PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md`, `PRODUCT_NAIVE_UI_MAPPING.zh-CN.md`, `PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md`)
+9. `docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md`
+10. relevant current `docs/product/**`, `docs/ui/**`, and `docs/architecture/**`
+11. `docs/migration/SOURCE_PROVENANCE.md` when source evidence is needed
+12. `.ai/skills/gsap/SKILL.md` for animation or animated interaction
 
 Historical `.ai/reports/**` files provide evidence only and cannot govern current page design.
 
-## Page-by-page design contract
+## Page implementation contract
+
+This skill must no longer independently invent page layout, state, interaction, or responsive rules when the design package already owns those decisions. Resolve implementation details only inside the flexibility explicitly allowed by `docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md`.
 
 Before implementation, the page authority or design must state:
 
@@ -37,6 +44,18 @@ Before implementation, the page authority or design must state:
 - keyboard, screen-reader, touch, contrast, visible-focus, and reduced-motion behavior;
 - token use, persistence category, security classification, and source read/write policy;
 - typecheck/build/static validation plus one narrow real-browser acceptance path for visible UI.
+
+Every page slice must:
+
+1. identify the page family and design-surface IDs from `docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md`;
+2. read the target page specification under `docs/design/pages/**` and all global design documents it links;
+3. identify all affected `COR-*` entries in `docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md`;
+4. classify every capability as `CURRENT_IMPLEMENTED`, `APPROVED_TARGET`, `CONTRACT_BLOCKED`, `OPEN_OWNER_DECISION`, or `PROHIBITED`;
+5. preserve `OD-01` through `OD-11` as open and use only provisional values allowed by the owning decision;
+6. implement only the selected page slice and required shared prerequisites;
+7. avoid unrelated refactors, reformatting, or renaming;
+8. run the applicable governance checks, formatting, lint, Stylelint, Knip, static checks, TypeScript checking, production build, and the page-specific narrow browser acceptance path; and
+9. close a `COR-*` item only with the evidence required by the implementation handoff and correction backlog.
 
 The main surfaces are the unified workspace (`/`), tournament list, tournament detail, independent venue display, login, and fail-closed compatibility entries. Big-screen is never the teaching workspace at a larger size. Compatibility entries never create a second workspace.
 
@@ -80,6 +99,6 @@ The main surfaces are the unified workspace (`/`), tournament list, tournament d
 
 No automated unit, component, integration, snapshot, visual-regression, or E2E test files or infrastructure may be created or retained. Vitest, Vue Test Utils, jsdom test environments, Playwright, Cypress, Jest, Testing Library, fixtures, snapshots, coverage, test setup, scripted suites, and `test` package scripts are forbidden.
 
-For each implementation slice, run the applicable governance checks, formatting, lint, Stylelint, Knip, static aggregate, TypeScript checking, production build, and audits. Visible UI changes additionally require one narrow real-browser validation of page identity, nonblank DOM, absence of Vite error overlay and console-breaking errors, affected keyboard/focus behavior, reduced motion when relevant, and one real interaction state change when applicable. Do not generate test artifacts, screenshot loops, or pixel measurements.
+For each implementation slice, run the applicable governance checks, formatting, lint, Stylelint, Knip, static aggregate, TypeScript checking, production build, and audits. Visible UI changes additionally require one narrow real-browser validation of page identity, nonblank DOM, absence of Vite error overlay and console-breaking errors, affected keyboard/focus behavior, reduced motion when relevant, and one real interaction state change when applicable. Do not generate test artifacts, screenshot loops, pixel measurements, or preview images.
 
-Do not declare acceptance until the relevant `docs/ui/UI_ACCEPTANCE_CHECKLIST.md` items and the page-specific acceptance path pass, all OD dependencies remain truthful, and no current-versus-target or contract claim is overstated.
+Do not declare acceptance until the page-specific acceptance criteria in the relevant `docs/design/pages/**` specification and the page-specific browser path pass, all affected `COR-*` items have the required evidence, all OD dependencies remain truthful, and no current-versus-target or contract claim is overstated.

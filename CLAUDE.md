@@ -4,9 +4,9 @@
 
 开赛了 is one Vue 3 + strict TypeScript chess workspace for local PGN teaching, tournament commentary, completed-game replay/import, read-only live viewing, explicit local AI analysis, and a readability-first venue display.
 
-The product design is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`. The active gate is `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`; `OD-01` through `OD-11` remain open. The governing product authority is `docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md`, with owner origin in `docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md`.
+The product-design baseline is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`; the completed page-design documentation package is now active authority. The active implementation gate is `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`; `OD-01` through `OD-11` remain open. The governing product authority is `docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md`, with owner origin in `docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md`.
 
-Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, the product blueprint, the owner baseline, and the relevant current product, UI, architecture, and source-provenance authorities. Historical `.ai/reports/**` files are evidence only.
+Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, the product blueprint, the owner baseline, `docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md`, `docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md`, the relevant target page specification under `docs/design/pages/**`, the global design documents it links, and `docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md`. Then consult the relevant current product, UI, architecture, and source-provenance authorities. Historical `.ai/reports/**` files are evidence only.
 
 ## Product surfaces
 
@@ -41,6 +41,19 @@ Loading, empty, permission, authentication, unavailable, stale, retry, and contr
 `src/api/legacyWebCompatibility.ts` alone owns the approved tracked browser compatibility signer and fixed compatibility identity. The only approved persisted account record is the strict 43,200-second `kaisaile.auth.v1` record owned by `src/persistence/auth/authPersistence.ts`.
 
 Passwords/digests, signing secrets, duplicate auth records, URL/router/Dexie/Query/workspace/PGN/annotation/AI auth values, shared credentials, MQTT credentials, secret URLs, generic `/CALL`, `proxyRequest`, write/admin endpoints, MQTT publish, and invented contracts are forbidden.
+
+## Page implementation workflow
+
+Page UI implementation must begin from `docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md` and `docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md`, then consume the target page specification, its linked global design authorities, and the relevant `COR-*` correction backlog entries. For each slice:
+
+1. identify the page family and design-surface IDs;
+2. read the target page spec and linked global documents;
+3. list affected `COR-*` items and required shared prerequisites;
+4. classify every capability as `CURRENT_IMPLEMENTED`, `APPROVED_TARGET`, `CONTRACT_BLOCKED`, `OPEN_OWNER_DECISION`, or `PROHIBITED`;
+5. keep `OD-01` through `OD-11` open and use only provisional values approved by the owning decision;
+6. implement the slice and its prerequisites only;
+7. run governance, format, lint, Stylelint, Knip, static checks, typecheck, production build, and the page-specific narrow browser acceptance path;
+8. close a `COR-*` item only with the evidence and verification path required by the handoff and correction backlog.
 
 ## Page-design and validation rules
 
