@@ -198,14 +198,16 @@ function scanBoundaries(file, text) {
       ruleId: 'ARCH_URL_TOKEN_AUTH',
       pattern:
         /\b(?:route|router|location)\.(?:query|search)[^.\n]{0,80}\btoken\b|\bsearchParams\.get\s*\(\s*['"]token['"]\s*\)/giu,
-      allowlist: [],
-      reason: 'URL or query-token authentication is forbidden.',
+      allowlist: architecturePolicy.urlTokenCompatibilityAllowlist,
+      reason:
+        'URL or query-token authentication is forbidden outside the fixed empty compatibility path validator.',
     },
     {
       ruleId: 'ARCH_DEVICE_GUEST_IDENTITY',
       pattern: /\b(?:openid|visitorId|deviceFingerprint|fingerprintId)\b/giu,
-      allowlist: [],
-      reason: 'Invented device, fingerprint, or Mini Program guest identity is forbidden.',
+      allowlist: architecturePolicy.browserCompatibilityIdentityAllowlist,
+      reason:
+        'Invented device identity is forbidden outside the source-confirmed browser compatibility adapter.',
     },
     {
       ruleId: 'ARCH_MINI_PROGRAM_TRANSPORT',

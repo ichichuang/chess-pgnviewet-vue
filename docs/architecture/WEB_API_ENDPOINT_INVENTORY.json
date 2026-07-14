@@ -1,5 +1,5 @@
 {
-    "schemaVersion": 2,
+    "schemaVersion": 3,
     "status": "ACTIVE_AUTHORITY",
     "effectiveDate": "2026-07-14",
     "sourceAuthorities": [
@@ -18,7 +18,7 @@
         "id": "chessApi",
         "value": "https://wxapi.kaisaile.org",
         "runtimeConfigurable": false,
-        "browserCrossOrigin": "UNAVAILABLE_UNTIL_REAL_ORIGIN_GRANT_IS_VERIFIED"
+        "browserCrossOrigin": "LOCALHOST_USES_FIXED_DEVELOPMENT_PROXY_PRODUCTION_USES_DIRECT_HTTPS"
     },
     "confirmedPublicReads": [
         {
@@ -117,6 +117,35 @@
             "liveProbe": "CONFIRMED_NO_CREDENTIAL"
         }
     ],
+    "confirmedAuthentication": {
+        "repository": "authRepository",
+        "passwordTransformation": "LOWERCASE_HEXADECIMAL_MD5_DURING_SUBMISSION",
+        "browserSigning": "CENTRALIZED_TRACKED_HMAC_COMPATIBILITY_ADAPTER",
+        "login": {
+            "method": "POST",
+            "path": "/liveproxy/PostLoginByPhone",
+            "requestFields": ["Type", "code", "login_func", "mobile", "pwd", "tel", "type"],
+            "responseEnvelope": ["resp.msg", "content.token", "content.uid"]
+        },
+        "identity": [
+            {
+                "method": "POST",
+                "path": "/ucenter/GetUserDetail",
+                "requestFields": ["showall", "token", "uid"],
+                "responseEnvelope": ["content.uid", "content.mobile"]
+            },
+            {
+                "method": "POST",
+                "path": "/ucenter/GetUserCenterInfo",
+                "requestFields": ["token"],
+                "responseEnvelope": ["content.nickname", "content.explain", "content.mpurl"]
+            }
+        ],
+        "persistenceSeconds": 43200,
+        "logout": "LOCAL_ONLY",
+        "http401": "CLEAR_AUTH_AND_PRIVATE_STATE",
+        "http403": "PRESERVE_AUTH_AND_REPORT_PERMISSION_DENIAL"
+    },
     "displayComposition": {
         "route": "/competitions/:hdid/display",
         "repository": "competitionDisplayRepository",
@@ -130,16 +159,12 @@
     },
     "blockedCapabilities": [
         {
-            "id": "account",
-            "reason": "Request identity, credential transport, expiry, and logout contracts are incomplete."
-        },
-        {
             "id": "finishedReplay",
             "reason": "Credential issuance and read-only side-effect behavior are incomplete."
         },
         {
             "id": "cloudAndShare",
-            "reason": "Credential, CORS, response, and production ownership contracts are incomplete."
+            "reason": "Credential, response, and production ownership contracts are incomplete."
         },
         {
             "id": "hardwareAndLive",
@@ -160,10 +185,11 @@
         "HttpOnly session",
         "CSRF server",
         "session vault",
-        "browser HMAC",
+        "browser signing outside the centralized compatibility adapter",
         "generic browser Bearer",
         "URL-token absorption",
         "query-token authentication",
+        "fixed identity outside the centralized compatibility adapter",
         "fingerprint guest credential",
         "Mini Program API authority",
         "write/admin endpoints",

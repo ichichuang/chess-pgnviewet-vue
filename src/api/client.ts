@@ -4,6 +4,8 @@ import { z } from 'zod'
 import { productionApiConfig } from '@/runtime/config/productionApi'
 
 import type { WebApiEndpoint } from './endpoints'
+import { signLegacyBrowserRequest } from './legacyWebCompatibility'
+import { notifyPrivateAuthLoss, privateAuthToken } from './privateAuthLifecycle'
 
 export type ApiClientErrorKind =
   | 'auth-required'
@@ -50,8 +52,13 @@ export class ApiClientError extends Error {
 export interface JsonRequestInput {
   readonly path: WebApiEndpoint
   readonly body: unknown
+  readonly auth?: 'protected'
   readonly signal?: AbortSignal | undefined
   readonly timeoutMs?: number
+}
+
+type CompatibilityAxiosRequestConfig = AxiosRequestConfig & {
+  readonly kaisaileAuth?: 'protected'
 }
 
 const JsonResponseSchema = z.unknown()
@@ -91,7 +98,7 @@ function normalizedRelativePath(path: string): string {
     candidate.includes('\\') ||
     hasControlCharacter(candidate)
   ) {
-    throw configurationError('Web API request path is not a safe relative path.')
+    throw configurationError('请求地址无效。')
   }
 
   const pathname = candidate.split(/[?#]/u, 1)[0] ?? ''
@@ -100,7 +107,7 @@ function normalizedRelativePath(path: string): string {
   try {
     decodedPathname = decodeURIComponent(pathname)
   } catch {
-    throw configurationError('Web API request path contains invalid encoding.')
+    throw configurationError('请求地址无效。')
   }
 
   if (
@@ -108,7 +115,7 @@ function normalizedRelativePath(path: string): string {
     decodedPathname.includes('\\') ||
     decodedPathname.split('/').some((segment) => segment === '.' || segment === '..')
   ) {
-    throw configurationError('Web API request path contains an unsafe URL segment.')
+    throw configurationError('请求地址无效。')
   }
 
   return candidate
@@ -116,7 +123,7 @@ function normalizedRelativePath(path: string): string {
 
 function validatedBase(base: string | undefined): string {
   if (base !== productionApiConfig.chessApiBase) {
-    throw configurationError('Dynamic Web API request bases are not allowed.')
+    throw configurationError('请求设置无效。')
   }
 
   return productionApiConfig.chessApiBase
@@ -126,20 +133,10 @@ function validatedTimeout(timeoutMs: number | undefined): number {
   const candidate = timeoutMs ?? productionApiConfig.requestTimeoutMs
 
   if (!Number.isInteger(candidate) || candidate < 3_000 || candidate > 30_000) {
-    throw configurationError('Web API request timeout is invalid.')
+    throw configurationError('请求设置无效。')
   }
 
   return candidate
-}
-
-function assertBrowserTransportAvailable(): void {
-  if (productionApiConfig.browserAccess === 'cross-origin-unconfirmed') {
-    throw new ApiClientError({
-      kind: 'service-unavailable',
-      message: '当前部署未获得已验证 Web API 的跨域访问权限。',
-      retryable: false,
-    })
-  }
 }
 
 function classifyHttpStatus(status: number): ApiClientErrorKind {
@@ -170,27 +167,26 @@ function sanitizedMessage(body: unknown, fallback: string): string {
 }
 
 function httpFallback(kind: ApiClientErrorKind, status: number): string {
-  if (kind === 'auth-required') return 'Authentication is required.'
-  if (kind === 'permission-denied') return 'Permission was denied.'
-  if (kind === 'rate-limited') return 'Too many requests. Please try again later.'
-  if (kind === 'service-unavailable') return 'Web API is unavailable.'
-  if (kind === 'upstream') return 'Web API upstream failed.'
-  return `HTTP ${status}`
+  if (kind === 'auth-required') return '请重新登录。'
+  if (kind === 'permission-denied') return '没有访问权限。'
+  if (kind === 'rate-limited') return '请求过于频繁，请稍后重试。'
+  if (kind === 'service-unavailable' || kind === 'upstream') return '服务暂不可用。'
+  return `请求失败（${status}）`
 }
 
 function toApiClientError(error: unknown): ApiClientError {
   if (error instanceof ApiClientError) return error
 
   if (!axios.isAxiosError(error)) {
-    return new ApiClientError({ kind: 'network', message: 'Web API request failed.' })
+    return new ApiClientError({ kind: 'network', message: '网络请求失败。' })
   }
 
   if (error.code === 'ERR_CANCELED') {
-    return new ApiClientError({ kind: 'cancelled', message: 'Web API request was cancelled.' })
+    return new ApiClientError({ kind: 'cancelled', message: '请求已取消。' })
   }
 
   if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
-    return new ApiClientError({ kind: 'timeout', message: 'Web API request timed out.' })
+    return new ApiClientError({ kind: 'timeout', message: '请求超时，请稍后重试。' })
   }
 
   const status = error.response?.status
@@ -207,7 +203,7 @@ function toApiClientError(error: unknown): ApiClientError {
   if (error.code === 'ERR_BAD_RESPONSE') {
     return new ApiClientError({
       kind: 'invalid-json',
-      message: 'Web API returned malformed JSON.',
+      message: '服务返回了无法识别的数据。',
     })
   }
 
@@ -216,10 +212,39 @@ function toApiClientError(error: unknown): ApiClientError {
     error.code === 'ERR_BAD_OPTION_VALUE' ||
     error.code === 'ERR_INVALID_URL'
   ) {
-    return configurationError('Web API request configuration is invalid.')
+    return configurationError('请求设置无效。')
   }
 
-  return new ApiClientError({ kind: 'network', message: 'Web API network request failed.' })
+  return new ApiClientError({ kind: 'network', message: '网络连接失败，请稍后重试。' })
+}
+
+function protectedRequest(config: CompatibilityAxiosRequestConfig): boolean {
+  return config.kaisaileAuth === 'protected'
+}
+
+function serializedRequestBody(config: CompatibilityAxiosRequestConfig): string | undefined {
+  if (config.data === undefined) return undefined
+
+  if (typeof config.data !== 'object' || config.data === null || Array.isArray(config.data)) {
+    throw configurationError('请求内容无效。')
+  }
+
+  let body = config.data as Record<string, unknown>
+
+  if (protectedRequest(config)) {
+    const token = privateAuthToken()
+    if (!token) {
+      queueMicrotask(() => notifyPrivateAuthLoss('登录状态已失效，请重新登录。'))
+      throw new ApiClientError({
+        kind: 'auth-required',
+        message: '请重新登录。',
+        retryable: false,
+      })
+    }
+    body = { ...body, token }
+  }
+
+  return JSON.stringify(body)
 }
 
 const httpClient = axios.create({
@@ -239,15 +264,35 @@ const httpClient = axios.create({
   withCredentials: false,
 })
 
-const requestInterceptorId = httpClient.interceptors.request.use((config) => {
-  config.baseURL = validatedBase(config.baseURL)
-  config.url = normalizedRelativePath(config.url ?? '')
-  return config
+const requestInterceptorId = httpClient.interceptors.request.use(async (config) => {
+  const compatibilityConfig = config as typeof config & CompatibilityAxiosRequestConfig
+  compatibilityConfig.baseURL = validatedBase(compatibilityConfig.baseURL)
+  compatibilityConfig.url = normalizedRelativePath(compatibilityConfig.url ?? '')
+  const serializedBody = serializedRequestBody(compatibilityConfig)
+  const signedHeaders = await signLegacyBrowserRequest(serializedBody)
+
+  compatibilityConfig.data = serializedBody
+  compatibilityConfig.headers.set('Authorization', signedHeaders.Authorization)
+  compatibilityConfig.headers.set('x-date', signedHeaders['x-date'])
+  if (signedHeaders.Digest) compatibilityConfig.headers.set('Digest', signedHeaders.Digest)
+
+  return compatibilityConfig
 })
 
 const responseInterceptorId = httpClient.interceptors.response.use(
   (response) => response,
-  (error: unknown) => Promise.reject(toApiClientError(error))
+  (error: unknown) => {
+    const normalized = toApiClientError(error)
+    const requestConfig = axios.isAxiosError(error)
+      ? (error.config as CompatibilityAxiosRequestConfig | undefined)
+      : undefined
+
+    if (normalized.kind === 'auth-required' && requestConfig && protectedRequest(requestConfig)) {
+      queueMicrotask(() => notifyPrivateAuthLoss('登录状态已失效，请重新登录。'))
+    }
+
+    return Promise.reject(normalized)
+  }
 )
 
 if (import.meta.hot) {
@@ -258,10 +303,9 @@ if (import.meta.hot) {
 }
 
 export async function requestJson(input: JsonRequestInput): Promise<unknown> {
-  assertBrowserTransportAvailable()
-
-  const request: AxiosRequestConfig = {
+  const request: CompatibilityAxiosRequestConfig = {
     baseURL: productionApiConfig.chessApiBase,
+    ...(input.auth ? { kaisaileAuth: input.auth } : {}),
     method: 'POST',
     timeout: validatedTimeout(input.timeoutMs),
     url: normalizedRelativePath(input.path),
@@ -274,7 +318,7 @@ export async function requestJson(input: JsonRequestInput): Promise<unknown> {
   return JsonResponseSchema.parse(response.data)
 }
 
-export function apiErrorMessage(error: unknown): string {
-  if (error instanceof ApiClientError) return error.message
-  return error instanceof Error ? error.message : '请求失败'
+export function apiErrorMessage(_error: unknown): string {
+  if (_error instanceof ApiClientError) return _error.message
+  return '请求失败，请稍后重试。'
 }

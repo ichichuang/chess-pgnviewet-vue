@@ -34,6 +34,7 @@ export const approvedVersions = {
     'chess.js': '1.4.0',
     dexie: '4.4.4',
     gsap: '3.15.0',
+    'js-md5': '0.8.3',
     'naive-ui': '2.44.1',
     pinia: '3.0.4',
     vue: '3.5.39',
@@ -43,6 +44,7 @@ export const approvedVersions = {
   devDependencies: {
     '@eslint/js': '10.0.1',
     '@types/node': '26.1.1',
+    '@types/js-md5': '0.8.0',
     '@vitejs/plugin-vue': '6.0.7',
     '@vue/tsconfig': '0.9.1',
     eslint: '10.7.0',
@@ -156,7 +158,9 @@ export const architecturePolicy = {
   iconAllowlist: ['src/ui/icons/', 'src/ui/', 'src/app/providers/'],
   apiAllowlist: ['src/api/', 'src/repositories/', 'src/sources/', 'src/runtime/http/'],
   axiosImportAllowlist: ['src/api/client.ts'],
-  browserAuthHeaderAllowlist: [],
+  browserAuthHeaderAllowlist: ['src/api/client.ts', 'src/api/legacyWebCompatibility.ts'],
+  browserCompatibilityIdentityAllowlist: ['src/api/legacyWebCompatibility.ts'],
+  urlTokenCompatibilityAllowlist: ['vite.config.ts'],
   nativeHttpAllowlist: [],
   persistenceAllowlist: [
     'src/persistence/',
@@ -164,7 +168,7 @@ export const architecturePolicy = {
     'src/runtime/preferences/',
   ],
   runtimeConfigAllowlist: ['src/runtime/config/', 'src/config/runtime.ts', 'src/router/index.ts'],
-  writeEndpointAllowlist: ['src/api/client.ts'],
+  writeEndpointAllowlist: ['src/api/client.ts', 'vite.config.ts'],
   futureAllowlists: {
     naiveUi: ['src/ui/', 'src/app/providers/', 'src/providers/'],
     icons: ['src/ui/icons/'],
@@ -274,4 +278,27 @@ export const secretPolicy = {
   ],
   excludedPaths: ['pnpm-lock.yaml'],
   excludedDirectories: ['.ai/reports', 'docs/archive'],
+}
+
+export const userVisibleCopyPolicy = {
+  scopes: ['src'],
+  forbiddenTerms: [
+    { id: 'development', pattern: /\bdevelopment\b|开发环境|开发状态/giu },
+    { id: 'audit', pattern: /\baudit\b|审计/giu },
+    { id: 'contract', pattern: /\bcontract\b|合同/giu },
+    { id: 'mock', pattern: /\bmock\b|模拟数据/giu },
+    { id: 'fixture', pattern: /\bfixture\b|固定样例/giu },
+    { id: 'test', pattern: /\btest(?:ing)?\b|测试/giu },
+    { id: 'debug', pattern: /\bdebug\b|调试/giu },
+    { id: 'blocked', pattern: /\bblocked\b|阻断|已阻止/giu },
+    { id: 'unconfirmed', pattern: /\bunconfirmed\b|未确认/giu },
+    { id: 'cors', pattern: /\bcors\b|跨域/giu },
+    { id: 'endpoint', pattern: /\bendpoint\b|端点/giu },
+    { id: 'token', pattern: /\btoken\b|令牌/giu },
+    { id: 'dto', pattern: /\bdto\b/giu },
+    { id: 'axios', pattern: /\baxios\b/giu },
+    { id: 'stack', pattern: /\bstack\b|调用栈|堆栈/giu },
+    { id: 'source-authority', pattern: /\bsource[- ]authority\b|来源权威|源权威/giu },
+  ],
+  approvedNormalProductCopy: [],
 }

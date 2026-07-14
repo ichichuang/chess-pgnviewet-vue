@@ -26,9 +26,12 @@ it does not invent a display endpoint.
 
 ## Authentication
 
-No complete browser-compatible account or protected replay contract is
-confirmed. The application remains anonymous, renders a truthful unavailable
-state, persists no credential material, and issues no protected request.
+`authRepository` owns the confirmed password login and account identity reads.
+The source-confirmed fixed compatibility object, MD5 transformation, and request
+signing algorithm are centralized in `legacyWebCompatibility.ts`. One Axios
+interceptor injects the account token into JSON bodies only for protected
+repository calls. Route guards are UX gates; upstream authorization remains
+authoritative.
 
 ## Read policy
 
@@ -38,11 +41,12 @@ the transport exposes no generic POST surface.
 
 ## Permanent exclusions
 
-`/api/ksl`, `/CALL`, `proxyRequest`, arbitrary API bases, browser HMAC,
-generic browser Bearer injection, URL-token absorption, query-token
-authentication, Node/BFF/cookie-session infrastructure, write/admin endpoints,
-and publish-capable live transports are forbidden. This paragraph is
-prohibition text, not compatibility authority.
+`/api/ksl`, `/CALL`, `proxyRequest`, arbitrary targets, generic browser Bearer
+injection, URL-token absorption, query-token authentication,
+Node/BFF/cookie-session infrastructure, write/admin endpoints, and
+publish-capable live transports are forbidden. The fixed development Vite
+proxy and centralized tracked browser signer are the only compatibility
+exceptions.
 
 ## Supporting authorities
 

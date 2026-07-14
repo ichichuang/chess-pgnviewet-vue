@@ -189,11 +189,11 @@ are:
    `/competitions/:hdid/live` through a sanitized handoff into the canonical
    workspace. Unconfirmed or unavailable sources remain visibly unavailable;
    they never fall back to fabricated data.
-5. `/login` remains unavailable until the Web-only password request is verified
-   without `openid` compatibility or browser HMAC. Protected replay remains
-   unavailable until its separate chess-service token lifecycle is verified.
-   Any later private Query data is removed with protected handoffs, analysis
-   work, and protected PGN state on logout or authentication failure.
+5. `/login` provides the source-confirmed browser account flow. It restores the
+   minimum validated session, returns to the requested protected route, and
+   clears private Query data, protected handoffs, analysis work, and protected
+   replay state on logout, expiry, or authentication failure. Protected replay
+   remains unavailable until its separate read contract is verified.
 
 Public competition filters are URL-owned so refresh and browser navigation
 preserve the selected group and round. Non-sensitive workspace layout is stored

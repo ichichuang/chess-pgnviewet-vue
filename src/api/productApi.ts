@@ -232,7 +232,7 @@ function fetchFinishedGameReplay(
   return Promise.reject(
     new ApiClientError({
       kind: 'service-unavailable',
-      message: '回放认证合同尚未确认，当前不会发送受保护请求。',
+      message: '此回放暂时无法加载。',
       retryable: false,
     })
   )

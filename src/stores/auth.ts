@@ -1,21 +1,38 @@
 import { defineStore } from 'pinia'
 
-import { registerPrivateAuthLossHandler } from '@/api/privateAuthLifecycle'
+import { apiErrorMessage } from '@/api/client'
+import { authRepository } from '@/api/authRepository'
+import {
+  registerPrivateAuthLossHandler,
+  registerPrivateAuthTokenProvider,
+} from '@/api/privateAuthLifecycle'
 import { clearPrivateProductQueries } from '@/api/queryClient'
+import {
+  clearPersistedAuthSession,
+  persistAuthSession,
+  readPersistedAuthSession,
+  type PersistedAuthSession,
+} from '@/persistence/auth/authPersistence'
 import { clearPrivateWorkspaceHandoffContexts } from '@/persistence/workspace/workspaceHandoff'
 
 import { useAnalysisStore } from './analysis'
 import { usePgnStore } from './pgn'
 
-type AuthStatus = 'checking' | 'unavailable'
+type AuthStatus = 'checking' | 'anonymous' | 'submitting' | 'authenticated'
 
 interface AuthState {
   status: AuthStatus
+  session: PersistedAuthSession | null
   lastError: string | null
   initialized: boolean
 }
 
-const AUTH_UNAVAILABLE_MESSAGE = 'Web 登录合同尚未确认，当前不会收集账号或密码。'
+let expiryTimer: ReturnType<typeof setTimeout> | null = null
+
+function clearExpiryTimer(): void {
+  if (expiryTimer !== null) globalThis.clearTimeout(expiryTimer)
+  expiryTimer = null
+}
 
 function clearPrivateProductState(): void {
   clearPrivateProductQueries()
@@ -29,41 +46,99 @@ function clearPrivateProductState(): void {
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     status: 'checking',
+    session: null,
     lastError: null,
     initialized: false,
   }),
 
   getters: {
-    isAuthenticated(): boolean {
-      return false
+    isAuthenticated(state): boolean {
+      return (
+        state.status === 'authenticated' &&
+        state.session !== null &&
+        state.session.expiresAt > Date.now()
+      )
     },
-    accountLabel(): string {
-      return '认证未开放'
+    isSubmitting(state): boolean {
+      return state.status === 'submitting'
     },
-    unavailableMessage(): string {
-      return AUTH_UNAVAILABLE_MESSAGE
+    accountLabel(state): string {
+      return state.session?.accountLabel ?? '未登录'
     },
   },
 
   actions: {
+    scheduleExpiry(expiresAt: number): void {
+      clearExpiryTimer()
+      const remaining = Math.max(0, expiresAt - Date.now())
+      expiryTimer = globalThis.setTimeout(() => {
+        this.handleAuthLoss('登录状态已过期，请重新登录。')
+      }, remaining)
+    },
     initialize(): void {
       registerPrivateAuthLossHandler((message) => this.handleAuthLoss(message))
-      if (this.initialized) return
+      registerPrivateAuthTokenProvider(() =>
+        this.isAuthenticated ? (this.session?.token ?? null) : null
+      )
 
-      clearPrivateProductState()
-      this.status = 'unavailable'
+      if (this.initialized) {
+        if (this.session && this.session.expiresAt <= Date.now()) {
+          this.handleAuthLoss('登录状态已过期，请重新登录。')
+        }
+        return
+      }
+
+      const restored = readPersistedAuthSession()
+      this.session = restored
+      this.status = restored ? 'authenticated' : 'anonymous'
       this.lastError = null
       this.initialized = true
+      if (restored) this.scheduleExpiry(restored.expiresAt)
     },
-    handleAuthLoss(message = '认证状态不可用，私有数据已清除。'): void {
+    async login(account: string, password: string): Promise<boolean> {
+      if (this.isSubmitting) return false
+
+      this.status = 'submitting'
+      this.lastError = null
+
+      try {
+        const authenticated = await authRepository.login(account, password)
+        const session = persistAuthSession({
+          token: authenticated.token,
+          uid: authenticated.uid,
+          accountLabel: authenticated.nickname || authenticated.mobile || authenticated.uid,
+        })
+        this.session = session
+        this.status = 'authenticated'
+        this.initialized = true
+        this.scheduleExpiry(session.expiresAt)
+        return true
+      } catch (error) {
+        clearPersistedAuthSession()
+        clearExpiryTimer()
+        this.session = null
+        this.status = 'anonymous'
+        this.lastError = apiErrorMessage(error)
+        this.initialized = true
+        clearPrivateProductState()
+        return false
+      }
+    },
+    handleAuthLoss(message = '登录状态已失效，请重新登录。'): void {
+      clearPersistedAuthSession()
+      clearExpiryTimer()
       clearPrivateProductState()
-      this.status = 'unavailable'
+      this.session = null
+      this.status = 'anonymous'
       this.lastError = message
       this.initialized = true
     },
     logout(): void {
+      clearPersistedAuthSession()
+      clearExpiryTimer()
       clearPrivateProductState()
-      this.status = 'unavailable'
+      this.session = null
+      this.status = 'anonymous'
       this.lastError = null
       this.initialized = true
     },

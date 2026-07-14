@@ -31,25 +31,27 @@ src/
 
 ## State boundaries
 
-| State                         | Owner                                 | Persistence                                                   |
-| ----------------------------- | ------------------------------------- | ------------------------------------------------------------- |
-| Client interaction/session    | feature-owned Pinia store             | categorized Dexie record when approved                        |
-| Server reads                  | typed repository + TanStack Vue Query | re-fetch by default; sensitive cache never persists           |
-| Live transport                | explicit service/composable           | memory only                                                   |
-| Auth                          | feature-owned Pinia status            | no accepted persisted session until Web contract verification |
-| Chess/PGN/annotation/analysis | framework-free domain                 | explicit versioned persistence adapter                        |
+| State                         | Owner                                 | Persistence                                         |
+| ----------------------------- | ------------------------------------- | --------------------------------------------------- |
+| Client interaction/session    | feature-owned Pinia store             | categorized Dexie record when approved              |
+| Server reads                  | typed repository + TanStack Vue Query | re-fetch by default; sensitive cache never persists |
+| Live transport                | explicit service/composable           | memory only                                         |
+| Auth                          | feature-owned Pinia status            | strict 12-hour minimum compatibility record         |
+| Chess/PGN/annotation/analysis | framework-free domain                 | explicit versioned persistence adapter              |
 
 ## I/O boundary
 
 Feature and UI code never call `fetch`, MQTT, Cloudreve, upstream services, `/CALL`, or `proxyRequest` directly. Repositories map confirmed DTOs to domain objects, validate with Zod, and expose explicit unavailable/error states. Unconfirmed capabilities remain blocked; they are not replaced by mock success data.
 
 The browser uses one project-owned Axios client and explicit repositories. The
-only confirmed chess API origin is `https://wxapi.kaisaile.org`; current CORS
-evidence does not establish cross-origin browser availability. The repository
-does not invent same-origin handlers, a BFF, cookie sessions, `/api/ksl`,
-`/CALL`, `proxyRequest`, or server-side credential ownership. Browser HMAC,
-shared upstream credentials, URL-token auth, and query-token auth are
-forbidden. See `WEB_REQUEST_ARCHITECTURE_BASELINE.md`.
+only confirmed chess API origin is `https://wxapi.kaisaile.org`. Local browser
+validation uses the fixed, endpoint-allowlisted Vite development proxy because
+the upstream does not grant localhost cross-origin requests. The repository
+does not invent production handlers, a BFF, cookie sessions, `/api/ksl`,
+`/CALL`, `proxyRequest`, or server-side credential ownership. The exact tracked
+browser signer and fixed login compatibility identity are centralized in one
+adapter; URL-token and query-token authentication remain forbidden. See
+`WEB_REQUEST_ARCHITECTURE_BASELINE.md`.
 
 ## Source migration
 

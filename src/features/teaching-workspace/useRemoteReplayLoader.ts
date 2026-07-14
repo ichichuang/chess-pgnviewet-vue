@@ -43,7 +43,7 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
 
       if (value.mode === 'live_spectator') {
         status.value = 'unavailable'
-        message.value = '实时传输合同未开放，当前工作区保持只读。'
+        message.value = '实时内容暂不可用，当前工作区保持只读。'
         loadedKey = ''
         return
       }
@@ -65,7 +65,7 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
       if (!auth.isAuthenticated) {
         pgn.clearPrivateReplay()
         status.value = 'unavailable'
-        message.value = '回放认证合同尚未确认，当前不会发送受保护请求。'
+        message.value = '请先登录后打开回放。'
         loadedKey = ''
         return
       }

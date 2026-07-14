@@ -24,7 +24,8 @@
     "check:tokens": "node scripts/governance/check-raw-visual-values.mjs",
     "check:mocks": "node scripts/governance/check-forbidden-mock-data.mjs",
     "check:secrets": "node scripts/governance/check-secret-patterns.mjs",
-    "check:governance": "run-s check:deps check:architecture check:residue check:tokens check:mocks check:secrets",
+    "check:copy": "node scripts/governance/check-user-visible-copy.mjs",
+    "check:governance": "run-s check:deps check:architecture check:residue check:tokens check:mocks check:secrets check:copy",
     "check:unused": "knip --no-progress",
     "audit:prod": "pnpm audit --prod",
     "check:static": "run-s lint lint:style format:check check:governance check:unused audit:prod"
@@ -35,6 +36,7 @@
     "chess.js": "1.4.0",
     "dexie": "4.4.4",
     "gsap": "3.15.0",
+    "js-md5": "0.8.3",
     "naive-ui": "2.44.1",
     "pinia": "3.0.4",
     "vue": "3.5.39",
@@ -43,6 +45,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@types/js-md5": "0.8.0",
     "@types/node": "26.1.1",
     "@vitejs/plugin-vue": "6.0.7",
     "@vue/tsconfig": "0.9.1",

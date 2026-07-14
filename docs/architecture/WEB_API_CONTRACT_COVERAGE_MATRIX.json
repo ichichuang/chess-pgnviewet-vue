@@ -1,5 +1,5 @@
 {
-    "schemaVersion": 2,
+    "schemaVersion": 3,
     "status": "ACTIVE_AUTHORITY",
     "effectiveDate": "2026-07-14",
     "coverage": [
@@ -67,13 +67,40 @@
             "status": "COMPLETE"
         },
         {
+            "id": "auth.login",
+            "requestSchema": "LegacyLoginRequestBody",
+            "responseSchema": "LoginResponseSchema",
+            "domainMapping": "authRepository.login",
+            "abortSignal": false,
+            "queryBoundary": false,
+            "status": "COMPLETE"
+        },
+        {
+            "id": "auth.userDetail",
+            "requestSchema": "PROTECTED_TOKEN_IN_BODY_PLUS_UID",
+            "responseSchema": "UserDetailResponseSchema",
+            "domainMapping": "authRepository.login",
+            "abortSignal": false,
+            "queryBoundary": false,
+            "status": "COMPLETE"
+        },
+        {
+            "id": "auth.userCenterInfo",
+            "requestSchema": "PROTECTED_TOKEN_IN_BODY",
+            "responseSchema": "UserCenterResponseSchema",
+            "domainMapping": "authRepository.login",
+            "abortSignal": false,
+            "queryBoundary": false,
+            "status": "COMPLETE"
+        },
+        {
             "id": "protectedCapabilities",
             "requestSchema": "NONE",
             "responseSchema": "NONE",
             "domainMapping": "TRUTHFUL_UNAVAILABLE_STATE",
             "abortSignal": false,
             "queryBoundary": true,
-            "status": "BLOCKED_NO_REQUEST"
+            "status": "REPLAY_CLOUD_SHARE_HARDWARE_LIVE_BLOCKED_NO_REQUEST"
         }
     ]
 }

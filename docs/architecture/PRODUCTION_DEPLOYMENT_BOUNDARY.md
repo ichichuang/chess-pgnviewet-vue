@@ -6,21 +6,26 @@ Status: `ACTIVE_AUTHORITY`
 
 - The production chess origin is `https://wxapi.kaisaile.org`.
 - Five public tournament reads respond to direct no-credential HTTPS.
-- A `2026-07-14` preflight and POST with a localhost Origin returned no
-  usable cross-origin grant.
+- A `2026-07-14` preflight and POST with a localhost Origin returned no usable
+  cross-origin grant, so localhost validation requires the fixed Vite proxy.
 - Vite development and preview servers are validation tools, not production
   servers.
 
 ## Repository output
 
 The repository builds static Vue assets. It contains no application server,
-proxy, edge handler, credential bridge, dynamic upstream target, or public API
+edge handler, credential bridge, dynamic upstream target, or public API
 configuration variable. The browser bundle owns no secret.
 
+`vite.config.ts` owns one development-only proxy at `/__kaisaile_web`. It has a
+fixed `https://wxapi.kaisaile.org` target, accepts POST only, and rejects paths
+outside the eight confirmed public/account endpoints. It is absent from the
+production output and is not a production server.
+
 The obsolete `/api/ksl`, `/CALL`, `proxyRequest`, Node/BFF,
-cookie-session, CSRF/session-vault, browser HMAC, generic Bearer, URL-token, and
-query-token designs are permanently forbidden. This is explicit prohibition
-text only.
+cookie-session, CSRF/session-vault, generic Bearer, URL-token, and query-token
+designs are permanently forbidden. The tracked browser signer is confined to
+the centralized compatibility adapter.
 
 ## Browser readiness
 
@@ -30,8 +35,8 @@ A production browser deployment may claim API availability only when:
 2. the API owner grants the exact deployed origin, method, headers, and
    credential mode and a real browser validates them.
 
-No such browser contract is currently recorded. Other origins must render the
-documented unavailable state without sending a request or substituting data.
+Production deployments use the exact confirmed HTTPS origin. Owner validation
+with a real account remains required before claiming successful account access.
 
 ## Validation
 

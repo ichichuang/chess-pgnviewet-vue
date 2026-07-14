@@ -109,17 +109,17 @@ This document governs:
 
 ### 7. Sensitive session/auth state
 
-| Attribute        | Value                                                                                                    |
-| ---------------- | -------------------------------------------------------------------------------------------------------- |
-| Storage          | No accepted auth persistence until the Web login lifecycle is verified; never Dexie, URL, or Query cache |
-| Example fields   | Future minimum source-confirmed token and identity fields only                                           |
-| Versioning       | Project-owned strict schema after contract approval                                                      |
-| Migration        | Legacy token/user-info keys are cleanup inputs, never restoration authority                              |
-| Expiration       | Verified token/server expiry when present; otherwise no durable restoration                              |
-| Security         | No password/digest, HMAC, shared credential, URL token, or duplicated compatibility key                  |
-| Refresh recovery | Anonymous until an approved minimum record and expiry contract exist                                     |
-| Reset behavior   | Local logout or HTTP 401 clears private state; no remote endpoint is invented                            |
-| Validation       | Secret scan, storage audit, typecheck, production build, and narrow browser evidence                     |
+| Attribute        | Value                                                                                           |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| Storage          | Project-owned local-storage adapter only; never Dexie, URL, or Query cache                      |
+| Example fields   | Source-confirmed account token, uid, display label, schema version, and expiry                  |
+| Versioning       | Strict Zod-validated `kaisaile.auth.v1` record                                                  |
+| Migration        | Legacy token/user-info keys are not restored                                                    |
+| Expiration       | 43,200 seconds from successful login, matching the tracked browser source                       |
+| Security         | No password/digest, signing input, URL token, or duplicated compatibility constant              |
+| Refresh recovery | Restore only when the record is valid and unexpired; otherwise remove it and remain anonymous   |
+| Reset behavior   | Local logout, expiry, or HTTP 401 clears auth and private state; HTTP 403 preserves the session |
+| Validation       | Secret scan, storage inspection, typecheck, production build, and narrow browser evidence       |
 
 ### 8. Never-persist state
 
@@ -197,12 +197,12 @@ Each table has a `schemaVersion` constant. Migrations run inside Dexie `upgrade`
 
 Every field stored on the client must belong to one of the eight categories above.
 
-### R2. Auth state is contract-gated
+### R2. Auth state is narrowly owned
 
-No auth persistence is accepted until a Web-only lifecycle is verified. Cookie
-sessions, BFFs, refresh endpoints, and browser token storage are not invented.
-Passwords, digests, HMAC material, shared credentials, and URL tokens never
-touch client storage.
+Only the versioned minimum compatibility record is accepted. Cookie sessions,
+BFFs, refresh endpoints, and alternate browser stores are not invented.
+Passwords, digests, signing inputs, and URL credentials never touch client
+storage.
 
 ### R3. Version and migrate every persisted table
 

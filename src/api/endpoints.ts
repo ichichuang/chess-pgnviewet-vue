@@ -1,4 +1,7 @@
 export const WEB_API_ENDPOINTS = Object.freeze({
+  passwordLogin: '/liveproxy/PostLoginByPhone',
+  userDetail: '/ucenter/GetUserDetail',
+  userCenterInfo: '/ucenter/GetUserCenterInfo',
   competitionList: '/liveproxy/GetActList',
   competitionDetail: '/award/c-GetActDetail?token=&type=10',
   competitionGroups: '/liveproxy/GetActGroups',

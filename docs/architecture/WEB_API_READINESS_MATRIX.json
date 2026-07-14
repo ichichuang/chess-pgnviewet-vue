@@ -1,14 +1,14 @@
 {
-    "schemaVersion": 2,
+    "schemaVersion": 3,
     "status": "ACTIVE_AUTHORITY",
     "effectiveDate": "2026-07-14",
-    "overall": "CONFIRMED_PUBLIC_READ_FOUNDATION_COMPLETE_BROWSER_DEPLOYMENT_BLOCKED_BY_UPSTREAM_CORS",
+    "overall": "LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_OWNER_REAL_ACCOUNT_VALIDATION_REQUIRED",
     "capabilities": [
         {
             "id": "singleAxiosOwner",
             "contract": "CONFIRMED",
             "runtime": "IMPLEMENTED",
-            "browser": "FAILS_CLOSED_WHEN_CROSS_ORIGIN",
+            "browser": "FIXED_DEVELOPMENT_PROXY_OR_DIRECT_PRODUCTION_HTTPS",
             "ready": true
         },
         {
@@ -36,18 +36,25 @@
             "id": "publicTournamentReads",
             "contract": "FIVE_READS_CONFIRMED_NO_CREDENTIAL",
             "runtime": "IMPLEMENTED",
-            "browser": "TRUTHFUL_UNAVAILABLE_STATE",
+            "browser": "LOCAL_DEVELOPMENT_PROXY",
             "ready": true
         },
         {
             "id": "competitionDisplay",
             "contract": "COMPOSITION_OF_FOUR_CONFIRMED_READS",
             "runtime": "IMPLEMENTED",
-            "browser": "TRUTHFUL_UNAVAILABLE_STATE",
+            "browser": "LOCAL_DEVELOPMENT_PROXY",
             "ready": true
         },
         {
-            "id": "accountReplayCloudShareHardwareLive",
+            "id": "accountLoginAndIdentity",
+            "contract": "SOURCE_CONFIRMED_BROWSER_COMPATIBILITY",
+            "runtime": "IMPLEMENTED",
+            "browser": "READY_FOR_OWNER_REAL_ACCOUNT_VALIDATION",
+            "ready": true
+        },
+        {
+            "id": "replayCloudShareHardwareLive",
             "contract": "BLOCKED_INCOMPLETE",
             "runtime": "NO_PROTECTED_REQUEST",
             "browser": "TRUTHFUL_UNAVAILABLE_STATE",
@@ -62,6 +69,7 @@
         "token-policy",
         "mock-scan",
         "secret-scan",
+        "user-visible-copy-scan",
         "format",
         "eslint",
         "stylelint",
@@ -72,7 +80,8 @@
         "real-browser-route-interaction"
     ],
     "externalBlocks": [
-        "The upstream API has no verified cross-origin grant for the deployed browser origin.",
-        "Protected capabilities lack complete compatible browser credential and lifecycle contracts."
+        "Production cross-origin availability depends on the deployed browser origin; localhost uses only the fixed development proxy.",
+        "A successful account login remains unclaimed until the owner enters a real account.",
+        "Replay, cloud/share, hardware, and live capabilities still lack complete compatible read contracts."
     ]
 }

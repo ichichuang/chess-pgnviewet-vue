@@ -17,9 +17,10 @@ evidence:
 PGN, annotation, AI, workspace, layout, motion, and UI behavior. The target
 repository owns the reconciled implementation.
 
-A contract may enter runtime only when the Web sources or an approved
-no-credential production probe establish a complete compatible read. Conflicts
-and incomplete credential lifecycles remain blocked.
+A contract may enter runtime only when the Web sources establish the complete
+browser behavior or an approved no-credential production probe establishes a
+compatible public read. Browser-shipped constants and algorithms are public
+compatibility inputs, not secrets; they must remain centralized and exact.
 
 ## Confirmed public reads
 
@@ -42,6 +43,31 @@ query-token authentication.
 The big-screen display has no independent endpoint. It composes the confirmed
 detail, group, round, and pairing repositories.
 
+## Confirmed account lifecycle
+
+`chess-main-overseas` establishes the browser password flow at the confirmed
+chess origin:
+
+- `POST /liveproxy/PostLoginByPhone` receives the account in `mobile` and
+  `tel`, the hexadecimal MD5 password digest in `code` and `pwd`, both numeric
+  type fields, and the tracked fixed `login_func` compatibility object.
+- The same tracked browser request interceptor signs serialized JSON with
+  `Digest`, `x-date`, and HMAC `Authorization` headers.
+- Login success is `content.token` plus `content.uid`; failure text is read from
+  `resp.msg`.
+- `POST /ucenter/GetUserDetail` receives `showall`, `uid`, and the account token
+  in the JSON body. `POST /ucenter/GetUserCenterInfo` receives the account token
+  in the JSON body.
+- The target retains only the validated token, uid, and display label for the
+  source-proven 43,200-second browser-storage lifetime. Passwords and digests
+  are submission-only. There is no refresh or remote logout call.
+- HTTP 401 clears the local session and private state. HTTP 403 reports a
+  permission failure without clearing a valid session. Logout is local.
+
+The exact tracked browser constants live only in
+`src/api/legacyWebCompatibility.ts`. They are not environment credentials and
+must not be duplicated.
+
 ## Browser deployment status
 
 The production probes retained only status, envelope keys, field names, field
@@ -49,15 +75,15 @@ types, and row counts. They used no account, credential, signing material, or
 cookie jar.
 
 An upstream preflight and a POST carrying a localhost Origin returned no usable
-cross-origin grant. Direct browser deployment from a different origin is
-therefore unavailable. Server-to-server success is contract evidence, not
-browser-deployment evidence.
+cross-origin grant. Local browser validation therefore uses the development-only
+Vite prefix `/__kaisaile_web`, a fixed upstream target, POST-only enforcement,
+and the closed endpoint allowlist. Production output remains static and uses
+the confirmed HTTPS origin directly.
 
 ## Blocked capabilities
 
 The following remain unavailable and issue no protected request:
 
-- password login and account detail;
 - finished-game replay;
 - cloud and shared-storage reads;
 - hardware-board history and latest-position reads;
@@ -77,10 +103,10 @@ The target must not contain or recreate:
 - a Node API server, reverse proxy, BFF, edge handler, or invented production
   gateway;
 - cookie-session, HttpOnly-session, CSRF-server, or session-vault designs;
-- browser HMAC, browser-owned shared credentials, or generic browser Bearer
-  injection;
-- URL-token absorption, dynamic query-token authentication, hard-coded
-  compatibility identities, or fingerprint-derived guest credentials;
+- browser signing or fixed compatibility identity outside
+  `src/api/legacyWebCompatibility.ts`, or generic browser Bearer injection;
+- URL-token absorption, dynamic query-token authentication, or
+  fingerprint-derived guest credentials;
 - Mini Program API authority, write/admin calls, MQTT publish, mocks, fixtures,
   or synthetic success data.
 

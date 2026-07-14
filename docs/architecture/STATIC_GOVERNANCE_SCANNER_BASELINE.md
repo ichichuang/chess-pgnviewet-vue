@@ -16,11 +16,12 @@ Project-owned scanners live in `scripts/governance/` and run read-only with Node
 | Raw visual values  | `scripts/governance/check-raw-visual-values.mjs`              | `check:tokens`       |
 | Mock product data  | `scripts/governance/check-forbidden-mock-data.mjs`            | `check:mocks`        |
 | Secret patterns    | `scripts/governance/check-secret-patterns.mjs`                | `check:secrets`      |
+| Product copy       | `scripts/governance/check-user-visible-copy.mjs`              | `check:copy`         |
 | Shared policy      | `scripts/governance/policy.mjs`                               | n/a                  |
 | Shared utilities   | `scripts/governance/utils.mjs`                                | n/a                  |
 | Aggregate boundary | all scanner entrypoints through `run-s` in `check:governance` | `check:governance`   |
 
-ESLint owns import syntax and language correctness. Stylelint owns generic CSS validity. Knip owns unused graph drift. The project-owned scanners own product-specific repository topology, package-manager policy, token value governance, mock/fake runtime data indicators, and redacted secret-pattern risk.
+ESLint owns import syntax and language correctness. Stylelint owns generic CSS validity. Knip owns unused graph drift. The project-owned scanners own product-specific repository topology, package-manager policy, token value governance, mock/fake runtime data indicators, redacted secret-pattern risk, and rendered-copy boundaries.
 
 ## Scope
 
@@ -52,7 +53,11 @@ Future ownership allowlists are exact paths or directories only. They authorize 
 
 ## Rule Inventory
 
-Final verified inventory: 62 blocking rules. F2E derived the implemented rule identifiers from scanner source and reconciled them with this authority: dependency policy 12, architecture boundaries 19, raw visual values 10, mock product data 9, secret patterns 11, and shared invalid JSON handling 1.
+Current inventory: 63 blocking rules. F2E originally verified 62; the account
+compatibility phase adds one rendered-copy rule. The current totals are:
+dependency policy 12, architecture boundaries 19, raw visual values 10, mock
+product data 9, secret patterns 11, rendered product copy 1, and shared invalid
+JSON handling 1.
 
 Dependency policy:
 
@@ -132,6 +137,16 @@ Secret patterns:
 
 Shared invalid JSON findings use `GOVERNANCE_CONFIG_INVALID_JSON`.
 
+Rendered product copy:
+
+- `COPY_INTERNAL_PRODUCT_WORDING`
+
+The copy scanner reads Vue `<template>` blocks only. Development, audit,
+contract, mock, fixture, test, debug, blocked, unconfirmed, CORS, endpoint,
+token, DTO, Axios, stack, and source-authority wording is blocking unless
+`scripts/governance/policy.mjs` contains an exact path, term, and phrase
+approval as normal product copy.
+
 ## Failure Contract
 
 Every finding is blocking. Exit code is zero only when no blocking findings and no unreadable in-scope files exist. Findings include stable rule id, file, line when available, redacted excerpt, reason, and remediation owner. `--json` emits machine-readable output to stdout and creates no repository artifact.
@@ -162,6 +177,7 @@ Required F2D validation commands:
 - `pnpm run check:tokens`
 - `pnpm run check:mocks`
 - `pnpm run check:secrets`
+- `pnpm run check:copy`
 - `pnpm run check:governance`
 - `pnpm run format:check`
 - `pnpm run lint`

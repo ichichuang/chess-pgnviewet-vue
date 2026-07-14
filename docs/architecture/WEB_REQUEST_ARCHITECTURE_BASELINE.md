@@ -13,16 +13,25 @@ Pinia or TanStack Vue Query.
 
 - The only runtime base is the source-confirmed
   `https://wxapi.kaisaile.org`.
-- The base and eight-second timeout are constants, not environment variables.
-- `src/api/endpoints.ts` owns the closed set of confirmed endpoint constants.
+- The production base and eight-second timeout are constants, not environment
+  variables. Development uses only the fixed `/__kaisaile_web` Vite proxy.
+- `src/api/endpoints.ts` owns the closed set of public and account endpoint
+  constants.
 - The transport accepts the endpoint union, not an arbitrary string path.
 - Absolute URLs, protocol-relative URLs, traversal, backslashes, malformed
   encoding, control characters, dynamic bases, and generic tunnels fail closed.
-- Vite owns no API proxy and no production-server behavior.
+- Vite owns one development-only, POST-only, fixed-target, allowlisted proxy.
+  It adds no preview or production-server behavior.
 
 ## Transport
 
-- Confirmed public reads use POST JSON with no cookies or credential headers.
+- Confirmed public reads use POST JSON with no cookies or account token.
+- `src/api/legacyWebCompatibility.ts` applies the exact tracked browser signing
+  algorithm to serialized JSON. Browser-shipped signing inputs are public
+  compatibility constants and remain centralized.
+- One Axios authentication interceptor adds the account token to JSON bodies
+  only when an explicit protected repository opts in. It never modifies public
+  requests or URLs.
 - Every repository method accepts and forwards an `AbortSignal`.
 - Timeouts are bounded from three to thirty seconds; the default is eight
   seconds and no current repository overrides it.
@@ -58,10 +67,10 @@ Pinia or TanStack Vue Query.
 
 ## Unavailable capabilities
 
-Login, protected replay, cloud/share, hardware, and live transports remain
-blocked until a complete browser-compatible contract is confirmed. The runtime
-does not collect credentials, restore legacy identity state, or issue those
-requests.
+Protected replay, cloud/share, hardware, and live transports remain unavailable
+until their separate read contracts are confirmed. Password login and the two
+account identity reads are implemented through `authRepository`; they do not
+authorize any other protected capability.
 
 ## UI states
 

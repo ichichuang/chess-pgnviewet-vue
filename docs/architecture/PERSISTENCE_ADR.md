@@ -10,9 +10,9 @@ owns server reads; explicit adapters serialize versioned records. Zod validates
 every persisted version before hydration.
 
 Authentication is not a Dexie or Query-persistence category. No cookie session
-or BFF is assumed. The currently verified Web sources do not provide a safe,
-complete account session contract, so the runtime must not restore or retain a
-claimed authenticated session from legacy keys.
+or BFF is assumed. The confirmed compatibility lifecycle uses one project-owned
+local-storage adapter with a strict Zod schema and a 43,200-second expiry. It
+retains only the account token, uid, and display label.
 
 ## Categories
 
@@ -33,12 +33,9 @@ recovery behavior, reset behavior, and security classification.
 - Passwords and password digests are never persisted.
 - URL/query tokens, upstream shared credentials, HMAC secrets, MQTT material,
   cookies, raw API responses, and credential-bearing URLs are never persisted.
-- Obsolete identity and guest-credential keys are not part of the target
-  persistence contract and are never restored or recreated.
-- Until an account lifecycle is independently verified, initialization produces
-  an anonymous unavailable state with no auth persistence adapter.
-- A future verified account contract requires a new owner-approved persistence
-  decision; no compatibility restoration behavior is reserved.
+- Obsolete identity and guest-credential keys are not restored or recreated.
+- Initialization restores only `kaisaile.auth.v1` after schema and expiry
+  validation; invalid or expired records are removed.
 - Live payloads and replay API data are memory-only. Private Query entries are
   never dehydrated or written to Dexie.
 - Workspace handoffs reject token-like fields and store only sanitized source

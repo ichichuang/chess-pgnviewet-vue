@@ -124,7 +124,7 @@ function parseEnvelope<T extends { readonly resp: z.infer<typeof ServiceResponse
   const parsed = schema.safeParse(raw)
 
   if (!parsed.success) {
-    throw contractMismatch(`${label}返回结构与已验证 Web 合同不一致。`)
+    throw contractMismatch(`${label}返回的数据无法识别。`)
   }
 
   if (parsed.data.resp.err !== 0) {

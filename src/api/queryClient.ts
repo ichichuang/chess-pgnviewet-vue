@@ -1,7 +1,6 @@
-import { QueryCache, QueryClient } from '@tanstack/vue-query'
+import { QueryClient } from '@tanstack/vue-query'
 
 import { ApiClientError } from './client'
-import { notifyPrivateAuthLoss } from './privateAuthLifecycle'
 
 const PRODUCT_QUERY_KEY = 'web-api-v2'
 
@@ -61,20 +60,7 @@ function retryableQueryFailure(failureCount: number, error: unknown): boolean {
   return error.retryable
 }
 
-const queryCache = new QueryCache({
-  onError: (error, query) => {
-    if (
-      query.meta?.privacy === 'private' &&
-      error instanceof ApiClientError &&
-      error.kind === 'auth-required'
-    ) {
-      queueMicrotask(() => notifyPrivateAuthLoss('认证已失效，私有数据已清除。'))
-    }
-  },
-})
-
 export const queryClient = new QueryClient({
-  queryCache,
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,

@@ -1,0 +1,96 @@
+{
+  "reportType": "WEB_LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTATION",
+  "date": "2026-07-14",
+  "status": "IMPLEMENTED_READY_FOR_OWNER_REAL_ACCOUNT_VALIDATION",
+  "targetRepository": {
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "branch": "main",
+    "startingCommit": "b2ce35493dafc7839d912cf617bf2303181f8d3b",
+    "initialWorktreeClean": true,
+    "initialLocalRemoteEqual": true
+  },
+  "sourceAuthorities": [
+    {
+      "id": "pgnViewer",
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+      "commit": "eeff5f95b6d781522eb4aca5959540b2a87feb65",
+      "mode": "READ_ONLY",
+      "trackedChangesDetected": false
+    },
+    {
+      "id": "chess-main-overseas",
+      "path": "/Users/cc/Work/neobv/Chess/chess-main-overseas",
+      "commit": "3554483fdfa2859ed56940a80ad6c09911a7fbbd",
+      "mode": "READ_ONLY",
+      "trackedChangesDetected": false
+    }
+  ],
+  "implementation": {
+    "compatibilityAdapter": "One centralized adapter owns the source-confirmed fixed browser identity, password transformation, and request-signing algorithm. No runtime value was invented and no environment, credential, key, certificate, database, browser-state, cache, or log file was read.",
+    "transport": "One project Axios client signs the exact serialized POST body and adds the account session only to explicit protected requests. Public requests remain free of the account session, and no session value enters a URL.",
+    "developmentProxy": "Vite development only; fixed HTTPS target, POST only, and exact eight-path allowlist. It adds no preview behavior, production-server behavior, generic forwarding, or arbitrary target.",
+    "authRepository": "One AuthRepository owns password login and the two identity reads with Zod validation.",
+    "authState": "One Pinia owner provides duplicate-submit prevention, restoration, expiry scheduling, authenticated return navigation, protected-route gating, 401 authentication loss, 403 permission preservation, and local logout.",
+    "persistence": "One strict versioned local-storage adapter retains only the minimum session record for 43,200 seconds. Passwords and digests are submission-only; no auth record enters Dexie or Query persistence.",
+    "cleanup": "Auth loss and logout clear the auth record, private Query entries, private replay state, private workspace handoffs, and analysis state while preserving public PGN, public tournament queries, public handoffs, theme, and layout.",
+    "productUi": "The placeholder was replaced by an account/password form with browser-safe autofill, password visibility, loading, concise error, keyboard-native form semantics, and safe return navigation. Internal architecture and verification wording was removed from rendered product copy.",
+    "governance": "A blocking Vue-template scanner rejects the requested internal engineering vocabulary unless an exact normal-product-copy approval exists. No approval is currently present."
+  },
+  "controlledEvidence": {
+    "realAccountUsed": false,
+    "loginSuccessClaimed": false,
+    "httpLifecycleProbe": {
+      "publicRequestWithoutAccountSession": "PASS",
+      "protectedRequestWithExactBodySessionFormat": "PASS",
+      "exactCompatibilityHeaders": "PASS",
+      "sessionAbsentFromUrl": "PASS",
+      "http401ClearsAuthentication": "PASS",
+      "http403PreservesAuthentication": "PASS",
+      "sensitiveValuesPrinted": false,
+      "repositoryArtifactsCreated": false
+    },
+    "stateLifecycleProbe": {
+      "validSessionRestoration": "PASS",
+      "expiredRecordRejected": "PASS",
+      "invalidRecordRejected": "PASS",
+      "privateStateCleared": "PASS",
+      "publicStatePreserved": "PASS",
+      "sensitiveValuesPrinted": false,
+      "repositoryArtifactsCreated": false
+    }
+  },
+  "browserValidation": {
+    "surface": "Codex in-app browser against the repository Vite development server",
+    "loginRoute": "/pgnViewer/login",
+    "nonblankDom": "PASS",
+    "viteErrorOverlay": "ABSENT",
+    "consoleBreakingErrors": "ABSENT",
+    "internalProductCopy": "ABSENT",
+    "autofill": "username and current-password",
+    "passwordVisibilityControl": "PASS",
+    "duplicateSubmitPrevention": "PASS_DISABLED_DURING_REQUEST",
+    "protectedRouteReturn": "PASS",
+    "invalidLogin": "PASS_CONCISE_ERROR_PASSWORD_CLEARED_AND_FOCUS_RETURNED",
+    "keyboardSemantics": "PASS_NATIVE_FORM_LABELS_INPUTS_BUTTONS_AND_VISIBLE_FOCUS_STYLES",
+    "sensitiveUrlOrVisibleText": "ABSENT",
+    "publicRouteRequestWithoutAuthentication": "PASS",
+    "artifactsCreated": []
+  },
+  "validation": {
+    "pnpmRunCheckStatic": "PASS",
+    "pnpmRunLint": "PASS",
+    "pnpmRunLintStyle": "PASS",
+    "pnpmRunFormatCheck": "PASS",
+    "pnpmRunCheckGovernance": "PASS",
+    "pnpmRunCheckUnused": "PASS",
+    "pnpmRunTypecheck": "PASS",
+    "pnpmRunBuild": "PASS",
+    "pnpmAuditProd": "PASS_NO_KNOWN_VULNERABILITIES",
+    "pnpmAuditFull": "PASS_NO_KNOWN_VULNERABILITIES",
+    "jsonParse": "PASS",
+    "gitDiffCheck": "PASS"
+  },
+  "automatedTestPolicy": "No automated test files, fixtures, snapshots, coverage, runners, test dependencies, or test scripts were created or retained.",
+  "residualRisk": "A successful account login is intentionally unclaimed. The owner must enter a real account manually to validate the live success response and subsequent account access.",
+  "completionMarker": "LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_READY_FOR_OWNER_REAL_ACCOUNT_VALIDATION"
+}
