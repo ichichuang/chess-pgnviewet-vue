@@ -3,7 +3,7 @@
 | 项目     | 内容                                                        |
 | -------- | ----------------------------------------------------------- |
 | 权威标识 | `OWNER_REQUIREMENT_2026_07_14`                              |
-| 版本     | 1.2.0                                                       |
+| 版本     | 1.2.1                                                       |
 | 状态     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
 | 页面门禁 | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 | 日期     | 2026-07-14                                                  |

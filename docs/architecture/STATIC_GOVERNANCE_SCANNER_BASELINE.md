@@ -53,8 +53,8 @@ Reserved paths `src/providers/`, `src/ui/icons/`, and `src/repositories/` do not
 
 ## Rule Inventory
 
-Current inventory: 111 blocking rules. The current totals are dependency policy
-12, obsolete authority residue 34, architecture boundaries 33, raw visual
+Current inventory: 113 blocking rules. The current totals are dependency policy
+12, obsolete authority residue 36, architecture boundaries 33, raw visual
 values 10, mock product data 9, secret patterns 11, rendered product copy 1,
 and shared invalid JSON handling 1.
 
@@ -122,6 +122,8 @@ Obsolete authority residue:
 - `RESIDUE_CURRENT_API_AUTHORITY_PATH`
 - `RESIDUE_DEXIE_PREPAINT_OWNER`
 - `RESIDUE_QUERY_CACHE_PERSISTENCE_CLAIM`
+- `RESIDUE_BROWSER_PERSISTENCE_AUTH_ONLY_OVERREACH`
+- `RESIDUE_CURRENT_TEACHING_PERSISTENCE_OVERREACH`
 - `RESIDUE_UNCONFIRMED_ADAPTER_DETAIL`
 - `RESIDUE_BIG_SCREEN_FULL_TEACHING_SHELL`
 - `RESIDUE_UNAPPROVED_RETENTION`

@@ -2,8 +2,8 @@
 
 | Field   | Value                                                       |
 | ------- | ----------------------------------------------------------- |
-| Version | 1.2.0                                                       |
-| Status  | `ACTIVE_PAGE_DESIGN_AUTHORITY`                              |
+| Version | 1.2.1                                                       |
+| Status  | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
 | Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 
 ## Purpose
@@ -16,11 +16,11 @@ Approved verification methods are `static`, `lint`, `stylelint`, `typecheck`, `b
 
 ### Theme and tokens
 
-| ID  | Check                                                                                                                                                            | Method                |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| T1  | Feature visual values resolve through `src/styles/tokens.css`; no parallel token registry or unapproved raw values exist.                                        | static, stylelint     |
-| T2  | Current light, dark, and system modes initialize without a theme flash and remain synchronized.                                                                  | manual-browser        |
-| T3  | Current persistence contains only the narrow `themeMode` preference; accent, board appearance, locale, sound, and AI defaults are not claimed as current fields. | static, manual-review |
+| ID  | Check                                                                                                                                                                  | Method                |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| T1  | Feature visual values resolve through `src/styles/tokens.css`; no parallel token registry or unapproved raw values exist.                                              | static, stylelint     |
+| T2  | Current light, dark, and system modes initialize without a theme flash and remain synchronized.                                                                        | manual-browser        |
+| T3  | Current theme persistence contains only the narrow `themeMode` preference; accent, board appearance, locale, sound, and AI defaults are not claimed as current fields. | static, manual-review |
 
 ### Layout and responsive behavior
 
@@ -44,13 +44,13 @@ Approved verification methods are `static`, `lint`, `stylelint`, `typecheck`, `b
 
 ### Persistence and recovery
 
-| ID  | Check                                                                                                                                                | Method                        |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| PR1 | Current theme, workspace-layout, handoff, auth, Query, analysis, and live ownership matches tracked runtime code.                                    | static, manual-review         |
-| PR2 | Current refresh restores only theme mode, implemented workspace layout, and valid auth; Query refetches into an empty memory cache.                  | static, manual-browser        |
-| PR3 | Only the strict 43,200-second `kaisaile.auth.v1` account record is approved; all other auth and protected raw persistence remains forbidden.         | static, audit, manual-browser |
-| PR4 | General preferences, drafts, locale, teaching collection, and persisted Query-cache models are forbidden as current claims until their owners exist. | static, manual-review         |
-| PR5 | Invalid or missing sources resolve to a picker, validated local game, or truthful recovery/unavailable state, never fabricated success data.         | manual-browser                |
+| ID  | Check                                                                                                                                                          | Method                        |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| PR1 | Current theme, workspace-layout, handoff, auth, Query, analysis, and live ownership matches tracked runtime code.                                              | static, manual-review         |
+| PR2 | Current refresh restores only theme mode, implemented workspace layout, sanitized handoff context, and valid auth; Query refetches into an empty memory cache. | static, manual-browser        |
+| PR3 | Only the strict 43,200-second `kaisaile.auth.v1` account record is approved; all other auth and protected raw persistence remains forbidden.                   | static, audit, manual-browser |
+| PR4 | General preferences, drafts, locale, teaching collection, and persisted Query-cache models are forbidden as current claims until their owners exist.           | static, manual-review         |
+| PR5 | Invalid or missing sources resolve to a picker, validated local game, or truthful recovery/unavailable state, never fabricated success data.                   | manual-browser                |
 
 ### Accessibility and copy
 
@@ -87,8 +87,8 @@ These checks are not claims that the capability currently exists:
 ```json
 {
   "document": "ui-acceptance-checklist",
-  "version": "1.2.0",
-  "status": "ACTIVE_PAGE_DESIGN_AUTHORITY",
+  "version": "1.2.1",
+  "status": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
   "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "current_and_target_checks_separated": true,
   "automated_test_infrastructure_required": false,

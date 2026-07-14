@@ -2,8 +2,8 @@
 
 | Field   | Value                                                       |
 | ------- | ----------------------------------------------------------- |
-| Version | 1.2.0                                                       |
-| Status  | `ACTIVE_PAGE_DESIGN_AUTHORITY`                              |
+| Version | 1.2.1                                                       |
+| Status  | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
 | Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 
 ## Purpose
@@ -88,8 +88,8 @@ Feature code must not create raw color values, parallel token registries, litera
 ```json
 {
   "document": "theme-system-spec",
-  "version": "1.2.0",
-  "status": "ACTIVE_PAGE_DESIGN_AUTHORITY",
+  "version": "1.2.1",
+  "status": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
   "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "current_theme_modes": ["light", "dark", "system"],
   "current_storage": "localStorage:themeMode",

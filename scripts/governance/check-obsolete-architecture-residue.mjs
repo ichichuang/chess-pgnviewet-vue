@@ -131,6 +131,28 @@ const activeAuthorityConsistencyRules = [
     allowExplicitProhibition: true,
   },
   {
+    ruleId: 'RESIDUE_BROWSER_PERSISTENCE_AUTH_ONLY_OVERREACH',
+    paths: ['AGENTS.md', 'CLAUDE.md', 'docs/product/PRODUCT_DEFINITION.md'],
+    pattern:
+      /(?:Browser code|browser code|浏览器(?:代码)?)[^\n]{0,80}(?:may persist only|只(?:允许)?(?:持久化|保存))[^\n]{0,160}kaisaile\.auth\.v1/giu,
+    reason:
+      'The kaisaile.auth.v1 exception restricts browser authentication state, not verified non-auth theme, layout, or handoff persistence.',
+  },
+  {
+    ruleId: 'RESIDUE_CURRENT_TEACHING_PERSISTENCE_OVERREACH',
+    paths: [
+      'docs/product/WORKSPACE_MODES.md',
+      'docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md',
+      'docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json',
+      'docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json',
+      'docs/ui/UI_ACCEPTANCE_CHECKLIST.md',
+    ],
+    pattern:
+      /Project-owned validated persistence owns local teaching collection\/session data|\bDEXIE_ONLY\b|CURRENT_LAYOUT_ONLY_TARGET_DEXIE_TEACHING_COLLECTION_GAME_AND_NODE|Dexie\][^\n]{0,80}教学集合\/当前棋局节点|刷新恢复教学集合|恢复集合、棋局、节点|教学集合、恢复点、布局和非敏感用户偏好属于 Dexie/giu,
+    reason:
+      'Current persistence must not claim teaching collection, current game/node, comments, annotations, game notes, locale, or broad preferences until versioned owners exist.',
+  },
+  {
     ruleId: 'RESIDUE_UNCONFIRMED_ADAPTER_DETAIL',
     paths: ['docs/ui/COMPONENT_SYSTEM_SPEC.md'],
     pattern:

@@ -52,7 +52,7 @@ Every page design must define page responsibility, user and task, current versus
 - Only real confirmed production contracts may feed product surfaces. Mock, fixture, fake, sample, synthesized, and fallback success data are forbidden.
 - Generic `/CALL`, `proxyRequest`, dynamic proxying, write/admin endpoints, MQTT publish, invented contracts, and silent fallback success are forbidden.
 - `src/api/legacyWebCompatibility.ts` is the only approved owner of the tracked browser compatibility signer and fixed compatibility identity. No other browser file may duplicate signing constants or algorithms.
-- Browser code may persist only the strict 43,200-second `kaisaile.auth.v1` account-session record owned by `src/persistence/auth/authPersistence.ts`.
+- Browser authentication state may persist only the strict 43,200-second `kaisaile.auth.v1` account-session record owned by `src/persistence/auth/authPersistence.ts`. Verified non-auth persistence remains limited to the current theme bootstrap, workspace-layout record, and sanitized workspace handoff owners documented in `docs/architecture/PERSISTENCE_ADR.md`.
 - Passwords, password digests, signing secrets, duplicated auth records, auth values in URLs/router state/Dexie/persisted Query/workspace handoffs/PGN/annotations/AI, shared upstream credentials, MQTT credentials, secret-bearing URLs, and complete sensitive responses are forbidden.
 - Live and protected remote data stays read-only. Import into local analysis requires an explicit user action and creates a distinct local copy.
 

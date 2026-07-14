@@ -2,7 +2,7 @@
 
 | Field   | Value                                                       |
 | ------- | ----------------------------------------------------------- |
-| Version | 1.2.0                                                       |
+| Version | 1.2.1                                                       |
 | Status  | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
 | Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 
@@ -91,7 +91,8 @@ These are separate product rules. The current runtime's source-current/first fal
 ## Persistence
 
 - URL owns non-sensitive shareable tournament/group/round/pairing selection, search, pagination, and view state.
-- Project-owned validated persistence owns local teaching collection/session data and non-sensitive layout/preferences.
+- Current project-owned persistence owns only verified records: the synchronous `themeMode` theme bootstrap, Dexie `workspaceSession/current` workspace-layout record, sanitized `pgnViewer.workspaceHandoff.v1` handoff with memory fallback, strict `kaisaile.auth.v1` account session, in-memory TanStack Vue Query cache, and memory-only active analysis/live state.
+- Teaching collection, current game/node, node comments, annotations, game-level notes, locale, and broader structured preferences are approved target persistence only until a versioned owner, schema, recovery behavior, reset behavior, security classification, and retention rule exist.
 - The approved `kaisaile.auth.v1` record remains solely owned by `src/persistence/auth/authPersistence.ts`; mode/source persistence never contains authentication data.
 - Live connections, live payloads, credentials, clocks, running AI tasks, and transient errors remain memory-only.
 - A missing or invalid source returns to a truthful source picker or unavailable state. No blank-game success fallback is fabricated.
@@ -119,7 +120,7 @@ These are separate product rules. The current runtime's source-current/first fal
 ```json
 {
   "document": "workspace-modes",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "status": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
   "pageDesignGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "technicalModes": [
@@ -137,6 +138,22 @@ These are separate product rules. The current runtime's source-current/first fal
     "evaluation": false,
     "sourceWrite": false
   },
+  "currentImplementedPersistence": {
+    "themeBootstrap": "localStorage:themeMode",
+    "workspaceLayout": "Dexie:chess-pgnviewer-vue/workspaceSession/current",
+    "workspaceHandoff": "sessionStorage:pgnViewer.workspaceHandoff.v1_with_memory_fallback",
+    "accountSession": "localStorage:kaisaile.auth.v1",
+    "queryCache": "memory_only",
+    "analysisAndLive": "memory_only"
+  },
+  "approvedTargetPersistence": [
+    "teaching_collection",
+    "current_game_and_node",
+    "node_comments_and_annotations",
+    "game_level_note",
+    "locale",
+    "broader_structured_preferences"
+  ],
   "authority": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
   "openOwnerDecisions": [
     "OD-01",
