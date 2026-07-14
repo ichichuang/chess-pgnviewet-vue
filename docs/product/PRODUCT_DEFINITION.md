@@ -1,285 +1,72 @@
 # Product Definition
 
-## Purpose
+| Field   | Value                                                      |
+| ------- | ---------------------------------------------------------- |
+| Version | 1.1.0                                                      |
+| Status  | `COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW` |
+| Product | 开赛了                                                     |
 
-Define what the rebuilt chess workspace is, who it serves, which surfaces are canonical, and what is explicitly out of scope. This document is the product-level contract for the single-runtime Vue PGN analysis, teaching, tournament viewing, live board, replay, and big-screen workspace.
+## Authority and scope
 
-## Scope
+This document owns only the concise product identity, top-level boundaries, primary audiences, canonical surfaces, and references to the detailed product authority.
 
-This document governs:
-
-- Product identity and user roles.
-- Canonical routes and page shells.
-- Workspace source taxonomy and handoff behavior.
-- In-scope and out-of-scope capabilities.
-- Non-goals and boundaries that the architecture and UI specs must enforce.
-
-It applies to all new code in the rebuilt product. `pgnViewer-new` is the canonical visual, interaction, and active-runtime migration source for the teaching workspace; its runtime source is not copied during P0 and must pass later dependency-closure gates before reuse.
-
-## Related authority
-
-- API scope is defined only by the active Web API authorities listed in
-  `docs/migration/SOURCE_PROVENANCE.md`.
-- Detailed UI tokens, layout, and component rules are defined in `docs/ui/*`.
-- Agent workflow rules are defined in `AGENTS.md` and
-  `.ai/skills/project-ui/SKILL.md`.
+[《开赛了融合产品全量需求与中文设计蓝图》](./PRODUCT_DESIGN_BLUEPRINT.zh-CN.md) is the sole authority for product positioning, product modes, journeys, information architecture, priorities, page responsibilities, product requirements, and acceptance concepts. [Workspace Modes](./WORKSPACE_MODES.md) owns only the technical mode/source model, transitions, adapter selection, and persistence behavior.
 
 ## Product identity
 
-The product is a **unified chess teaching, PGN analysis, tournament viewing, live board, replay, AI analysis, electronic-board live, online-game live, and big-screen display workspace**. It is a read-heavy, workspace-centric web application built for classroom, club, tournament venue, and personal study use.
+开赛了 is a single-runtime, board-centric chess teaching and tournament commentary product. It combines local PGN teaching, tournament navigation and commentary, replay/import, read-only live viewing, explicit local AI analysis, and a readability-first venue display without duplicating the chessboard, PGN, annotation, or AI runtime.
 
-User-facing product name in Chinese: **开赛了**. Technical identifiers may use `kaisaile`.
+It is not an administration console, organization or user management product, generic cloud drive, online-game lobby, write-capable tournament tool, technical diagnostics product, or 3D-first experience.
 
-## Core business modes
+## Primary audiences
 
-The following business modes must be recognizable in product and UI planning. They map to the technical `WorkspaceMode` values defined in `docs/product/WORKSPACE_MODES.md` and to canonical routes defined below.
+- Primary: chess teachers and coaches preparing and delivering lessons.
+- Secondary: tournament operators, parents, other coaches, students, and spectators.
+- Internal support receives no implicit product mode, user-facing diagnostics surface, write permission, or administration capability.
 
-| Business mode                                 | What it covers                                                        | Technical mapping                                                                      |
-| --------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `imported_pgn` teaching and analysis          | Load, annotate, present, and share imported or manually created PGNs. | `analysis` mode with `manual_pgn`, `cloud_pgn`, or `backend_handoff_pgn` source.       |
-| `finished_online_game` replay and analysis    | Replay finished online games and import them into analysis.           | `replay` mode; explicit user action imports to `analysis`.                             |
-| `live_online_game` viewing and explanation    | Spectate a live online game as a coach or audience member.            | `live_spectator` mode with `online_game_live` source (owner-confirmation dependent).   |
-| `live_hardware_board` viewing and explanation | Spectate a live electronic-board stream from a tournament venue.      | `live_spectator` or `competition_commentary` mode with `electronic_board_live` source. |
-| `tournament_browser`                          | Search tournaments, browse groups/rounds/pairings/boards.             | `/competitions` and `/competitions/:hdid` surfaces; hands off to `/pgnViewer/`.        |
-| `teacher_workspace`                           | Coach/teacher view with full teaching toolbar and annotation editing. | `analysis` or `competition_commentary` mode with teacher permission gates.             |
-| `replay_workspace`                            | Historical replay with import-to-analysis action.                     | `replay` mode with `replay_only` source.                                               |
-| `big_screen_display`                          | Venue/projector display of a selected board.                          | `/competitions/:hdid/display` surface using the `big-screen` profile.                  |
-| `future_extension` mode                       | Planned extension point for new sources or layouts.                   | Documented as an extension point; requires spec update before implementation.          |
-| `read_only_internal_inspection` mode          | Internal staff read-only diagnostics and system annotations.          | Permission-aware view inside any mode; no write/admin endpoints.                       |
+## Canonical surfaces
 
-## User roles
+The router is base-aware through `import.meta.env.BASE_URL`. The table separates router paths from deployed browser URLs.
 
-| Role              | Primary need                                       | Typical permissions                                    |
-| ----------------- | -------------------------------------------------- | ------------------------------------------------------ |
-| Teacher / coach   | Load, annotate, and present PGNs in class          | Full workspace UI, annotation editing, cloud save/open |
-| Part-time teacher | Lightweight lesson and replay access               | Same UI with reduced cloud/admin privileges            |
-| Tournament staff  | Run tournament detail pages and big-screen display | Competition navigator, live board list, display mode   |
-| Student           | Follow lessons, replay games, review analysis      | Read/analysis workspace, limited editing               |
-| Parent            | View shared games and tournament results           | Read-only share/workspace access                       |
-| Audience member   | Spectate live boards and big-screen display        | Live spectator and display surfaces                    |
-| Internal staff    | Maintain teaching content and diagnose issues      | Extended settings, system annotations                  |
+| Surface            | Router path                   | Deployed URL                            | Responsibility                                                                                     |
+| ------------------ | ----------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Unified workspace  | `/`                           | `/pgnViewer/`                           | Local teaching, manual position, tournament commentary handoff, replay, and read-only live handoff |
+| Tournament list    | `/competitions`               | `/pgnViewer/competitions`               | Anonymous public tournament discovery                                                              |
+| Tournament detail  | `/competitions/:hdid`         | `/pgnViewer/competitions/:hdid`         | Anonymous public detail, groups, rounds, pairings, and handoff actions                             |
+| Big-screen display | `/competitions/:hdid/display` | `/pgnViewer/competitions/:hdid/display` | Anonymous public pairing display and contract-gated multi-board live display                       |
+| Login              | `/login`                      | `/pgnViewer/login`                      | Approved account session and safe return                                                           |
 
-Permissions are enforced by the backend and reflected in the UI through conditional rendering. The UI must never assume a role grants access to a write/admin endpoint.
+Compatibility router paths `/competitions/:hdid/live`, `/match/:key`, `/share/:uuid`, and `/cloud/:fileid` may produce a sanitized typed handoff into the unified workspace. They never render a second board workspace or imply that a blocked contract is available.
 
-## Canonical product surfaces
+## Product boundaries
 
-| Surface            | Route                         | Purpose                                     |
-| ------------------ | ----------------------------- | ------------------------------------------- |
-| Unified workspace  | `/pgnViewer/`                 | Analysis, teaching, live spectator, replay  |
-| Tournament list    | `/competitions`               | Search/filter list of tournaments           |
-| Tournament detail  | `/competitions/:hdid`         | Group, round, pairing, and board navigation |
-| Big-screen display | `/competitions/:hdid/display` | Venue/projector display of a selected board |
+- One unified outer workspace geometry: contextual source navigation on the left, one dominant chessboard in the center, and notation/comments/teaching notes/annotations/analysis/information/live status on the right.
+- The three primary product modes are local PGN teaching, tournament commentary, and offline electronic-board big-screen display.
+- Manual position, explicit AI analysis, replay, live spectator, cloud PGN, and shared content are supporting states or sources. Cloud/share remain contract-blocked.
+- AI is disabled by default. Ongoing live games are read-only and expose no AI, engine evaluation, editable PGN, editable variations, or source write-back.
+- Tournament list, detail, groups, rounds, pairings, and current public pairing-display composition are anonymous public reads.
+- Finished-game replay, protected cloud/share content, hardware history/latest snapshots, live credentials/subscriptions, and authoritative clocks remain protected or contract-dependent.
+- Cloud content is read-only import until a separately confirmed write contract exists. No cloud save or cloud write is currently approved.
+- Product settings may own theme, board appearance, layout, accessibility, sound, locale, and AI defaults. They exclude user administration, internal diagnostics, API settings, credentials, and protocol configuration.
+- A future mode requires an explicit product-authority update. It is not a current `WorkspaceMode`, route, or UI surface.
 
-## Compatibility surfaces
+## Authentication boundary
 
-These routes exist only to preserve external links and deep-sharing behavior. They must redirect or hand off to the unified workspace rather than render standalone legacy UI.
+Exactly one browser account-session record is approved: `kaisaile.auth.v1`, owned by `src/persistence/auth/authPersistence.ts`, stored in `localStorage`, strict Zod version 1, maximum lifetime 43,200 seconds, with only `token`, `uid`, `accountLabel`, and `expiresAt` data fields. This product definition does not require a BFF, cookie session, HttpOnly session, or server-only gateway.
 
-| Surface               | Route                      | Behavior                                                                         |
-| --------------------- | -------------------------- | -------------------------------------------------------------------------------- |
-| Legacy live bridge    | `/competitions/:hdid/live` | Create a sanitized workspace handoff and replace into `/pgnViewer/?handoff=<id>` |
-| Backend match handoff | `/match/:key`              | Resolve shared match PGN and open in workspace                                   |
-| Share handoff         | `/share/:uuid`             | Resolve shared PGN and open in workspace                                         |
-| Cloud handoff         | `/cloud/:fileid`           | Resolve Cloudreve PGN and open in workspace                                      |
+Passwords, password digests, duplicated or arbitrary authentication records, auth values in URLs/router state/Dexie/persisted Query/workspace handoffs/PGN/annotations/AI state, signing secrets, shared upstream credentials, MQTT credentials, secret-bearing URLs, and complete sensitive responses remain forbidden.
 
-## Workspace source taxonomy
+## Source and data policy
 
-A `WorkspaceSource` describes where the current board state comes from. The same workspace shell renders all sources.
+Only real confirmed production contracts may feed product surfaces. Mock, fixture, fake, sample, synthesized, and fallback success data are forbidden. Protected source content remains read-only; explicit import creates a local copy and never writes notes or annotations back without a separately confirmed write contract.
 
-| Source                  | Description                                     | Example origin                          |
-| ----------------------- | ----------------------------------------------- | --------------------------------------- |
-| `manual_pgn`            | User-created or imported PGN                    | Local file paste, FEN setup, blank game |
-| `cloud_pgn`             | PGN loaded from Cloudreve-compatible storage    | `/cloud/:fileid`                        |
-| `backend_handoff_pgn`   | Shared PGN resolved through backend match/share | `/match/:key`, `/share/:uuid`           |
-| `competition_pairing`   | A pairing selected from a tournament            | Tournament detail page handoff          |
-| `electronic_board_live` | Live electronic-board stream                    | Tournament venue hardware board         |
-| `online_game_live`      | Live online game stream                         | Optional future live spectator source   |
-| `replay_only`           | Historical game replay without live tie         | Replay mode from a finished game        |
+## References
 
-## Workspace handoff
-
-`/pgnViewer/` is the final unified workspace. Tournament pages must not render their own board panels. Instead they create a sanitized, versioned handoff context and navigate to `/pgnViewer/?handoff=<id>`. The workspace controller resolves the handoff, reconstructs the source and selection state, and renders the appropriate adapters.
-
-A bare `/pgnViewer/` route with no handoff or source query always renders the default analysis workspace.
-
-## In scope
-
-- PGN loading, parsing, replay, editing, annotation, and sharing.
-- Interactive board with legal moves, free setup, arrows, square highlights, and drawing layer.
-- Local AI analysis via UCI/Web Worker engines.
-- Competition list/detail/group/round/pairing/board navigation (read-only).
-- Live electronic-board spectator stream (read-only, contract-confirmation mode).
-- Historical replay of finished games.
-- Big-screen/projector display mode.
-- Cloud save/open behind a typed storage-provider abstraction.
-- Deep links and QR sharing.
-- Light/dark/system themes, user accent color, board themes, and large-screen themes.
-- Refresh recovery of workspace state and user preferences.
-- Accessibility (keyboard, screen reader, reduced motion, contrast).
-- Chinese and English i18n.
-
-## Out of scope
-
-| Capability                                 | Status       | Rationale                                                                                                          |
-| ------------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------ |
-| Admin console replacement                  | OUT_OF_SCOPE | The product consumes data; it does not manage tournaments, users, or organizations                                 |
-| Mini-program replacement                   | OUT_OF_SCOPE | The mini program remains a separate product surface                                                                |
-| Write/admin tooling                        | FORBIDDEN    | The current read-only product has no approved write or administration contract                                     |
-| 3D-first or WebGL live room                | OUT_OF_SCOPE | The product is board-first; any 3D/QMLive work is reference-only until a separate contract is approved             |
-| Online game lobby / real-time play         | OUT_OF_SCOPE | Game creation/join/start endpoints are forbidden                                                                   |
-| Personal results / `ShowScoreList` runtime | RETIRED      | Removed from PC runtime scope                                                                                      |
-| Generic dashboard                          | OUT_OF_SCOPE | The product is a chess-specific workspace, not a generic dashboard                                                 |
-| Generic PGN viewer only                    | OUT_OF_SCOPE | The product is a teaching, tournament, live, replay, and big-screen workspace, not a standalone generic PGN viewer |
-| Generic `proxyRequest` tunnel              | FORBIDDEN    | Replaced by explicit, confirmed repository methods                                                                 |
-| Old PC `/CALL`-equivalent transport        | UNTRUSTED    | Requires owner approval per endpoint before use                                                                    |
-
-## Rules
-
-### R1. Unified workspace only
-
-All board-centric experiences must render inside `/pgnViewer/`. No separate page component may duplicate the board/PGN/analysis chrome for a specific source type.
-
-### R2. Read-first product
-
-The product is read-first. Any write path must be explicitly scoped, user-initiated, and backed by an approved non-admin endpoint.
-
-### R3. Source adapters, not source pages
-
-Differences between sources are handled by source adapters inside the workspace, not by separate top-level routes or page components.
-
-### R4. Handoff is the canonical navigation path
-
-Tournament detail pages save a sanitized handoff and navigate to `/pgnViewer/`. Legacy `/competitions/:hdid/live` must use the same bridge.
-
-### R5. Preserve user intent across refresh
-
-Refreshing the page must preserve user selections and UI state. See `docs/ui/PERSISTENCE_RECOVERY_SPEC.md`.
-
-### R6. API contract-confirmation mode
-
-Implementation must not assume unconfirmed API contracts. Confirmed production
-reads use typed repositories and the exact source-confirmed Web origin. A
-same-origin proxy, BFF, or cookie session is not inferred. When the deployment
-origin lacks confirmed browser access, the capability remains explicitly
-unavailable. Runtime mock or fixture fallbacks are forbidden.
-
-## Acceptance criteria
-
-1. A future agent can read this document and list the canonical routes, compatibility routes, core business modes, and retired capabilities.
-2. Every workspace source maps to a rendering adapter in `docs/ui/COMPONENT_SYSTEM_SPEC.md`, not to a separate top-level page.
-3. Every core business mode maps to a canonical mode, route, or screen profile in `docs/product/WORKSPACE_MODES.md`.
-4. No canonical surface duplicates board/PGN/analysis chrome for a single source type.
-5. Out-of-scope and forbidden capabilities are absent from architecture, component, and API planning documents.
-6. Workspace handoff behavior is defined and referenced by `docs/ui/COMPONENT_SYSTEM_SPEC.md` and `docs/architecture/FRONTEND_ARCHITECTURE_RFC.md`.
-7. The product name "开赛了" is used consistently in user-facing copy defined in `docs/ui/I18N_SPEC.md`.
-
-## P1H usable-product journeys
-
-P1H closes the first usable product delivery. The supported consumer journeys
-are:
-
-1. Open `/pgnViewer/`, import or create a PGN, make legal moves and variations,
-   annotate the board, and inspect local Worker analysis in the single canonical
-   workspace.
-2. Open `/competitions`, commit a search, and browse source-confirmed production
-   competitions when the deployment has verified browser access. Otherwise the
-   route renders the explicit unavailable/retry state.
-3. Open `/competitions/:hdid/display` for the read-only venue display of the
-   selected production round.
-4. Follow `/match/:key`, `/share/:uuid`, `/cloud/:fileid`, or
-   `/competitions/:hdid/live` through a sanitized handoff into the canonical
-   workspace. Unconfirmed or unavailable sources remain visibly unavailable;
-   they never fall back to fabricated data.
-5. `/login` provides the source-confirmed browser account flow. It restores the
-   minimum validated session, returns to the requested protected route, and
-   clears private Query data, protected handoffs, analysis work, and protected
-   replay state on logout, expiry, or authentication failure. Protected replay
-   remains unavailable until its separate read contract is verified.
-
-Public competition filters are URL-owned so refresh and browser navigation
-preserve the selected group and round. Non-sensitive workspace layout is stored
-through the narrow Dexie layout owner. Live payloads, API responses, auth
-credentials, protected replay payloads, and board annotations are not written
-to that layout record.
-
-The MQTT/electronic-board live transport remains intentionally unavailable
-until an owner approves a read-only contract. Successful authenticated replay
-is credential-dependent and is not claimed without owner credentials. These
-truthful unavailable states are part of the accepted product behavior.
-
-Production deployment requirements are defined in
-`docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md`.
-
-## Open questions / risks
-
-- When the legacy `/competitions/:hdid/live` bridge can be retired depends on external link analytics.
-- Whether online game live (`online_game_live`) becomes a confirmed source depends on owner approval of a read-only live contract.
-- Client-specific custom themes are an extension point; the first client theme must not break the token system.
-
-## Machine-readable summary
-
-```json
-{
-  "document": "product-definition",
-  "version": "1.0.0",
-  "rules": [
-    "unified_workspace_only",
-    "read_first_product",
-    "source_adapters_not_source_pages",
-    "handoff_is_canonical_navigation",
-    "preserve_user_intent_across_refresh",
-    "api_contract_confirmation_mode"
-  ],
-  "canonical_surfaces": [
-    "/pgnViewer/",
-    "/competitions",
-    "/competitions/:hdid",
-    "/competitions/:hdid/display"
-  ],
-  "compatibility_surfaces": [
-    "/competitions/:hdid/live",
-    "/match/:key",
-    "/share/:uuid",
-    "/cloud/:fileid"
-  ],
-  "workspace_sources": [
-    "manual_pgn",
-    "cloud_pgn",
-    "backend_handoff_pgn",
-    "competition_pairing",
-    "electronic_board_live",
-    "online_game_live",
-    "replay_only"
-  ],
-  "core_business_modes": [
-    "imported_pgn_teaching_and_analysis",
-    "finished_online_game_replay_and_analysis",
-    "live_online_game_viewing_and_explanation",
-    "live_hardware_board_viewing_and_explanation",
-    "tournament_browser",
-    "teacher_workspace",
-    "replay_workspace",
-    "big_screen_display",
-    "future_extension_mode",
-    "read_only_internal_inspection_mode"
-  ],
-  "out_of_scope": [
-    "admin_console_replacement",
-    "mini_program_replacement",
-    "write_admin_tooling",
-    "3d_first_or_webgl_live_room",
-    "online_game_lobby_realtime_play",
-    "showscorelist_personal_results_runtime",
-    "generic_dashboard",
-    "generic_pgn_viewer_only",
-    "generic_proxyrequest_tunnel",
-    "old_pc_call_transport_without_approval"
-  ],
-  "related_docs": [
-    "docs/product/WORKSPACE_MODES.md",
-    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
-    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
-    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
-    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md"
-  ]
-}
-```
+- Product authority: [PRODUCT_DESIGN_BLUEPRINT.zh-CN.md](./PRODUCT_DESIGN_BLUEPRINT.zh-CN.md)
+- Stable owner origin: [OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md](./OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md)
+- Technical modes: [WORKSPACE_MODES.md](./WORKSPACE_MODES.md)
+- Requirement traceability: [PRODUCT_REQUIREMENT_TRACEABILITY.json](./PRODUCT_REQUIREMENT_TRACEABILITY.json)
+- Mode/capability matrix: [PRODUCT_MODE_AND_CAPABILITY_MATRIX.json](./PRODUCT_MODE_AND_CAPABILITY_MATRIX.json)
+- Information architecture: [PRODUCT_INFORMATION_ARCHITECTURE.json](./PRODUCT_INFORMATION_ARCHITECTURE.json)
+- API authority: `docs/architecture/WEB_API_SOURCE_AUTHORITY.md`
+- Persistence authority: `docs/architecture/PERSISTENCE_ADR.md`

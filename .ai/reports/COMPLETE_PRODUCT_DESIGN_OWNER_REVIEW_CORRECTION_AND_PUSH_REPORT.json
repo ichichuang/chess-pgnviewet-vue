@@ -1,0 +1,487 @@
+{
+  "phase": "COMPLETE_PRODUCT_DESIGN_OWNER_REVIEW_CORRECTION_AND_PUSH",
+  "startedAt": "2026-07-14T04:13:15Z",
+  "completedAt": "2026-07-14T04:27:24Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "localHeadBefore": "0e44a913af7d8bf0c3ec4d8ecdfb97134815d975",
+  "originMainBefore": "0e44a913af7d8bf0c3ec4d8ecdfb97134815d975",
+  "liveRemoteMainBefore": "0e44a913af7d8bf0c3ec4d8ecdfb97134815d975",
+  "worktreeBefore": {
+    "index": "CLEAN",
+    "trackedWorktree": "CLEAN",
+    "untracked": "CLEAN",
+    "aheadBehind": "0/0",
+    "gitLocks": 0,
+    "activeTrackedWriters": 0
+  },
+  "authoritiesRead": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/I18N_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+    "docs/ui/PAGE_STYLE_SPEC.md",
+    "docs/ui/THEME_SYSTEM_SPEC.md",
+    "docs/ui/CHESSBOARD_COMPONENT_API.md",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    ".ai/reports/COMPLETE_PRODUCT_REQUIREMENT_DISCOVERY_AND_CHINESE_DESIGN_BLUEPRINT_REPORT.json",
+    ".ai/reports/WEB_LOGIN_TOKEN_AUTH_FLOW_OWNER_REAL_ACCOUNT_VALIDATION_REPORT.json",
+    ".ai/reports/AUTH_OWNER_VALIDATION_ACTIVE_AUTHORITY_PURGE_CORRECTION_AND_PUSH_REPORT.json",
+    ".ai/reports/GLOBAL_ACTIVE_AUTHORITY_CONSISTENCY_PURGE_AND_PUSH_REPORT.json"
+  ],
+  "requestedAuthoritiesMissingAtBaseline": [
+    "docs/ui/PRODUCT_UI_SPEC.md",
+    "docs/ui/WORKSPACE_UI_SPEC.md"
+  ],
+  "productDocumentsReviewed": [
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md"
+  ],
+  "targetRuntimeEvidenceInspected": [
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/board/**",
+    "src/features/pgn/**",
+    "src/features/annotations/**",
+    "src/features/analysis/**",
+    "src/features/product-api/**",
+    "src/features/workspace-mode/workspaceModeTypes.ts",
+    "src/stores/**",
+    "src/api/**",
+    "src/persistence/**",
+    "src/router/index.ts",
+    "src/main.ts"
+  ],
+  "legacyDiscoveryScanRepeated": false,
+  "conflictsFound": [
+    {
+      "category": "duplicated_product_authority",
+      "status": "CORRECTED"
+    },
+    {
+      "category": "unapproved_future_and_internal_modes",
+      "status": "CORRECTED"
+    },
+    {
+      "category": "live_ai_evaluation_and_cloud_write_implications",
+      "status": "CORRECTED"
+    },
+    {
+      "category": "auth_persistence_blanket_rejection",
+      "status": "CORRECTED_WITH_KAISAILE_AUTH_V1_EXCEPTION"
+    },
+    {
+      "category": "public_tournament_metadata_mixed_with_protected_game_live_content",
+      "status": "CORRECTED"
+    },
+    {
+      "category": "universal_round_default_rule",
+      "status": "CORRECTED_WITH_TWO_CONTEXT_RULES"
+    },
+    {
+      "category": "temporary_owner_origin_paths",
+      "countBefore": 17,
+      "countAfter": 0
+    },
+    {
+      "category": "owner_decision_requirement_mapping",
+      "countBefore": 10,
+      "countAfter": 11
+    },
+    {
+      "category": "broken_owner_decision_references",
+      "countBefore": 2,
+      "countAfter": 0
+    },
+    {
+      "category": "requirement_source_paths",
+      "countBefore": 24,
+      "countAfter": 0
+    },
+    {
+      "category": "prior_report_authority_paths",
+      "countBefore": 5,
+      "countAfter": 0
+    },
+    {
+      "category": "router_path_and_deployed_url_mixed",
+      "status": "CORRECTED"
+    },
+    {
+      "category": "flows_into_workspace_settings_and_three_board_summary_ambiguity",
+      "status": "CORRECTED"
+    },
+    {
+      "category": "big_screen_scoring_not_fully_normalized_or_deterministic",
+      "status": "CORRECTED"
+    },
+    {
+      "category": "note_annotation_source_and_local_copy_ownership_ambiguity",
+      "status": "CORRECTED"
+    }
+  ],
+  "authorityHierarchyCorrections": {
+    "blueprint": "SOLE_PRODUCT_DESIGN_AUTHORITY",
+    "productDefinition": "CONCISE_IDENTITY_BOUNDARIES_AUDIENCES_SURFACES_REFERENCES_ONLY",
+    "workspaceModes": "TECHNICAL_MODE_SOURCE_TRANSITION_ADAPTER_PERSISTENCE_ONLY"
+  },
+  "modeCorrections": {
+    "currentTechnicalModes": [
+      "analysis",
+      "competition_commentary",
+      "live_spectator",
+      "replay"
+    ],
+    "failClosedSentinel": "unknown",
+    "futureExtensionActive": false,
+    "internalInspectionProductMode": false,
+    "ongoingLive": {
+      "readonly": true,
+      "ai": false,
+      "evaluation": false,
+      "sourceWrite": false
+    }
+  },
+  "authRequirementCorrections": {
+    "requirement": "REQ-057",
+    "renamedTo": "未受控认证数据与实时秘密持久化",
+    "approvedException": {
+      "key": "kaisaile.auth.v1",
+      "owner": "src/persistence/auth/authPersistence.ts",
+      "storage": "localStorage",
+      "schema": "strict Zod version 1",
+      "maximumLifetimeSeconds": 43200,
+      "fields": [
+        "token",
+        "uid",
+        "accountLabel",
+        "expiresAt"
+      ]
+    },
+    "bffCookieHttpOnlyOrServerOnlyRequirementIntroduced": false
+  },
+  "permissionBoundaryCorrections": {
+    "anonymousPublic": [
+      "tournament_list",
+      "tournament_detail",
+      "groups",
+      "rounds",
+      "pairings",
+      "current_public_pairing_display_composition"
+    ],
+    "protectedOrContractDependent": [
+      "finished_game_replay",
+      "cloud_pgn",
+      "protected_shared_content",
+      "hardware_history",
+      "latest_hardware_snapshot",
+      "live_credentials",
+      "realtime_subscription",
+      "authoritative_clocks"
+    ]
+  },
+  "roundDefaultCorrections": {
+    "explicitValidUrlSelection": "HIGHEST_PRIORITY",
+    "teacherTournamentCommentary": [
+      "LATEST_COMPLETED",
+      "CURRENT_ONGOING",
+      "NEAREST_UPCOMING_OR_FIRST_VALID"
+    ],
+    "liveSpectatorAndBigScreen": [
+      "CURRENT_ONGOING",
+      "LATEST_COMPLETED",
+      "FIRST_VALID"
+    ],
+    "ownerConfirmed": true
+  },
+  "ownerRequirementBaseline": {
+    "path": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "authorityId": "OWNER_REQUIREMENT_2026_07_14",
+    "temporaryAttachmentDependenciesAfter": 0
+  },
+  "ownerDecisionCountBefore": 10,
+  "ownerDecisionCountAfter": 11,
+  "ownerDecisionMappings": {
+    "OD-01": "REQ-048",
+    "OD-02": "REQ-010",
+    "OD-03": "REQ-016",
+    "OD-04": "REQ-061",
+    "OD-05": "REQ-032",
+    "OD-06": "REQ-059",
+    "OD-07": "REQ-051",
+    "OD-08": "REQ-050",
+    "OD-09": "REQ-049",
+    "OD-10": "REQ-040",
+    "OD-11": "REQ-042"
+  },
+  "brokenDecisionReferencesBefore": [
+    {
+      "question": 48,
+      "incorrect": "OD-09",
+      "correct": "OD-07"
+    },
+    {
+      "question": 84,
+      "incorrect": "OD-12",
+      "correct": "OD-10"
+    }
+  ],
+  "brokenDecisionReferencesAfter": [],
+  "sourcePathsChecked": 61,
+  "sourcePathErrorsBefore": 24,
+  "sourcePathErrorsAfter": 0,
+  "reportPathsCorrected": [
+    {
+      "from": "docs/architecture/CAPABILITY_MATRIX.json",
+      "to": "docs/migration/CAPABILITY_MATRIX.json"
+    },
+    {
+      "from": "docs/architecture/SOURCE_PROVENANCE.md",
+      "to": "docs/migration/SOURCE_PROVENANCE.md"
+    },
+    {
+      "from": "docs/architecture/CANONICAL_RUNTIME_CLOSURE.json",
+      "to": "docs/migration/CANONICAL_RUNTIME_CLOSURE.json"
+    },
+    {
+      "removedNonexistentClaim": "docs/ui/PRODUCT_UI_SPEC.md"
+    },
+    {
+      "removedNonexistentClaim": "docs/ui/WORKSPACE_UI_SPEC.md"
+    }
+  ],
+  "routeRepresentationCorrections": {
+    "routerBaseOwner": "import.meta.env.BASE_URL",
+    "fields": [
+      "routerPath",
+      "deployedUrl"
+    ],
+    "routesChanged": false,
+    "routesAdded": 0
+  },
+  "informationArchitectureCorrections": {
+    "flowsIntoWorkspaceDefinition": "Whether selecting content on this route produces a sanitized typed handoff into the unified workspace.",
+    "tournamentDetailFlowsIntoWorkspace": true,
+    "settings": "GOVERNED_GLOBAL_SURFACE_PAGE_DESIGN_DECIDES_DIALOG_DRAWER_OR_ROUTE",
+    "threeBoardSummaryCell": "EXPLICIT_EVENT_SUMMARY_REGION_REJECTED_IF_BOARD_READABILITY_FALLS_BELOW_THRESHOLD"
+  },
+  "bigScreenScoringCorrections": {
+    "weights": {
+      "readability": 0.55,
+      "aspectFit": 0.2,
+      "densityPenalty": 0.15,
+      "pageCountPenalty": 0.1
+    },
+    "boundedRange": "0_TO_1",
+    "invalidCandidateRule": "REJECT_BELOW_MINIMUM_BEFORE_SCORING",
+    "tieBreak": [
+      "larger_minimum_board_size",
+      "fewer_pages",
+      "fewer_unused_cells",
+      "larger_information_area",
+      "fewer_rows"
+    ],
+    "physicalThresholds": "OWNER_CONFIRMATION_REQUIRED"
+  },
+  "notePersistenceCorrections": {
+    "pgnNodeComment": "FOLLOWS_PGN_NODE",
+    "pgnNodeAnnotation": "FOLLOWS_PGN_NODE",
+    "gameTeachingNote": "FOLLOWS_LOCAL_TEACHING_GAME_RECORD",
+    "lessonSessionNote": "OD_02_NOT_IMPLEMENTED",
+    "protectedSource": "READONLY",
+    "importedContent": "DISTINCT_LOCAL_COPY",
+    "remoteWriteBack": "FORBIDDEN_WITHOUT_SEPARATELY_CONFIRMED_WRITE_CONTRACT"
+  },
+  "filesCreated": [
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    ".ai/reports/COMPLETE_PRODUCT_DESIGN_OWNER_REVIEW_CORRECTION_AND_PUSH_REPORT.json"
+  ],
+  "filesModified": [
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    ".ai/reports/COMPLETE_PRODUCT_REQUIREMENT_DISCOVERY_AND_CHINESE_DESIGN_BLUEPRINT_REPORT.json"
+  ],
+  "filesDeleted": [],
+  "runtimeFilesChanged": false,
+  "dependenciesChanged": false,
+  "protectedFileIntegrity": {
+    "before": {
+      "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+      "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+      "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d",
+      "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+      "src/App.vue": "44f3160cb33fa0a7847f6311798cb1f7a9c71a289e83ad35a865a5b21da64ad7",
+      "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+      "src/stores/index.ts": "00760ba4ac0d4e771426293a4754c9315939403551249810779b6d02d09ff90e",
+      "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+      "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+      "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+      "src/features/teaching-workspace/TeachingWorkspace.vue": "6f6eb96f7ee88edd0a256e412c9e6c97e555b20d81fe36c0ab37d995f5bcf03a",
+      "src/styles/tokens.css": "54b172c48deaaf305fe31fe57d9fed68b8b6b9d1126337a3ef904df5c8e7574a"
+    },
+    "after": {
+      "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+      "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+      "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d",
+      "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+      "src/App.vue": "44f3160cb33fa0a7847f6311798cb1f7a9c71a289e83ad35a865a5b21da64ad7",
+      "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+      "src/stores/index.ts": "00760ba4ac0d4e771426293a4754c9315939403551249810779b6d02d09ff90e",
+      "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+      "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+      "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+      "src/features/teaching-workspace/TeachingWorkspace.vue": "6f6eb96f7ee88edd0a256e412c9e6c97e555b20d81fe36c0ab37d995f5bcf03a",
+      "src/styles/tokens.css": "54b172c48deaaf305fe31fe57d9fed68b8b6b9d1126337a3ef904df5c8e7574a"
+    },
+    "unchanged": true
+  },
+  "mockDataAudit": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:mocks",
+    "result": "No mock, fixture, fake, sample, synthesized, or fallback product data added."
+  },
+  "automatedTestAudit": {
+    "status": "PASS",
+    "result": "No automated test file, dependency, script, fixture, snapshot, or coverage artifact added.",
+    "testCommandRun": false
+  },
+  "sensitiveDataAudit": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:secrets",
+    "realLoginPerformed": false,
+    "protectedApiCalled": false
+  },
+  "markdownValidation": {
+    "status": "PASS",
+    "filesChecked": 6,
+    "relativeLinksChecked": 18,
+    "brokenLinks": 0,
+    "brokenHeadingAnchors": 0
+  },
+  "mermaidValidation": {
+    "status": "PASS",
+    "blocksChecked": 9,
+    "structuralErrors": 0
+  },
+  "jsonValidation": {
+    "status": "PASS",
+    "filesChecked": 5,
+    "parseErrors": 0
+  },
+  "sourcePathValidation": {
+    "status": "PASS",
+    "requirementsChecked": 61,
+    "errorsAfter": 0,
+    "perRequirementResultRecorded": true
+  },
+  "crossReferenceValidation": {
+    "status": "PASS",
+    "ownerDecisionsChecked": 11,
+    "acceptanceQuestionsChecked": 85,
+    "runtimeRoutesChecked": 9,
+    "errors": 0
+  },
+  "staticValidation": {
+    "status": "PASS",
+    "commands": [
+      "mise exec -- pnpm run check:residue",
+      "mise exec -- pnpm run check:deps",
+      "mise exec -- pnpm run check:architecture",
+      "mise exec -- pnpm run check:tokens",
+      "mise exec -- pnpm run check:mocks",
+      "mise exec -- pnpm run check:secrets",
+      "mise exec -- pnpm run check:copy",
+      "mise exec -- pnpm run check:governance",
+      "mise exec -- pnpm run format:check",
+      "mise exec -- pnpm run lint",
+      "mise exec -- pnpm run lint:style",
+      "mise exec -- pnpm run check:unused",
+      "mise exec -- pnpm run check:static"
+    ]
+  },
+  "typecheck": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run typecheck"
+  },
+  "productionBuild": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-product-design-correction-build-20260714 --emptyOutDir",
+    "outputDirectory": "/tmp/chess-pgnviewer-vue-product-design-correction-build-20260714",
+    "modulesTransformed": 3147
+  },
+  "securityAudits": {
+    "status": "PASS",
+    "commands": [
+      "mise exec -- pnpm audit --prod",
+      "mise exec -- pnpm audit"
+    ],
+    "result": "No known vulnerabilities found."
+  },
+  "browserValidation": "NOT_RUN_DOCUMENTATION_AND_PRODUCT_DESIGN_CORRECTION_ONLY",
+  "gitDiffCheck": {
+    "status": "PASS",
+    "command": "git diff --check"
+  },
+  "commit": {
+    "subject": "docs(product): 校准产品设计权威并闭合需求追踪",
+    "status": "REPORT_INCLUDED_IN_ENCLOSING_PHASE_COMMIT"
+  },
+  "push": {
+    "remote": "origin",
+    "branch": "main",
+    "force": false,
+    "status": "ENCLOSING_PHASE_COMMIT_PUSH_VERIFIED_IN_FINAL_CONSOLE_RESPONSE"
+  },
+  "localHeadAfter": "ENCLOSING_PHASE_COMMIT_VERIFIED_IN_FINAL_CONSOLE_RESPONSE",
+  "remoteMainAfter": "ENCLOSING_PHASE_COMMIT_VERIFIED_IN_FINAL_CONSOLE_RESPONSE",
+  "worktreeAfter": "CLEAN_INDEX_TRACKED_WORKTREE_AND_UNTRACKED_VERIFIED_IN_FINAL_CONSOLE_RESPONSE",
+  "remainingConflicts": [],
+  "remainingOwnerDecisions": [
+    "OD-01",
+    "OD-02",
+    "OD-03",
+    "OD-04",
+    "OD-05",
+    "OD-06",
+    "OD-07",
+    "OD-08",
+    "OD-09",
+    "OD-10",
+    "OD-11"
+  ],
+  "finalDesignStatus": "COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW",
+  "finalPageDesignGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+  "finalVerdict": "COMPLETE_PRODUCT_DESIGN_OWNER_REVIEW_CORRECTION_AND_PUSH_PASS"
+}

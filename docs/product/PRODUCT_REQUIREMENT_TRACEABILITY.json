@@ -1,8 +1,8 @@
 {
     "document": "PRODUCT_REQUIREMENT_TRACEABILITY",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "date": "2026-07-14",
-    "status": "COMPLETE_PRODUCT_DESIGN_READY_FOR_OWNER_REVIEW",
+    "status": "COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW",
     "classificationValues": [
         "CONFIRMED_CORE_REQUIREMENT",
         "CONFIRMED_SUPPORTING_REQUIREMENT",
@@ -14,14 +14,14 @@
         "OBSOLETE_REQUIREMENT",
         "REJECTED_REQUIREMENT"
     ],
-    "ownerOrigin": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+    "ownerOrigin": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
     "requirements": [
         {
             "id": "REQ-001",
             "chineseName": "单一棋盘中心工作区",
             "classification": "CURRENT_TARGET_ALREADY_IMPLEMENTED",
             "sourceProject": "chess-pgnviewer-vue",
-            "sourcePath": "src/features/workspace/TeachingWorkspace.vue",
+            "sourcePath": "src/features/teaching-workspace/TeachingWorkspace.vue",
             "sourceEvidenceType": "CURRENT_RUNTIME",
             "observedBehavior": "当前目标以左侧来源、中央棋盘和右侧上下文构成单一工作区。",
             "intendedUser": ["教师/教练", "俱乐部/机构教学人员"],
@@ -43,7 +43,8 @@
             "recommendation": "保留且禁止创建第二工作区。",
             "priority": "MUST",
             "acceptanceConcept": "所有来源通过类型化交接进入同一棋盘、PGN、批注和 AI 运行时。",
-            "questionRefs": [1, 39, 43]
+            "questionRefs": [1, 39, 43],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-002",
@@ -72,7 +73,8 @@
             "recommendation": "接受批量文件和多棋局文件，逐项报告错误。",
             "priority": "MUST",
             "acceptanceConcept": "一次选择多个文件，所有有效棋局按稳定顺序进入同一集合，失败项不影响有效项。",
-            "questionRefs": [2, 3, 4, 7]
+            "questionRefs": [2, 3, 4, 7],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-003",
@@ -101,7 +103,8 @@
             "recommendation": "接受搜索、重命名、移除、排序和分页。",
             "priority": "MUST",
             "acceptanceConcept": "不丢当前工作即可搜索、选择、重命名、移除和重新排序。",
-            "questionRefs": [5, 6, 11]
+            "questionRefs": [5, 6, 11],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-004",
@@ -130,7 +133,8 @@
             "recommendation": "合并到 REQ-003，不建立第二列表模型。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "追踪关系保留，运行时只实现 REQ-003。",
-            "questionRefs": [5]
+            "questionRefs": [5],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-005",
@@ -159,14 +163,15 @@
             "recommendation": "保留行为，替换旧 localStorage 所有权为当前 Dexie 权威。",
             "priority": "SHOULD",
             "acceptanceConcept": "刷新后恢复经校验的集合、棋局、节点、视角和布局，不恢复运行任务。",
-            "questionRefs": [6, 10, 75, 76]
+            "questionRefs": [6, 10, 75, 76],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-006",
             "chineseName": "FEN 起始棋局和手动局面",
             "classification": "CONFIRMED_CORE_REQUIREMENT",
             "sourceProject": "chess-pgnviewer-vue",
-            "sourcePath": "src/features/workspace/TeachingWorkspace.vue",
+            "sourcePath": "src/features/teaching-workspace/TeachingWorkspace.vue",
             "sourceEvidenceType": "CURRENT_RUNTIME_AND_OWNER_REQUIREMENT",
             "observedBehavior": "目标工作区已具备棋盘编辑入口和统一棋局域。",
             "intendedUser": ["教师/教练"],
@@ -188,7 +193,8 @@
             "recommendation": "FEN 起始进入同一 PGN 模型；应用创建新来源，取消回滚。",
             "priority": "MUST",
             "acceptanceConcept": "从空、初始或当前局面编辑并校验，应用不修改原来源。",
-            "questionRefs": [8, 9, 19]
+            "questionRefs": [8, 9, 19],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-007",
@@ -216,8 +222,9 @@
             "duplicateStatus": "CANONICAL_SINGLETON",
             "recommendation": "保留节点所有权，增加清除/覆盖确认策略。",
             "priority": "MUST",
-            "acceptanceConcept": "箭头、格子、评论、NAG 和变例跟随节点；删除/清空可撤销或确认。",
-            "questionRefs": [12, 14, 15, 16, 20]
+            "acceptanceConcept": "PGN 节点评论、NAG、箭头、格子和变例跟随节点；受保护来源保持只读，只有本地副本可撤销、清除或确认修改。",
+            "questionRefs": [12, 14, 15, 16, 20],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-008",
@@ -246,16 +253,17 @@
             "recommendation": "保留能力概念，不复制旧 UI 或原始颜色。",
             "priority": "SHOULD",
             "acceptanceConcept": "在当前批注运行时中提供可访问的多色箭头/格子、撤销和清除。",
-            "questionRefs": [12, 20, 80]
+            "questionRefs": [12, 20, 80],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-009",
-            "chineseName": "棋局级信息与教学笔记",
+            "chineseName": "棋局级信息与本地教学笔记",
             "classification": "CONFIRMED_SUPPORTING_REQUIREMENT",
             "sourceProject": "pgnViewer",
             "sourcePath": "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/pgnManage/pgnManage.vue",
             "sourceEvidenceType": "SECONDARY_LEGACY_CAPABILITY",
-            "observedBehavior": "旧版可编辑棋谱名称、标签、双方、结果和说明。",
+            "observedBehavior": "旧版可编辑棋谱名称、标签、双方、结果和说明；当前产品将棋局级教学笔记归属于本地教学棋局记录。",
             "intendedUser": ["教师/教练"],
             "productMode": ["LOCAL_PGN_TEACHING", "REPLAY_IMPORTED_COPY"],
             "userProblem": "棋局缺少课堂可识别的名称与教学上下文。",
@@ -266,23 +274,24 @@
             "apiDependency": "NONE_FOR_LOCAL",
             "authenticationDependency": "ANONYMOUS",
             "liveDependency": "DISABLED_ON_SOURCE_OBJECT",
-            "persistenceDependency": "GAME_METADATA",
+            "persistenceDependency": "LOCAL_TEACHING_GAME_RECORD",
             "aiDependency": "NONE",
             "securityImpact": "不得将受保护来源字段复制到导出。",
             "responsiveImpact": "表单在窄屏为单列。",
             "accessibilityImpact": "标签编辑与错误提示可访问。",
             "duplicateStatus": "UNIQUE_ACCEPTED",
-            "recommendation": "接受棋局级信息；课次级笔记单独决策。",
+            "recommendation": "接受本地棋局级信息与教学笔记；节点评论/标注跟随节点，课次级笔记由 OD-02 单独决策。",
             "priority": "SHOULD",
-            "acceptanceConcept": "本地副本可编辑名称、标签、双方、结果、说明和整局笔记。",
-            "questionRefs": [13, 83]
+            "acceptanceConcept": "本地副本可编辑名称、标签、双方、结果、说明和棋局级教学笔记；受保护来源不被写回。",
+            "questionRefs": [13, 83],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-010",
             "chineseName": "课次级跨棋局笔记",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_ORIGIN_QUESTION",
             "observedBehavior": "所有者要求区分节点、棋局和课次笔记。",
             "intendedUser": ["教师/教练"],
@@ -304,14 +313,16 @@
             "recommendation": "初期只做节点和棋局级；真实需求确认后增加课次实体。",
             "priority": "COULD",
             "acceptanceConcept": "所有者确认实体、生命周期、导出和恢复后才进入实现。",
-            "questionRefs": [13]
+            "questionRefs": [13],
+            "ownerDecisionId": "OD-02",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-011",
             "chineseName": "棋盘视角与持续导航控制",
             "classification": "CURRENT_TARGET_ALREADY_IMPLEMENTED",
             "sourceProject": "chess-pgnviewer-vue",
-            "sourcePath": "src/features/board/BoardStage.vue",
+            "sourcePath": "src/features/teaching-workspace/TeachingWorkspace.vue",
             "sourceEvidenceType": "CURRENT_RUNTIME",
             "observedBehavior": "当前棋盘具备视角、走法导航和稳定棋盘区域。",
             "intendedUser": ["教师/教练", "观众"],
@@ -333,14 +344,15 @@
             "recommendation": "保留并作为所有模式的稳定控制。",
             "priority": "MUST",
             "acceptanceConcept": "切换右侧节点或来源后，上/下一步、翻转和状态仍可达。",
-            "questionRefs": [17, 18, 80]
+            "questionRefs": [17, 18, 80],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-012",
             "chineseName": "AI 默认关闭与显式开启",
             "classification": "CONFIRMED_CORE_REQUIREMENT",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#ai-policy",
             "sourceEvidenceType": "OWNER_ORIGIN_REQUIREMENT",
             "observedBehavior": "所有者明确要求 AI 默认关闭并说明资源影响。",
             "intendedUser": ["教师/教练"],
@@ -362,7 +374,8 @@
             "recommendation": "保持默认关闭，首次开启提示资源影响。",
             "priority": "MUST",
             "acceptanceConcept": "未操作时不启动 Worker；用户显式开启后显示范围、资源提示和取消。",
-            "questionRefs": [21, 22, 23]
+            "questionRefs": [21, 22, 23],
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-013",
@@ -391,7 +404,8 @@
             "recommendation": "保留任务令牌、节点校验、路由离开取消。",
             "priority": "MUST",
             "acceptanceConcept": "切换走法/棋局/路由后旧结果不能写入；取消会停止任务并复位 UI。",
-            "questionRefs": [24, 25, 26, 27, 28]
+            "questionRefs": [24, 25, 26, 27, 28],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-014",
@@ -420,7 +434,8 @@
             "recommendation": "接受评价、主变化和显式加入变例。",
             "priority": "SHOULD",
             "acceptanceConcept": "候选线可读、可比较且只有显式操作才写入变例。",
-            "questionRefs": [30]
+            "questionRefs": [30],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-015",
@@ -449,20 +464,21 @@
             "recommendation": "仅保留资源设置需求，不保留旧引擎版本与数值。",
             "priority": "SHOULD",
             "acceptanceConcept": "设置由当前 AI 运行时拥有，默认值经过真实性能验收。",
-            "questionRefs": [29, 30]
+            "questionRefs": [29, 30],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-016",
-            "chineseName": "AI 设置作用域与默认资源",
+            "chineseName": "AI 设置作用域",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_ORIGIN_QUESTION",
-            "observedBehavior": "所有者要求明确设置作用域和资源影响。",
+            "observedBehavior": "所有者要求明确 AI 默认设置与单次会话覆盖的作用域。",
             "intendedUser": ["教师/教练"],
             "productMode": ["AI_ANALYSIS"],
-            "userProblem": "设置若无作用域会造成不可预测消耗。",
-            "userValue": "设备和课堂间行为可预测。",
+            "userProblem": "设置若无作用域会造成跨会话行为不可预测。",
+            "userValue": "设备默认与课堂临时覆盖边界清晰。",
             "currentTargetState": "NOT_CONFIRMED",
             "visualAuthority": "CURRENT_ANALYSIS_PANEL",
             "interactionAuthority": "CURRENT_ANALYSIS_RUNTIME",
@@ -475,17 +491,19 @@
             "responsiveImpact": "设置不常驻挤压棋盘。",
             "accessibilityImpact": "数值范围和错误需可理解。",
             "duplicateStatus": "NO_CONFIRMED_DEFAULT",
-            "recommendation": "设备级默认加会话覆盖；深度/时间/并发待性能验收。",
+            "recommendation": "设备级默认加会话临时覆盖；资源提示和具体资源默认值由 OD-04 独立跟踪。",
             "priority": "MUST",
-            "acceptanceConcept": "所有者确认作用域和默认资源后才冻结产品值。",
-            "questionRefs": [21, 29]
+            "acceptanceConcept": "所有者确认设备默认、会话覆盖和重置规则后才冻结设置作用域。",
+            "questionRefs": [29],
+            "ownerDecisionId": "OD-03",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-017",
             "chineseName": "赛事列表搜索筛选与分页",
             "classification": "CURRENT_TARGET_ALREADY_IMPLEMENTED",
             "sourceProject": "chess-pgnviewer-vue",
-            "sourcePath": "src/features/competition/views/CompetitionListView.vue",
+            "sourcePath": "src/features/product-api/views/CompetitionListView.vue",
             "sourceEvidenceType": "CURRENT_RUNTIME",
             "observedBehavior": "当前目标拥有赛事列表、真实公开读取、筛选与分页表面。",
             "intendedUser": ["教师/教练", "赛事组织者/大屏操作员", "家长/普通观众"],
@@ -507,7 +525,8 @@
             "recommendation": "保留为赛事入口。",
             "priority": "MUST",
             "acceptanceConcept": "真实加载/空/错误下可搜索、筛选、分页并进入详情。",
-            "questionRefs": [32, 33]
+            "questionRefs": [32, 33],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-018",
@@ -516,12 +535,12 @@
             "sourceProject": "pgnViewer-new",
             "sourcePath": "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/teaching-workspace/components/TeachingLiveRoundNavigator.vue",
             "sourceEvidenceType": "CANONICAL_VISUAL_INTERACTION_SOURCE",
-            "observedBehavior": "主源将组别、轮次和棋盘选择置于教学实时导航。",
+            "observedBehavior": "主源提供赛事、组别、轮次、对阵导航；当前目标只实现来源当前轮次/首项回退。",
             "intendedUser": ["教师/教练"],
             "productMode": ["TOURNAMENT_COMMENTARY", "LIVE_SPECTATOR"],
             "userProblem": "教师需要在赛事层级中快速找到一台棋。",
             "userValue": "不离开讲解工作区即可切换上下文。",
-            "currentTargetState": "PARTIALLY_IMPLEMENTED",
+            "currentTargetState": "PARTIALLY_IMPLEMENTED_OWNER_DEFAULT_RULE_PENDING_PRODUCT_COMPLETION",
             "visualAuthority": "pgnViewer-new TeachingLiveRoundNavigator",
             "interactionAuthority": "pgnViewer-new live navigator composable",
             "apiDependency": "PUBLIC_METADATA_CONFIRMED_LIVE_BOARD_DATA_BLOCKED",
@@ -533,10 +552,12 @@
             "responsiveImpact": "导航在窄屏为抽屉。",
             "accessibilityImpact": "层级、展开和选中状态可读。",
             "duplicateStatus": "SUPPORTED_BY_REQ_019",
-            "recommendation": "接受左侧赛事层级导航并统一交接。",
+            "recommendation": "有效 URL 轮次优先；教师讲解按最新已完成、当前进行中、最近待开始/首个有效轮次选择；实时和大屏使用独立规则。",
             "priority": "MUST",
-            "acceptanceConcept": "组别、轮次、台次选择稳定，失效下级选择被清除，合法选择写入 URL/交接。",
-            "questionRefs": [34, 35, 36, 39, 41]
+            "acceptanceConcept": "组别/轮次/对阵可扫描且几何稳定；教师讲解的默认轮次严格遵守所有者确认的优先级。",
+            "questionRefs": [34, 35, 36, 39, 41],
+            "ownerRequirementReference": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#tournament-and-round-rules",
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-019",
@@ -565,14 +586,15 @@
             "recommendation": "合并为状态标签证据。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "只保留需求证据，不实现旧组件。",
-            "questionRefs": [35, 37]
+            "questionRefs": [35, 37],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-020",
             "chineseName": "团体对阵与单台层级区分",
             "classification": "CONFIRMED_CORE_REQUIREMENT",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#tournament-and-round-rules",
             "sourceEvidenceType": "OWNER_ORIGIN_REQUIREMENT",
             "observedBehavior": "所有者要求区分团体聚合对阵和个人台次。",
             "intendedUser": ["教师/教练", "赛事组织者/大屏操作员"],
@@ -594,14 +616,15 @@
             "recommendation": "团体先聚合后单台；个人赛直接台次。",
             "priority": "MUST",
             "acceptanceConcept": "不同赛事类型不会出现层级误导，且只可选择真实单局进入工作区。",
-            "questionRefs": [38]
+            "questionRefs": [38],
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-021",
             "chineseName": "赛事单局交接到统一工作区",
             "classification": "CURRENT_TARGET_ALREADY_IMPLEMENTED",
             "sourceProject": "chess-pgnviewer-vue",
-            "sourcePath": "src/features/workspace-mode/workspaceHandoff.ts",
+            "sourcePath": "src/persistence/workspace/workspaceHandoff.ts",
             "sourceEvidenceType": "CURRENT_RUNTIME",
             "observedBehavior": "当前目标已建立类型化工作区交接上下文。",
             "intendedUser": ["教师/教练"],
@@ -623,14 +646,15 @@
             "recommendation": "保留所有单局来源的唯一交接边界。",
             "priority": "MUST",
             "acceptanceConcept": "赛事、回放、实时选择可安全交接且不复制工作区。",
-            "questionRefs": [39, 43, 74]
+            "questionRefs": [39, 43, 74],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-022",
             "chineseName": "赛事状态与完成转换",
             "classification": "CONFIRMED_CORE_REQUIREMENT",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#tournament-and-round-rules",
             "sourceEvidenceType": "OWNER_ORIGIN_REQUIREMENT",
             "observedBehavior": "所有者要求区分未开始、进行中、已完成并定义完成转换。",
             "intendedUser": ["教师/教练", "观众"],
@@ -652,16 +676,17 @@
             "recommendation": "完成后停止实时并允许手动导入副本。",
             "priority": "MUST",
             "acceptanceConcept": "进行中只读；确认完成后转换为回放并由用户显式导入分析。",
-            "questionRefs": [37, 40, 50]
+            "questionRefs": [37, 40, 50],
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-023",
             "chineseName": "严格登录过期与安全返回",
             "classification": "CURRENT_TARGET_ALREADY_IMPLEMENTED",
             "sourceProject": "chess-pgnviewer-vue",
-            "sourcePath": "src/features/auth/session.ts",
-            "sourceEvidenceType": "CURRENT_AUTHORITY_AND_RUNTIME",
-            "observedBehavior": "当前目标使用严格 12 小时身份记录和安全 next 返回。",
+            "sourcePath": "src/stores/auth.ts",
+            "sourceEvidenceType": "CURRENT_RUNTIME_AND_AUTH_AUTHORITY",
+            "observedBehavior": "当前目标由 auth Pinia 所有者恢复唯一 kaisaile.auth.v1 会话、调度过期、处理登录/注销并清理保护状态。",
             "intendedUser": ["所有登录用户"],
             "productMode": ["PROTECTED_MODES"],
             "userProblem": "过期身份继续读取会造成权限错误。",
@@ -672,7 +697,7 @@
             "apiDependency": "IDENTITY_ONLY",
             "authenticationDependency": "CORE",
             "liveDependency": "DISCONNECT_ON_EXPIRY",
-            "persistenceDependency": "STRICT_AUTH_RECORD",
+            "persistenceDependency": "LOCAL_STORAGE_KAISAILE_AUTH_V1_ONLY",
             "aiDependency": "CANCEL_ON_LOGOUT",
             "securityImpact": "清除保护缓存、连接和交接，防开放重定向。",
             "responsiveImpact": "登录要求在所属模块呈现。",
@@ -680,8 +705,9 @@
             "duplicateStatus": "CANONICAL_AUTHORITY",
             "recommendation": "保持当前认证权威。",
             "priority": "MUST",
-            "acceptanceConcept": "过期立即停止保护读取/订阅，安全登录后只恢复仍合法上下文。",
-            "questionRefs": [42, 71, 72, 77, 78]
+            "acceptanceConcept": "只恢复严格 Zod 版本 1、最长 43,200 秒的 kaisaile.auth.v1 记录；安全 next、过期、401 与注销按当前认证权威处理。",
+            "questionRefs": [42, 71, 72, 77, 78],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-024",
@@ -710,7 +736,8 @@
             "recommendation": "保留路由和产品位置，等待权威合同。",
             "priority": "MUST_AFTER_CONTRACT",
             "acceptanceConcept": "只有确认合同、认证和 DTO 校验后才显示真实回放。",
-            "questionRefs": [43, 50, 73]
+            "questionRefs": [43, 50, 73],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-025",
@@ -739,7 +766,8 @@
             "recommendation": "采用八态模型，保留最后可信快照。",
             "priority": "MUST",
             "acceptanceConcept": "连接中、实时、陈旧、重连、断开、完成和不可用转换可解释且不伪造数据。",
-            "questionRefs": [44, 45, 48, 49]
+            "questionRefs": [44, 45, 48, 49],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-026",
@@ -768,7 +796,8 @@
             "recommendation": "等待合同，不以对阵信息构造棋盘。",
             "priority": "MUST_AFTER_CONTRACT",
             "acceptanceConcept": "经认证、校验且有新鲜度依据的真实快照才可进入棋盘。",
-            "questionRefs": [45, 47, 48, 73]
+            "questionRefs": [45, 47, 48, 73],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-027",
@@ -797,7 +826,8 @@
             "recommendation": "等待服务端签发与主题映射合同。",
             "priority": "MUST_AFTER_CONTRACT",
             "acceptanceConcept": "凭据仅服务端按需签发并内存使用，离开/注销立即断开。",
-            "questionRefs": [44, 45, 73, 76, 77]
+            "questionRefs": [44, 45, 73, 76, 77],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-028",
@@ -826,14 +856,15 @@
             "recommendation": "确认版本/时间戳、暂停/恢复与插值规则前不显示倒计时。",
             "priority": "MUST_AFTER_CONTRACT",
             "acceptanceConcept": "棋盘和时钟分别校验新鲜度，按确认的排序规则合并。",
-            "questionRefs": [46, 47, 48, 55]
+            "questionRefs": [46, 47, 48, 55],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-029",
             "chineseName": "完成棋局显式导入分析",
             "classification": "CONFIRMED_CORE_REQUIREMENT",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#live-and-big-screen",
             "sourceEvidenceType": "OWNER_ORIGIN_REQUIREMENT",
             "observedBehavior": "所有者明确禁止进行中 AI，并允许完成后导入分析。",
             "intendedUser": ["教师/教练"],
@@ -855,14 +886,15 @@
             "recommendation": "坚持手动导入，不自动转可编辑。",
             "priority": "MUST",
             "acceptanceConcept": "只有确认完成且用户操作后创建本地副本并开放编辑/AI。",
-            "questionRefs": [31, 40, 49, 50]
+            "questionRefs": [31, 40, 49, 50],
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-030",
             "chineseName": "赛事对阵展示大屏",
             "classification": "CURRENT_TARGET_ALREADY_IMPLEMENTED",
             "sourceProject": "chess-pgnviewer-vue",
-            "sourcePath": "src/features/competition/views/CompetitionDisplayView.vue",
+            "sourcePath": "src/features/product-api/views/CompetitionDisplayView.vue",
             "sourceEvidenceType": "CURRENT_RUNTIME",
             "observedBehavior": "当前目标已有赛事展示路由与公开赛事组合读取。",
             "intendedUser": ["赛事组织者/大屏操作员", "观众"],
@@ -872,8 +904,8 @@
             "currentTargetState": "IMPLEMENTED_PAIRING_DISPLAY_MULTI_BOARD_TARGET_GAP",
             "visualAuthority": "CURRENT_TARGET_TOKENS_PLUS_BIG_SCREEN_BLUEPRINT",
             "interactionAuthority": "CURRENT_ROUTE_AND_FILTERS",
-            "apiDependency": "CONFIRMED_PUBLIC_READS",
-            "authenticationDependency": "PUBLIC_SCOPE_ANONYMOUS",
+            "apiDependency": "CONFIRMED_PUBLIC_DETAIL_GROUP_ROUND_PAIRING_COMPOSITION",
+            "authenticationDependency": "ANONYMOUS_PUBLIC_TOURNAMENT_COMPOSITION",
             "liveDependency": "NOT_YET_FOR_MULTI_BOARD",
             "persistenceDependency": "URL_SELECTION",
             "aiDependency": "NONE",
@@ -883,15 +915,16 @@
             "duplicateStatus": "UNIQUE_CURRENT_SURFACE",
             "recommendation": "保留入口并演进为可读性优先多棋盘大屏。",
             "priority": "MUST",
-            "acceptanceConcept": "公开对阵展示保持真实；多棋盘需等实时合同。",
-            "questionRefs": [51, 55, 69]
+            "acceptanceConcept": "匿名组合真实赛事详情、组别、轮次和对阵；不因受保护单局/实时能力而要求登录。",
+            "questionRefs": [51, 55, 69],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-031",
             "chineseName": "多棋盘可读性优先布局算法",
             "classification": "CONFIRMED_CORE_REQUIREMENT",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#live-and-big-screen",
             "sourceEvidenceType": "OWNER_ORIGIN_REQUIREMENT",
             "observedBehavior": "所有者要求按视口、棋盘数、信息高度、间距、最小/首选尺寸和分页评分。",
             "intendedUser": ["赛事组织者/大屏操作员", "观众"],
@@ -910,23 +943,24 @@
             "responsiveImpact": "CORE_REQUIREMENT",
             "accessibilityImpact": "字号、对比度、停留时间和暂停可用。",
             "duplicateStatus": "UNIQUE_ACCEPTED",
-            "recommendation": "枚举候选，淘汰低可读性布局，必要时分页。",
+            "recommendation": "采用可读性 0.55、宽高适配 0.20、密度惩罚 0.15、页数惩罚 0.10 的有界评分；无效候选先淘汰并使用确定性同分规则。",
             "priority": "MUST",
-            "acceptanceConcept": "1–16+ 棋盘和多宽高比均按同一评分模型选择布局，绝不低于确认最小尺寸。",
-            "questionRefs": [51, 52, 53, 54, 56, 57, 58, 59, 60, 61, 62, 63, 69]
+            "acceptanceConcept": "所有分数/惩罚归一到 0–1；低于最小棋盘尺寸的候选评分前淘汰；同分依次比较最小棋盘尺寸、页数、空格、信息区和行数。",
+            "questionRefs": [51, 52, 53, 54, 56, 57, 58, 59, 60, 61, 62, 63, 69],
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-032",
-            "chineseName": "大屏布局初始阈值",
+            "chineseName": "大屏最小与首选棋盘尺寸",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_ORIGIN_DECISION",
-            "observedBehavior": "没有来源证据确认最终像素和停留阈值。",
+            "observedBehavior": "没有来源证据确认最终最小和首选棋盘 CSS 尺寸。",
             "intendedUser": ["赛事组织者/大屏操作员", "观众"],
             "productMode": ["BIG_SCREEN"],
-            "userProblem": "未经真实观看验证的阈值可能过小或浪费空间。",
-            "userValue": "通过设备验收冻结可读标准。",
+            "userProblem": "未经真实观看验证的棋盘尺寸可能不可读或浪费空间。",
+            "userValue": "通过真实设备与观看距离冻结可读尺寸。",
             "currentTargetState": "OWNER_CONFIRMATION_REQUIRED",
             "visualAuthority": "PRODUCT_DESIGN_BLUEPRINT_SECTION_22",
             "interactionAuthority": "OWNER_APPROVAL_AND_DEVICE_VALIDATION",
@@ -939,17 +973,19 @@
             "responsiveImpact": "CORE_DECISION",
             "accessibilityImpact": "需验证远距离和低视力可读性。",
             "duplicateStatus": "NO_CONFIRMED_THRESHOLD",
-            "recommendation": "初始最小/首选 280/360 CSS px，边距/间距 24/16 px，15 秒。",
+            "recommendation": "初始最小/首选 280/360 CSS px，仅作为真实屏幕验收起点。",
             "priority": "MUST",
-            "acceptanceConcept": "在 1080p、4K、16:9、21:9 和更低分辨率真实设备确认或调整。",
-            "questionRefs": [54, 64, 69, 70]
+            "acceptanceConcept": "在 1080p、4K、16:9、21:9 和更低分辨率真实设备确认或调整最小/首选棋盘尺寸。",
+            "questionRefs": [54, 69, 70],
+            "ownerDecisionId": "OD-05",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-033",
             "chineseName": "大屏固定聚焦与恢复",
             "classification": "CONFIRMED_SUPPORTING_REQUIREMENT",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#live-and-big-screen",
             "sourceEvidenceType": "OWNER_ORIGIN_REQUIREMENT",
             "observedBehavior": "所有者要求操作员固定棋局并返回总览。",
             "intendedUser": ["赛事组织者/大屏操作员"],
@@ -970,15 +1006,16 @@
             "duplicateStatus": "UNIQUE_ACCEPTED",
             "recommendation": "保存原页、排序和轮播计时，退出原位恢复。",
             "priority": "SHOULD",
-            "acceptanceConcept": "固定、聚焦、退出后总览上下文完全恢复。",
-            "questionRefs": [65, 66]
+            "acceptanceConcept": "操作员可固定并恢复原页/排序/计时；三棋盘 2×2 的非棋盘格必须是明确赛事摘要区，且不得降低棋盘可读性。",
+            "questionRefs": [65, 66],
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-034",
             "chineseName": "大屏断线和完赛处理",
             "classification": "CONFIRMED_CORE_REQUIREMENT",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#live-and-big-screen",
             "sourceEvidenceType": "OWNER_ORIGIN_REQUIREMENT",
             "observedBehavior": "所有者要求定义棋盘断线和完赛后的展示。",
             "intendedUser": ["赛事组织者/大屏操作员", "观众"],
@@ -1000,7 +1037,8 @@
             "recommendation": "断线保留最后可信局面；完赛确认后移入完成组，固定项不移除。",
             "priority": "MUST",
             "acceptanceConcept": "断线与完成均保留可解释状态且不伪造后续更新。",
-            "questionRefs": [67, 68]
+            "questionRefs": [67, 68],
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-035",
@@ -1029,7 +1067,8 @@
             "recommendation": "保留产品位置，等最小读取合同；写入另行审批。",
             "priority": "SHOULD_AFTER_CONTRACT",
             "acceptanceConcept": "真实认证、权限和 DTO 校验闭合后才允许读取并导入。",
-            "questionRefs": [71, 72, 73]
+            "questionRefs": [71, 72, 73],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-036",
@@ -1058,7 +1097,8 @@
             "recommendation": "等待生命周期和权限合同。",
             "priority": "COULD_AFTER_CONTRACT",
             "acceptanceConcept": "分享链接只读取授权内容，失效/无权状态真实且不泄漏。",
-            "questionRefs": [71, 72, 73]
+            "questionRefs": [71, 72, 73],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-037",
@@ -1087,7 +1127,8 @@
             "recommendation": "保留候选；先完成云端最小读取合同，再决定题库范围。",
             "priority": "COULD",
             "acceptanceConcept": "只有真实用户需求与合同闭合后才进入来源导航。",
-            "questionRefs": [3, 71, 72]
+            "questionRefs": [3, 71, 72],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-038",
@@ -1116,7 +1157,8 @@
             "recommendation": "合同闭合后评估，不作为实时功能旁路。",
             "priority": "COULD",
             "acceptanceConcept": "完成历史经确认合同转换为本地棋局副本。",
-            "questionRefs": [3, 50, 73]
+            "questionRefs": [3, 50, 73],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-039",
@@ -1145,14 +1187,15 @@
             "recommendation": "先确认棋盘图片和简洁讲义范围。",
             "priority": "COULD",
             "acceptanceConcept": "所有者确认范围、隐私与来源权利后才实施。",
-            "questionRefs": [84]
+            "questionRefs": [84],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-040",
             "chineseName": "导出与打印范围",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_ORIGIN_QUESTION",
             "observedBehavior": "所有者要求明确必须导出或打印的内容。",
             "intendedUser": ["教师/教练"],
@@ -1174,7 +1217,9 @@
             "recommendation": "初始只做棋盘图片和简洁教学讲义。",
             "priority": "COULD",
             "acceptanceConcept": "所有者签字确认内容、格式、权限和隐私后实现。",
-            "questionRefs": [84]
+            "questionRefs": [84],
+            "ownerDecisionId": "OD-10",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-041",
@@ -1203,14 +1248,15 @@
             "recommendation": "接受偏好但只经当前 Token/Dexie 权威实现。",
             "priority": "SHOULD",
             "acceptanceConcept": "非敏感设置跨刷新恢复，失效值安全回退。",
-            "questionRefs": [78, 81, 83]
+            "questionRefs": [78, 81, 83],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-042",
             "chineseName": "音效默认策略",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_REVIEW_DECISION",
             "observedBehavior": "老项目存在棋子和背景音效，但当前产品未确认默认状态。",
             "intendedUser": ["教师/教练", "观众"],
@@ -1232,7 +1278,9 @@
             "recommendation": "默认关闭，用户显式开启。",
             "priority": "COULD",
             "acceptanceConcept": "所有者确认默认值；声音不成为唯一状态通道。",
-            "questionRefs": [83]
+            "questionRefs": [83],
+            "ownerDecisionId": "OD-11",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-043",
@@ -1261,7 +1309,8 @@
             "recommendation": "扩展覆盖权限、合同阻断、陈旧和恢复失败。",
             "priority": "MUST",
             "acceptanceConcept": "所有模块处理加载、空、错误、权限、不可用并提供真实恢复动作。",
-            "questionRefs": [79]
+            "questionRefs": [79],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-044",
@@ -1290,7 +1339,8 @@
             "recommendation": "所有新表面遵守。",
             "priority": "MUST",
             "acceptanceConcept": "body 不滚动，每个区域最多一个垂直滚动所有者。",
-            "questionRefs": [17, 80]
+            "questionRefs": [17, 80],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-045",
@@ -1319,7 +1369,8 @@
             "recommendation": "核心操作均有键盘/触控等价，减弱动效下直接切换。",
             "priority": "MUST",
             "acceptanceConcept": "无鼠标可完成主任务，触控可批注，减弱动效无非必要运动。",
-            "questionRefs": [80, 81]
+            "questionRefs": [80, 81],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-046",
@@ -1348,7 +1399,8 @@
             "recommendation": "所有新增产品文案遵循。",
             "priority": "MUST",
             "acceptanceConcept": "产品名为开赛了，普通用户界面不出现 DTO/API/MQTT/Axios 等内部语言。",
-            "questionRefs": [82]
+            "questionRefs": [82],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-047",
@@ -1377,14 +1429,15 @@
             "recommendation": "保持边界并按注销规则清理。",
             "priority": "MUST",
             "acceptanceConcept": "URL 仅非敏感可分享状态；Dexie 仅结构化非敏感会话；实时/AI 任务仅内存。",
-            "questionRefs": [74, 75, 76, 77, 78]
+            "questionRefs": [74, 75, 76, 77, 78],
+            "sourcePathValidation": "PASS_TRACKED_TARGET_PATH"
         },
         {
             "id": "REQ-048",
             "chineseName": "教学集合文件夹层级",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_REVIEW_DECISION",
             "observedBehavior": "来源证明需要集合，但没有证明需要文件夹层级。",
             "intendedUser": ["教师/教练"],
@@ -1406,14 +1459,16 @@
             "recommendation": "先单层命名集合，真实需求出现再引入文件夹。",
             "priority": "COULD",
             "acceptanceConcept": "所有者确认容量、查找问题和迁移成本后决定。",
-            "questionRefs": [4, 5]
+            "questionRefs": [4, 5],
+            "ownerDecisionId": "OD-01",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-049",
             "chineseName": "移动端完整局面编辑",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_REVIEW_DECISION",
             "observedBehavior": "现有响应式权威要求小屏可用，但未确认完整编辑范围。",
             "intendedUser": ["教师/教练"],
@@ -1435,16 +1490,18 @@
             "recommendation": "先承诺导航和轻批注，完整编辑经移动端可用性验证。",
             "priority": "SHOULD",
             "acceptanceConcept": "所有者确认支持范围，未支持功能明确说明而非隐藏失败。",
-            "questionRefs": [19, 80]
+            "questionRefs": [19, 80],
+            "ownerDecisionId": "OD-09",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-050",
             "chineseName": "匿名大屏范围",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_REVIEW_DECISION",
-            "observedBehavior": "公开赛事读取存在，但实时/保护数据的匿名范围未确认。",
+            "observedBehavior": "赛事列表、详情、组别、轮次、对阵和当前公开展示组合已确认为匿名读取；实时/保护大屏数据的匿名范围未确认。",
             "intendedUser": ["赛事组织者/大屏操作员", "家长/普通观众"],
             "productMode": ["BIG_SCREEN"],
             "userProblem": "大屏登录会增加运营成本，但匿名可能越权。",
@@ -1452,7 +1509,7 @@
             "currentTargetState": "PARTIAL_PUBLIC_ONLY",
             "visualAuthority": "BIG_SCREEN_BLUEPRINT",
             "interactionAuthority": "AUTH_BOUNDARY",
-            "apiDependency": "PUBLIC_CONTRACT_ONLY",
+            "apiDependency": "PUBLIC_TOURNAMENT_METADATA_CONFIRMED_LIVE_SCOPE_BLOCKED",
             "authenticationDependency": "OWNER_AND_CONTRACT_DECISION",
             "liveDependency": "PROTECTED_UNTIL_CONFIRMED",
             "persistenceDependency": "NO_SHARED_CREDENTIAL_PERSISTENCE",
@@ -1461,17 +1518,19 @@
             "responsiveImpact": "登录要求不破坏展示。",
             "accessibilityImpact": "权限状态可理解。",
             "duplicateStatus": "NO_CONFIRMED_SCOPE",
-            "recommendation": "仅明确公开赛事匿名，其他全部要求登录。",
+            "recommendation": "确认公开赛事元数据始终匿名；仅匿名实时多棋盘范围仍由所有者与合同共同确认。",
             "priority": "MUST",
-            "acceptanceConcept": "所有者与合同共同确认匿名字段和实时范围。",
-            "questionRefs": [71, 72]
+            "acceptanceConcept": "匿名用户可读取公开列表/详情/组别/轮次/对阵；实时字段和保护内容只有合同与所有者共同确认后才匿名。",
+            "questionRefs": [71, 72],
+            "ownerDecisionId": "OD-08",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-051",
             "chineseName": "客户端陈旧阈值与时钟插值",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_ORIGIN_DECISION_REQUIRES_CONTRACT",
             "observedBehavior": "无来源证据确认陈旧秒数或客户端时钟外推规则。",
             "intendedUser": ["教师/教练", "赛事组织者/大屏操作员", "观众"],
@@ -1493,7 +1552,9 @@
             "recommendation": "不提议秒数；等待合同后由所有者确认体验阈值。",
             "priority": "MUST_AFTER_CONTRACT",
             "acceptanceConcept": "只有存在版本/时间依据和业务规则后才冻结阈值与插值。",
-            "questionRefs": [46, 47, 48, 70]
+            "questionRefs": [46, 47, 48, 70],
+            "ownerDecisionId": "OD-07",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-052",
@@ -1522,7 +1583,8 @@
             "recommendation": "不迁移；行为需求由 Dexie 与 Zod 实现。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "目标运行时不引入旧存储模块或兼容键。",
-            "questionRefs": [75, 77, 85]
+            "questionRefs": [75, 77, 85],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-053",
@@ -1551,7 +1613,8 @@
             "recommendation": "必须由确认的分享合同替代。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "目标不生成未确认标识或硬编码分享地址。",
-            "questionRefs": [73, 85]
+            "questionRefs": [73, 85],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-054",
@@ -1580,7 +1643,8 @@
             "recommendation": "拒绝，不作为教学分析结果。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "产品文案和报告不得宣称引擎匹配等于作弊。",
-            "questionRefs": [31, 85]
+            "questionRefs": [31, 85],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
         },
         {
             "id": "REQ-055",
@@ -1609,7 +1673,8 @@
             "recommendation": "拒绝所有来源专属棋盘工作区。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "代码和路由审查不存在第二棋盘/PGN/批注/AI 所有者。",
-            "questionRefs": [39, 43, 85]
+            "questionRefs": [39, 43, 85],
+            "sourcePathValidation": "PASS_TRACKED_GOVERNANCE_PATH"
         },
         {
             "id": "REQ-056",
@@ -1638,36 +1703,38 @@
             "recommendation": "只提取产品能力证据，不复制运行时。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "新增产物无 React、小程序运行时或框架桥接建议。",
-            "questionRefs": [85]
+            "questionRefs": [85],
+            "sourcePathValidation": "PASS_TRACKED_GOVERNANCE_PATH"
         },
         {
             "id": "REQ-057",
-            "chineseName": "浏览器保存上游凭据或 MQTT 秘密",
+            "chineseName": "未受控认证数据与实时秘密持久化",
             "classification": "REJECTED_REQUIREMENT",
             "sourceProject": "PROJECT_GOVERNANCE",
             "sourcePath": "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
             "sourceEvidenceType": "CURRENT_SECURITY_AUTHORITY",
-            "observedBehavior": "浏览器不得拥有上游密钥、HMAC、认证令牌、MQTT 凭据或 Secret URL。",
+            "observedBehavior": "旧项目存在未受控认证记录、上游凭据、实时秘密或敏感响应进入浏览器状态的风险；当前目标只批准唯一严格账户会话例外。",
             "intendedUser": ["无，禁止安全做法"],
             "productMode": ["NONE"],
-            "userProblem": "客户端秘密可被读取和滥用。",
-            "userValue": "拒绝后保护账户与实时服务。",
-            "currentTargetState": "PROHIBITED",
+            "userProblem": "任意或重复认证持久化和实时秘密会扩大泄漏、越权与生命周期失控风险。",
+            "userValue": "保留必要的 12 小时账户会话，同时拒绝所有未受控认证与实时秘密。",
+            "currentTargetState": "APPROVED_KAISAILE_AUTH_V1_EXCEPTION_IMPLEMENTED_OTHER_PRACTICES_REJECTED",
             "visualAuthority": "NONE",
             "interactionAuthority": "NONE",
             "apiDependency": "SERVER_BOUNDARY_ONLY",
-            "authenticationDependency": "STRICT",
+            "authenticationDependency": "APPROVED_KAISAILE_AUTH_V1_ONLY",
             "liveDependency": "CREDENTIALS_MEMORY_ONLY_WHEN_CONFIRMED",
-            "persistenceDependency": "PROHIBITED",
+            "persistenceDependency": "LOCAL_STORAGE_KAISAILE_AUTH_V1_ONLY_ALL_OTHER_AUTH_AND_LIVE_SECRET_PERSISTENCE_FORBIDDEN",
             "aiDependency": "NONE",
-            "securityImpact": "CRITICAL",
+            "securityImpact": "必须保留唯一批准的 kaisaile.auth.v1；密码/摘要、重复认证记录、URL/Router/Dexie/持久化 Query/工作区交接/PGN/标注/AI 认证数据、签名秘密、共享凭据、MQTT 凭据、Secret URL 和完整敏感响应均禁止。",
             "responsiveImpact": "无。",
             "accessibilityImpact": "无。",
-            "duplicateStatus": "REJECTED_BY_SECURITY_AUTHORITY",
-            "recommendation": "凭据只能经服务端边界按需签发并在内存短暂使用。",
+            "duplicateStatus": "SECURITY_REJECTION_WITH_EXPLICIT_APPROVED_EXCEPTION",
+            "recommendation": "保留 src/persistence/auth/authPersistence.ts 所有的 strict Zod v1 kaisaile.auth.v1：token、uid、accountLabel、expiresAt，最长 43,200 秒；拒绝其余认证和实时秘密持久化。",
             "priority": "WONT_FOR_NOW",
-            "acceptanceConcept": "静态与运行时审计不存在秘密持久化、打印或 URL 暴露。",
-            "questionRefs": [72, 73, 77, 85]
+            "acceptanceConcept": "浏览器只存在唯一批准的 kaisaile.auth.v1 账户会话记录；不引入额外的服务器认证中介或服务器所有的浏览器会话模型；其余认证数据与实时秘密不进入持久化或 URL。",
+            "questionRefs": [72, 73, 77, 85],
+            "sourcePathValidation": "PASS_TRACKED_GOVERNANCE_PATH"
         },
         {
             "id": "REQ-058",
@@ -1696,36 +1763,39 @@
             "recommendation": "拒绝赛事管理、写接口、通用代理和 MQTT 发布。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "产品 IA 和需求中没有写管理或发布入口。",
-            "questionRefs": [73, 85]
+            "questionRefs": [73, 85],
+            "sourcePathValidation": "PASS_TRACKED_GOVERNANCE_PATH"
         },
         {
             "id": "REQ-059",
-            "chineseName": "自动大屏轮播",
+            "chineseName": "大屏边距、间距与轮播时间",
             "classification": "OWNER_DECISION_REQUIRED",
             "sourceProject": "PROJECT_OWNER",
-            "sourcePath": "/Users/cc/.codex/attachments/11bfd4ca-0b49-41f5-a0f6-765c65855048/pasted-text.txt",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
             "sourceEvidenceType": "OWNER_ORIGIN_QUESTION",
-            "observedBehavior": "所有者要求定义自动页面停留时间。",
+            "observedBehavior": "没有来源证据确认大屏安全边距、格间距或自动页面停留时间。",
             "intendedUser": ["赛事组织者/大屏操作员", "观众"],
             "productMode": ["BIG_SCREEN"],
-            "userProblem": "多页时操作员无法持续手动翻页。",
-            "userValue": "无人值守时覆盖全部棋盘。",
+            "userProblem": "间距或轮播值未经设备验证会损害可读性或观看连续性。",
+            "userValue": "设备验收后获得稳定布局节奏。",
             "currentTargetState": "NOT_IMPLEMENTED_OWNER_CONFIRMATION_REQUIRED",
             "visualAuthority": "BIG_SCREEN_BLUEPRINT",
             "interactionAuthority": "PAUSABLE_AUTO_ROTATION",
             "apiDependency": "NONE",
             "authenticationDependency": "OPERATOR_CONTROL",
             "liveDependency": "OPTIONAL",
-            "persistenceDependency": "DISPLAY_SESSION",
+            "persistenceDependency": "DISPLAY_SESSION_AFTER_CONFIRMATION",
             "aiDependency": "NONE",
             "securityImpact": "无。",
             "responsiveImpact": "页数由布局算法产生。",
             "accessibilityImpact": "必须可暂停，减弱动效下直接切换。",
             "duplicateStatus": "NO_CONFIRMED_DWELL_TIME",
-            "recommendation": "初始 15 秒，固定/异常页暂停，所有者确认。",
+            "recommendation": "初始安全边距 24 px、格间距 16 px、停留 15 秒；固定/异常页暂停，全部由所有者确认。",
             "priority": "COULD",
-            "acceptanceConcept": "操作员可暂停、手动翻页和恢复；切页不使用强运动。",
-            "questionRefs": [63, 64, 81]
+            "acceptanceConcept": "所有者在真实设备确认边距、间距与停留时间；操作员可暂停、手动翻页和恢复，减弱动效下直接切换。",
+            "questionRefs": [63, 64, 70, 81],
+            "ownerDecisionId": "OD-06",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         },
         {
             "id": "REQ-060",
@@ -1754,7 +1824,64 @@
             "recommendation": "拒绝用户管理/调试面板，只保留产品级偏好。",
             "priority": "WONT_FOR_NOW",
             "acceptanceConcept": "设置中不存在后台管理或技术协议配置。",
-            "questionRefs": [83, 85]
+            "questionRefs": [83, 85],
+            "sourcePathValidation": "PASS_EXISTING_READ_ONLY_SOURCE_PATH"
+        },
+        {
+            "id": "REQ-061",
+            "chineseName": "AI 首次资源提示与默认资源",
+            "classification": "OWNER_DECISION_REQUIRED",
+            "sourceProject": "PROJECT_OWNER",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#open-owner-decisions",
+            "sourceEvidenceType": "OWNER_CONFIRMED_OPEN_DECISION",
+            "observedBehavior": "所有者已确认 AI 默认关闭，但首次资源提示内容和深度、时间、并发默认值仍需性能验收与确认。",
+            "intendedUser": ["教师/教练"],
+            "productMode": ["AI_ANALYSIS"],
+            "userProblem": "没有清晰资源提示和经验证默认值会造成设备负载或课堂干扰。",
+            "userValue": "首次使用前理解资源影响，并获得可预测的安全默认值。",
+            "currentTargetState": "OWNER_CONFIRMATION_REQUIRED",
+            "visualAuthority": "CURRENT_ANALYSIS_PANEL",
+            "interactionAuthority": "EXPLICIT_FIRST_ENABLE_NOTICE",
+            "apiDependency": "NONE_LOCAL_WORKER",
+            "authenticationDependency": "NONE",
+            "liveDependency": "PROHIBITED_ONGOING",
+            "persistenceDependency": "USER_DEFAULTS_AFTER_CONFIRMATION",
+            "aiDependency": "CORE_POLICY",
+            "securityImpact": "本地分析不向远端发送棋局。",
+            "responsiveImpact": "提示和设置不得遮挡主棋盘或隐藏取消操作。",
+            "accessibilityImpact": "资源说明、默认值、范围和错误均可被辅助技术理解。",
+            "duplicateStatus": "DISTINCT_FROM_OD_03_SETTING_SCOPE",
+            "recommendation": "首次开启展示 CPU、电量和课堂节奏影响；深度、时间和并发默认值经真实性能验收后由所有者确认。",
+            "priority": "MUST",
+            "acceptanceConcept": "所有者确认首次提示内容与资源默认值；未显式开启不启动 Worker，进行中实时棋局始终禁止 AI。",
+            "questionRefs": [21, 29],
+            "ownerDecisionId": "OD-04",
+            "sourcePathValidation": "PASS_TRACKED_OWNER_AUTHORITY_PATH_AND_ANCHOR"
         }
-    ]
+    ],
+    "requirementCount": 61,
+    "classificationCount": {
+        "CURRENT_TARGET_ALREADY_IMPLEMENTED": 11,
+        "CONFIRMED_CORE_REQUIREMENT": 13,
+        "DUPLICATE_REQUIREMENT": 3,
+        "CONFIRMED_SUPPORTING_REQUIREMENT": 6,
+        "OWNER_DECISION_REQUIRED": 11,
+        "CONTRACT_BLOCKED_REQUIREMENT": 6,
+        "LEGACY_CAPABILITY_CANDIDATE": 3,
+        "OBSOLETE_REQUIREMENT": 2,
+        "REJECTED_REQUIREMENT": 6
+    },
+    "ownerDecisionMappings": {
+        "OD-01": "REQ-048",
+        "OD-02": "REQ-010",
+        "OD-03": "REQ-016",
+        "OD-04": "REQ-061",
+        "OD-05": "REQ-032",
+        "OD-06": "REQ-059",
+        "OD-07": "REQ-051",
+        "OD-08": "REQ-050",
+        "OD-09": "REQ-049",
+        "OD-10": "REQ-040",
+        "OD-11": "REQ-042"
+    }
 }

@@ -1,42 +1,46 @@
 {
     "document": "PRODUCT_INFORMATION_ARCHITECTURE",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "date": "2026-07-14",
-    "status": "COMPLETE_PRODUCT_DESIGN_READY_FOR_OWNER_REVIEW",
-    "basePath": "/pgnViewer/",
+    "status": "COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW",
     "productEntryPoints": [
         {
             "id": "ENTRY-WORKSPACE",
             "label": "教学工作区",
-            "route": "/pgnViewer/",
+            "routerPath": "/",
+            "deployedUrl": "/pgnViewer/",
             "audience": ["教师/教练", "俱乐部/机构教学人员"],
             "responsibility": "承载本地教学、手动局面、赛事讲解、回放和单局实时交接"
         },
         {
             "id": "ENTRY-COMPETITIONS",
             "label": "赛事",
-            "route": "/pgnViewer/competitions",
+            "routerPath": "/competitions",
+            "deployedUrl": "/pgnViewer/competitions",
             "audience": ["教师/教练", "赛事组织者/大屏操作员", "家长/普通观众"],
             "responsibility": "查找赛事并进入详情、讲解或大屏"
         },
         {
             "id": "ENTRY-DISPLAY",
             "label": "场外大屏",
-            "route": "/pgnViewer/competitions/:hdid/display",
+            "routerPath": "/competitions/:hdid/display",
+            "deployedUrl": "/pgnViewer/competitions/:hdid/display",
             "audience": ["赛事组织者/大屏操作员", "观众"],
             "responsibility": "提供只读、远距离、可读性优先的赛事展示"
         },
         {
             "id": "ENTRY-LOGIN",
             "label": "登录",
-            "route": "/pgnViewer/login",
+            "routerPath": "/login",
+            "deployedUrl": "/pgnViewer/login",
             "audience": ["需要保护能力的用户"],
             "responsibility": "建立严格身份并安全返回原任务"
         }
     ],
     "routeResponsibilities": [
         {
-            "route": "/pgnViewer/",
+            "routerPath": "/",
+            "deployedUrl": "/pgnViewer/",
             "currentState": "IMPLEMENTED",
             "responsibility": "唯一统一棋盘中心工作区",
             "flowsIntoWorkspace": false,
@@ -51,31 +55,38 @@
             "prohibitedUrlState": ["credentials", "tokens", "protected_dto", "draft_body"]
         },
         {
-            "route": "/pgnViewer/competitions",
+            "routerPath": "/competitions",
+            "deployedUrl": "/pgnViewer/competitions",
             "currentState": "IMPLEMENTED",
             "responsibility": "公开赛事列表、搜索、筛选和分页",
             "flowsIntoWorkspace": false,
             "allowedUrlState": ["search", "type", "status", "date", "page"],
-            "prohibitedUrlState": ["credentials", "raw_response"]
+            "prohibitedUrlState": ["credentials", "raw_response"],
+            "accessBoundary": "ANONYMOUS_PUBLIC_TOURNAMENT_LIST"
         },
         {
-            "route": "/pgnViewer/competitions/:hdid",
+            "routerPath": "/competitions/:hdid",
+            "deployedUrl": "/pgnViewer/competitions/:hdid",
             "currentState": "IMPLEMENTED",
             "responsibility": "赛事摘要、组别、轮次、对阵和进入讲解/大屏",
-            "flowsIntoWorkspace": false,
+            "flowsIntoWorkspace": true,
             "allowedUrlState": ["group", "round", "pairing_search", "page"],
-            "prohibitedUrlState": ["protected_dto", "device_secret"]
+            "prohibitedUrlState": ["protected_dto", "device_secret"],
+            "accessBoundary": "ANONYMOUS_PUBLIC_DETAIL_GROUPS_ROUNDS_PAIRINGS_PROTECTED_SINGLE_GAME_CONTENT_SEPARATE"
         },
         {
-            "route": "/pgnViewer/competitions/:hdid/display",
+            "routerPath": "/competitions/:hdid/display",
+            "deployedUrl": "/pgnViewer/competitions/:hdid/display",
             "currentState": "IMPLEMENTED_PAIRING_DISPLAY_TARGET_MULTI_BOARD_GAP",
             "responsibility": "独立赛事大屏与未来多棋盘自适应展示",
             "flowsIntoWorkspace": false,
             "allowedUrlState": ["group", "round", "display_page", "focus_board", "view"],
-            "prohibitedUrlState": ["live_credentials", "mqtt_topic", "secret_url"]
+            "prohibitedUrlState": ["live_credentials", "mqtt_topic", "secret_url"],
+            "accessBoundary": "ANONYMOUS_PUBLIC_PAIRING_COMPOSITION_LIVE_BOARD_DATA_CONTRACT_DEPENDENT"
         },
         {
-            "route": "/pgnViewer/competitions/:hdid/live",
+            "routerPath": "/competitions/:hdid/live",
+            "deployedUrl": "/pgnViewer/competitions/:hdid/live",
             "currentState": "SHELL_IMPLEMENTED_CONTRACT_BLOCKED",
             "responsibility": "兼容单局实时入口并交接到统一工作区",
             "flowsIntoWorkspace": true,
@@ -84,34 +95,42 @@
                 "credentials",
                 "mqtt_topic",
                 "raw_device_identifier_unless_required"
-            ]
+            ],
+            "accessBoundary": "PROTECTED_OR_CONTRACT_DEPENDENT"
         },
         {
-            "route": "/pgnViewer/match/:key",
+            "routerPath": "/match/:key",
+            "deployedUrl": "/pgnViewer/match/:key",
             "currentState": "CONTRACT_BLOCKED",
             "responsibility": "受保护回放入口并交接到统一工作区",
             "flowsIntoWorkspace": true,
             "allowedUrlState": ["confirmed_match_identifier"],
-            "prohibitedUrlState": ["credentials", "raw_response"]
+            "prohibitedUrlState": ["credentials", "raw_response"],
+            "accessBoundary": "PROTECTED_OR_CONTRACT_DEPENDENT"
         },
         {
-            "route": "/pgnViewer/share/:uuid",
+            "routerPath": "/share/:uuid",
+            "deployedUrl": "/pgnViewer/share/:uuid",
             "currentState": "CONTRACT_BLOCKED",
             "responsibility": "分享读取入口并交接到统一工作区",
             "flowsIntoWorkspace": true,
             "allowedUrlState": ["confirmed_share_identifier"],
-            "prohibitedUrlState": ["generated_secret_without_contract", "credentials"]
+            "prohibitedUrlState": ["generated_secret_without_contract", "credentials"],
+            "accessBoundary": "CONTRACT_DEFINES_ANONYMOUS_OR_LOGIN"
         },
         {
-            "route": "/pgnViewer/cloud/:fileid",
+            "routerPath": "/cloud/:fileid",
+            "deployedUrl": "/pgnViewer/cloud/:fileid",
             "currentState": "CONTRACT_BLOCKED",
             "responsibility": "云端棋谱读取入口并交接到统一工作区",
             "flowsIntoWorkspace": true,
             "allowedUrlState": ["confirmed_file_identifier"],
-            "prohibitedUrlState": ["cloud_credentials", "write_token", "secret_url"]
+            "prohibitedUrlState": ["cloud_credentials", "write_token", "secret_url"],
+            "accessBoundary": "PROTECTED_OR_CONTRACT_DEPENDENT"
         },
         {
-            "route": "/pgnViewer/login",
+            "routerPath": "/login",
+            "deployedUrl": "/pgnViewer/login",
             "currentState": "IMPLEMENTED",
             "responsibility": "登录、过期恢复和安全 next 返回",
             "flowsIntoWorkspace": false,
@@ -212,19 +231,28 @@
             "id": "PANEL-NOTATION",
             "label": "棋谱",
             "availability": "ALL_GAME_CONTEXTS",
-            "responsibility": ["主线", "变例", "节点选择", "评论", "NAG"]
+            "responsibility": ["主线", "变例", "节点选择", "节点评论", "NAG"]
         },
         {
             "id": "PANEL-NOTES",
             "label": "教学笔记",
             "availability": "LOCAL_OR_IMPORTED_COPY",
-            "responsibility": ["棋局级笔记", "节点级评论", "课次级待所有者确认"]
+            "responsibility": [
+                "棋局级教学笔记跟随本地教学棋局",
+                "节点评论由棋谱节点所有",
+                "课次/会话级笔记待 OD-02，不是当前实体"
+            ]
         },
         {
             "id": "PANEL-ANNOTATIONS",
             "label": "标注",
             "availability": "EDITABLE_LOCAL_CONTEXT",
-            "responsibility": ["箭头", "格子", "撤销", "清除"]
+            "responsibility": [
+                "跟随 PGN 节点的箭头和格子",
+                "撤销",
+                "清除",
+                "受保护来源只读；本地副本可编辑"
+            ]
         },
         {
             "id": "PANEL-ANALYSIS",
@@ -259,6 +287,15 @@
             "responsibility": ["赛事", "组别", "轮次", "更新时间"]
         },
         {
+            "id": "DISPLAY-EVENT-SUMMARY",
+            "label": "赛事摘要区",
+            "responsibility": [
+                "仅作为三棋盘 2×2 候选的明确非棋盘格",
+                "显示赛事/轮次/更新时间摘要",
+                "不得以牺牲最小棋盘可读尺寸为代价"
+            ]
+        },
+        {
             "id": "DISPLAY-CONTROL",
             "label": "操作员控制",
             "responsibility": ["棋盘集合", "排序", "分页", "暂停/继续轮播", "固定/退出聚焦"]
@@ -266,7 +303,13 @@
         {
             "id": "DISPLAY-GRID",
             "label": "多棋盘网格",
-            "responsibility": ["布局评分", "正方形棋盘", "棋手/台号/状态", "断线与完成"]
+            "responsibility": [
+                "布局评分",
+                "正方形棋盘",
+                "棋手/台号/状态",
+                "断线与完成",
+                "三棋盘 2×2 候选的显式赛事摘要区；低于最小可读尺寸时拒绝"
+            ]
         },
         {
             "id": "DISPLAY-FOCUS",
@@ -292,8 +335,11 @@
         },
         {
             "id": "GLOBAL-SETTINGS",
-            "label": "主题、棋盘主题、布局、声音、减弱动效与 AI 默认策略",
-            "owner": "PROJECT_SETTINGS"
+            "label": "全局设置",
+            "owner": "PROJECT_SETTINGS",
+            "presentation": "PAGE_DESIGN_DECIDES_DIALOG_DRAWER_OR_ROUTE",
+            "responsibility": ["主题", "棋盘外观", "布局", "无障碍", "声音", "语言", "AI 默认值"],
+            "prohibited": ["用户管理", "内部诊断", "API 设置", "凭据管理", "技术协议配置"]
         },
         {
             "id": "GLOBAL-STATUS",
@@ -339,5 +385,48 @@
             "id": "NO-MARKETING-DASHBOARD",
             "description": "不增加 Hero、营销卡片、装饰性仪表盘或削弱棋盘焦点的表面。"
         }
-    ]
+    ],
+    "productAuthority": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "ownerOrigin": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#information-architecture-resolution",
+    "routerBaseOwner": "import.meta.env.BASE_URL",
+    "deployedBasePath": "/pgnViewer/",
+    "flowsIntoWorkspaceDefinition": "Whether selecting content on this route produces a sanitized typed handoff into the unified workspace.",
+    "defaultRoundPolicies": {
+        "explicitValidUrlSelection": "HIGHEST_PRIORITY",
+        "teacherTournamentCommentary": [
+            "LATEST_COMPLETED",
+            "CURRENT_ONGOING",
+            "NEAREST_UPCOMING_OR_FIRST_VALID"
+        ],
+        "liveSpectatorAndBigScreen": ["CURRENT_ONGOING", "LATEST_COMPLETED", "FIRST_VALID"]
+    },
+    "publicAndProtectedBoundary": {
+        "anonymousPublic": [
+            "tournament_list",
+            "tournament_detail",
+            "groups",
+            "rounds",
+            "pairings",
+            "current_public_pairing_display_composition"
+        ],
+        "protectedOrContractDependent": [
+            "finished_game_replay",
+            "cloud_pgn",
+            "protected_shared_content",
+            "hardware_history",
+            "latest_hardware_snapshot",
+            "live_credentials",
+            "realtime_subscription",
+            "authoritative_clocks"
+        ]
+    },
+    "noteAndSourceOwnership": {
+        "pgnNodeComment": "PANEL_NOTATION_FOLLOWS_NODE",
+        "pgnNodeAnnotation": "PANEL_ANNOTATIONS_FOLLOWS_NODE",
+        "gameTeachingNote": "PANEL_NOTES_FOLLOWS_LOCAL_TEACHING_GAME",
+        "lessonSessionNote": "OD_02_NOT_IMPLEMENTED",
+        "protectedSourceData": "READONLY",
+        "importedContent": "DISTINCT_LOCAL_COPY",
+        "remoteWriteBack": "NO_SEPARATELY_CONFIRMED_WRITE_CONTRACT"
+    }
 }

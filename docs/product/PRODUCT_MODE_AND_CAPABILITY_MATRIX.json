@@ -1,8 +1,8 @@
 {
     "document": "PRODUCT_MODE_AND_CAPABILITY_MATRIX",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "date": "2026-07-14",
-    "status": "COMPLETE_PRODUCT_DESIGN_READY_FOR_OWNER_REVIEW",
+    "status": "COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW",
     "principles": [
         "one_unified_board_centric_workspace",
         "one_board_pgn_annotation_ai_runtime",
@@ -72,13 +72,17 @@
             "annotationPermission": "LOCAL_COMMENTARY_LAYER_ONLY",
             "aiAvailability": "DISABLED_FOR_ONGOING_ALLOWED_AFTER_COMPLETION_IMPORT",
             "liveState": "METADATA_AVAILABLE_LIVE_DATA_CONTRACT_DEPENDENT",
-            "loginRequirement": "PUBLIC_METADATA_ANONYMOUS_PROTECTED_DATA_LOGIN",
+            "loginRequirement": "ANONYMOUS_PUBLIC_LIST_DETAIL_GROUP_ROUND_PAIRING_PROTECTED_GAME_CONTENT_REQUIRES_CONTRACT_AND_LOGIN",
             "persistence": "URL_SELECTION_SCOPED_HANDOFF_AND_LOCAL_COMMENTARY_SESSION",
             "apiStatus": "PUBLIC_TOURNAMENT_READS_CONFIRMED_PROTECTED_GAME_DATA_BLOCKED",
             "currentImplementation": "赛事列表、详情、公开组合读取和工作区交接基础已实现",
-            "missingWork": ["左侧赛事层级最终产品组合", "团体/个人层级区分", "真实单局合同闭合"],
+            "missingWork": [
+                "完成所有者确认的讲解默认轮次规则",
+                "团队对阵与单台层级产品完成",
+                "受保护单局读取合同"
+            ],
             "targetSurface": "赛事浏览表面到统一教学工作区",
-            "acceptanceConcept": "选择上下文稳定交接，进行中只读，完成后可显式导入。"
+            "acceptanceConcept": "有效 URL 轮次优先；教师讲解默认最新已完成、再当前进行中、再最近待开始或首个有效轮次。进行中来源只读且无 AI/评价，完成后才可显式导入本地副本。"
         },
         {
             "mode": "REPLAY",
@@ -110,7 +114,7 @@
             "currentImplementation": "实时工作区壳、导航和状态组件存在",
             "missingWork": ["全部实时合同闭合", "新鲜度规则", "安全订阅", "棋盘/时钟异步合并"],
             "targetSurface": "统一教学工作区只读实时状态",
-            "acceptanceConcept": "保留最后可信状态并明确新鲜度；离开或注销断开；完成后才可导入。"
+            "acceptanceConcept": "有效 URL 轮次优先；否则当前进行中、最新已完成、首个有效轮次。保留最后可信状态并明确新鲜度；无 AI/评价；完成后才可显式导入。"
         },
         {
             "mode": "ELECTRONIC_BOARD_REPLAY_IMPORT",
@@ -132,7 +136,7 @@
             "mode": "CLOUD_PGN",
             "userRole": ["教师/教练", "俱乐部/机构教学人员"],
             "source": "个人、组织或系统棋谱库",
-            "editPermission": "READONLY_IMPORT_UNTIL_WRITE_CONTRACT_APPROVED",
+            "editPermission": "READONLY_IMPORT_ONLY_NO_WRITE_CONTRACT_CONFIRMED",
             "annotationPermission": "ON_LOCAL_COPY_ONLY",
             "aiAvailability": "EXPLICIT_ENABLE_AFTER_IMPORT",
             "liveState": "NOT_APPLICABLE",
@@ -140,9 +144,9 @@
             "persistence": "VALIDATED_LOCAL_COPY_ONLY",
             "apiStatus": "CONTRACT_BLOCKED",
             "currentImplementation": "路由位置存在；无确认合同",
-            "missingWork": ["最小读取合同", "权限与错误状态", "库范围所有者决策", "写入另行批准"],
+            "missingWork": ["最小读取合同", "权限与错误状态", "库范围所有者决策"],
             "targetSurface": "统一工作区左侧云端来源节点",
-            "acceptanceConcept": "不采用旧云盘协议；真实合同闭合后才能读取和导入。"
+            "acceptanceConcept": "不采用旧云盘协议；真实读取合同闭合后只能只读选择并导入本地副本，当前不批准云端保存或写入。"
         },
         {
             "mode": "SHARED_REPLAY",
@@ -152,7 +156,7 @@
             "annotationPermission": "ON_LOCAL_COPY_ONLY",
             "aiAvailability": "ON_LOCAL_COPY_ONLY",
             "liveState": "NOT_APPLICABLE",
-            "loginRequirement": "CONTRACT_AND_OWNER_DECISION",
+            "loginRequirement": "CONTRACT_DEFINES_ANONYMOUS_OR_LOGIN",
             "persistence": "NO_SHARE_SECRET_IN_URL_BEYOND_CONFIRMED_IDENTIFIER",
             "apiStatus": "CONTRACT_BLOCKED",
             "currentImplementation": "分享路由存在",
@@ -168,13 +172,13 @@
             "annotationPermission": "NOT_APPLICABLE",
             "aiAvailability": "NOT_AVAILABLE",
             "liveState": "PAIRING_STATUS_ONLY",
-            "loginRequirement": "ANONYMOUS_FOR_CONFIRMED_PUBLIC_SCOPE",
+            "loginRequirement": "ANONYMOUS_FOR_LIST_DETAIL_GROUP_ROUND_PAIRING_AND_PUBLIC_DISPLAY_COMPOSITION",
             "persistence": "URL_SELECTION_AND_NON_SENSITIVE_DISPLAY_PREFERENCE",
             "apiStatus": "CONFIRMED_PUBLIC_READS",
             "currentImplementation": "赛事展示路由、筛选、分页和对阵卡片已实现",
             "missingWork": ["多棋盘来源合同", "智能布局", "固定聚焦", "真实设备验收"],
             "targetSurface": "独立场外大屏",
-            "acceptanceConcept": "只显示真实公开字段，布局稳定且远距离可读。"
+            "acceptanceConcept": "有效 URL 轮次优先；否则当前进行中、最新已完成、首个有效轮次。只显示真实公开字段，布局稳定且远距离可读。"
         },
         {
             "mode": "BIG_SCREEN_MULTI_BOARD_LIVE",
@@ -196,7 +200,7 @@
                 "断线/完赛排序"
             ],
             "targetSurface": "独立场外多棋盘大屏",
-            "acceptanceConcept": "达到确认最小尺寸，否则分页；每台保留真实新鲜度和故障状态。"
+            "acceptanceConcept": "有效 URL 轮次优先；否则当前进行中、最新已完成、首个有效轮次。候选低于确认最小尺寸即拒绝并分页；每台保留真实新鲜度和故障状态。"
         },
         {
             "mode": "PRODUCT_SETTINGS",
@@ -210,9 +214,14 @@
             "persistence": "DEXIE_VALIDATED_PREFERENCES",
             "apiStatus": "NO_API_REQUIRED",
             "currentImplementation": "主题、棋盘主题、布局和部分分析设置基础存在",
-            "missingWork": ["设置作用域确认", "音效默认决策", "无障碍与减弱动效整合"],
-            "targetSurface": "项目自有设置表面",
-            "acceptanceConcept": "只包含产品级偏好，不出现用户管理、协议或技术调试设置。"
+            "missingWork": [
+                "逐页设计确定承载形态",
+                "设置作用域确认",
+                "音效默认决策",
+                "无障碍与减弱动效整合"
+            ],
+            "targetSurface": "受治理的全局设置表面；逐页设计后决定对话框、抽屉或路由",
+            "acceptanceConcept": "只包含主题、棋盘外观、布局、无障碍、声音、语言和 AI 默认值；不出现用户管理、内部诊断、API、凭据或协议设置。"
         }
     ],
     "prohibitedModes": [
@@ -222,6 +231,69 @@
         "ONGOING_LIVE_EDIT_OR_AI",
         "MQTT_PUBLISH_CONTROL",
         "LEGACY_REACT_OR_MINIPROGRAM_RUNTIME",
-        "THREE_DIMENSIONAL_FIRST_BOARD"
-    ]
+        "THREE_DIMENSIONAL_FIRST_BOARD",
+        "FUTURE_EXTENSION_AS_CURRENT_MODE",
+        "INTERNAL_INSPECTION_AS_PRODUCT_MODE_OR_USER_SURFACE"
+    ],
+    "productAuthority": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "technicalModeAuthority": "docs/product/WORKSPACE_MODES.md",
+    "ownerOrigin": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#owner-requirement-2026-07-14",
+    "primaryProductModes": [
+        "LOCAL_PGN_TEACHING",
+        "TOURNAMENT_COMMENTARY",
+        "OFFLINE_ELECTRONIC_BOARD_BIG_SCREEN"
+    ],
+    "technicalWorkspaceModes": {
+        "active": ["analysis", "competition_commentary", "live_spectator", "replay"],
+        "failClosedSentinel": "unknown",
+        "source": "src/features/workspace-mode/workspaceModeTypes.ts",
+        "futureExtensionIsActive": false,
+        "internalInspectionIsProductMode": false
+    },
+    "supportingWorkspaceStates": [
+        "MANUAL_POSITION",
+        "AI_ANALYSIS",
+        "REPLAY",
+        "LIVE_SPECTATOR",
+        "CLOUD_PGN_CONTRACT_READY",
+        "SHARED_CONTENT_CONTRACT_READY"
+    ],
+    "defaultRoundRules": {
+        "explicitValidUrlSelection": "HIGHEST_PRIORITY_ALL_CONTEXTS",
+        "teacherTournamentCommentary": [
+            "LATEST_COMPLETED",
+            "CURRENT_ONGOING",
+            "NEAREST_UPCOMING_OR_FIRST_VALID"
+        ],
+        "liveSpectatorAndBigScreen": ["CURRENT_ONGOING", "LATEST_COMPLETED", "FIRST_VALID"],
+        "authority": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#tournament-and-round-rules"
+    },
+    "contentOwnership": {
+        "pgnNodeComment": "FOLLOWS_PGN_NODE",
+        "pgnNodeAnnotation": "FOLLOWS_PGN_NODE",
+        "gameTeachingNote": "FOLLOWS_LOCAL_TEACHING_GAME_RECORD",
+        "lessonSessionNote": "OWNER_DECISION_OD_02_NOT_IMPLEMENTED",
+        "sourceMetadata": "READONLY_WHEN_PROTECTED",
+        "importedContent": "DISTINCT_LOCAL_COPY",
+        "remoteWriteBack": "FORBIDDEN_WITHOUT_SEPARATELY_CONFIRMED_WRITE_CONTRACT"
+    },
+    "settingsResponsibility": {
+        "surface": "GOVERNED_GLOBAL_SURFACE_PAGE_DESIGN_DECIDES_DIALOG_DRAWER_OR_ROUTE",
+        "allowed": [
+            "theme",
+            "board_appearance",
+            "layout",
+            "accessibility",
+            "sound",
+            "locale",
+            "ai_defaults"
+        ],
+        "prohibited": [
+            "user_administration",
+            "internal_diagnostics",
+            "api_settings",
+            "credential_management",
+            "technical_protocol_configuration"
+        ]
+    }
 }

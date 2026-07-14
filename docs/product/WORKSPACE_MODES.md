@@ -1,193 +1,140 @@
 # Workspace Modes
 
-## Purpose
+| Field   | Value                                                      |
+| ------- | ---------------------------------------------------------- |
+| Version | 1.1.0                                                      |
+| Status  | `COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW` |
 
-Define the canonical workspace modes, the sources allowed in each mode, the conditional rendering rules that adapt the unified workspace, and the persistence rules for mode transitions.
+## Authority and scope
 
-## Scope
+This document owns only the technical workspace mode/source model, transitions, adapter selection, and persistence behavior. Product identity, product modes, journeys, page responsibilities, priorities, requirements, and acceptance concepts are owned by [《开赛了融合产品全量需求与中文设计蓝图》](./PRODUCT_DESIGN_BLUEPRINT.zh-CN.md). The concise product boundary is in [Product Definition](./PRODUCT_DEFINITION.md).
 
-This document governs:
+This document does not create product modes, routes, permissions, API contracts, or user-facing diagnostic capabilities.
 
-- The `WorkspaceMode` discriminated union and its semantics.
-- Allowed `WorkspaceSource` values per mode.
-- The conditional rendering matrix across mode, source, lifecycle, permission, and screen profile.
-- Mode transitions, URL state, and refresh recovery.
+## Current runtime types
 
-## Non-goals
+The current target type in `src/features/workspace-mode/workspaceModeTypes.ts` is authoritative:
 
-- Product identity and routes are defined in `docs/product/PRODUCT_DEFINITION.md`.
-- Component APIs are defined in `docs/ui/COMPONENT_SYSTEM_SPEC.md`.
-- API contracts are defined by the active authority set in
-  `docs/migration/SOURCE_PROVENANCE.md`.
-- Persistence details are defined in `docs/ui/PERSISTENCE_RECOVERY_SPEC.md`.
+```ts
+type WorkspaceMode =
+  | 'analysis'
+  | 'competition_commentary'
+  | 'live_spectator'
+  | 'replay'
+  | 'unknown'
+```
 
-## Canonical modes
+`unknown` is a fail-closed parsing sentinel. It is not an active product mode, selectable UI state, route, permission, or extension point.
 
-`WorkspaceMode` is a discriminated union. Each mode determines which adapters render inside the unified workspace shell.
+The current `WorkspaceSource` values are:
 
-| Mode                     | Purpose                                             | Allowed sources                                  |
-| ------------------------ | --------------------------------------------------- | ------------------------------------------------ |
-| `analysis`               | Manual/cloud/share PGN analysis and teaching        | `manual_pgn`, `cloud_pgn`, `backend_handoff_pgn` |
-| `competition_commentary` | Teacher commentary anchored to a tournament pairing | `competition_pairing`, `electronic_board_live`   |
-| `live_spectator`         | Read-only live viewing of a board or online game    | `electronic_board_live`, `online_game_live`      |
-| `replay`                 | Historical game replay without live tie             | `replay_only`                                    |
-| `future_extension`       | Planned extension point for new sources or layouts  | Owner-approved sources only                      |
+- `manual_pgn`
+- `cloud_pgn`
+- `backend_handoff_pgn`
+- `competition_pairing`
+- `electronic_board_live`
+- `online_game_live`
+- `replay_only`
+- `unknown` as a fail-closed parsing sentinel
 
-`pairing_only` is allowed as a lightweight source state inside `competition_commentary` but is not a standalone product surface or mode.
+Local PGN, manual position, cloud PGN, imported replay, and electronic-board live are sources or lifecycle states; they are not additional runtime enum values. A future mode requires an explicit product-authority and runtime-type change and is not a current mode, route, or surface.
 
-## Business mode mapping
+## Mode/source contract
 
-The core business modes from `docs/product/PRODUCT_DEFINITION.md` map to canonical modes and routes as follows:
+| Technical mode           | Allowed source/state                                                                                        | Runtime responsibility                                                                     |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `analysis`               | `manual_pgn`; contract-ready `cloud_pgn` or `backend_handoff_pgn`; explicit local copy imported from replay | Editable local teaching session and explicitly enabled AI                                  |
+| `competition_commentary` | `competition_pairing`; `electronic_board_live` only when the live contract is confirmed                     | Tournament navigation plus local commentary; ongoing source remains read-only              |
+| `live_spectator`         | `electronic_board_live` or `online_game_live` only when contract-ready                                      | Ongoing read-only board, moves, players, connection, freshness, and confirmed clock status |
+| `replay`                 | `replay_only` after a confirmed completed-game read                                                         | Read-only replay with explicit import-to-analysis action                                   |
+| `unknown`                | `unknown`                                                                                                   | Fail closed to a truthful unavailable state                                                |
 
-| Business mode                                 | Canonical mode(s)                            | Route / note                                                                             |
-| --------------------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `imported_pgn` teaching and analysis          | `analysis`                                   | `/pgnViewer/` with `manual_pgn`, `cloud_pgn`, or `backend_handoff_pgn` source.           |
-| `finished_online_game` replay and analysis    | `replay`, then `analysis` on import          | `/pgnViewer/?handoff=<id>`; explicit import-to-analysis action.                          |
-| `live_online_game` viewing and explanation    | `live_spectator`                             | `/pgnViewer/?handoff=<id>` with `online_game_live` source (owner confirmation required). |
-| `live_hardware_board` viewing and explanation | `live_spectator` or `competition_commentary` | `/pgnViewer/?handoff=<id>` with `electronic_board_live` source.                          |
-| `tournament_browser`                          | none (list/detail surface)                   | `/competitions`, `/competitions/:hdid`; hands off to `/pgnViewer/`.                      |
-| `teacher_workspace`                           | `analysis` / `competition_commentary`        | Permission-gated teaching toolbar and annotation editing.                                |
-| `replay_workspace`                            | `replay`                                     | `/pgnViewer/?handoff=<id>` with `replay_only` source.                                    |
-| `big_screen_display`                          | none (screen profile)                        | `/competitions/:hdid/display` using the `big-screen` profile.                            |
-| `future_extension` mode                       | `future_extension`                           | Requires spec update and owner approval before implementation.                           |
-| `read_only_internal_inspection` mode          | any mode                                     | Permission-gated diagnostic view; no write/admin endpoints.                              |
+`cloud_pgn`, shared content, replay, hardware history/latest snapshots, live credentials/subscriptions, and clocks remain unavailable until their real contracts are confirmed. No cloud save or write capability is implied.
 
-## Mode lifecycle
+## Conditional composition
 
-| Transition          | Trigger                                        | Behavior                                                                                              |
-| ------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Default             | User opens bare `/pgnViewer/`                  | `analysis` mode with `manual_pgn` source                                                              |
-| Handoff             | Tournament detail selects pairing/board        | Navigate to `/pgnViewer/?handoff=<id>`; resolved mode is `competition_commentary` or `live_spectator` |
-| Source switch       | User picks a different source in the same mode | Preserve mode, swap source adapter, keep layout geometry                                              |
-| Mode switch         | User explicitly changes mode                   | Re-render adapters, preserve user layout if compatible, reset source-specific transient state         |
-| Replay import       | User imports a replay into analysis            | Requires explicit user action; creates a new `analysis` session                                       |
-| Future extension    | Owner-approved new source or layout            | Requires spec update; starts in `future_extension` mode with restricted adapters                      |
-| Internal inspection | Internal staff enables diagnostic view         | Permission-aware overlay; does not change mode or source                                              |
+The outer geometry remains one left source navigator, one central board, and one right context workspace in every technical mode.
 
-## Conditional rendering matrix
+| Region  | `analysis`                                                                     | `competition_commentary`                                                                  | `live_spectator`                                                                          | `replay`                                                          |
+| ------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Left    | Local collection/source picker                                                 | Tournament → group → round → pairing                                                      | Live board/game list                                                                      | Replay navigator                                                  |
+| Center  | Editable local board when permitted                                            | Board; ongoing source read-only                                                           | Read-only board                                                                           | Read-only board                                                   |
+| Right   | Notation, node comments/annotations, game note, information, explicit analysis | Pairing information, notation, local commentary; analysis only for non-ongoing local copy | Players, move list, connection, freshness, confirmed clock status; no AI/evaluation panel | Metadata and move list; analysis only after explicit local import |
+| Toolbar | Teaching and local editing                                                     | Commentary controls respecting source lifecycle                                           | Navigation/view/follow only                                                               | Replay and explicit import                                        |
 
-The workspace shell renders the same structural components for every mode. The content of each region is selected by a `WorkspaceAdapterResolver`.
+Ongoing live states prohibit AI, engine evaluation, editable variations, editable PGN, annotations on the source, and any source write-back. A completed replay may expose one explicit action that creates an editable local analysis copy.
 
-| Region       | `analysis`              | `competition_commentary`                         | `live_spectator`            | `replay`         |
-| ------------ | ----------------------- | ------------------------------------------------ | --------------------------- | ---------------- |
-| Left panel   | PGN list / file library | Competition navigator                            | Live board list / game list | Replay navigator |
-| Center       | Board                   | Board                                            | Board                       | Board            |
-| Right top    | PGN info / headers      | Player / pairing info                            | Live status / players       | Replay metadata  |
-| Right middle | Move list / annotations | Move list / annotations (read-only or annotated) | Move list (live)            | Move list        |
-| Right bottom | Analysis panel          | Analysis panel (if enabled)                      | Minimal eval / status       | Analysis panel   |
-| Toolbar      | Full teaching toolbar   | Commentary toolbar                               | Spectator toolbar           | Replay toolbar   |
+## Adapter selection and transitions
 
-Specific visibility is further gated by:
+| Transition                    | Trigger                                    | Result                                                                                |
+| ----------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Bare workspace                | Open router path `/`                       | `analysis` with `manual_pgn`                                                          |
+| Local source change           | Import/select PGN or apply manual position | Stay in `analysis`; replace the local source adapter and preserve compatible geometry |
+| Tournament commentary handoff | Select a pairing and enter commentary      | Sanitized typed handoff resolves to `competition_commentary`                          |
+| Live handoff                  | Select confirmed ongoing live content      | Sanitized typed handoff resolves to read-only `live_spectator`                        |
+| Replay handoff                | Open a confirmed completed game            | Resolve to read-only `replay`                                                         |
+| Replay import                 | User explicitly chooses import to analysis | Create a new local copy and enter `analysis`; never mutate the remote source          |
+| Invalid/unsupported input     | Mode/source parsing or contract fails      | Resolve to `unknown` and render a truthful unavailable state                          |
 
-- **Permission**: internal staff see diagnostic toggles; students do not see cloud save.
-- **Source lifecycle**: live sources show connection/stale state; replay sources show import-to-analysis action.
-- **Screen profile**: big-screen display collapses most side panels and maximizes the board.
+Mode changes preserve one outer geometry. Source-specific transient state is cleared; compatible local teaching work and layout remain with their owning records.
 
-## Mode and URL state
+## Default round selection
 
-The active mode and source are part of the workspace session state. They are persisted in IndexedDB (see `docs/ui/PERSISTENCE_RECOVERY_SPEC.md`) and optionally reflected in URL query parameters for shareability.
+An explicit valid URL-selected round always wins.
 
-Rules:
+- Teacher tournament commentary: latest completed round; if none, current ongoing round; otherwise the nearest upcoming or first valid round.
+- Live spectator and big-screen operation: current ongoing round; if none, latest completed round; otherwise the first valid round.
 
-- A handoff query parameter resolves once and is removed from the URL after resolution to avoid accidental resharing of mutable context.
-- Mode and source are serialized as URL-shareable state only when the source is explicitly shareable (e.g., `share/:uuid`, `cloud/:fileid`).
-- Live spectator mode must not leak board credentials or MQTT topics in the URL.
+These are separate product rules. The current runtime's source-current/first fallback is partial implementation evidence and does not replace the owner-confirmed rule.
 
-## Persistence and recovery
+## Persistence
 
-- Selected mode and source are workspace session state and must survive refresh.
-- Mode transition history is not persisted; only the current mode/source is restored.
-- When the persisted source is no longer available after refresh (e.g., a live board finished), the workspace falls back to a safe mode (`analysis` with a blank game or the last loaded PGN) and surfaces a non-blocking notification.
+- URL owns non-sensitive shareable tournament/group/round/pairing selection, search, pagination, and view state.
+- Project-owned validated persistence owns local teaching collection/session data and non-sensitive layout/preferences.
+- The approved `kaisaile.auth.v1` record remains solely owned by `src/persistence/auth/authPersistence.ts`; mode/source persistence never contains authentication data.
+- Live connections, live payloads, credentials, clocks, running AI tasks, and transient errors remain memory-only.
+- A missing or invalid source returns to a truthful source picker or unavailable state. No blank-game success fallback is fabricated.
+- Protected source data stays read-only. Import produces a local copy; notes and annotations never write back without a separately confirmed write contract.
+
+## Content ownership
+
+- PGN-node comment and PGN-node annotation follow the PGN node.
+- A game-level teaching note follows the local teaching-game record.
+- A lesson/session-level note is not implemented and remains owner decision `OD-02`.
+- Source metadata remains attached to the source adapter and is read-only when protected.
+- Imported teaching or analysis content is a distinct local copy with its own local ownership.
 
 ## Rules
 
-### R1. No mode-specific page components
-
-Mode differences must be implemented inside the unified workspace shell. There must not be `AnalysisPage`, `CommentaryPage`, `LivePage`, or `ReplayPage` components that duplicate the shell.
-
-### R2. Source determines adapter, mode determines chrome
-
-The mode selects which adapters are available and how the toolbar/status bar behave. The source provides the data stream and domain model.
-
-### R3. Preserve geometry on mode switch
-
-Switching mode must not change the outer chrome geometry. Only the content of panels may change.
-
-### R4. Permission-aware adapter visibility
-
-Adapters may declare required permissions. If the current user lacks permission, the adapter region renders an access-denied state instead of the feature.
-
-### R5. Live mode is read-only
-
-`live_spectator` and live sources inside `competition_commentary` must not write to PGN history or call any write/admin endpoint. Importing a live game into analysis requires explicit user action after the live session ends or is paused.
-
-### R6. Future extension mode is gated
-
-`future_extension` mode is a placeholder. No feature may use it without updating `docs/product/PRODUCT_DEFINITION.md`, `docs/product/WORKSPACE_MODES.md`, and `docs/ui/COMPONENT_SYSTEM_SPEC.md`.
-
-### R7. Internal inspection is read-only and permission-gated
-
-The read-only internal inspection view is a permission-aware overlay. It must not grant access to write/admin endpoints or expose sensitive session material.
-
-## Acceptance criteria
-
-1. The canonical modes are enumerated and each maps to at least one allowed source.
-2. The ten core business modes from `docs/product/PRODUCT_DEFINITION.md` are mapped to canonical modes and routes.
-3. No canonical mode introduces a separate top-level page component outside `/pgnViewer/`.
-4. The conditional rendering matrix is documented and referenced by `docs/ui/COMPONENT_SYSTEM_SPEC.md`.
-5. Mode and source are classified as workspace session state in `docs/ui/PERSISTENCE_RECOVERY_SPEC.md`.
-6. Live mode rules explicitly forbid write/admin endpoints and PGN history mutation.
-7. Future extension mode and read-only internal inspection mode are documented and gated.
-8. Mode transitions preserve outer layout geometry per `docs/ui/LAYOUT_SYSTEM_SPEC.md`.
-
-## Open questions / risks
-
-- Whether `competition_commentary` will need a distinct layout preset from `analysis` once live commentary features mature.
-- Whether `online_game_live` will be approved as a source for `live_spectator`.
-- Whether big-screen mode should be modeled as a screen profile or a distinct mode.
+1. No mode-specific workspace shell or duplicated board/PGN/annotation/AI runtime.
+2. Source chooses the adapter; technical mode chooses permitted composition and controls.
+3. Permissions come only from confirmed contracts, never role labels or legacy buttons.
+4. Ongoing live is read-only and AI/evaluation-free.
+5. Future modes require explicit product-authority and runtime updates.
+6. Internal diagnostics are not a product mode, normal workspace state, or permission-based user surface.
 
 ## Machine-readable summary
 
 ```json
 {
   "document": "workspace-modes",
-  "version": "1.0.0",
-  "rules": [
-    "no_mode_specific_page_components",
-    "source_determines_adapter_mode_determines_chrome",
-    "preserve_geometry_on_mode_switch",
-    "permission_aware_adapter_visibility",
-    "live_mode_is_read_only",
-    "future_extension_mode_is_gated",
-    "internal_inspection_is_read_only_and_permission_gated"
+  "version": "1.1.0",
+  "status": "COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW",
+  "technicalModes": [
+    "analysis",
+    "competition_commentary",
+    "live_spectator",
+    "replay"
   ],
-  "modes": ["analysis", "competition_commentary", "live_spectator", "replay", "future_extension"],
-  "allowed_sources_by_mode": {
-    "analysis": ["manual_pgn", "cloud_pgn", "backend_handoff_pgn"],
-    "competition_commentary": ["competition_pairing", "electronic_board_live"],
-    "live_spectator": ["electronic_board_live", "online_game_live"],
-    "replay": ["replay_only"],
-    "future_extension": []
+  "failClosedSentinel": "unknown",
+  "futureModeIsCurrent": false,
+  "internalInspectionIsProductMode": false,
+  "ongoingLive": {
+    "readonly": true,
+    "ai": false,
+    "evaluation": false,
+    "sourceWrite": false
   },
-  "business_mode_mapping": [
-    {"business_mode": "imported_pgn_teaching_and_analysis", "canonical_mode": "analysis"},
-    {"business_mode": "finished_online_game_replay_and_analysis", "canonical_mode": "replay"},
-    {"business_mode": "live_online_game_viewing_and_explanation", "canonical_mode": "live_spectator"},
-    {"business_mode": "live_hardware_board_viewing_and_explanation", "canonical_mode": "live_spectator_or_competition_commentary"},
-    {"business_mode": "tournament_browser", "canonical_mode": "none_list_detail_surface"},
-    {"business_mode": "teacher_workspace", "canonical_mode": "analysis_or_competition_commentary"},
-    {"business_mode": "replay_workspace", "canonical_mode": "replay"},
-    {"business_mode": "big_screen_display", "canonical_mode": "none_screen_profile"},
-    {"business_mode": "future_extension_mode", "canonical_mode": "future_extension"},
-    {"business_mode": "read_only_internal_inspection_mode", "canonical_mode": "permission_aware_overlay"}
-  ],
-  "non_mode_surfaces": ["pairing_only", "big_screen_display", "tournament_browser"],
-  "related_docs": [
-    "docs/product/PRODUCT_DEFINITION.md",
-    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
-    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
-    "docs/ui/LAYOUT_SYSTEM_SPEC.md"
-  ],
-  "next_doc": "docs/architecture/TECH_STACK_DECISION.md"
+  "authority": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md"
 }
 ```

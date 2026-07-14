@@ -55,22 +55,23 @@ There must not be `AnalysisPage`, `LivePage`, `ReplayPage`, `BigScreenPage`, or 
 
 The matrix maps `mode × source × lifecycle × permission × screenProfile` to the visible regions and enabled actions.
 
-| Mode                     | Source                  | Left panel            | Right top              | Right middle   | Right bottom          | Toolbar extras     |
-| ------------------------ | ----------------------- | --------------------- | ---------------------- | -------------- | --------------------- | ------------------ |
-| `analysis`               | `manual_pgn`            | PGN library           | Game info              | Move list      | Analysis              | Full editing       |
-| `analysis`               | `cloud_pgn`             | PGN library           | Game info + cloud path | Move list      | Analysis              | Save/Save-as       |
-| `analysis`               | `backend_handoff_pgn`   | PGN library           | Game info              | Move list      | Analysis              | Share              |
-| `competition_commentary` | `competition_pairing`   | Competition navigator | Pairing/players        | Move list      | Analysis (if allowed) | Commentary tools   |
-| `competition_commentary` | `electronic_board_live` | Competition navigator | Live status/players    | Live move list | Minimal eval          | Live pause/follow  |
-| `live_spectator`         | `electronic_board_live` | Live board list       | Live status/players    | Live move list | Minimal eval          | Spectator-only     |
-| `live_spectator`         | `online_game_live`      | Game list             | Live status/players    | Live move list | Minimal eval          | Spectator-only     |
-| `replay`                 | `replay_only`           | Replay navigator      | Replay metadata        | Move list      | Analysis              | Import to analysis |
+| Mode                     | Source                  | Left panel                  | Right top             | Right middle   | Right bottom                               | Toolbar extras     |
+| ------------------------ | ----------------------- | --------------------------- | --------------------- | -------------- | ------------------------------------------ | ------------------ |
+| `analysis`               | `manual_pgn`            | PGN library                 | Game info             | Move list      | Analysis                                   | Full editing       |
+| `analysis`               | `cloud_pgn`             | Contract-ready PGN picker   | Read-only source info | Move list      | Analysis on local copy                     | Import local copy  |
+| `analysis`               | `backend_handoff_pgn`   | Contract-ready share picker | Read-only source info | Move list      | Analysis on local copy                     | Import local copy  |
+| `competition_commentary` | `competition_pairing`   | Competition navigator       | Pairing/players       | Move list      | Analysis only for a non-ongoing local copy | Commentary tools   |
+| `competition_commentary` | `electronic_board_live` | Competition navigator       | Live status/players   | Live move list | No AI or evaluation                        | Read-only follow   |
+| `live_spectator`         | `electronic_board_live` | Live board list             | Live status/players   | Live move list | No AI or evaluation                        | Spectator-only     |
+| `live_spectator`         | `online_game_live`      | Game list                   | Live status/players   | Live move list | No AI or evaluation                        | Spectator-only     |
+| `replay`                 | `replay_only`           | Replay navigator            | Replay metadata       | Move list      | No analysis on source                      | Import to analysis |
 
 Permission gates:
 
-- Cloud save/open requires signed-in user.
-- Annotation editing requires teacher/internal role.
-- Analysis panel can be hidden by user toggle or screen profile.
+- Cloud/share selection remains contract-blocked; no cloud save or cloud write is approved.
+- Annotation editing requires an editable local copy and a non-ongoing lifecycle; a legacy role label does not grant permission.
+- Ongoing live composition never renders an AI or engine-evaluation panel.
+- Analysis on completed replay/share/cloud content requires an explicit local import first.
 
 Lifecycle gates:
 
@@ -161,7 +162,7 @@ Live adapters must not write to PGN history. Import to analysis requires explici
 ## Open questions / risks
 
 - The exact adapter DTOs depend on confirmed API contracts.
-- Whether analysis panel should be available in `live_spectator` depends on product decision.
+- Live spectator has no analysis or evaluation panel; this is a resolved product rule.
 
 ## Machine-readable summary
 

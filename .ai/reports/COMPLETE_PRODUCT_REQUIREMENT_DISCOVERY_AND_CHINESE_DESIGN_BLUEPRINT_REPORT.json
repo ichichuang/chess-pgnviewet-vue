@@ -45,8 +45,6 @@
     ".ai/skills/gsap/SKILL.md",
     "docs/product/PRODUCT_DEFINITION.md",
     "docs/product/WORKSPACE_MODES.md",
-    "docs/ui/PRODUCT_UI_SPEC.md",
-    "docs/ui/WORKSPACE_UI_SPEC.md",
     "docs/ui/THEME_SYSTEM_SPEC.md",
     "docs/ui/LAYOUT_SYSTEM_SPEC.md",
     "docs/ui/PAGE_STYLE_SPEC.md",
@@ -65,10 +63,10 @@
     "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
     "docs/architecture/WEB_API_READINESS_MATRIX.json",
     "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
-    "docs/architecture/CAPABILITY_MATRIX.json",
+    "docs/migration/CAPABILITY_MATRIX.json",
     "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
-    "docs/architecture/SOURCE_PROVENANCE.md",
-    "docs/architecture/CANONICAL_RUNTIME_CLOSURE.json"
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json"
   ],
   "sourceFilesInspected": [
     "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/teaching-workspace/TeachingWorkspace.vue",
@@ -130,16 +128,16 @@
     "pgnViewer-new": 9,
     "pgnViewer": 11,
     "chess-pgnviewer-vue": 19,
-    "projectOwner": 17,
+    "projectOwner": 18,
     "projectGovernance": 4
   },
-  "requirementsDiscovered": 60,
+  "requirementsDiscovered": 61,
   "requirementsAccepted": 30,
   "requirementsRejected": 6,
   "duplicateRequirements": 3,
   "obsoleteRequirements": 2,
   "contractBlockedRequirements": 6,
-  "ownerDecisionsRequired": 10,
+  "ownerDecisionsRequired": 11,
   "legacyCapabilityCandidates": 3,
   "classificationCount": {
     "CONFIRMED_CORE_REQUIREMENT": 13,
@@ -147,7 +145,7 @@
     "CURRENT_TARGET_ALREADY_IMPLEMENTED": 11,
     "LEGACY_CAPABILITY_CANDIDATE": 3,
     "CONTRACT_BLOCKED_REQUIREMENT": 6,
-    "OWNER_DECISION_REQUIRED": 10,
+    "OWNER_DECISION_REQUIRED": 11,
     "DUPLICATE_REQUIREMENT": 3,
     "OBSOLETE_REQUIREMENT": 2,
     "REJECTED_REQUIREMENT": 6
@@ -343,5 +341,100 @@
     "Big-screen pixel, gap, dwell-time, staleness and clock thresholds remain explicitly owner- or contract-confirmation required."
   ],
   "finalVerdict": "COMPLETE_PRODUCT_REQUIREMENT_DISCOVERY_AND_CHINESE_DESIGN_BLUEPRINT_PASS",
-  "nextGate": "COMPLETE_PRODUCT_DESIGN_READY_FOR_OWNER_REVIEW"
+  "nextGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+  "reportRevision": 2,
+  "correctedAt": "2026-07-14T04:11:16Z",
+  "correctedByPhase": "COMPLETE_PRODUCT_DESIGN_OWNER_REVIEW_CORRECTION_AND_PUSH",
+  "correctionsApplied": [
+    "established_single_product_authority_hierarchy",
+    "removed_future_extension_and_internal_inspection_as_product_modes",
+    "aligned_technical_modes_with_target_workspace_mode_type",
+    "preserved_approved_kaisaile_auth_v1_exception_in_rejected_auth_requirement",
+    "separated_anonymous_public_tournament_metadata_from_protected_game_and_live_capabilities",
+    "recorded_distinct_commentary_and_live_big_screen_default_round_rules",
+    "replaced_temporary_owner_attachment_paths_with_stable_owner_requirement_baseline",
+    "closed_eleven_owner_decisions_with_one_to_one_requirement_mappings",
+    "corrected_broken_owner_decision_references",
+    "validated_and_corrected_every_requirement_source_path",
+    "corrected_authority_paths_to_docs_migration_and_removed_two_nonexistent_ui_paths",
+    "separated_router_paths_from_deployed_browser_urls",
+    "clarified_information_architecture_settings_and_three_board_summary_semantics",
+    "normalized_big_screen_scoring_and_added_deterministic_tie_breaking",
+    "clarified_node_comment_annotation_game_note_lesson_note_source_and_local_copy_ownership"
+  ],
+  "sourcePathValidation": {
+    "requirementsChecked": 61,
+    "errorsBefore": 24,
+    "errorsAfter": 0,
+    "targetTrackedPathErrorsBefore": 7,
+    "temporaryOwnerAttachmentPathsBefore": 17,
+    "readOnlySourcePathErrorsBefore": 0,
+    "perRequirementResultRecorded": true,
+    "validationRules": [
+      "target_and_governance_paths_are_tracked_relative_paths",
+      "read_only_source_paths_are_exact_existing_absolute_paths",
+      "owner_origin_paths_use_tracked_owner_baseline_and_existing_anchor"
+    ],
+    "status": "PASS"
+  },
+  "ownerDecisionValidation": {
+    "countBefore": 10,
+    "countAfter": 11,
+    "expectedIds": [
+      "OD-01",
+      "OD-02",
+      "OD-03",
+      "OD-04",
+      "OD-05",
+      "OD-06",
+      "OD-07",
+      "OD-08",
+      "OD-09",
+      "OD-10",
+      "OD-11"
+    ],
+    "mappings": {
+      "OD-01": "REQ-048",
+      "OD-02": "REQ-010",
+      "OD-03": "REQ-016",
+      "OD-04": "REQ-061",
+      "OD-05": "REQ-032",
+      "OD-06": "REQ-059",
+      "OD-07": "REQ-051",
+      "OD-08": "REQ-050",
+      "OD-09": "REQ-049",
+      "OD-10": "REQ-040",
+      "OD-11": "REQ-042"
+    },
+    "missingIds": [],
+    "duplicateIds": [],
+    "invalidReferencesAfter": 0,
+    "status": "PASS"
+  },
+  "authorityPathValidation": {
+    "authorityPathsChecked": 28,
+    "errorsBefore": 5,
+    "errorsAfter": 0,
+    "corrected": [
+      [
+        "docs/architecture/CAPABILITY_MATRIX.json",
+        "docs/migration/CAPABILITY_MATRIX.json"
+      ],
+      [
+        "docs/architecture/SOURCE_PROVENANCE.md",
+        "docs/migration/SOURCE_PROVENANCE.md"
+      ],
+      [
+        "docs/architecture/CANONICAL_RUNTIME_CLOSURE.json",
+        "docs/migration/CANONICAL_RUNTIME_CLOSURE.json"
+      ]
+    ],
+    "removedNonexistentBaselineClaims": [
+      "docs/ui/PRODUCT_UI_SPEC.md",
+      "docs/ui/WORKSPACE_UI_SPEC.md"
+    ],
+    "status": "PASS"
+  },
+  "currentDesignStatus": "COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW",
+  "originalNextGate": "COMPLETE_PRODUCT_DESIGN_READY_FOR_OWNER_REVIEW"
 }

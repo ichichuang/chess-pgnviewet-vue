@@ -56,13 +56,13 @@ This document governs:
 | Attribute        | Value                                                                                                                                    |
 | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | Storage          | Dexie `drafts` table                                                                                                                     |
-| Example fields   | `teachingNotesDraft`, `pendingAnnotationEdits`, `unsavedPgnMutations`, `cloudSavePathDraft`                                              |
+| Example fields   | `gameTeachingNoteDraft`, `pendingNodeAnnotationEdits`, `unsavedLocalPgnMutations`; lesson/session notes only after `OD-02` approval      |
 | Versioning       | Schema version per draft type                                                                                                            |
 | Migration        | Validate against draft schema; discard unrecoverable drafts                                                                              |
 | Expiration       | 7 days or until explicitly saved/discarded                                                                                               |
-| Security         | Non-sensitive; may reference cloud paths                                                                                                 |
-| Refresh recovery | Restored when the same PGN/source is reopened; conflicts prompt user                                                                     |
-| Reset behavior   | Discard on successful save or explicit discard                                                                                           |
+| Security         | Non-sensitive local-copy data only; no protected source payload, remote write target, auth value, or credential reference                |
+| Refresh recovery | Restored only with the same validated local teaching-game/node owner; conflicts prompt user                                              |
+| Reset behavior   | Discard on explicit local commit/discard or when its owning local copy is deleted                                                        |
 | Validation       | Zod schema inspection, TypeScript checking, and manual restore/conflict/discard validation in a real browser without creating test files |
 
 ### 4. URL-shareable state
@@ -83,13 +83,13 @@ This document governs:
 
 | Attribute        | Value                                                                                                                         |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Storage          | TanStack Query cache (in-memory with optional persistence)                                                                    |
+| Storage          | TanStack Query cache in memory only                                                                                           |
 | Example fields   | Competition list, pairing data, game info, PGN history, user profile                                                          |
 | Versioning       | Query key includes endpoint version tag                                                                                       |
 | Migration        | Invalidate keys on schema version change                                                                                      |
 | Expiration       | Per-query `staleTime`/`gcTime`; typically minutes to hours                                                                    |
-| Security         | May contain user data; persistence disabled for sensitive queries unless encrypted                                            |
-| Refresh recovery | Re-fetched automatically using restored query keys; cache rehydration optional                                                |
+| Security         | May contain user data; no Query authentication data or server response is persisted                                           |
+| Refresh recovery | Re-fetched from validated URL/source selection; no Query cache rehydration                                                    |
 | Reset behavior   | Logout evicts authenticated/private entries and replay reads; public tournament queries remain and must revalidate            |
 | Validation       | Static ownership scan, TypeScript checking, production build, and manual refresh/re-fetch/logout inspection in a real browser |
 
@@ -186,10 +186,18 @@ Each table has a `schemaVersion` constant. Migrations run inside Dexie `upgrade`
 2. **Hydrate workspace session** — read `workspaceSession` and restore mode/source/selections/layout.
 3. **Validate and migrate** — run Zod schemas; drop or reset invalid fields.
 4. **Restore drafts** — load teaching notes and pending annotations for the current scope.
-5. **Rehydrate query cache** — if persisted cache is enabled, restore non-sensitive TanStack Query entries.
+5. **Initialize Query cache** — start an empty in-memory TanStack Query cache; restore no authentication data or server response.
 6. **Fetch required data** — TanStack Query triggers fetches using restored query keys.
 7. **Render workspace** — components receive fresh data without resetting user selections.
 8. **Handle stale source** — if the persisted source is unavailable, fall back safely and notify.
+
+## Notes, annotations, and source ownership
+
+- PGN-node comments and PGN-node annotations follow the validated PGN node.
+- Game-level teaching notes follow the local teaching-game record.
+- Lesson/session-level notes remain unimplemented owner decision `OD-02`.
+- Protected source metadata and payloads remain read-only and are not converted into editable drafts.
+- Explicit import creates a distinct local copy. No note, comment, annotation, or PGN mutation writes back to a remote source without a separately confirmed write contract.
 
 ## Rules
 
@@ -234,7 +242,6 @@ Each category documents what clears it: logout, new workspace, explicit reset, o
 
 ## Open questions / risks
 
-- Whether TanStack Query cache should be persisted to IndexedDB for offline resilience; if so, sensitive queries must be excluded or encrypted.
 - Whether 30-day inactivity expiration for workspace session is acceptable to users.
 
 ## Machine-readable summary
@@ -273,7 +280,7 @@ Each category documents what clears it: logout, new workspace, explicit reset, o
     "hydrate_workspace_session",
     "validate_and_migrate",
     "restore_drafts",
-    "rehydrate_query_cache",
+    "initialize_empty_query_cache",
     "fetch_required_data",
     "render_workspace",
     "handle_stale_source"
