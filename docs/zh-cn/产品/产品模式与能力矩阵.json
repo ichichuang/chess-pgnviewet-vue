@@ -1,0 +1,301 @@
+{
+    "document": "PRODUCT_MODE_AND_CAPABILITY_MATRIX",
+    "version": "1.2.1",
+    "date": "2026-07-14",
+    "status": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
+    "pageDesignGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+    "ownerDecisionStatus": "OPEN_OD_01_THROUGH_OD_11",
+    "principles": [
+        "one_unified_board_centric_workspace",
+        "one_board_pgn_annotation_ai_runtime",
+        "typed_source_adapters",
+        "truthful_contract_and_permission_states",
+        "ongoing_live_is_readonly_and_ai_disabled"
+    ],
+    "modes": [
+        {
+            "mode": "LOCAL_PGN_TEACHING",
+            "userRole": ["教师/教练", "俱乐部/机构教学人员"],
+            "source": "本地一个或多个 PGN 文件",
+            "editPermission": "FULL_LOCAL_COPY",
+            "annotationPermission": "ALLOWED",
+            "aiAvailability": "EXPLICIT_ENABLE_DEFAULT_OFF",
+            "liveState": "NOT_APPLICABLE",
+            "loginRequirement": "ANONYMOUS",
+            "persistence": "CURRENT_THEME_AND_LAYOUT_ONLY_TARGET_VERSIONED_TEACHING_COLLECTION_GAME_AND_NODE",
+            "apiStatus": "NO_API_REQUIRED",
+            "currentImplementation": "核心棋盘、PGN、批注和分析已实现；批量教学集合与最近材料需产品完成",
+            "missingWork": [
+                "批量导入失败汇总",
+                "集合命名与组织",
+                "完整最近材料入口",
+                "键盘等价排序"
+            ],
+            "targetSurface": "统一教学工作区",
+            "acceptanceConcept": "有效棋局按稳定顺序进入集合，切换不丢工作，刷新安全恢复。"
+        },
+        {
+            "mode": "MANUAL_POSITION",
+            "userRole": ["教师/教练"],
+            "source": "空棋盘、标准初始局面或当前局面",
+            "editPermission": "POSITION_EDITOR_THEN_LOCAL_COPY",
+            "annotationPermission": "AFTER_APPLY",
+            "aiAvailability": "AFTER_VALID_POSITION_AND_EXPLICIT_ENABLE",
+            "liveState": "NOT_APPLICABLE",
+            "loginRequirement": "ANONYMOUS",
+            "persistence": "CURRENT_LAYOUT_ONLY_TARGET_VERSIONED_LOCAL_TEACHING_COPY",
+            "apiStatus": "NO_API_REQUIRED",
+            "currentImplementation": "棋盘编辑基础已实现",
+            "missingWork": ["清晰编辑态", "应用/取消事务", "完整合法性与可访问错误"],
+            "targetSurface": "统一教学工作区中央棋盘",
+            "acceptanceConcept": "应用创建新教学来源且不修改原棋局，取消完整回滚。"
+        },
+        {
+            "mode": "AI_ANALYSIS",
+            "userRole": ["教师/教练"],
+            "source": "当前本地棋局、手动局面或已导入完成棋局",
+            "editPermission": "RESULTS_REQUIRE_EXPLICIT_INSERT",
+            "annotationPermission": "ALLOWED_ON_LOCAL_COPY",
+            "aiAvailability": "DEFAULT_OFF_EXPLICIT_ONLY",
+            "liveState": "PROHIBITED_WHILE_ONGOING",
+            "loginRequirement": "ANONYMOUS_FOR_LOCAL_WORKER",
+            "persistence": "RUNNING_TASK_MEMORY_ONLY_TARGET_DEFAULTS_AFTER_OD_03_AND_OD_04",
+            "apiStatus": "LOCAL_WORKER_NO_REMOTE_API",
+            "currentImplementation": "单步/整局分析、进度、取消、候选线和陈旧结果保护已实现",
+            "missingWork": ["默认关闭产品策略确认", "首次资源提示", "设置作用域与默认资源验收"],
+            "targetSurface": "统一工作区右侧分析节点",
+            "acceptanceConcept": "未显式开启不启动 Worker；切换上下文后旧结果不能写入。"
+        },
+        {
+            "mode": "TOURNAMENT_COMMENTARY",
+            "userRole": ["教师/教练", "俱乐部/机构教学人员"],
+            "source": "赛事、组别、轮次和对阵选择",
+            "editPermission": "SOURCE_READONLY_LOCAL_COMMENTARY_COPY_WHEN_ALLOWED",
+            "annotationPermission": "LOCAL_COMMENTARY_LAYER_ONLY",
+            "aiAvailability": "DISABLED_FOR_ONGOING_ALLOWED_AFTER_COMPLETION_IMPORT",
+            "liveState": "METADATA_AVAILABLE_LIVE_DATA_CONTRACT_DEPENDENT",
+            "loginRequirement": "ANONYMOUS_PUBLIC_LIST_DETAIL_GROUP_ROUND_PAIRING_PROTECTED_GAME_CONTENT_REQUIRES_CONTRACT_AND_LOGIN",
+            "persistence": "URL_SELECTION_AND_SANITIZED_SESSION_HANDOFF_TARGET_LOCAL_COMMENTARY_RECORD",
+            "apiStatus": "PUBLIC_TOURNAMENT_READS_CONFIRMED_PROTECTED_GAME_DATA_BLOCKED",
+            "currentImplementation": "赛事列表、详情、公开组合读取和工作区交接基础已实现",
+            "missingWork": [
+                "完成所有者确认的讲解默认轮次规则",
+                "团队对阵与单台层级产品完成",
+                "受保护单局读取合同"
+            ],
+            "targetSurface": "赛事浏览表面到统一教学工作区",
+            "acceptanceConcept": "有效 URL 轮次优先；教师讲解默认最新已完成、再当前进行中、再最近待开始或首个有效轮次。进行中来源只读且无 AI/评价，完成后才可显式导入本地副本。"
+        },
+        {
+            "mode": "REPLAY",
+            "userRole": ["教师/教练", "授权观众"],
+            "source": "已结束的受保护棋局",
+            "editPermission": "READONLY_SOURCE",
+            "annotationPermission": "ONLY_AFTER_LOCAL_IMPORT",
+            "aiAvailability": "ONLY_AFTER_LOCAL_IMPORT",
+            "liveState": "COMPLETED",
+            "loginRequirement": "REQUIRED_UNTIL_CONTRACT_SAYS_OTHERWISE",
+            "persistence": "NO_UNVALIDATED_REMOTE_PERSISTENCE_LOCAL_COPY_AFTER_IMPORT",
+            "apiStatus": "CONTRACT_BLOCKED",
+            "currentImplementation": "路由和统一工作区交接位置存在",
+            "missingWork": ["确认读取合同", "DTO 校验", "认证和失败态", "完成棋局导入副本"],
+            "targetSurface": "统一教学工作区回放状态",
+            "acceptanceConcept": "真实合同闭合前不显示虚构回放；来源始终只读。"
+        },
+        {
+            "mode": "LIVE_SPECTATOR",
+            "userRole": ["教师/教练", "授权观众"],
+            "source": "进行中的电子棋盘赛事单局",
+            "editPermission": "READONLY",
+            "annotationPermission": "DISABLED_ON_SOURCE_DURING_ONGOING",
+            "aiAvailability": "PROHIBITED",
+            "liveState": "IDLE_CONNECTING_LIVE_STALE_RECONNECTING_DISCONNECTED_COMPLETED_UNAVAILABLE",
+            "loginRequirement": "REQUIRED_FOR_PROTECTED_LIVE",
+            "persistence": "CONNECTION_AND_CREDENTIALS_MEMORY_ONLY",
+            "apiStatus": "HISTORY_SNAPSHOT_CREDENTIAL_SUBSCRIPTION_AND_CLOCK_BLOCKED",
+            "currentImplementation": "实时兼容入口、统一工作区只读模式门禁和真实阻断状态存在；实时来源合同与状态展示未实现",
+            "missingWork": ["全部实时合同闭合", "新鲜度规则", "安全订阅", "棋盘/时钟异步合并"],
+            "targetSurface": "统一教学工作区只读实时状态",
+            "acceptanceConcept": "有效 URL 轮次优先；否则当前进行中、最新已完成、首个有效轮次。保留最后可信状态并明确新鲜度；无 AI/评价；完成后才可显式导入。"
+        },
+        {
+            "mode": "ELECTRONIC_BOARD_REPLAY_IMPORT",
+            "userRole": ["教师/教练"],
+            "source": "已完成电子棋盘历史",
+            "editPermission": "LOCAL_COPY_AFTER_IMPORT",
+            "annotationPermission": "ALLOWED_AFTER_IMPORT",
+            "aiAvailability": "EXPLICIT_ENABLE_AFTER_IMPORT",
+            "liveState": "COMPLETED_ONLY",
+            "loginRequirement": "REQUIRED",
+            "persistence": "VALIDATED_LOCAL_COPY_IN_TEACHING_COLLECTION",
+            "apiStatus": "HARDWARE_HISTORY_CONTRACT_BLOCKED",
+            "currentImplementation": "主源存在适配器候选，目标未实现",
+            "missingWork": ["历史读取合同", "完成状态证明", "批量选择产品验收"],
+            "targetSurface": "左侧来源导航进入统一教学集合",
+            "acceptanceConcept": "只把授权且完成的真实历史转换为本地副本。"
+        },
+        {
+            "mode": "CLOUD_PGN",
+            "userRole": ["教师/教练", "俱乐部/机构教学人员"],
+            "source": "个人、组织或系统棋谱库",
+            "editPermission": "READONLY_IMPORT_ONLY_NO_WRITE_CONTRACT_CONFIRMED",
+            "annotationPermission": "ON_LOCAL_COPY_ONLY",
+            "aiAvailability": "EXPLICIT_ENABLE_AFTER_IMPORT",
+            "liveState": "NOT_APPLICABLE",
+            "loginRequirement": "REQUIRED",
+            "persistence": "VALIDATED_LOCAL_COPY_ONLY",
+            "apiStatus": "CONTRACT_BLOCKED",
+            "currentImplementation": "路由位置存在；无确认合同",
+            "missingWork": ["最小读取合同", "权限与错误状态", "库范围所有者决策"],
+            "targetSurface": "统一工作区左侧云端来源节点",
+            "acceptanceConcept": "不采用旧云盘协议；真实读取合同闭合后只能只读选择并导入本地副本，当前不批准云端保存或写入。"
+        },
+        {
+            "mode": "SHARED_REPLAY",
+            "userRole": ["教师/教练", "学员", "家长/普通观众"],
+            "source": "受控分享标识",
+            "editPermission": "READONLY_IMPORT_IF_ALLOWED",
+            "annotationPermission": "ON_LOCAL_COPY_ONLY",
+            "aiAvailability": "ON_LOCAL_COPY_ONLY",
+            "liveState": "NOT_APPLICABLE",
+            "loginRequirement": "CONTRACT_DEFINES_ANONYMOUS_OR_LOGIN",
+            "persistence": "NO_SHARE_SECRET_IN_URL_BEYOND_CONFIRMED_IDENTIFIER",
+            "apiStatus": "CONTRACT_BLOCKED",
+            "currentImplementation": "分享路由存在",
+            "missingWork": ["标识生命周期", "匿名/登录规则", "读取合同", "失效与无权状态"],
+            "targetSurface": "统一教学工作区只读来源",
+            "acceptanceConcept": "失效、无权和不可用真实呈现，不使用旧随机标识与硬编码地址。"
+        },
+        {
+            "mode": "BIG_SCREEN_PUBLIC_PAIRINGS",
+            "userRole": ["赛事组织者/大屏操作员", "家长/普通观众"],
+            "source": "确认公开的赛事、组别、轮次和对阵读取",
+            "editPermission": "DISPLAY_CONTROL_ONLY",
+            "annotationPermission": "NOT_APPLICABLE",
+            "aiAvailability": "NOT_AVAILABLE",
+            "liveState": "PAIRING_STATUS_ONLY",
+            "loginRequirement": "ANONYMOUS_FOR_LIST_DETAIL_GROUP_ROUND_PAIRING_AND_PUBLIC_DISPLAY_COMPOSITION",
+            "persistence": "CURRENT_URL_SELECTION_TARGET_NON_SENSITIVE_DISPLAY_PREFERENCE",
+            "apiStatus": "CONFIRMED_PUBLIC_READS",
+            "currentImplementation": "赛事展示路由、筛选、分页和对阵卡片已实现",
+            "missingWork": ["多棋盘来源合同", "智能布局", "固定聚焦", "真实设备验收"],
+            "targetSurface": "独立场外大屏",
+            "acceptanceConcept": "有效 URL 轮次优先；否则当前进行中、最新已完成、首个有效轮次。只显示真实公开字段，布局稳定且远距离可读。"
+        },
+        {
+            "mode": "BIG_SCREEN_MULTI_BOARD_LIVE",
+            "userRole": ["赛事组织者/大屏操作员", "观众"],
+            "source": "多个确认的实时电子棋盘",
+            "editPermission": "DISPLAY_CONTROL_ONLY",
+            "annotationPermission": "NOT_APPLICABLE",
+            "aiAvailability": "PROHIBITED",
+            "liveState": "PER_BOARD_LIVE_STALE_DISCONNECTED_COMPLETED_UNAVAILABLE",
+            "loginRequirement": "PUBLIC_ONLY_IF_EXPLICITLY_CONFIRMED_OTHERWISE_LOGIN",
+            "persistence": "TARGET_DISPLAY_PREFERENCE_AFTER_APPROVAL_LIVE_STATE_MEMORY_ONLY",
+            "apiStatus": "CONTRACT_BLOCKED",
+            "currentImplementation": "未实现；仅有单局实时壳和对阵展示基础",
+            "missingWork": [
+                "批量实时容量与订阅合同",
+                "棋盘/时钟合同",
+                "布局阈值确认",
+                "分页轮播与固定",
+                "断线/完赛排序"
+            ],
+            "targetSurface": "独立场外多棋盘大屏",
+            "acceptanceConcept": "有效 URL 轮次优先；否则当前进行中、最新已完成、首个有效轮次。候选低于确认最小尺寸即拒绝并分页；每台保留真实新鲜度和故障状态。"
+        },
+        {
+            "mode": "PRODUCT_SETTINGS",
+            "userRole": ["所有用户"],
+            "source": "本机用户偏好",
+            "editPermission": "NON_SENSITIVE_PREFERENCES_ONLY",
+            "annotationPermission": "NOT_APPLICABLE",
+            "aiAvailability": "DEFAULT_POLICY_CONFIGURATION_ONLY",
+            "liveState": "NOT_APPLICABLE",
+            "loginRequirement": "ANONYMOUS",
+            "persistence": "CURRENT_THEME_MODE_LOCAL_STORAGE_AND_LAYOUT_DEXIE_TARGET_VERSIONED_STRUCTURED_PREFERENCES",
+            "apiStatus": "NO_API_REQUIRED",
+            "currentImplementation": "亮/暗/系统 themeMode 与受控工作区布局持久化存在；棋盘外观、声音、语言和 AI 默认设置未实现",
+            "missingWork": [
+                "逐页设计确定承载形态",
+                "设置作用域确认",
+                "音效默认决策",
+                "无障碍与减弱动效整合"
+            ],
+            "targetSurface": "受治理的全局设置表面；逐页设计后决定对话框、抽屉或路由",
+            "acceptanceConcept": "只包含主题、棋盘外观、布局、无障碍、声音、语言和 AI 默认值；不出现用户管理、内部诊断、API、凭据或协议设置。"
+        }
+    ],
+    "prohibitedModes": [
+        "SOURCE_SPECIFIC_DUPLICATE_WORKSPACE",
+        "TOURNAMENT_ADMIN_DASHBOARD",
+        "ONLINE_GAME_LOBBY",
+        "ONGOING_LIVE_EDIT_OR_AI",
+        "MQTT_PUBLISH_CONTROL",
+        "LEGACY_REACT_OR_MINIPROGRAM_RUNTIME",
+        "THREE_DIMENSIONAL_FIRST_BOARD",
+        "FUTURE_EXTENSION_AS_CURRENT_MODE",
+        "INTERNAL_INSPECTION_AS_PRODUCT_MODE_OR_USER_SURFACE"
+    ],
+    "productAuthority": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "technicalModeAuthority": "docs/product/WORKSPACE_MODES.md",
+    "ownerOrigin": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#owner-requirement-2026-07-14",
+    "primaryProductModes": [
+        "LOCAL_PGN_TEACHING",
+        "TOURNAMENT_COMMENTARY",
+        "OFFLINE_ELECTRONIC_BOARD_BIG_SCREEN"
+    ],
+    "technicalWorkspaceModes": {
+        "active": ["analysis", "competition_commentary", "live_spectator", "replay"],
+        "failClosedSentinel": "unknown",
+        "source": "src/features/workspace-mode/workspaceModeTypes.ts",
+        "futureExtensionIsActive": false,
+        "internalInspectionIsProductMode": false
+    },
+    "supportingWorkspaceStates": [
+        "MANUAL_POSITION",
+        "AI_ANALYSIS",
+        "REPLAY",
+        "LIVE_SPECTATOR",
+        "CLOUD_PGN_CONTRACT_READY",
+        "SHARED_CONTENT_CONTRACT_READY"
+    ],
+    "defaultRoundRules": {
+        "explicitValidUrlSelection": "HIGHEST_PRIORITY_ALL_CONTEXTS",
+        "teacherTournamentCommentary": [
+            "LATEST_COMPLETED",
+            "CURRENT_ONGOING",
+            "NEAREST_UPCOMING_OR_FIRST_VALID"
+        ],
+        "liveSpectatorAndBigScreen": ["CURRENT_ONGOING", "LATEST_COMPLETED", "FIRST_VALID"],
+        "authority": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md#tournament-and-round-rules"
+    },
+    "contentOwnership": {
+        "pgnNodeComment": "FOLLOWS_PGN_NODE",
+        "pgnNodeAnnotation": "FOLLOWS_PGN_NODE",
+        "gameTeachingNote": "FOLLOWS_LOCAL_TEACHING_GAME_RECORD",
+        "lessonSessionNote": "OWNER_DECISION_OD_02_NOT_IMPLEMENTED",
+        "sourceMetadata": "READONLY_WHEN_PROTECTED",
+        "importedContent": "DISTINCT_LOCAL_COPY",
+        "remoteWriteBack": "FORBIDDEN_WITHOUT_SEPARATELY_CONFIRMED_WRITE_CONTRACT"
+    },
+    "settingsResponsibility": {
+        "surface": "GOVERNED_GLOBAL_SURFACE_PAGE_DESIGN_DECIDES_DIALOG_DRAWER_OR_ROUTE",
+        "allowed": [
+            "theme",
+            "board_appearance",
+            "layout",
+            "accessibility",
+            "sound",
+            "locale",
+            "ai_defaults"
+        ],
+        "prohibited": [
+            "user_administration",
+            "internal_diagnostics",
+            "api_settings",
+            "credential_management",
+            "technical_protocol_configuration"
+        ]
+    }
+}

@@ -1,0 +1,237 @@
+{
+  "reportType": "CHINESE_DOCUMENT_READING_MIRROR_EXECUTION_REPORT",
+  "generatedAt": "2026-07-14T12:02:40.635944+00:00",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "baseline": {
+    "expectedSha": "7d1da65d9eebe8bb8c8b755da1c9dca00e38d898",
+    "verifiedHead": "7d1da65d9eebe8bb8c8b755da1c9dca00e38d898",
+    "verifiedOriginMain": "7d1da65d9eebe8bb8c8b755da1c9dca00e38d898",
+    "verifiedLiveRemoteMain": "7d1da65d9eebe8bb8c8b755da1c9dca00e38d898",
+    "aheadBehind": "0/0",
+    "worktreeClean": true,
+    "indexClean": true,
+    "noUntrackedFiles": true,
+    "noGitLocks": true,
+    "targetDirectoryExists": true,
+    "targetDirectoryEmpty": true
+  },
+  "sourceRoots": [
+    "docs/architecture",
+    "docs/archive",
+    "docs/design",
+    "docs/migration",
+    "docs/product",
+    "docs/ui"
+  ],
+  "discovery": {
+    "totalCandidates": 59,
+    "included": 24,
+    "excluded": 35,
+    "borderline": 3,
+    "collisions": 0
+  },
+  "copiedFiles": [
+    {
+      "source_path": "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/通用浮层与对话框规范.md",
+      "source_sha256": "3ecffc2425808867bf8546bc4ebdd6761a0e18e93e65fc96564c615b58c9e102",
+      "target_sha256": "3ecffc2425808867bf8546bc4ebdd6761a0e18e93e65fc96564c615b58c9e102",
+      "chinese_filename": "通用浮层与对话框规范.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/组件职责规范.md",
+      "source_sha256": "52e8cb85fdfdf09a21c69612fa94126f93dfd4f7dc8f7d1a59a6228ad711ca81",
+      "target_sha256": "52e8cb85fdfdf09a21c69612fa94126f93dfd4f7dc8f7d1a59a6228ad711ca81",
+      "chinese_filename": "组件职责规范.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/全局交互规范.md",
+      "source_sha256": "4db3894348b25b6dec03837f430d65fb0b816a8fef00e7c37ae296ab8f000ec7",
+      "target_sha256": "4db3894348b25b6dec03837f430d65fb0b816a8fef00e7c37ae296ab8f000ec7",
+      "chinese_filename": "全局交互规范.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/全局布局规范.md",
+      "source_sha256": "d17f631c784e2e85790e4ec1b5715901e40cd1804e86b46dd197b3092e5c4134",
+      "target_sha256": "d17f631c784e2e85790e4ec1b5715901e40cd1804e86b46dd197b3092e5c4134",
+      "chinese_filename": "全局布局规范.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/全局状态规范.md",
+      "source_sha256": "61081a806c8a874f3c1157747a8de14ac22a7251cac9c1048584cbe7b15dc974",
+      "target_sha256": "61081a806c8a874f3c1157747a8de14ac22a7251cac9c1048584cbe7b15dc974",
+      "chinese_filename": "全局状态规范.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/实现修正待办清单.md",
+      "source_sha256": "fbe6cbe2ed6e8053b964e1bf97a9b0e702155e2cf3571b7cfe1b864029d20ee0",
+      "target_sha256": "fbe6cbe2ed6e8053b964e1bf97a9b0e702155e2cf3571b7cfe1b864029d20ee0",
+      "chinese_filename": "实现修正待办清单.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/Naive UI映射.md",
+      "source_sha256": "5e1241d1133c33be0cf0197c0936ab53a7b82056ee1865f4940ef4cb58808236",
+      "target_sha256": "5e1241d1133c33be0cf0197c0936ab53a7b82056ee1865f4940ef4cb58808236",
+      "chinese_filename": "Naive UI映射.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/响应式规范.md",
+      "source_sha256": "6ecfd3c6131482263e88178d609888705676757d9b6acbd7cf4de5640f2d362a",
+      "target_sha256": "6ecfd3c6131482263e88178d609888705676757d9b6acbd7cf4de5640f2d362a",
+      "chinese_filename": "响应式规范.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/屏幕清单.md",
+      "source_sha256": "9b3fef7d2379fe68d3e613cb45c8d8670ad8d6eade0f3f2e82efe9ef0bc5b504",
+      "target_sha256": "9b3fef7d2379fe68d3e613cb45c8d8670ad8d6eade0f3f2e82efe9ef0bc5b504",
+      "chinese_filename": "屏幕清单.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/UI设计索引.md",
+      "source_sha256": "491ca8d665427a738b3d984adbb41327b68e1318eaca3110f40c0c11eaafa470",
+      "target_sha256": "491ca8d665427a738b3d984adbb41327b68e1318eaca3110f40c0c11eaafa470",
+      "chinese_filename": "UI设计索引.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/UI设计系统.md",
+      "source_sha256": "475d7eeb3f6a7f6a12cda162714b0269745a521340978f6eeb1456fdd844e81a",
+      "target_sha256": "475d7eeb3f6a7f6a12cda162714b0269745a521340978f6eeb1456fdd844e81a",
+      "chinese_filename": "UI设计系统.md"
+    },
+    {
+      "source_path": "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/UI实现交接.md",
+      "source_sha256": "4ea7202f85ed53a0b270843470faa8bb72b095d0602c1a70746ec865cebc4e1c",
+      "target_sha256": "4ea7202f85ed53a0b270843470faa8bb72b095d0602c1a70746ec865cebc4e1c",
+      "chinese_filename": "UI实现交接.md"
+    },
+    {
+      "source_path": "docs/design/pages/COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/兼容性与不可用界面规范.md",
+      "source_sha256": "4cc4913adaf170c5d9f96e0732e99f5951e6b7d7d87f34cf6512c0724d721fbe",
+      "target_sha256": "4cc4913adaf170c5d9f96e0732e99f5951e6b7d7d87f34cf6512c0724d721fbe",
+      "chinese_filename": "兼容性与不可用界面规范.md"
+    },
+    {
+      "source_path": "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/比赛详情页规范.md",
+      "source_sha256": "90a01cc6f5c2078c925771866c446adbd89ed96034b1954836e9c6a6dfa8e615",
+      "target_sha256": "90a01cc6f5c2078c925771866c446adbd89ed96034b1954836e9c6a6dfa8e615",
+      "chinese_filename": "比赛详情页规范.md"
+    },
+    {
+      "source_path": "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/比赛列表页规范.md",
+      "source_sha256": "169a9e116921e0dc12777e7436597ee3363310d3456a2e626c37068e70899b1d",
+      "target_sha256": "169a9e116921e0dc12777e7436597ee3363310d3456a2e626c37068e70899b1d",
+      "chinese_filename": "比赛列表页规范.md"
+    },
+    {
+      "source_path": "docs/design/pages/LOGIN_PAGE_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/登录页规范.md",
+      "source_sha256": "b954bf4ddb296e9b6f83661e05efadfa4acd2af66a595857d797dc954f2c150a",
+      "target_sha256": "b954bf4ddb296e9b6f83661e05efadfa4acd2af66a595857d797dc954f2c150a",
+      "chinese_filename": "登录页规范.md"
+    },
+    {
+      "source_path": "docs/design/pages/SETTINGS_SURFACE_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/设置界面规范.md",
+      "source_sha256": "a173db8f106ab3333dfe58495f53cc3363c70a246665210eabdf5d0d26271666",
+      "target_sha256": "a173db8f106ab3333dfe58495f53cc3363c70a246665210eabdf5d0d26271666",
+      "chinese_filename": "设置界面规范.md"
+    },
+    {
+      "source_path": "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/统一工作区页规范.md",
+      "source_sha256": "03a8cab4065c4e73c61bf8aa7ba2ef7cf8a3b02f050d108ffcc41254d7c1ea6c",
+      "target_sha256": "03a8cab4065c4e73c61bf8aa7ba2ef7cf8a3b02f050d108ffcc41254d7c1ea6c",
+      "chinese_filename": "统一工作区页规范.md"
+    },
+    {
+      "source_path": "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md",
+      "target_path": "docs/zh-cn/设计/赛场展示页规范.md",
+      "source_sha256": "84fba5c07d7330acef1746f8bf945eb41311c2181ce1ec986d8d59b936efca9a",
+      "target_sha256": "84fba5c07d7330acef1746f8bf945eb41311c2181ce1ec986d8d59b936efca9a",
+      "chinese_filename": "赛场展示页规范.md"
+    },
+    {
+      "source_path": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+      "target_path": "docs/zh-cn/产品/产品负责人需求基线.md",
+      "source_sha256": "a50e04b3211c1cf46a0b0dd0a740b211e63859de1efe229c198d096852d3a547",
+      "target_sha256": "a50e04b3211c1cf46a0b0dd0a740b211e63859de1efe229c198d096852d3a547",
+      "chinese_filename": "产品负责人需求基线.md"
+    },
+    {
+      "source_path": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+      "target_path": "docs/zh-cn/产品/产品设计蓝图.md",
+      "source_sha256": "ac94f68a1a643b63d325639f92313e1c092f508ad5dd6a429c9247be2e8f55d0",
+      "target_sha256": "ac94f68a1a643b63d325639f92313e1c092f508ad5dd6a429c9247be2e8f55d0",
+      "chinese_filename": "产品设计蓝图.md"
+    },
+    {
+      "source_path": "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+      "target_path": "docs/zh-cn/产品/产品信息架构.json",
+      "source_sha256": "39761a2ced8a52b5d47d892192ec2a7d7bd8e1f4955021b920bfa288815677db",
+      "target_sha256": "39761a2ced8a52b5d47d892192ec2a7d7bd8e1f4955021b920bfa288815677db",
+      "chinese_filename": "产品信息架构.json"
+    },
+    {
+      "source_path": "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+      "target_path": "docs/zh-cn/产品/产品模式与能力矩阵.json",
+      "source_sha256": "bc5037de7400814e3fb9b58ec3eb83df15a3d3f78de98d50c904c57b56e6fa27",
+      "target_sha256": "bc5037de7400814e3fb9b58ec3eb83df15a3d3f78de98d50c904c57b56e6fa27",
+      "chinese_filename": "产品模式与能力矩阵.json"
+    },
+    {
+      "source_path": "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+      "target_path": "docs/zh-cn/产品/产品需求可追溯性.json",
+      "source_sha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6",
+      "target_sha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6",
+      "chinese_filename": "产品需求可追溯性.json"
+    }
+  ],
+  "borderlineDecisions": [
+    {
+      "sourcePath": "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+      "included": true,
+      "detectionReason": "structured registry: 1092 Han value chars (22.46%)",
+      "decisionReason": "Structured documentation registry with substantially Chinese values."
+    },
+    {
+      "sourcePath": "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+      "included": true,
+      "detectionReason": "structured registry: 1363 Han value chars (22.78%)",
+      "decisionReason": "Structured documentation registry with substantially Chinese values."
+    },
+    {
+      "sourcePath": "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+      "included": true,
+      "detectionReason": "structured registry: 8721 Han value chars (25.91%)",
+      "decisionReason": "Structured documentation registry with substantially Chinese values."
+    }
+  ],
+  "validation": {
+    "allCopiesSha256Verified": true,
+    "noSourceFilesModified": true,
+    "onlyAuthorizedPathsChanged": true
+  },
+  "authorizedWriteScope": [
+    "docs/zh-cn/**",
+    ".ai/reports/CHINESE_DOCUMENT_READING_MIRROR_EXECUTION_REPORT.json"
+  ],
+  "notes": [
+    "docs/zh-cn is a non-authoritative human-reading mirror only.",
+    "Canonical authority remains at each original source path.",
+    "No source files, runtime files, governance files, or dependencies were modified."
+  ]
+}
