@@ -1,0 +1,343 @@
+{
+    "document": "PRODUCT_INFORMATION_ARCHITECTURE",
+    "version": "1.0.0",
+    "date": "2026-07-14",
+    "status": "COMPLETE_PRODUCT_DESIGN_READY_FOR_OWNER_REVIEW",
+    "basePath": "/pgnViewer/",
+    "productEntryPoints": [
+        {
+            "id": "ENTRY-WORKSPACE",
+            "label": "教学工作区",
+            "route": "/pgnViewer/",
+            "audience": ["教师/教练", "俱乐部/机构教学人员"],
+            "responsibility": "承载本地教学、手动局面、赛事讲解、回放和单局实时交接"
+        },
+        {
+            "id": "ENTRY-COMPETITIONS",
+            "label": "赛事",
+            "route": "/pgnViewer/competitions",
+            "audience": ["教师/教练", "赛事组织者/大屏操作员", "家长/普通观众"],
+            "responsibility": "查找赛事并进入详情、讲解或大屏"
+        },
+        {
+            "id": "ENTRY-DISPLAY",
+            "label": "场外大屏",
+            "route": "/pgnViewer/competitions/:hdid/display",
+            "audience": ["赛事组织者/大屏操作员", "观众"],
+            "responsibility": "提供只读、远距离、可读性优先的赛事展示"
+        },
+        {
+            "id": "ENTRY-LOGIN",
+            "label": "登录",
+            "route": "/pgnViewer/login",
+            "audience": ["需要保护能力的用户"],
+            "responsibility": "建立严格身份并安全返回原任务"
+        }
+    ],
+    "routeResponsibilities": [
+        {
+            "route": "/pgnViewer/",
+            "currentState": "IMPLEMENTED",
+            "responsibility": "唯一统一棋盘中心工作区",
+            "flowsIntoWorkspace": false,
+            "allowedUrlState": [
+                "mode",
+                "competition",
+                "group",
+                "round",
+                "board",
+                "non_sensitive_selection"
+            ],
+            "prohibitedUrlState": ["credentials", "tokens", "protected_dto", "draft_body"]
+        },
+        {
+            "route": "/pgnViewer/competitions",
+            "currentState": "IMPLEMENTED",
+            "responsibility": "公开赛事列表、搜索、筛选和分页",
+            "flowsIntoWorkspace": false,
+            "allowedUrlState": ["search", "type", "status", "date", "page"],
+            "prohibitedUrlState": ["credentials", "raw_response"]
+        },
+        {
+            "route": "/pgnViewer/competitions/:hdid",
+            "currentState": "IMPLEMENTED",
+            "responsibility": "赛事摘要、组别、轮次、对阵和进入讲解/大屏",
+            "flowsIntoWorkspace": false,
+            "allowedUrlState": ["group", "round", "pairing_search", "page"],
+            "prohibitedUrlState": ["protected_dto", "device_secret"]
+        },
+        {
+            "route": "/pgnViewer/competitions/:hdid/display",
+            "currentState": "IMPLEMENTED_PAIRING_DISPLAY_TARGET_MULTI_BOARD_GAP",
+            "responsibility": "独立赛事大屏与未来多棋盘自适应展示",
+            "flowsIntoWorkspace": false,
+            "allowedUrlState": ["group", "round", "display_page", "focus_board", "view"],
+            "prohibitedUrlState": ["live_credentials", "mqtt_topic", "secret_url"]
+        },
+        {
+            "route": "/pgnViewer/competitions/:hdid/live",
+            "currentState": "SHELL_IMPLEMENTED_CONTRACT_BLOCKED",
+            "responsibility": "兼容单局实时入口并交接到统一工作区",
+            "flowsIntoWorkspace": true,
+            "allowedUrlState": ["group", "round", "board_public_identifier_if_confirmed"],
+            "prohibitedUrlState": [
+                "credentials",
+                "mqtt_topic",
+                "raw_device_identifier_unless_required"
+            ]
+        },
+        {
+            "route": "/pgnViewer/match/:key",
+            "currentState": "CONTRACT_BLOCKED",
+            "responsibility": "受保护回放入口并交接到统一工作区",
+            "flowsIntoWorkspace": true,
+            "allowedUrlState": ["confirmed_match_identifier"],
+            "prohibitedUrlState": ["credentials", "raw_response"]
+        },
+        {
+            "route": "/pgnViewer/share/:uuid",
+            "currentState": "CONTRACT_BLOCKED",
+            "responsibility": "分享读取入口并交接到统一工作区",
+            "flowsIntoWorkspace": true,
+            "allowedUrlState": ["confirmed_share_identifier"],
+            "prohibitedUrlState": ["generated_secret_without_contract", "credentials"]
+        },
+        {
+            "route": "/pgnViewer/cloud/:fileid",
+            "currentState": "CONTRACT_BLOCKED",
+            "responsibility": "云端棋谱读取入口并交接到统一工作区",
+            "flowsIntoWorkspace": true,
+            "allowedUrlState": ["confirmed_file_identifier"],
+            "prohibitedUrlState": ["cloud_credentials", "write_token", "secret_url"]
+        },
+        {
+            "route": "/pgnViewer/login",
+            "currentState": "IMPLEMENTED",
+            "responsibility": "登录、过期恢复和安全 next 返回",
+            "flowsIntoWorkspace": false,
+            "allowedUrlState": ["safe_relative_next"],
+            "prohibitedUrlState": ["open_redirect", "credentials", "raw_auth_response"]
+        }
+    ],
+    "workspaceRegions": [
+        {
+            "id": "REGION-GLOBAL-HEADER",
+            "label": "全局顶栏",
+            "responsibility": ["产品入口", "当前来源摘要", "模式", "账户"],
+            "scrollOwner": false,
+            "geometry": "STABLE_FIXED"
+        },
+        {
+            "id": "REGION-SOURCE-NAV",
+            "label": "左侧来源导航",
+            "responsibility": ["来源选择", "集合/赛事层级", "搜索", "分页", "选择与排序"],
+            "scrollOwner": true,
+            "geometry": "COLLAPSIBLE_PERSISTED"
+        },
+        {
+            "id": "REGION-BOARD",
+            "label": "中央棋盘",
+            "responsibility": [
+                "唯一主棋盘",
+                "走法导航",
+                "视角",
+                "批注",
+                "编辑状态",
+                "只读实时状态"
+            ],
+            "scrollOwner": false,
+            "geometry": "DOMINANT_SQUARE_FIT"
+        },
+        {
+            "id": "REGION-CONTEXT",
+            "label": "右侧上下文",
+            "responsibility": ["棋谱", "评论", "笔记", "批注摘要", "AI", "信息", "实时状态"],
+            "scrollOwner": true,
+            "geometry": "COLLAPSIBLE_PERSISTED"
+        },
+        {
+            "id": "REGION-STATUS",
+            "label": "底部/模块状态",
+            "responsibility": ["当前节点", "连接", "新鲜度", "加载", "错误", "权限"],
+            "scrollOwner": false,
+            "geometry": "STABLE_FIXED_OR_MODULE_LOCAL"
+        }
+    ],
+    "sourceNavigationNodes": [
+        {
+            "id": "SOURCE-LOCAL",
+            "label": "本地教学材料",
+            "state": "CORE",
+            "children": ["导入 PGN", "当前教学集合", "最近材料"]
+        },
+        {
+            "id": "SOURCE-POSITION",
+            "label": "手动局面",
+            "state": "CORE",
+            "children": ["空棋盘", "初始局面", "从当前局面"]
+        },
+        {
+            "id": "SOURCE-COMPETITION",
+            "label": "赛事讲解",
+            "state": "CORE_WITH_CONTRACT_DEPENDENCIES",
+            "children": ["赛事", "组别", "轮次", "团体对阵或单台", "棋局"]
+        },
+        {
+            "id": "SOURCE-REPLAY",
+            "label": "已结束棋局",
+            "state": "CONTRACT_BLOCKED",
+            "children": ["回放", "导入到分析"]
+        },
+        {
+            "id": "SOURCE-LIVE",
+            "label": "实时棋盘",
+            "state": "CONTRACT_BLOCKED",
+            "children": ["组别", "轮次", "台次", "连接状态"]
+        },
+        {
+            "id": "SOURCE-CLOUD",
+            "label": "云端棋谱",
+            "state": "CONTRACT_BLOCKED",
+            "children": ["个人/组织/系统范围待合同和所有者确认"]
+        },
+        {
+            "id": "SOURCE-SHARE",
+            "label": "分享内容",
+            "state": "CONTRACT_BLOCKED",
+            "children": ["分享标识、匿名/登录和生命周期待合同确认"]
+        }
+    ],
+    "rightPanelNodes": [
+        {
+            "id": "PANEL-NOTATION",
+            "label": "棋谱",
+            "availability": "ALL_GAME_CONTEXTS",
+            "responsibility": ["主线", "变例", "节点选择", "评论", "NAG"]
+        },
+        {
+            "id": "PANEL-NOTES",
+            "label": "教学笔记",
+            "availability": "LOCAL_OR_IMPORTED_COPY",
+            "responsibility": ["棋局级笔记", "节点级评论", "课次级待所有者确认"]
+        },
+        {
+            "id": "PANEL-ANNOTATIONS",
+            "label": "标注",
+            "availability": "EDITABLE_LOCAL_CONTEXT",
+            "responsibility": ["箭头", "格子", "撤销", "清除"]
+        },
+        {
+            "id": "PANEL-ANALYSIS",
+            "label": "分析",
+            "availability": "EXPLICIT_ENABLE_NON_ONGOING_ONLY",
+            "responsibility": ["进度", "取消", "评价", "候选线", "显式加入变例"]
+        },
+        {
+            "id": "PANEL-INFO",
+            "label": "棋局信息",
+            "availability": "ALL_GAME_CONTEXTS",
+            "responsibility": ["标题", "双方", "结果", "标签", "说明", "来源只读状态"]
+        },
+        {
+            "id": "PANEL-LIVE",
+            "label": "实时状态",
+            "availability": "LIVE_CONTEXT",
+            "responsibility": [
+                "连接",
+                "新鲜度",
+                "最近一步",
+                "最后更新时间",
+                "经确认的棋钟",
+                "重连/断开"
+            ]
+        }
+    ],
+    "bigScreenNodes": [
+        {
+            "id": "DISPLAY-CONTEXT",
+            "label": "赛事上下文",
+            "responsibility": ["赛事", "组别", "轮次", "更新时间"]
+        },
+        {
+            "id": "DISPLAY-CONTROL",
+            "label": "操作员控制",
+            "responsibility": ["棋盘集合", "排序", "分页", "暂停/继续轮播", "固定/退出聚焦"]
+        },
+        {
+            "id": "DISPLAY-GRID",
+            "label": "多棋盘网格",
+            "responsibility": ["布局评分", "正方形棋盘", "棋手/台号/状态", "断线与完成"]
+        },
+        {
+            "id": "DISPLAY-FOCUS",
+            "label": "单局聚焦",
+            "responsibility": ["放大固定棋局", "保存并恢复总览上下文"]
+        },
+        {
+            "id": "DISPLAY-PAGING",
+            "label": "分页与轮播",
+            "responsibility": ["最小可读尺寸保护", "页码", "停留时间", "手动翻页"]
+        },
+        {
+            "id": "DISPLAY-FAULTS",
+            "label": "异常与权限",
+            "responsibility": ["陈旧", "断线", "不可用", "登录要求", "合同阻断"]
+        }
+    ],
+    "sharedGlobalSurfaces": [
+        {
+            "id": "GLOBAL-LOGIN",
+            "label": "登录与会话过期",
+            "owner": "AUTH_AUTHORITY"
+        },
+        {
+            "id": "GLOBAL-SETTINGS",
+            "label": "主题、棋盘主题、布局、声音、减弱动效与 AI 默认策略",
+            "owner": "PROJECT_SETTINGS"
+        },
+        {
+            "id": "GLOBAL-STATUS",
+            "label": "模块加载、空、错误、权限、合同阻断和恢复",
+            "owner": "AFFECTED_MODULE"
+        },
+        {
+            "id": "GLOBAL-HANDOFF",
+            "label": "来源到工作区的非敏感类型化交接",
+            "owner": "WORKSPACE_HANDOFF"
+        }
+    ],
+    "prohibitedDuplicateSurfaces": [
+        {
+            "id": "NO-DUPLICATE-BOARD-WORKSPACE",
+            "description": "赛事、回放、云端、分享和实时来源不得各自创建棋盘工作区。"
+        },
+        {
+            "id": "NO-DUPLICATE-PGN-MODEL",
+            "description": "所有可编辑副本必须进入同一 PGN 领域模型。"
+        },
+        {
+            "id": "NO-DUPLICATE-ANNOTATION-RUNTIME",
+            "description": "箭头、格子、评论与 NAG 只有一个节点所有权。"
+        },
+        {
+            "id": "NO-DUPLICATE-AI-RUNTIME",
+            "description": "不得因来源不同创建第二 Worker、缓存或分析面板。"
+        },
+        {
+            "id": "NO-TOURNAMENT-ADMIN",
+            "description": "不创建赛事写入、组织管理、用户管理或设备后台。"
+        },
+        {
+            "id": "NO-CLOUD-DRIVE-PRODUCT",
+            "description": "云端来源只服务于棋谱选择与导入，不演变为通用云盘。"
+        },
+        {
+            "id": "NO-TECHNICAL-NORMAL-UI",
+            "description": "普通用户表面不出现 API、DTO、Axios、MQTT 主题或凭据。"
+        },
+        {
+            "id": "NO-MARKETING-DASHBOARD",
+            "description": "不增加 Hero、营销卡片、装饰性仪表盘或削弱棋盘焦点的表面。"
+        }
+    ]
+}

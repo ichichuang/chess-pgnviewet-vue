@@ -1,0 +1,347 @@
+{
+  "phase": "COMPLETE_PRODUCT_REQUIREMENT_DISCOVERY_AND_CHINESE_DESIGN_BLUEPRINT",
+  "startedAt": "2026-07-14T03:09:41Z",
+  "completedAt": "2026-07-14T03:36:53Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "sourceDirectories": [
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
+      "role": "canonical_visual_interaction_teaching_runtime_source",
+      "access": "READ_ONLY"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/pgnViewer",
+      "role": "secondary_legacy_capability_and_api_evidence_source",
+      "access": "READ_ONLY"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-main-overseas",
+      "role": "api_and_authentication_authority_source",
+      "access": "READ_ONLY"
+    },
+    {
+      "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer",
+      "role": "historical_product_architecture_and_security_evidence_source",
+      "access": "READ_ONLY"
+    }
+  ],
+  "branch": "main",
+  "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "localHeadBefore": "05caa85434aaabfd24c3a350c023aafa9635f38a",
+  "originMainBefore": "05caa85434aaabfd24c3a350c023aafa9635f38a",
+  "liveRemoteMainBefore": "05caa85434aaabfd24c3a350c023aafa9635f38a",
+  "worktreeBefore": {
+    "index": "CLEAN",
+    "trackedWorktree": "CLEAN",
+    "untracked": "CLEAN",
+    "aheadBehind": "0/0",
+    "gitLocks": 0,
+    "activeTrackedWriters": 0
+  },
+  "authorityFilesRead": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    ".ai/skills/gsap/SKILL.md",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/PRODUCT_UI_SPEC.md",
+    "docs/ui/WORKSPACE_UI_SPEC.md",
+    "docs/ui/THEME_SYSTEM_SPEC.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/PAGE_STYLE_SPEC.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/I18N_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/CHESSBOARD_COMPONENT_API.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/CAPABILITY_MATRIX.json",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/architecture/SOURCE_PROVENANCE.md",
+    "docs/architecture/CANONICAL_RUNTIME_CLOSURE.json"
+  ],
+  "sourceFilesInspected": [
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/teaching-workspace/TeachingWorkspace.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/pgn-library/PgnList.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/chess-library/ChessLibraryDialog.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/domains/pgn/importers.ts",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/domains/pgn/pgnStorage.ts",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/stores/pgnStore.ts",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/board/BoardView.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/analysis/AnalysisPanel.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/analysis/SingleMoveDialog.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/stores/analysisStore.ts",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/domains/analysis/analysisWorkerClient.ts",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/teaching-workspace/components/TeachingLiveRoundNavigator.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/pages/CompetitionListPage.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/pages/CompetitionDetailPage.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/pages/CompetitionDisplayPage.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/pages/CompetitionLivePage.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/components/live-workspace/LiveNavigator.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/components/live-workspace/LiveStatusPanel.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/pgnManage/pgnManage.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/pgnManage/libs/pgnStorage.js",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/asideList.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/pgnInfo.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/brushTool.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/groupRoundList.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/openCloudFileDialog.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/moreTool.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/chessTool.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/configuration/configurationIndex.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/configuration/chessEngineSetting.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/configuration/uiSetting.vue"
+  ],
+  "sourceIntegrityEvidence": {
+    "sourceWritesRequested": false,
+    "sourceWritesRetained": false,
+    "secondarySourceGitHead": "eeff5f95b6d781522eb4aca5959540b2a87feb65",
+    "secondarySourceGitStatusAfter": "CLEAN",
+    "primarySourceGitMetadata": "NOT_AVAILABLE_AT_SOURCE_ROOT",
+    "selectedFileSha256AfterRead": {
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/teaching-workspace/TeachingWorkspace.vue": "c42f88956efc7aa7aa9455bef49b79a0d1b8a9cdd30f8d211740c655f5a878f0",
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/pgn-library/PgnList.vue": "976c3fffb3e4920a43469b0d69ca2c58153f43b61cc2acac8b9f226d0cafa48a",
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/domains/pgn/importers.ts": "f18fa6bd36c4896b4aead8a676365925c80450a5fff1b6317f5d6232a85c0617",
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/stores/pgnStore.ts": "ab24b110447e083c529057d6b408cd95621f253a4635ba89e6ca5e649ba88f7a",
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/stores/analysisStore.ts": "1609c919c8d5d103ed6413fd887d12258f4457c22c059cfd3a5b8b9af860e337",
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/analysis/AnalysisPanel.vue": "921848262bf5867e63f7307d9b812869b3060e48a894feaae94f8c227bac4660",
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/pages/CompetitionDisplayPage.vue": "81f0e2baaac2048f2ab179f9fd6b1dcec5b35d0486d8a819b4c4c9f3f137b593",
+      "/Users/cc/Work/neobv/Chess/pgnViewer-new/src/features/kaisaile-live/pages/CompetitionLivePage.vue": "8f1f78a0d12a07026fabdf8eb36fce8d5e8b120f150af235ed11c48312c87992",
+      "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/pgnManage/pgnManage.vue": "4cf6261ab7bdd9d8b7004eae5d600f4f5025393666cbfb14e33e6ccac5a5cef4",
+      "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/asideList.vue": "36e4e72364ea6a5f8038703baa5b4849d558048326faa66641aff29519e49013",
+      "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/pgnInfo.vue": "4069ad9ed21adc6f5cdef1fee570f4878559aac0b67c0f545df97bb20f79e487",
+      "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/brushTool.vue": "ed3ff864e3a696265673c4f19d206ab1cdaa4f25b0349fd28f46c7ea9df6b74e",
+      "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/groupRoundList.vue": "43626208116f120569fb0377123aeb82cade34b9c4f1da05f0290001b8d895cb",
+      "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/openCloudFileDialog.vue": "995b8744e65f295d3b36d8897c0372cba0d16383a77ceb880d45fa4f7d5456c6",
+      "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/configuration/chessEngineSetting.vue": "54ec630dba8a55f552eb9534ceb3540d2933c5a561da7d8d94a35c377a28acc7"
+    }
+  },
+  "capabilityCountBySource": {
+    "pgnViewer-new": 9,
+    "pgnViewer": 11,
+    "chess-pgnviewer-vue": 19,
+    "projectOwner": 17,
+    "projectGovernance": 4
+  },
+  "requirementsDiscovered": 60,
+  "requirementsAccepted": 30,
+  "requirementsRejected": 6,
+  "duplicateRequirements": 3,
+  "obsoleteRequirements": 2,
+  "contractBlockedRequirements": 6,
+  "ownerDecisionsRequired": 10,
+  "legacyCapabilityCandidates": 3,
+  "classificationCount": {
+    "CONFIRMED_CORE_REQUIREMENT": 13,
+    "CONFIRMED_SUPPORTING_REQUIREMENT": 6,
+    "CURRENT_TARGET_ALREADY_IMPLEMENTED": 11,
+    "LEGACY_CAPABILITY_CANDIDATE": 3,
+    "CONTRACT_BLOCKED_REQUIREMENT": 6,
+    "OWNER_DECISION_REQUIRED": 10,
+    "DUPLICATE_REQUIREMENT": 3,
+    "OBSOLETE_REQUIREMENT": 2,
+    "REJECTED_REQUIREMENT": 6
+  },
+  "currentTargetCapabilities": [
+    "single_vue_board_centric_workspace",
+    "board_pgn_variation_annotation_runtime",
+    "local_ai_worker_progress_cancel_stale_result_rejection",
+    "public_competition_list_detail_group_round_pairing_reads",
+    "competition_display_route",
+    "typed_workspace_handoff",
+    "strict_auth_identity_and_safe_next",
+    "pinia_state_foundation",
+    "tanstack_query_server_state_boundary",
+    "dexie_persistence_boundary",
+    "global_token_layout_accessibility_i18n_authorities"
+  ],
+  "currentTargetGaps": [
+    "complete_multi_pgn_teaching_collection_product_flow",
+    "recent_material_and_manual_position_product_completion",
+    "tournament_team_pairing_and_single_board_hierarchy_completion",
+    "protected_replay_contract",
+    "cloud_and_share_read_contracts",
+    "electronic_board_history_and_latest_snapshot_contracts",
+    "live_credential_and_subscription_contracts",
+    "authoritative_clock_and_staleness_rules",
+    "multi_board_big_screen_layout_and_real_device_validation"
+  ],
+  "productModes": [
+    "LOCAL_PGN_TEACHING",
+    "TOURNAMENT_COMMENTARY",
+    "OFFLINE_ELECTRONIC_BOARD_BIG_SCREEN"
+  ],
+  "supportingWorkspaceStates": [
+    "MANUAL_POSITION",
+    "AI_ANALYSIS",
+    "REPLAY",
+    "LIVE_SPECTATOR",
+    "CLOUD_PGN",
+    "SHARED_REPLAY"
+  ],
+  "userRoles": [
+    "教师/教练",
+    "俱乐部/机构教学人员",
+    "赛事组织者/大屏操作员",
+    "学员",
+    "家长/普通观众",
+    "内部支持人员"
+  ],
+  "routesReviewed": [
+    "/pgnViewer/",
+    "/pgnViewer/competitions",
+    "/pgnViewer/competitions/:hdid",
+    "/pgnViewer/competitions/:hdid/display",
+    "/pgnViewer/competitions/:hdid/live",
+    "/pgnViewer/match/:key",
+    "/pgnViewer/share/:uuid",
+    "/pgnViewer/cloud/:fileid",
+    "/pgnViewer/login"
+  ],
+  "routesProposed": [],
+  "routeDecision": "No new route is proposed; commentary, replay and live game contexts flow into the existing unified workspace, while list, detail, display and login retain separate responsibilities.",
+  "diagramsCreated": [
+    "product_modes_relationship",
+    "teacher_local_pgn_journey",
+    "tournament_commentary_journey",
+    "live_game_state_machine",
+    "big_screen_layout_decision_flow",
+    "overall_information_architecture",
+    "source_to_workspace_adapter_flow",
+    "persistence_ownership",
+    "authentication_permission_boundary"
+  ],
+  "designDocument": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+  "traceabilityFile": "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+  "capabilityMatrixFile": "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+  "informationArchitectureFile": "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+  "filesCreated": [
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+    ".ai/reports/COMPLETE_PRODUCT_REQUIREMENT_DISCOVERY_AND_CHINESE_DESIGN_BLUEPRINT_REPORT.json"
+  ],
+  "filesModified": [],
+  "filesDeleted": [],
+  "runtimeFilesChanged": false,
+  "dependenciesChanged": false,
+  "mockDataAudit": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:mocks",
+    "result": "forbidden-mock-data: PASS"
+  },
+  "automatedTestAudit": {
+    "status": "PASS",
+    "testFilesAdded": 0,
+    "testInfrastructureChanged": false,
+    "testCommandRun": false
+  },
+  "sensitiveDataAudit": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run check:secrets",
+    "result": "secret-patterns: PASS",
+    "realLoginPerformed": false,
+    "protectedApiCalled": false,
+    "sensitiveSourceFilesRead": false
+  },
+  "markdownValidation": {
+    "status": "PASS",
+    "requiredNumberedSections": 45,
+    "actualNumberedSections": 45,
+    "relativeLinksChecked": 3,
+    "missingRelativeLinks": 0,
+    "mandatoryQuestionsCovered": 85,
+    "mandatoryQuestionsMissing": 0
+  },
+  "mermaidValidation": {
+    "status": "PASS",
+    "method": "deterministic structural validation of block type, delimiter balance and required edges or transitions; no Mermaid CLI dependency is present",
+    "blocks": 9,
+    "structuralErrors": 0
+  },
+  "jsonValidation": {
+    "status": "PASS",
+    "parser": "jq -e",
+    "files": 4,
+    "traceabilityRequiredFields": "PASS",
+    "classificationCoverage": "PASS"
+  },
+  "staticValidation": {
+    "status": "PASS",
+    "commands": [
+      "mise exec -- pnpm run check:residue",
+      "mise exec -- pnpm run check:deps",
+      "mise exec -- pnpm run check:architecture",
+      "mise exec -- pnpm run check:tokens",
+      "mise exec -- pnpm run check:mocks",
+      "mise exec -- pnpm run check:secrets",
+      "mise exec -- pnpm run check:copy",
+      "mise exec -- pnpm run check:governance",
+      "mise exec -- pnpm run format:check",
+      "mise exec -- pnpm run lint",
+      "mise exec -- pnpm run lint:style",
+      "mise exec -- pnpm run check:unused",
+      "mise exec -- pnpm run check:static"
+    ],
+    "finalResults": "ALL_PASS"
+  },
+  "typecheck": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run typecheck",
+    "result": "vue-tsc --noEmit: PASS"
+  },
+  "productionBuild": {
+    "status": "PASS",
+    "command": "mise exec -- pnpm run typecheck && mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-product-design-build-20260714 --emptyOutDir",
+    "outputDirectory": "/tmp/chess-pgnviewer-vue-product-design-build-20260714",
+    "result": "3147 modules transformed; build completed"
+  },
+  "securityAudit": {
+    "status": "PASS",
+    "commands": [
+      "mise exec -- pnpm audit --prod",
+      "mise exec -- pnpm audit"
+    ],
+    "result": "No known vulnerabilities found"
+  },
+  "browserValidation": "NOT_RUN_DOCUMENTATION_AND_PRODUCT_DESIGN_ONLY",
+  "gitDiffCheck": {
+    "status": "PASS_BEFORE_COMMIT",
+    "command": "git diff --check",
+    "scope": "ONLY_FIVE_AUTHORIZED_CREATED_FILES"
+  },
+  "commit": {
+    "subject": "docs(product): 完成融合产品全量需求与中文设计蓝图",
+    "status": "PERFORMED_AFTER_SELF_CONTAINING_REPORT_FINALIZATION",
+    "hash": "SELF_REFERENTIAL_COMMIT_HASH_RECORDED_IN_FINAL_CONSOLE_RESPONSE"
+  },
+  "push": {
+    "remote": "origin",
+    "branch": "main",
+    "force": false,
+    "status": "PERFORMED_AFTER_REPORT_COMMIT_AND_RECORDED_IN_FINAL_CONSOLE_RESPONSE"
+  },
+  "localHeadAfter": "RECORDED_IN_FINAL_CONSOLE_RESPONSE",
+  "remoteMainAfter": "RECORDED_IN_FINAL_CONSOLE_RESPONSE",
+  "worktreeAfter": "VERIFIED_CLEAN_AFTER_PUSH_AND_RECORDED_IN_FINAL_CONSOLE_RESPONSE",
+  "blockers": [],
+  "warnings": [
+    "The legacy pgnViewer Vue language server could not initialize; the scan used read-only file-level evidence for that source.",
+    "Serena-created local metadata in the secondary source was removed immediately; the secondary source Git status was verified clean.",
+    "The first residue validation rejected a reference to an obsolete source adapter; traceability was corrected to the canonical pgnStore evidence and the final residue and governance runs passed.",
+    "Big-screen pixel, gap, dwell-time, staleness and clock thresholds remain explicitly owner- or contract-confirmation required."
+  ],
+  "finalVerdict": "COMPLETE_PRODUCT_REQUIREMENT_DISCOVERY_AND_CHINESE_DESIGN_BLUEPRINT_PASS",
+  "nextGate": "COMPLETE_PRODUCT_DESIGN_READY_FOR_OWNER_REVIEW"
+}
