@@ -2,7 +2,21 @@
     "schemaVersion": 3,
     "status": "CURRENT",
     "effectiveDate": "2026-07-14",
-    "overall": "PRODUCT_UI_DEVELOPMENT_BASELINE_PASS",
+    "overall": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+    "productDesignStatus": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
+    "openOwnerDecisions": [
+        "OD-01",
+        "OD-02",
+        "OD-03",
+        "OD-04",
+        "OD-05",
+        "OD-06",
+        "OD-07",
+        "OD-08",
+        "OD-09",
+        "OD-10",
+        "OD-11"
+    ],
     "authenticationStatus": "LOGIN_TOKEN_AUTH_FLOW_IMPLEMENTED_AND_OWNER_VALIDATED",
     "owners": {
         "viteRoot": "vite.config.ts",

@@ -1,5 +1,11 @@
 # Accessibility Specification
 
+| Field   | Value                                                       |
+| ------- | ----------------------------------------------------------- |
+| Version | 1.2.0                                                       |
+| Status  | `ACTIVE_PAGE_DESIGN_AUTHORITY`                              |
+| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
+
 ## Purpose
 
 Define accessibility requirements so the chess workspace is usable by keyboard-only users, screen-reader users, people with low vision, and people who prefer reduced motion.
@@ -167,7 +173,9 @@ Focused accessibility review and required real-browser runtime validation must p
 ```json
 {
   "document": "accessibility-spec",
-  "version": "1.0.0",
+  "version": "1.2.0",
+  "status": "ACTIVE_PAGE_DESIGN_AUTHORITY",
+  "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "rules": [
     "all_interactive_elements_keyboard_reachable",
     "focus_visible",

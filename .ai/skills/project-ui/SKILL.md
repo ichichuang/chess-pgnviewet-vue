@@ -1,91 +1,85 @@
 ---
 name: project-ui
-description: Govern UI implementation and validation for the single-runtime Vue chess workspace.
+description: Govern page-by-page product design, Vue UI implementation, review, and browser validation for the 开赛了 chess workspace.
 ---
 
 # Project UI Authority
 
-## Trigger
+## Trigger and current gate
 
-Use this skill for every UI design, implementation, refactor, review, or browser-validation task in this repository.
+Use this skill for every product page design, UI implementation, refactor, review, or browser-validation task in this repository.
+
+The product design status is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`. Work may proceed only under `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`. `OD-01` through `OD-11` remain open; no page slice may silently resolve them.
 
 ## Required pre-reads
 
-Before editing UI code, read and obey:
-
 1. `AGENTS.md`
 2. `CLAUDE.md`
-3. `.ai/skills/project-ui/SKILL.md`
-4. relevant `docs/product/**`
-5. relevant `docs/ui/**`
-6. relevant `docs/architecture/**`
-7. relevant implementation-gate reports under `.ai/reports/**`
+3. `docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md`
+4. `docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md`
+5. relevant current `docs/product/**`, `docs/ui/**`, and `docs/architecture/**`
+6. `docs/migration/SOURCE_PROVENANCE.md` when source evidence is needed
+7. `.ai/skills/gsap/SKILL.md` for animation or animated interaction
+
+Historical `.ai/reports/**` files provide evidence only and cannot govern current page design.
+
+## Page-by-page design contract
+
+Before implementation, the page authority or design must state:
+
+- route, page responsibility, intended user, and primary task;
+- current implemented behavior, approved target behavior, blocked contracts, and open OD dependencies;
+- information hierarchy and stable board focus where the board is present;
+- existing component owners, new conceptual responsibilities, props/emits, and container boundaries;
+- real loading, refresh, empty, permission, authentication, unavailable, stale, retry, and error states;
+- desktop, tablet, mobile, and venue-display behavior where applicable;
+- viewport and scroll ownership, panel geometry, overlay/focus return, and safe-area behavior;
+- keyboard, screen-reader, touch, contrast, visible-focus, and reduced-motion behavior;
+- token use, persistence category, security classification, and source read/write policy;
+- typecheck/build/static validation plus one narrow real-browser acceptance path for visible UI.
+
+The main surfaces are the unified workspace (`/`), tournament list, tournament detail, independent venue display, login, and fail-closed compatibility entries. Big-screen is never the teaching workspace at a larger size. Compatibility entries never create a second workspace.
 
 ## Ownership
 
-- Token ownership: `src/styles/tokens.css` owns all global visual values and namespaces.
-- Component ownership: project-owned Vue adapters in `src/ui/` own reusable UI boundaries; feature containers own orchestration.
-- State ownership: Pinia stores are feature-owned; presentational components are store-free.
-- Server-state ownership: TanStack Vue Query repositories are the only server-state boundary.
-- Domain ownership: framework-free domain modules own chess, PGN, annotation, and analysis rules.
-- Layout ownership: the application shell owns viewport geometry; each module owns exactly one declared scroll region.
-- Toolchain ownership: pnpm is the sole package manager; `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden.
-- Validation ownership: automated test files and automated test infrastructure are forbidden by P0E owner policy; type checking, production build, and narrow real-browser runtime validation remain mandatory.
+- `src/styles/tokens.css` owns all global visual values and namespaces.
+- Project-owned Vue components/adapters own reusable presentation boundaries; feature containers own orchestration.
+- Pinia stores are feature-owned; presentational components do not import stores.
+- TanStack Vue Query repositories are the sole server-read boundary.
+- Framework-free domain modules own chess, PGN, annotation, and analysis rules.
+- The application shell owns viewport geometry; each module owns one declared scroll region.
+- Persistence adapters own only implemented, versioned records. Target persistence is not current behavior until a tracked owner exists.
+- `src/api/legacyWebCompatibility.ts` alone owns the approved tracked browser compatibility signer.
 
-## UI contract
+## UI rules
 
-- Use explicit Vue props/emits and small component boundaries.
-- Preserve canonical behavior and interaction from `pgnViewer-new`; do not redesign during migration.
-- Spacing, typography, control heights, radius, elevation, focus, motion, responsive geometry, board states, and status colors resolve through tokens.
-- Raw hex/rgb/hsl/oklch/named colors and parallel feature token files are forbidden.
-- No feature-local reset, theme provider, or second component system.
-- The page root uses `100dvh`; `html` and `body` do not scroll.
-- Workspace panels declare min/max geometry, collapse order, scroll ownership, and persisted size behavior.
-- Overlays use project-owned adapters with focus trap, escape behavior, return-focus, stacking, and scroll-lock contracts.
-- Touch targets are at least 44×44 CSS pixels where interactive.
-- Board, keyboard navigation, dialogs, menus, and panels meet WCAG 2.1 AA and expose accessible names.
-- Motion clarifies state, uses GSAP or Vue transitions only where canonical behavior requires it, cleans up on unmount, and honors `prefers-reduced-motion`.
-- GSAP animation, animated board interaction, and later animated UI work must also read and obey `.ai/skills/gsap/SKILL.md`.
-- Responsive modes preserve one component system; mobile drawers and big-screen composition are variants, not forks.
-- Page and mode transitions preserve outer geometry and user intent.
+- Use explicit typed props and emits with small responsibility-based boundaries.
+- Preserve one unified workspace and one board/PGN/annotation/analysis runtime.
+- Keep the board square, visible, and dominant in board-centric teaching and commentary contexts.
+- Spacing, typography, control height, radius, elevation, focus, motion, responsive geometry, board states, and status colors resolve through project tokens.
+- Product and feature code contains no raw governed visual values or parallel token files.
+- Low-level validated appearance overrides do not exempt product feature code from token governance and do not establish a current board-theme setting.
+- The page root uses dynamic viewport sizing; `html` and `body` are not the main scroll owner.
+- Panels declare min/max geometry, collapse order, scroll ownership, and only actually implemented persisted behavior.
+- Overlays use project-owned adapters with focus trap, Escape behavior, return focus, stacking, and scroll lock.
+- Core controls have keyboard and touch equivalents and accessible names. Interactive touch targets are at least 44 by 44 CSS pixels unless a stricter token applies.
+- Motion clarifies state, cleans up on interruption/unmount, and honors `prefers-reduced-motion`.
+- Responsive variants share one component system. Drawers, sheets, and display grids are compositions, not forks.
 
-## Feature gate
+## Data, API, and security rules
 
-Before implementing a feature, require:
+- Real confirmed production contracts are the only product data path.
+- Mock, fixture, fake, sample, synthesized, and fallback success data are forbidden.
+- External data is mapped and Zod-validated before UI consumption.
+- Cloud/share/protected replay/hardware/live adapters remain abstract and unavailable until real contracts exist.
+- Ongoing live is read-only and exposes no AI, engine evaluation, editable PGN/variations, annotations on the source, or source write-back.
+- Protected or live content becomes editable only through an explicit import that creates a local copy.
+- API failures render truthful scoped states without exposing DTOs, endpoints, protocols, stacks, or secrets.
 
-- an approved product mode/source and target phase;
-- a canonical closure entry with imports, consumers, assets, styles, and tests;
-- confirmed asset license/provenance;
-- typed domain and repository boundaries;
-- confirmed API/persistence/security contract or an explicit blocked state;
-- no duplicate implementation already present in the target;
-- a narrow validation plan using typecheck, production build, and real-browser runtime evidence without automated test files, fixtures, snapshots, or scripted E2E suites.
+## Validation
 
-The current product-development gate is `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`
-in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`. Further development must
-preserve the accepted canonical layout, interaction, density, board focus,
-panel geometry, keyboard behavior, and motion before refactoring. Stable
-latest versions are preferred, but dependency selection is evaluated as one
-complete compatible architecture graph. Exceptions from independent package
-maxima require upstream evidence, explicit recording, owner, review trigger,
-and removal condition; silent or unexplained downgrades remain forbidden.
+No automated unit, component, integration, snapshot, visual-regression, or E2E test files or infrastructure may be created or retained. Vitest, Vue Test Utils, jsdom test environments, Playwright, Cypress, Jest, Testing Library, fixtures, snapshots, coverage, test setup, scripted suites, and `test` package scripts are forbidden.
 
-The authoritative Vue compiler is the newest stable official TypeScript 6.x package while stable Vue TypeScript 7 integration is unavailable. This follows official TypeScript guidance for Vue and other embedded-language projects. `@typescript/typescript6` is not used because the current stable Volar and `vue-tsc` stack cannot consume its shim. TypeScript 7 is not an active dependency during this compatibility period; adoption is a future gated upgrade only after stable TypeScript programmatic API support, stable Vue Language Tools support, stable `vue-tsc` support, full typecheck/build/browser validation, and owner acceptance.
+For each implementation slice, run the applicable governance checks, formatting, lint, Stylelint, Knip, static aggregate, TypeScript checking, production build, and audits. Visible UI changes additionally require one narrow real-browser validation of page identity, nonblank DOM, absence of Vite error overlay and console-breaking errors, affected keyboard/focus behavior, reduced motion when relevant, and one real interaction state change when applicable. Do not generate test artifacts, screenshot loops, or pixel measurements.
 
-## Owner delivery policy
-
-- The project prioritizes visible, user-facing interface delivery through the product-first gate sequence defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
-- No automated unit, component, integration, snapshot, visual-regression, or E2E test files may be created or retained.
-- Vitest, Vue Test Utils, jsdom test environments, Playwright, Cypress, Jest, Testing Library, snapshots, coverage tools, test setup files, fixtures, test utilities, and `test` package scripts are forbidden in the active target.
-- Real production APIs are the only product data path. Mock data, fixtures, fake records, fake replay, fake live messages, fake AI output, sample tournaments, and silent fallback success states are forbidden.
-- API failures must render truthful scoped loading, empty, permission, unavailable, retry, or error states.
-- The absence of automated tests does not permit weakening type checking, production build validation, API contracts, security, browser runtime validation, accessibility, focus, reduced-motion, token, scroll-ownership, or architecture boundaries.
-- Source projects remain permanently read-only.
-
-## Browser validation
-
-Future rendered UI changes must validate the intended route and flow in a real browser when available. Required evidence includes page identity, nonblank DOM, no Vite error overlay, no console-breaking errors, keyboard/focus behavior when affected, one real interaction state change when the slice includes interaction, reduced-motion behavior when motion changes, and responsive checks at affected profiles. Browser validation must not generate test files, test fixtures, snapshots, scripted E2E suites, screenshot loops, or pixel measurements.
-
-## Final acceptance
-
-Do not declare UI acceptance until the relevant `docs/ui/UI_ACCEPTANCE_CHECKLIST.md` items pass, canonical behavior is preserved, no raw visual values or parallel tokens exist, accessibility checks pass, and the browser evidence is recorded in the implementation report.
+Do not declare acceptance until the relevant `docs/ui/UI_ACCEPTANCE_CHECKLIST.md` items and the page-specific acceptance path pass, all OD dependencies remain truthful, and no current-versus-target or contract claim is overstated.

@@ -1,8 +1,0 @@
-{
-    "schemaVersion": 2,
-    "status": "CURRENT",
-    "formatter": "prettier",
-    "scope": "authored text files tracked by the repository",
-    "excluded": ["binary assets", "generated output", "dependency stores", "local caches"],
-    "validation": "pnpm run format:check"
-}

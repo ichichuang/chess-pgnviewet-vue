@@ -1,44 +1,51 @@
 # Claude project context
 
-## Identity
+## Current authority
 
-Single-runtime Vue implementation of the 开赛了 chess workspace: teaching, PGN analysis, tournament navigation, replay, read-only live viewing, AI analysis, and big-screen display.
+开赛了 is one Vue 3 + strict TypeScript chess workspace for local PGN teaching, tournament commentary, completed-game replay/import, read-only live viewing, explicit local AI analysis, and a readability-first venue display.
 
-## Canonical surfaces
+The product design is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`. The active gate is `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`; `OD-01` through `OD-11` remain open. The governing product authority is `docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md`, with owner origin in `docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md`.
 
-- `/pgnViewer/` — unified board-centric workspace
-- `/competitions` — tournament list
-- `/competitions/:hdid` — tournament detail
-- `/competitions/:hdid/display` — big-screen display
+Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, the product blueprint, the owner baseline, and the relevant current product, UI, architecture, and source-provenance authorities. Historical `.ai/reports/**` files are evidence only.
 
-Compatibility routes resolve a sanitized handoff into the unified workspace; they never render a second board/PGN/AI shell.
+## Product surfaces
 
-## Stack authority
+- `/` — unified board-centric workspace
+- `/competitions` — anonymous public tournament list
+- `/competitions/:hdid` — anonymous public tournament detail and handoff actions
+- `/competitions/:hdid/display` — independent read-only venue display
+- `/login` — approved account session and safe return
 
-pnpm is the sole package manager. Vue 3, TypeScript strict, Vite, Vue Router, Pinia, project-owned Vue UI adapters, canonical-only Naive UI use, GSAP/Vue transitions, chess.js plus reviewed canonical chess-domain logic, Dexie, Zod, and TanStack Vue Query define the approved target stack. Automated-test infrastructure is absent from the active target stack, and product development proceeds under `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS` as defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
+Compatibility routes resolve a sanitized typed handoff or a truthful unavailable state. They never render a second board, PGN, annotation, analysis, or workspace shell.
 
-Stable latest versions are preferred, but dependency selection is evaluated as one complete compatible architecture graph, not as unrelated package maxima. The newest stable version that passes the required architecture contract is authoritative. Exceptions require upstream evidence, explicit recording, owner, review trigger, and removal condition; silent or unexplained downgrades remain forbidden.
+## Runtime and ownership
 
-The authoritative Vue compiler is the newest stable official TypeScript 6.x package while stable Vue TypeScript 7 integration is unavailable. This follows official TypeScript guidance for Vue and other embedded-language projects. `@typescript/typescript6` is not used because the current stable Volar and `vue-tsc` stack cannot consume its shim. TypeScript 7 is not an active dependency during this compatibility period; adoption is a future gated upgrade only after stable TypeScript programmatic API support, stable Vue Language Tools support, stable `vue-tsc` support, full typecheck/build/browser validation, and owner acceptance.
+pnpm, Vue 3, strict TypeScript, Vite, Vue Router, Pinia, TanStack Vue Query, one Axios owner, project-owned Vue UI adapters, limited Naive UI providers/adapters, GSAP/Vue transitions, chess.js plus framework-free chess domains, Dexie, and Zod define the current stack.
 
-React, React Router, TanStack Router, Zustand, XState, React Aria, Radix React, Tailwind token systems, iframe/micro-frontend/Web Component bridges, duplicate stores, duplicate boards, duplicate PGN/AI implementations, and parallel token registries are not part of this architecture.
+- One Vite/Vue/Router/Pinia/Query/token/application-shell topology.
+- One unified workspace and one board/PGN/annotation/analysis runtime.
+- Pinia owns client state; Query owns in-memory server-read state.
+- Repositories/source adapters own transport, Zod validation, DTO mapping, permissions, and error translation.
+- Presentational components are store-free, repository-free, and persistence-free.
+- `src/styles/tokens.css` is the only global visual-value authority.
+- `pgnViewer-new` is read-only behavior evidence, not a migration phase, closure gate, or code-copy authority.
 
-## Mandatory references
+## Product truth and blocked capabilities
 
-Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, relevant `docs/product/**`, `docs/ui/**`, `docs/architecture/**`, and the relevant implementation gate report.
+Only real confirmed contracts are available. Ongoing live content is read-only and AI/evaluation-free. Cloud, share, protected replay, hardware snapshot/history, live credential/subscription, and authoritative clock adapters remain abstract until real contracts exist. No mocks, fixtures, fake/sample data, synthesized records, or fallback success states.
 
-## Hard rules
+Loading, empty, permission, authentication, unavailable, stale, retry, and contract-error states remain inside the owning page/module and preserve outer geometry.
 
-- Preserve `pgnViewer-new` as the teaching visual/interaction authority without copying its unsafe infrastructure.
-- Follow the canonical Vue architecture from `pgnViewer-new`; feature migration must remain mechanical before refactoring.
-- Do not migrate the canonical automated-test infrastructure. No automated test files, test runners, fixtures, snapshots, coverage setup, or `test` package scripts may be created or retained.
-- Validate with mandatory TypeScript checking, mandatory production build, and one narrow real-browser runtime check for visible UI slices: intended route, nonblank DOM, no Vite error overlay, no console-breaking errors, and real interaction state change when applicable.
-- Keep one workspace shell and one global token registry.
-- No body scroll; modules declare scroll ownership and preserve geometry.
-- No raw visual values in feature files.
-- GSAP animation, animated board interaction, and later animated UI work must read and obey `.ai/skills/gsap/SKILL.md`.
-- Persist only categorized non-secret state plus the strict 43,200-second `kaisaile.auth.v1` account-session record owned by `src/persistence/auth/authPersistence.ts`; logout clears that record and private state while preserving non-sensitive public workspace context.
-- Confirmed reads use typed repositories and the exact source-confirmed HTTPS origin. Cross-origin browser deployments fail closed until the upstream origin grants them; unknown contracts remain blocked, never faked.
-- Browser code never owns upstream credentials or signing secrets.
-- Do not modify any evidence-source repository.
-- `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden. The accepted product runtime remains governed by `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS` in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.
+## Authentication and security
+
+`src/api/legacyWebCompatibility.ts` alone owns the approved tracked browser compatibility signer and fixed compatibility identity. The only approved persisted account record is the strict 43,200-second `kaisaile.auth.v1` record owned by `src/persistence/auth/authPersistence.ts`.
+
+Passwords/digests, signing secrets, duplicate auth records, URL/router/Dexie/Query/workspace/PGN/annotation/AI auth values, shared credentials, MQTT credentials, secret URLs, generic `/CALL`, `proxyRequest`, write/admin endpoints, MQTT publish, and invented contracts are forbidden.
+
+## Page-design and validation rules
+
+Each page design must identify its responsibility, user task, current versus target capability, information hierarchy, owned components, real data states, responsive and scroll behavior, accessibility, focus, reduced motion, token use, persistence, security, and browser acceptance.
+
+No automated test files, runners, fixtures, snapshots, coverage, scripted E2E suites, or `test` package script may exist. Required validation uses repository governance, formatting, lint, Stylelint, Knip, static checks, TypeScript checking, production build, audits, and narrow real-browser inspection for visible changes. Do not run `pnpm test`.
+
+pnpm is the sole package manager. `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden. Source repositories listed in `AGENTS.md` remain read-only.

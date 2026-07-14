@@ -53,8 +53,8 @@ Reserved paths `src/providers/`, `src/ui/icons/`, and `src/repositories/` do not
 
 ## Rule Inventory
 
-Current inventory: 104 blocking rules. The current totals are dependency policy
-12, obsolete authority residue 27, architecture boundaries 33, raw visual
+Current inventory: 111 blocking rules. The current totals are dependency policy
+12, obsolete authority residue 34, architecture boundaries 33, raw visual
 values 10, mock product data 9, secret patterns 11, rendered product copy 1,
 and shared invalid JSON handling 1.
 
@@ -111,7 +111,14 @@ Architecture boundaries:
 
 Obsolete authority residue:
 
+- `RESIDUE_FORBIDDEN_ACTIVE_AUTHORITY_DOCUMENT`
+- `RESIDUE_ACTIVE_AUTHORITY_PHASE_HISTORY`
 - `RESIDUE_ACTIVE_UI_PHASE_GATE`
+- `RESIDUE_OBSOLETE_MIGRATION_REQUIREMENT`
+- `RESIDUE_CANONICAL_TEST_WORDING`
+- `RESIDUE_BLANKET_BROWSER_HMAC_REJECTION`
+- `RESIDUE_RAW_PRODUCT_API_VISUAL_EXAMPLE`
+- `RESIDUE_ACTIVE_TOOLCHAIN_PHASE_HISTORY`
 - `RESIDUE_CURRENT_API_AUTHORITY_PATH`
 - `RESIDUE_DEXIE_PREPAINT_OWNER`
 - `RESIDUE_QUERY_CACHE_PERSISTENCE_CLAIM`
@@ -195,6 +202,12 @@ approval as normal product copy.
 Every finding is blocking. Exit code is zero only when no blocking findings and no unreadable in-scope files exist. Findings include stable rule id, file, line when available, redacted excerpt, reason, and remediation owner. `--json` emits machine-readable output to stdout and creates no repository artifact.
 
 The scanners never modify package manifests, lockfiles, runtime source, assets, reports, or scanned files. They never run install, update, dedupe, prune, audit fix, formatter write, Vite, browser automation, or automated tests.
+
+The residue scanner uses exact paths for deleted phase-history documents, the
+source-adapter signer rule, the chessboard product API examples, and the active
+toolchain authority. Immutable `.ai/reports/**` files are not active authority;
+explicit prohibition text remains allowed except where the prohibition itself
+would incorrectly reject the approved compatibility signer.
 
 ## Exceptions And False Positives
 

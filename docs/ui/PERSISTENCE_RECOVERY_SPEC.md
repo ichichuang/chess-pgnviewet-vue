@@ -1,9 +1,10 @@
 # Persistence and Recovery Specification
 
-| Field   | Value                                                |
-| ------- | ---------------------------------------------------- |
-| Version | 1.1.0                                                |
-| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
+| Field   | Value                                                       |
+| ------- | ----------------------------------------------------------- |
+| Version | 1.2.0                                                       |
+| Status  | `ACTIVE_PAGE_DESIGN_AUTHORITY`                              |
+| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 
 ## Purpose
 
@@ -183,8 +184,9 @@ Once their owners and schemas are implemented, recovery should restore the local
 ```json
 {
   "document": "persistence-recovery-spec",
-  "version": "1.1.0",
-  "status": "COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS",
+  "version": "1.2.0",
+  "status": "ACTIVE_PAGE_DESIGN_AUTHORITY",
+  "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "current_implemented": {
     "theme_bootstrap": "localStorage:themeMode",
     "workspace_layout": "Dexie:chess-pgnviewer-vue/workspaceSession/current",

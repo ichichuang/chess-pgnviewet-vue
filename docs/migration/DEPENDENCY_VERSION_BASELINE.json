@@ -47,9 +47,8 @@
         "reviewTrigger": "Stable Vue Language Tools, vue-tsc, and the ESLint TypeScript stack support TypeScript 7.",
         "removalCondition": "Full static governance, Vue SFC typecheck, production build, audit, narrow real-browser validation, and owner acceptance pass."
     },
-    "removedAutomatedTestDependencies": ["vitest", "@vue/test-utils", "jsdom"],
-    "ownerDecision": {
-        "status": "OWNER_POLICY_NO_AUTOMATED_TESTS",
+    "validationPolicy": {
+        "status": "NO_AUTOMATED_TEST_INFRASTRUCTURE",
         "activeValidation": [
             "static governance",
             "typecheck",
@@ -57,7 +56,7 @@
             "dependency audit",
             "narrow real-browser runtime validation"
         ],
-        "runtimeArchitectureImpact": "No change to the selected Vue runtime architecture."
+        "runtimeArchitectureImpact": "The policy does not alter the selected Vue runtime architecture."
     },
     "authoritativeFiles": [
         "package.json",

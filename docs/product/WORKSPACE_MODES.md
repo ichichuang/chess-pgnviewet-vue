@@ -1,9 +1,10 @@
 # Workspace Modes
 
-| Field   | Value                                                      |
-| ------- | ---------------------------------------------------------- |
-| Version | 1.1.0                                                      |
-| Status  | `COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW` |
+| Field   | Value                                                       |
+| ------- | ----------------------------------------------------------- |
+| Version | 1.2.0                                                       |
+| Status  | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
+| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 
 ## Authority and scope
 
@@ -118,8 +119,9 @@ These are separate product rules. The current runtime's source-current/first fal
 ```json
 {
   "document": "workspace-modes",
-  "version": "1.1.0",
-  "status": "COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW",
+  "version": "1.2.0",
+  "status": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
+  "pageDesignGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "technicalModes": [
     "analysis",
     "competition_commentary",
@@ -135,6 +137,19 @@ These are separate product rules. The current runtime's source-current/first fal
     "evaluation": false,
     "sourceWrite": false
   },
-  "authority": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md"
+  "authority": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+  "openOwnerDecisions": [
+    "OD-01",
+    "OD-02",
+    "OD-03",
+    "OD-04",
+    "OD-05",
+    "OD-06",
+    "OD-07",
+    "OD-08",
+    "OD-09",
+    "OD-10",
+    "OD-11"
+  ]
 }
 ```

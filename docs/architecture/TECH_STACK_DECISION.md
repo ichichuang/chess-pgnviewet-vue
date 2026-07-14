@@ -33,11 +33,11 @@ The project-local toolchain is pinned in `.mise.toml`:
 
 The target is one Vue application and must not be converted into an artificial monorepo. `pnpm-workspace.yaml` may exist only as pnpm 11 project-local build-policy evidence and must not declare workspace packages.
 
-## Owner delivery policy
+## Product delivery policy
 
-The project prioritizes visible, user-facing interface delivery through the product-first gate sequence defined in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`. No automated test files or automated test infrastructure may be created or retained. This includes Vitest, Vue Test Utils, jsdom as a test environment, Playwright, Cypress, Jest, Testing Library, test setup files, test fixtures, snapshots, coverage, automated E2E suites, and `test` package scripts.
+The current product-design status is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`; page work proceeds under `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`. `OD-01` through `OD-11` remain open and must not be converted into runtime defaults without owner resolution.
 
-The canonical source contains automated-test infrastructure, but the target intentionally does not adopt it under explicit owner policy. This difference does not change the Vue runtime architecture. The absence of automated tests does not permit weakening type checking, production build validation, API contracts, security boundaries, real-browser runtime validation, accessibility, token, focus, reduced-motion, scroll-ownership, or canonical-migration requirements.
+No automated test files or automated test infrastructure may be created or retained. This includes Vitest, Vue Test Utils, jsdom as a test environment, Playwright, Cypress, Jest, Testing Library, test setup files, test fixtures, snapshots, coverage, automated E2E suites, and `test` package scripts. The absence of automated tests does not permit weakening type checking, production build validation, API contracts, security boundaries, real-browser runtime validation, accessibility, token, focus, reduced-motion, or scroll-ownership requirements.
 
 ## Dependency version policy
 
@@ -45,7 +45,7 @@ Stable latest versions are preferred, but dependency selection is evaluated as o
 
 The authoritative Vue compiler is the newest stable official TypeScript 6.x package while stable Vue TypeScript 7 integration is unavailable. This follows official TypeScript guidance for Vue and other embedded-language projects. `@typescript/typescript6` is not used because the current stable Volar and `vue-tsc` stack cannot consume its shim. TypeScript 7 is not an active dependency during this compatibility period; adoption is a future gated upgrade only after stable TypeScript programmatic API support, stable Vue Language Tools support, stable `vue-tsc` support, full typecheck/build/browser validation, and owner acceptance.
 
-The current ecosystem-compatible baseline is recorded in `docs/migration/DEPENDENCY_VERSION_BASELINE.json`, including:
+The current ecosystem-compatible graph is recorded in `docs/migration/DEPENDENCY_VERSION_BASELINE.json` and `docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md`, including:
 
 - `vue 3.5.39`
 - `vue-router 5.1.0`
@@ -63,7 +63,7 @@ The current ecosystem-compatible baseline is recorded in `docs/migration/DEPENDE
 - `@vue/tsconfig 0.9.1`
 - `@types/node 26.1.1`
 
-The rejected compatibility attempt proved that the current stable Vue tooling cannot consume the TypeScript compatibility shim. The accepted toolchain therefore uses official `typescript 6.0.3` with `vue-tsc 3.3.7`. Do not resolve later TypeScript 7 adoption by patching package exports, editing `node_modules`, bypassing `vue-tsc`, or adding a custom compiler wrapper.
+The current stable Vue tooling cannot consume the TypeScript compatibility shim. The toolchain therefore uses official `typescript 6.0.3` with `vue-tsc 3.3.7`. Do not resolve later TypeScript 7 adoption by patching package exports, editing `node_modules`, bypassing `vue-tsc`, or adding a custom compiler wrapper.
 
 ## Constraints
 

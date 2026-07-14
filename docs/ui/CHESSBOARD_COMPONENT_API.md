@@ -1,9 +1,10 @@
 # Chessboard Component API
 
-| Field   | Value                                                |
-| ------- | ---------------------------------------------------- |
-| Version | 1.1.0                                                |
-| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
+| Field   | Value                                                       |
+| ------- | ----------------------------------------------------------- |
+| Version | 1.2.0                                                       |
+| Status  | `ACTIVE_PAGE_DESIGN_AUTHORITY`                              |
+| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 
 ## Imports
 
@@ -36,7 +37,7 @@ host; the board fills that host and never owns page or viewport geometry.
 
 <style scoped>
 .board-host {
-  width: min(70vw, 720px);
+  inline-size: 100%;
   aspect-ratio: 1;
 }
 </style>
@@ -266,8 +267,11 @@ boundaries do not generate duplicate success events.
 ## Appearance and piece sets
 
 Appearance values are validated with `CSS.supports`, reject declaration-breaking
-characters, and are applied as styles on that component root only. They do not
-change `document`, theme state, or `src/styles/tokens.css`.
+characters, and are applied as styles on that component root only. Product
+feature code must still pass project token references; validation is not an
+exception to token governance. These low-level overrides do not change
+`document`, theme state, or `src/styles/tokens.css`, and they do not establish a
+current board-theme selector or persisted board-theme setting.
 
 ```ts
 import blackKnight from './pieces/black-knight.svg'
@@ -282,22 +286,22 @@ const pieces: BoardPieceResolver = (piece) => {
 
 const capabilities: ChessboardCapabilities = {
   appearance: {
-    lightSquare: '#f1e4bf',
-    darkSquare: '#8b5e3c',
-    coordinates: '#2457a6',
-    selected: 'color-mix(in srgb, #2457a6 30%, transparent)',
-    legalTarget: '#2457a6',
-    legalCapture: '#a62424',
-    lastMove: '#d8ae32',
-    check: '#b42318',
-    hover: '#2457a6',
-    focus: '#2457a6',
-    annotations: { 'draw-purple': '#d12acb' },
-    border: '#2457a6',
-    radius: '10px',
-    shadow: '0 12px 36px rgb(0 0 0 / 20%)',
-    radialMenu: { selected: '#2457a6' },
-    editorPalette: { selected: '#2457a6' },
+    lightSquare: 'var(--cg-square-light)',
+    darkSquare: 'var(--cg-square-dark)',
+    coordinates: 'var(--board-coordinate-color)',
+    selected: 'var(--cg-overlay-selected)',
+    legalTarget: 'var(--cg-hint-fill)',
+    legalCapture: 'var(--cg-hint-capture-fill)',
+    lastMove: 'var(--cg-overlay-lastmove)',
+    check: 'var(--cg-overlay-check)',
+    hover: 'var(--cg-overlay-hover)',
+    focus: 'var(--state-focus-ring)',
+    annotations: { 'draw-purple': 'var(--cg-arrow-purple)' },
+    border: 'var(--border-strong)',
+    radius: 'var(--board-frame-radius)',
+    shadow: 'var(--board-instance-shadow)',
+    radialMenu: { selected: 'var(--board-radial-slice-selected)' },
+    editorPalette: { selected: 'var(--board-editor-palette-selected)' },
   },
   pieceResolver: pieces,
 }

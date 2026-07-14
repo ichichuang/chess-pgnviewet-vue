@@ -1,26 +1,58 @@
 {
-    "schemaVersion": 2,
-    "status": "CURRENT",
+    "schemaVersion": 3,
+    "status": "CURRENT_AUTHORITY_INDEX",
     "effectiveDate": "2026-07-14",
+    "productDesignStatus": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
+    "pageDesignGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
     "activeAuthorityGroups": {
-        "workflow": ["AGENTS.md", "CLAUDE.md", ".ai/skills/project-ui/SKILL.md"],
-        "product": ["docs/product/PRODUCT_DEFINITION.md", "docs/product/WORKSPACE_MODES.md"],
+        "workflow": [
+            "AGENTS.md",
+            "CLAUDE.md",
+            ".ai/skills/project-ui/SKILL.md",
+            ".ai/skills/gsap/SKILL.md"
+        ],
+        "product": [
+            "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+            "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+            "docs/product/PRODUCT_DEFINITION.md",
+            "docs/product/WORKSPACE_MODES.md",
+            "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+            "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+            "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json"
+        ],
         "ui": ["docs/ui"],
-        "architecture": ["docs/architecture"],
-        "sourceProvenance": ["docs/migration/SOURCE_PROVENANCE.md"],
-        "webApi": [
-            "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
-            "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+        "architecture": [
             "docs/architecture/API_BOUNDARY_ADR.md",
+            "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+            "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+            "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+            "docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md",
+            "docs/architecture/PERSISTENCE_ADR.md",
             "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
-            "docs/architecture/WEB_API_ENDPOINT_INVENTORY.json",
+            "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md",
+            "docs/architecture/SOURCE_ADAPTER_ADR.md",
+            "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+            "docs/architecture/TECH_STACK_DECISION.md",
+            "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+            "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+            "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
             "docs/architecture/WEB_API_CONTRACT_COVERAGE_MATRIX.json",
-            "docs/architecture/WEB_API_READINESS_MATRIX.json"
+            "docs/architecture/WEB_API_ENDPOINT_INVENTORY.json",
+            "docs/architecture/WEB_API_READINESS_MATRIX.json",
+            "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+            "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md"
+        ],
+        "sourceAndCurrentState": [
+            "docs/migration/CAPABILITY_MATRIX.json",
+            "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+            "docs/migration/DOCUMENT_INVENTORY.json",
+            "docs/migration/SOURCE_PROVENANCE.md"
         ]
     },
     "historicalReports": {
         "root": ".ai/reports",
         "authority": false,
+        "immutable": true,
         "rule": "Reports retain implementation evidence only and cannot override active authorities."
     }
 }

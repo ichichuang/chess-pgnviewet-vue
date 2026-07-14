@@ -59,7 +59,7 @@ Before implementation or review, read and obey:
 - Use `gsap.matchMedia` only when the component owns the corresponding cleanup.
 - Use `quickTo` only for justified high-frequency pointer updates.
 - Decorative animation is not allowed by default. Motion must clarify product
-  behavior or preserve canonical migration parity.
+  behavior or preserve reviewed product interaction behavior.
 
 ## Selector And Cleanup Rules
 

@@ -1,9 +1,10 @@
 # Responsive Screen Specification
 
-| Field   | Value                                                |
-| ------- | ---------------------------------------------------- |
-| Version | 1.1.0                                                |
-| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
+| Field   | Value                                                       |
+| ------- | ----------------------------------------------------------- |
+| Version | 1.2.0                                                       |
+| Status  | `ACTIVE_PAGE_DESIGN_AUTHORITY`                              |
+| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 
 ## Purpose
 
@@ -85,8 +86,9 @@ The current route renders public pairing information. Multi-board live positions
 ```json
 {
   "document": "responsive-screen-spec",
-  "version": "1.1.0",
-  "status": "COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS",
+  "version": "1.2.0",
+  "status": "ACTIVE_PAGE_DESIGN_AUTHORITY",
+  "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "contexts": ["mobile", "tablet", "laptop_desktop", "venue_display"],
   "board_sizing": "min_available_dimension_minus_required_gutters",
   "fixed_board_minimums_approved": false,

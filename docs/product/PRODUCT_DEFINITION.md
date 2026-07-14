@@ -1,10 +1,11 @@
 # Product Definition
 
-| Field   | Value                                                      |
-| ------- | ---------------------------------------------------------- |
-| Version | 1.1.0                                                      |
-| Status  | `COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW` |
-| Product | 开赛了                                                     |
+| Field   | Value                                                       |
+| ------- | ----------------------------------------------------------- |
+| Version | 1.2.0                                                       |
+| Status  | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
+| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
+| Product | 开赛了                                                      |
 
 ## Authority and scope
 
@@ -59,6 +60,10 @@ Passwords, password digests, duplicated or arbitrary authentication records, aut
 ## Source and data policy
 
 Only real confirmed production contracts may feed product surfaces. Mock, fixture, fake, sample, synthesized, and fallback success data are forbidden. Protected source content remains read-only; explicit import creates a local copy and never writes notes or annotations back without a separately confirmed write contract.
+
+## Page-design readiness and open decisions
+
+The complete product model is ready for page-by-page design. This readiness does not close product-owner decisions: `OD-01` through `OD-11` all remain open and must stay mapped in page designs, acceptance criteria, and the requirement traceability matrix. Recommended values are provisional and are not current runtime contracts.
 
 ## References
 

@@ -1,0 +1,371 @@
+{
+  "reportVersion": "1.0.0",
+  "phase": "FINAL_GLOBAL_ACTIVE_AUTHORITY_AND_PRODUCT_DESIGN_CLOSURE",
+  "reportGeneratedAt": "2026-07-14T05:55:48Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "baseline": {
+    "requiredCommit": "336f857a3e609a30cac82504b4161ece37eea887",
+    "localHeadBefore": "336f857a3e609a30cac82504b4161ece37eea887",
+    "originMainBefore": "336f857a3e609a30cac82504b4161ece37eea887",
+    "liveRemoteMainBefore": "336f857a3e609a30cac82504b4161ece37eea887",
+    "worktreeBefore": "CLEAN",
+    "aheadBehindBefore": {
+      "ahead": 0,
+      "behind": 0
+    },
+    "verified": true
+  },
+  "filesScanned": {
+    "rootAuthorities": [
+      "AGENTS.md",
+      "CLAUDE.md"
+    ],
+    "authorityGroups": [
+      {
+        "path": ".ai/skills/**",
+        "activeTextFiles": 2
+      },
+      {
+        "path": "docs/product/**",
+        "activeFiles": 7
+      },
+      {
+        "path": "docs/ui/**",
+        "activeFiles": 10
+      },
+      {
+        "path": "docs/architecture/**",
+        "activeFilesAfterClosure": 19,
+        "obsoleteFilesReviewedAndDeleted": 4
+      },
+      {
+        "path": "docs/migration/**",
+        "activeFilesAfterClosure": 4,
+        "obsoleteFilesReviewedAndDeleted": 5
+      },
+      {
+        "path": "scripts/governance/**",
+        "activeFiles": 9
+      }
+    ],
+    "activeAuthorityFilesAfterClosure": 53,
+    "obsoleteAuthorityFilesReviewedAndDeleted": 9,
+    "runtimeEvidenceInspected": [
+      "src/main.ts",
+      "src/router/index.ts",
+      "src/ui/index.ts",
+      "src/features/board/index.ts",
+      "src/api/legacyWebCompatibility.ts",
+      "src/persistence/auth/authPersistence.ts",
+      "src/styles/tokens.css",
+      "package.json",
+      "pnpm-lock.yaml",
+      "vite.config.ts",
+      "tsconfig.json",
+      "stylelint.config.mjs",
+      "knip.json"
+    ],
+    "readOnlySourceRepositoriesModified": false
+  },
+  "conflictsFound": [
+    {
+      "id": "STALE_PAGE_DESIGN_GATE",
+      "affectedAuthorities": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".ai/skills/project-ui/SKILL.md",
+        "docs/product/**",
+        "docs/ui/**",
+        "docs/architecture/**"
+      ],
+      "conflict": "Active P0/P0E/P1, product-first, mechanical-migration, closure, and PRODUCT_UI_DEVELOPMENT_BASELINE_PASS wording contradicted the current page-design stage.",
+      "correction": "Replaced active stage authority with COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN and PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS while preserving all current implementation safeguards."
+    },
+    {
+      "id": "PHASE_HISTORY_PRESENTED_AS_CURRENT_TOOLCHAIN_AUTHORITY",
+      "affectedAuthorities": [
+        "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+        "docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md",
+        "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md"
+      ],
+      "conflict": "Historical F0/F1/F2 slices, starting commits, successor phases, and debt narratives remained inside active current-state authorities.",
+      "correction": "Rewrote the three authorities as current-state contracts containing only present owners, versions, scripts, exceptions, validation, and no-test rules."
+    },
+    {
+      "id": "CANONICAL_TEST_AND_MIGRATION_REQUIREMENTS",
+      "affectedAuthorities": [
+        "docs/architecture/SOURCE_ADAPTER_ADR.md",
+        "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        ".ai/skills/gsap/SKILL.md",
+        "docs/migration/SOURCE_PROVENANCE.md"
+      ],
+      "conflict": "Canonical-test adoption, mechanical migration, closure-node, and phase sequencing language conflicted with the repository's no-test and current product-design authority.",
+      "correction": "Kept source repositories as read-only evidence and removed active canonical-test, mechanical-migration, closure-node, and successor-phase requirements."
+    },
+    {
+      "id": "INCORRECT_BROWSER_HMAC_RULE",
+      "affectedAuthorities": [
+        "docs/architecture/SOURCE_ADAPTER_ADR.md"
+      ],
+      "conflict": "A blanket rejection of the approved browser compatibility signer contradicted the tracked legacy implementation already present in runtime code.",
+      "correction": "Established src/api/legacyWebCompatibility.ts as the sole approved compatibility signer owner; all other browser-side signing implementations remain forbidden."
+    },
+    {
+      "id": "UNPROVEN_EXTERNAL_ADAPTERS",
+      "affectedAuthorities": [
+        "docs/architecture/SOURCE_ADAPTER_ADR.md"
+      ],
+      "conflict": "Phase-bound wording obscured that cloud, share, replay, and live adapters have no approved concrete contracts.",
+      "correction": "Kept those adapters abstract and fail-closed until source-proven real contracts exist; mocks and invented runtime fallbacks remain forbidden."
+    },
+    {
+      "id": "RAW_PRODUCT_API_VISUAL_EXAMPLES",
+      "affectedAuthorities": [
+        "docs/ui/CHESSBOARD_COMPONENT_API.md"
+      ],
+      "conflict": "Product-facing appearance examples used raw visual values and could be read as establishing a current board-theme setting.",
+      "correction": "Converted every appearance example to existing var(--...) token references and clarified that validated low-level overrides neither exempt product code nor establish a current board-theme setting."
+    },
+    {
+      "id": "CURRENT_VERSUS_TARGET_AMBIGUITY",
+      "affectedAuthorities": [
+        "docs/product/**",
+        "docs/ui/**",
+        "docs/migration/**",
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+      ],
+      "conflict": "Mixed migration-era status and target wording obscured what is current, what is design authority, and what still requires owner decisions.",
+      "correction": "Aligned product authorities to version 1.2.0, explicit page-design readiness, current route and component facts, and OPEN status for OD-01 through OD-11."
+    }
+  ],
+  "exactCorrections": {
+    "fullyRewrittenAuthorities": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".ai/skills/project-ui/SKILL.md",
+      "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+      "docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md",
+      "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md",
+      "docs/migration/DOCUMENT_INVENTORY.json"
+    ],
+    "productAuthoritiesAligned": [
+      "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+      "docs/product/PRODUCT_DEFINITION.md",
+      "docs/product/WORKSPACE_MODES.md",
+      "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+      "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+      "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+      "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json"
+    ],
+    "uiAuthoritiesAligned": [
+      "docs/ui/ACCESSIBILITY_SPEC.md",
+      "docs/ui/CHESSBOARD_COMPONENT_API.md",
+      "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+      "docs/ui/I18N_SPEC.md",
+      "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+      "docs/ui/PAGE_STYLE_SPEC.md",
+      "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+      "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+      "docs/ui/THEME_SYSTEM_SPEC.md",
+      "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+    ],
+    "architectureAndMigrationAuthoritiesAligned": [
+      "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+      "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+      "docs/architecture/SOURCE_ADAPTER_ADR.md",
+      "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+      "docs/architecture/TECH_STACK_DECISION.md",
+      "docs/migration/CAPABILITY_MATRIX.json",
+      "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+      "docs/migration/SOURCE_PROVENANCE.md",
+      ".ai/skills/gsap/SKILL.md"
+    ],
+    "governanceFilesChanged": [
+      "scripts/governance/check-obsolete-architecture-residue.mjs",
+      "scripts/governance/policy.mjs"
+    ],
+    "runtimeOrPackageFilesChanged": []
+  },
+  "deletedSections": [
+    "P0/P0E/P1 gate sequences and successor-phase instructions",
+    "PRODUCT_UI_DEVELOPMENT_BASELINE_PASS as the active page-design gate",
+    "mechanical-migration-only and canonical closure-node requirements",
+    "canonical automated-test adoption and parity wording",
+    "F0/F1/F2A-F2F implementation histories and starting-SHA narratives",
+    "historical toolchain debt and successor-phase narratives",
+    "raw product-facing board appearance values"
+  ],
+  "deletedDocuments": [
+    "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+    "docs/architecture/F2_TOOLCHAIN_AND_STATIC_GOVERNANCE_CLOSURE.md",
+    "docs/architecture/PRETTIER_FORMATTING_DEBT_BASELINE.json",
+    "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md",
+    "docs/migration/ASSET_INVENTORY.json",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+    "docs/migration/TYPESCRIPT_7_VUE_TOOLING_COMPATIBILITY_BRIDGE.json",
+    "docs/migration/VUE_TYPESCRIPT_COMPATIBILITY_BASELINE.json"
+  ],
+  "scannerChanges": {
+    "policyInventoryUpdated": true,
+    "exactForbiddenAuthorityPaths": 9,
+    "newRuleFamilies": [
+      "RESIDUE_FORBIDDEN_ACTIVE_AUTHORITY_DOCUMENT",
+      "RESIDUE_ACTIVE_AUTHORITY_PHASE_HISTORY",
+      "RESIDUE_OBSOLETE_MIGRATION_REQUIREMENT",
+      "RESIDUE_CANONICAL_TEST_WORDING",
+      "RESIDUE_BLANKET_BROWSER_HMAC_REJECTION",
+      "RESIDUE_RAW_PRODUCT_API_VISUAL_EXAMPLE",
+      "RESIDUE_ACTIVE_TOOLCHAIN_PHASE_HISTORY"
+    ],
+    "staleGateRuleExtended": "RESIDUE_STALE_PRODUCT_UI_GATE",
+    "historicalReportsImmutableAndExcludedFromActiveAuthorityRules": true,
+    "explicitProhibitionTextAllowed": true,
+    "negativeProbe": {
+      "status": "PASS",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "newRuleFamiliesTriggered": 7,
+      "totalProbeFindings": 14
+    },
+    "cleanProbe": {
+      "status": "PASS",
+      "expectedExitCode": 0,
+      "actualExitCode": 0,
+      "findings": 0
+    }
+  },
+  "protectedHashes": {
+    "runtimeAggregate": {
+      "scope": "src/**",
+      "before": "7e0b7ee261163d173b588a668a3c425782bcf7714f54cb77323fc498b49cee87",
+      "after": "7e0b7ee261163d173b588a668a3c425782bcf7714f54cb77323fc498b49cee87",
+      "unchanged": true
+    },
+    "packageAndConfigAggregate": {
+      "scope": [
+        "package.json",
+        "pnpm-lock.yaml",
+        "vite.config.ts",
+        "tsconfig.json",
+        "stylelint.config.mjs",
+        "knip.json"
+      ],
+      "before": "48b9e5ffef61b8f893659541c074382b9c2ca1b72a01c8a5e5d315182073ec67",
+      "after": "48b9e5ffef61b8f893659541c074382b9c2ca1b72a01c8a5e5d315182073ec67",
+      "unchanged": true
+    },
+    "installedTopLevelPackages": 30,
+    "dependenciesChanged": false
+  },
+  "validations": {
+    "postReportValidationCorrection": {
+      "initialStaticAttempt": "FAIL_RESIDUE_SECRET_AUTH_ARCHITECTURE_ON_REPORT_NARRATIVE",
+      "cause": "The historical conflict sentence in this report was parsed as current secret-auth architecture.",
+      "fix": "Rephrased the report narrative without weakening or excluding the governing residue rule.",
+      "finalRerun": "PASS"
+    },
+    "independentAuthorityValidation": {
+      "status": "PASS",
+      "jsonFilesParsed": 10,
+      "markdownFilesChecked": 34,
+      "markdownLinksAndAnchors": "PASS",
+      "exactPaths": "PASS",
+      "authorityInventory": "PASS",
+      "traceabilitySourcePaths": 61,
+      "ownerDecisionMappings": 11,
+      "productMetadataFiles": 7,
+      "uiMetadataFiles": 10,
+      "componentSymbols": 7,
+      "boardApiTokenReferences": 16,
+      "signerAuthority": "PASS",
+      "failures": 0
+    },
+    "governance": {
+      "pnpm run check:deps": "PASS",
+      "pnpm run check:architecture": "PASS",
+      "pnpm run check:residue": "PASS",
+      "pnpm run check:tokens": "PASS",
+      "pnpm run check:mocks": "PASS",
+      "pnpm run check:secrets": "PASS",
+      "pnpm run check:copy": "PASS",
+      "pnpm run check:governance": "PASS",
+      "pnpm run check:static": "PASS"
+    },
+    "formattingAndCodeQuality": {
+      "pnpm run format:check": "PASS",
+      "pnpm run lint": "PASS",
+      "pnpm run lint:style": "PASS",
+      "pnpm run check:unused": "PASS",
+      "pnpm run typecheck": "PASS"
+    },
+    "productionBuild": {
+      "command": "pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-build.0ZYUYI/dist --emptyOutDir",
+      "status": "PASS",
+      "outputKeptInRepository": false
+    },
+    "securityAudits": {
+      "pnpm run audit:prod": "PASS_NO_KNOWN_VULNERABILITIES",
+      "pnpm audit": "PASS_NO_KNOWN_VULNERABILITIES"
+    },
+    "gitDiffCheck": "PASS",
+    "automatedTests": "NOT_RUN_BY_POLICY",
+    "browserValidation": "NOT_APPLICABLE_DOCUMENTATION_AND_GOVERNANCE_ONLY",
+    "acceptanceCounts": {
+      "activeStalePhaseContent": 0,
+      "authorityConflicts": 0,
+      "incorrectAuthRules": 0,
+      "rawProductExampleVisualValues": 0,
+      "unresolvedPaths": 0
+    }
+  },
+  "commit": {
+    "subject": "docs(governance): 完成全局现行权威与产品设计最终闭合",
+    "body": [
+      "目的：清除现行产品、界面、架构与迁移权威中的阶段残留和相互冲突规则，使仓库直接进入受控的逐页设计阶段。",
+      "变更范围：重写根级权威和项目 UI 技能，统一产品与界面规范元数据，修正签名器和适配器边界，重写当前工具链权威，删除九份失效文档，并增加精确路径残留扫描规则。",
+      "验证：JSON、Markdown、路径、组件符号、OD 映射、治理扫描、格式、ESLint、Stylelint、Knip、类型检查、临时目录生产构建及生产/完整依赖审计全部通过；运行时与包配置聚合哈希不变。",
+      "剩余风险：OD-01 至 OD-11 仍为明确开放的产品负责人决策，后续逐页设计不得擅自固化这些决策。"
+    ],
+    "sha": "ENCLOSING_COMMIT_VERIFIED_AFTER_COMMIT"
+  },
+  "push": {
+    "remote": "origin",
+    "branch": "main",
+    "force": false,
+    "status": "ENCLOSING_COMMIT_PUSH_VERIFIED_IN_FINAL_CONSOLE_RESPONSE"
+  },
+  "finalProductDesignVersion": "1.2.0",
+  "finalProductDesignStatus": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
+  "finalPageDesignGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+  "remainingOwnerDecisions": [
+    "OD-01",
+    "OD-02",
+    "OD-03",
+    "OD-04",
+    "OD-05",
+    "OD-06",
+    "OD-07",
+    "OD-08",
+    "OD-09",
+    "OD-10",
+    "OD-11"
+  ],
+  "remainingOwnerDecisionStatus": "OPEN",
+  "finalStatus": {
+    "verdict": "FINAL_GLOBAL_ACTIVE_AUTHORITY_AND_PRODUCT_DESIGN_CLOSURE_PASS",
+    "activeAuthoritySetConsistent": true,
+    "readyForPageByPageDesign": true,
+    "pageDesignOrImplementationPerformed": false,
+    "runtimeChanged": false,
+    "packageSurfaceChanged": false,
+    "activeStalePhaseContent": 0,
+    "authorityConflicts": 0,
+    "incorrectAuthRules": 0,
+    "rawProductExampleVisualValues": 0,
+    "unresolvedPaths": 0
+  }
+}

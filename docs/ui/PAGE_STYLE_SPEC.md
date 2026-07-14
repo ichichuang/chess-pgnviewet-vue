@@ -1,5 +1,11 @@
 # Page Style Specification
 
+| Field   | Value                                                       |
+| ------- | ----------------------------------------------------------- |
+| Version | 1.2.0                                                       |
+| Status  | `ACTIVE_PAGE_DESIGN_AUTHORITY`                              |
+| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
+
 ## Purpose
 
 Define the visual language of product surfaces: typography, spacing, shape, elevation, controls, states, and copy rules. All values must come from the token system defined in `docs/ui/THEME_SYSTEM_SPEC.md`.
@@ -169,7 +175,9 @@ Avatar containers have fixed dimensions and a local fallback.
 ```json
 {
   "document": "page-style-spec",
-  "version": "1.0.0",
+  "version": "1.2.0",
+  "status": "ACTIVE_PAGE_DESIGN_AUTHORITY",
+  "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "rules": [
     "all_visual_values_token_backed",
     "controls_use_component_tokens",

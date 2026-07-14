@@ -53,11 +53,11 @@ browser signer and fixed login compatibility identity are centralized in one
 adapter; URL-token and query-token authentication remain forbidden. See
 `WEB_REQUEST_ARCHITECTURE_BASELINE.md`.
 
-## Source provenance and extension rule
+## Source evidence and extension rule
 
-`pgnViewer-new` remains the canonical teaching visual, interaction, board, PGN, annotation, analysis, and workspace source. `docs/migration/CANONICAL_RUNTIME_CLOSURE.json` records the reconciled current target owners and remaining contract-blocked gaps; it is not a successor-phase plan.
+`pgnViewer-new` remains read-only evidence for reviewed teaching, board, PGN, annotation, analysis, workspace, layout, motion, visual, and framework-free domain behavior. The current product blueprint and target runtime own product and implementation decisions. Source evidence does not impose a migration sequence, closure node, automated-test model, or source-project infrastructure.
 
-Changes to source-confirmed behavior preserve reviewed layout, interaction, density, board focus, panel geometry, keyboard behavior, and motion before refactoring. Runtime source is never bulk-copied. Any extension must prove current imports, consumers, styles, assets, framework compatibility, unsafe-boundary removal, typecheck/build validation, and narrow real-browser runtime evidence. Stable dependencies are evaluated as one compatible architecture graph; exceptions require upstream evidence, an owner, a review trigger, and a removal condition.
+Any extension must start from the page responsibility and current target owners, then verify imports, consumers, styles, assets, framework compatibility, unsafe-boundary removal, typecheck/build validation, and narrow real-browser runtime evidence. Runtime source is never bulk-copied. Stable dependencies are evaluated as one compatible architecture graph; exceptions require upstream evidence, an owner, a review trigger, and a removal condition.
 
 The authoritative Vue compiler is the newest stable official TypeScript 6.x package while stable Vue TypeScript 7 integration is unavailable. This follows official TypeScript guidance for Vue and other embedded-language projects. `@typescript/typescript6` is not used because the current stable Volar and `vue-tsc` stack cannot consume its shim. TypeScript 7 is not an active dependency during this compatibility period; adoption is a future gated upgrade only after stable TypeScript programmatic API support, stable Vue Language Tools support, stable `vue-tsc` support, full typecheck/build/browser validation, and owner acceptance.
 

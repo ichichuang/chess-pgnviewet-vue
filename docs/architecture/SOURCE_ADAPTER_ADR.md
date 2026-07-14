@@ -28,16 +28,17 @@ Each adapter declares:
 - read/write and live/replay classification;
 - cancellation and stale-result behavior;
 - persistence category and secret exclusions;
-- canonical tests, assets, and styles;
-- implementation phase and acceptance evidence.
+- asset/style provenance where relevant;
+- static, typecheck, build, contract, and narrow browser acceptance evidence.
 
 Raw DTOs never reach Vue UI. Presentational components receive typed domain props and emit events. Container components coordinate their feature-owned Pinia state and repository boundary.
 
-## Authority and migration
+## Authority and source evidence
 
-`pgnViewer-new` is the visual and interaction authority for the teaching
-workspace and the canonical source for board, PGN, annotation, AI, workspace,
-layout, motion, and domain behavior. It does not establish Web API contracts.
+`pgnViewer-new` is read-only visual and interaction evidence for the teaching
+workspace, board, PGN, annotation, AI, layout, motion, and domain behavior. The
+current product blueprint and target runtime own present decisions. The source
+does not establish Web API contracts or require a migration sequence.
 
 `pgnViewer` and `chess-main-overseas` are the only read-only Web API,
 authentication, request, environment, and production authorities. Their
@@ -50,9 +51,10 @@ Tournament pages create a sanitized, versioned handoff and navigate into `/pgnVi
 
 ## Rejection rules
 
-Reject adapters that require generic proxying, unconfirmed endpoints, browser
-HMAC or upstream shared credentials, URL/query-token auth, fake data,
-duplicated domain implementations, unlicensed assets, or a second
-application/component/token system. A source-confirmed but unavailable
-capability renders an unavailable state; it is not coerced into an empty or
-synthetic success.
+Reject adapters that require generic proxying, unconfirmed endpoints, upstream
+shared credentials, URL/query-token auth, fake data, duplicated domain
+implementations, unlicensed assets, or a second application/component/token
+system. `src/api/legacyWebCompatibility.ts` is the sole approved owner of the
+tracked browser compatibility signer; no other adapter may duplicate its
+constants or algorithm. A source-confirmed but unavailable capability renders
+an unavailable state; it is not coerced into an empty or synthetic success.

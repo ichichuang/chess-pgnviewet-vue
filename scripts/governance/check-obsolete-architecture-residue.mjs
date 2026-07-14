@@ -59,10 +59,54 @@ const staleCurrentAuthStatusRules = [
 
 const activeAuthorityConsistencyRules = [
   {
+    ruleId: 'RESIDUE_ACTIVE_AUTHORITY_PHASE_HISTORY',
+    pattern:
+      /\b(?:P0[A-Z0-9_]*|P1[A-Z0-9_]*|F0[A-Z0-9_]*|F1[A-Z0-9_]*|F2[A-Z0-9_]*|F3[A-Z0-9_]*)\b/gu,
+    reason:
+      'Current authorities must describe current state without implementation-phase identifiers.',
+    allowExplicitProhibition: true,
+  },
+  {
     ruleId: 'RESIDUE_ACTIVE_UI_PHASE_GATE',
     pathPrefix: 'docs/ui/',
     pattern: /\bP0E?\b|\bP1[A-Z0-9_]*\b|\bphase[- ]?one\b/giu,
     reason: 'Current UI specifications must not retain obsolete implementation-phase gates.',
+  },
+  {
+    ruleId: 'RESIDUE_OBSOLETE_MIGRATION_REQUIREMENT',
+    pattern:
+      /\b(?:mechanical(?:ly)?\s+(?:before\s+)?(?:migration|refactor)|canonical\s+(?:runtime\s+)?closure|closure\s+node|implementation[- ]gate\s+report|migration[- ]only)\b/giu,
+    reason:
+      'Current authorities must not impose obsolete migration, closure, or implementation-gate requirements.',
+    allowExplicitProhibition: true,
+  },
+  {
+    ruleId: 'RESIDUE_CANONICAL_TEST_WORDING',
+    pattern: /\bcanonical\s+(?:automated[- ]?)?(?:tests?|test\s+model|test\s+infrastructure)\b/giu,
+    reason: 'Current authorities must state the no-automated-test policy directly.',
+    allowExplicitProhibition: true,
+  },
+  {
+    ruleId: 'RESIDUE_BLANKET_BROWSER_HMAC_REJECTION',
+    paths: ['docs/architecture/SOURCE_ADAPTER_ADR.md'],
+    pattern:
+      /(?:reject|forbid|prohibit)[^\n]{0,140}\bbrowser[- ]?HMAC\b|\bbrowser[- ]?HMAC\b[^\n]{0,140}(?:reject|forbid|prohibit)/giu,
+    reason:
+      'The approved tracked compatibility signer must be owned only by src/api/legacyWebCompatibility.ts, not rejected wholesale.',
+  },
+  {
+    ruleId: 'RESIDUE_RAW_PRODUCT_API_VISUAL_EXAMPLE',
+    paths: ['docs/ui/CHESSBOARD_COMPONENT_API.md'],
+    pattern:
+      /#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})\b|\b(?:rgb|rgba|hsl|hsla|hwb|lab|lch|oklab|oklch|color|color-mix)\s*\(|\b(?:lightSquare|darkSquare|coordinates|selected|legalTarget|legalCapture|lastMove|check|hover|focus|border|radius|shadow)\s*:\s*['"](?!var\()[^'"]+['"]/giu,
+    reason: 'Product-facing board API examples must use project token references.',
+  },
+  {
+    ruleId: 'RESIDUE_ACTIVE_TOOLCHAIN_PHASE_HISTORY',
+    paths: ['docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md'],
+    pattern:
+      /\b(?:F0[A-Z0-9_]*|F1[A-Z0-9_]*|F2[A-Z0-9_]*|F3[A-Z0-9_]*|starting\s+SHA|starting\s+baseline|accepted\s+phase\s+sequence|successor\s+phase|historical\s+debt)\b/giu,
+    reason: 'The active toolchain authority must contain current state only.',
   },
   {
     ruleId: 'RESIDUE_CURRENT_API_AUTHORITY_PATH',
@@ -162,8 +206,9 @@ const activeAuthorityConsistencyRules = [
   {
     ruleId: 'RESIDUE_STALE_PRODUCT_UI_GATE',
     pattern:
-      /\bPRODUCT_UI_MIGRATION_READY\b|\bP1[^\n]{0,80}\b(?:remains?\s+)?blocked\b|\bproduct UI[^\n]{0,80}\b(?:not started|remains?\s+blocked)\b/giu,
-    reason: 'Current authority must use PRODUCT_UI_DEVELOPMENT_BASELINE_PASS.',
+      /\b(?:PRODUCT_UI_MIGRATION_READY|PRODUCT_UI_DEVELOPMENT_BASELINE_PASS|COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS|COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW)\b|\bP1[^\n]{0,80}\b(?:remains?\s+)?blocked\b|\bproduct UI[^\n]{0,80}\b(?:not started|remains?\s+blocked)\b/giu,
+    reason: 'Current authority must use the final page-design status and gate.',
+    allowExplicitProhibition: true,
   },
   {
     ruleId: 'RESIDUE_IMPLEMENTED_OWNER_MARKED_FUTURE',
@@ -230,6 +275,17 @@ const files = listFiles(context, {
 })
 
 for (const file of files) {
+  if (obsoleteArchitecturePolicy.forbiddenActiveAuthorityPaths.includes(file)) {
+    addFinding(context, {
+      ruleId: 'RESIDUE_FORBIDDEN_ACTIVE_AUTHORITY_DOCUMENT',
+      file,
+      line: 1,
+      excerpt: file,
+      reason: 'A deleted phase-history authority document has been reintroduced.',
+      remediationOwner: 'active-authority-governance',
+    })
+  }
+
   const text = readTextFile(context, file)
 
   if (text === null) {

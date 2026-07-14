@@ -1,9 +1,10 @@
 # Theme System Specification
 
-| Field   | Value                                                |
-| ------- | ---------------------------------------------------- |
-| Version | 1.1.0                                                |
-| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
+| Field   | Value                                                       |
+| ------- | ----------------------------------------------------------- |
+| Version | 1.2.0                                                       |
+| Status  | `ACTIVE_PAGE_DESIGN_AUTHORITY`                              |
+| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
 
 ## Purpose
 
@@ -87,8 +88,9 @@ Feature code must not create raw color values, parallel token registries, litera
 ```json
 {
   "document": "theme-system-spec",
-  "version": "1.1.0",
-  "status": "COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS",
+  "version": "1.2.0",
+  "status": "ACTIVE_PAGE_DESIGN_AUTHORITY",
+  "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
   "current_theme_modes": ["light", "dark", "system"],
   "current_storage": "localStorage:themeMode",
   "current_accent_selector": false,

@@ -52,3 +52,9 @@ application shell, Axios owner, and Vite root. pnpm remains the sole package
 manager. Automated-test infrastructure remains prohibited; validation uses
 static governance, typecheck, production build, and narrow real-browser
 evidence.
+
+Product and page decisions are governed by
+`docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md` under
+`PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`. Source evidence
+does not impose an implementation phase, closure node, or mechanical migration
+sequence.
