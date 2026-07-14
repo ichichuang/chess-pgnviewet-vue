@@ -1,197 +1,855 @@
 {
-  "mirrorRoot": "docs/zh-cn",
-  "sourceRoots": [
-    "docs/architecture",
-    "docs/archive",
-    "docs/design",
-    "docs/migration",
-    "docs/product",
-    "docs/ui"
-  ],
-  "baselineCommit": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
-  "parentCommit": "7d1da65d9eebe8bb8c8b755da1c9dca00e38d898",
-  "generatedAt": "2026-07-14T12:28:50.015840+00:00",
-  "summary": {
-    "totalMirrored": 24,
-    "markdownMirrored": 21,
-    "jsonMirrored": 3,
-    "bySourceRoot": {
-      "docs/design": 19,
-      "docs/product": 5,
-      "docs/architecture": 0,
-      "docs/archive": 0,
-      "docs/migration": 0,
-      "docs/ui": 0
+    "borderlineDecisions": [
+        {
+            "approximateChineseRatio": 0.2246,
+            "chineseCharacterCount": 1092,
+            "explicitInclusionReason": "Structured documentation registry with substantially Chinese values.",
+            "inclusionDecision": "INCLUDE",
+            "sourcePath": "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json"
+        },
+        {
+            "approximateChineseRatio": 0.2278,
+            "chineseCharacterCount": 1363,
+            "explicitInclusionReason": "Structured documentation registry with substantially Chinese values.",
+            "inclusionDecision": "INCLUDE",
+            "sourcePath": "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json"
+        },
+        {
+            "approximateChineseRatio": 0.2591,
+            "chineseCharacterCount": 8721,
+            "explicitInclusionReason": "Structured documentation registry with substantially Chinese values.",
+            "inclusionDecision": "INCLUDE",
+            "sourcePath": "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json"
+        }
+    ],
+    "branch": "main",
+    "canonicalSourceRoots": [
+        "docs/architecture",
+        "docs/archive",
+        "docs/design",
+        "docs/migration",
+        "docs/product",
+        "docs/ui"
+    ],
+    "categoryCounts": {
+        "产品": 5,
+        "归档": 0,
+        "架构": 0,
+        "界面": 0,
+        "设计": 19,
+        "迁移": 0
+    },
+    "collisionResolutions": [],
+    "discoveryPolicy": "Chinese locale marker in filename, first meaningful title contains Chinese, >=200 Han characters after excluding code/paths/URLs/hashes, or substantially Chinese structured JSON/YAML registry; manual inspection for 50-199 Han chars or 5-15% Chinese content.",
+    "documents": [
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 2448 Han characters",
+            "linksRewritten": 8,
+            "linksScanned": 8,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "5e1241d1133c33be0cf0197c0936ab53a7b82056ee1865f4940ef4cb58808236",
+            "sourceTitle": "产品 Naive UI 映射",
+            "targetCategory": "设计",
+            "targetFilename": "Naive UI映射.md",
+            "targetPath": "docs/zh-cn/设计/Naive UI映射.md",
+            "targetSha256": "1b54a7cdd886b797b5eaacacb5838fa8f18f21e0e1e5d6434044b9de352d5296",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 3400 Han characters",
+            "linksRewritten": 17,
+            "linksScanned": 17,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "4ea7202f85ed53a0b270843470faa8bb72b095d0602c1a70746ec865cebc4e1c",
+            "sourceTitle": "产品 UI 实施交接",
+            "targetCategory": "设计",
+            "targetFilename": "UI实现交接.md",
+            "targetPath": "docs/zh-cn/设计/UI实现交接.md",
+            "targetSha256": "437308bd9cc68a25c0ae59f793ef84343ad705ddb4f4b80dfab04289bb212af3",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 5181 Han characters",
+            "linksRewritten": 24,
+            "linksScanned": 28,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "475d7eeb3f6a7f6a12cda162714b0269745a521340978f6eeb1456fdd844e81a",
+            "sourceTitle": "开赛了产品 UI 设计系统",
+            "targetCategory": "设计",
+            "targetFilename": "UI设计系统.md",
+            "targetPath": "docs/zh-cn/设计/UI设计系统.md",
+            "targetSha256": "d04dff8f0714d43b01fec9a7bebd159bf43f10541a4ef9f61c9c2a12eb8a0023",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 2315 Han characters",
+            "linksRewritten": 24,
+            "linksScanned": 26,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "491ca8d665427a738b3d984adbb41327b68e1318eaca3110f40c0c11eaafa470",
+            "sourceTitle": "开赛了产品逐页 UI 设计文档索引",
+            "targetCategory": "设计",
+            "targetFilename": "UI设计索引.md",
+            "targetPath": "docs/zh-cn/设计/UI设计索引.md",
+            "targetSha256": "4b855fb6128c9b214337b048cbd210bcb3517dee7c62e8939f8ebc4f17dfeecb",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 6473 Han characters",
+            "linksRewritten": 22,
+            "linksScanned": 22,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "4db3894348b25b6dec03837f430d65fb0b816a8fef00e7c37ae296ab8f000ec7",
+            "sourceTitle": "开赛了产品全局交互规范",
+            "targetCategory": "设计",
+            "targetFilename": "全局交互规范.md",
+            "targetPath": "docs/zh-cn/设计/全局交互规范.md",
+            "targetSha256": "26773ecb3b95703ff9f1988bd9cb7e5aaecf6e199432f4edce6f2ce260f691f3",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 3791 Han characters",
+            "linksRewritten": 27,
+            "linksScanned": 27,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "d17f631c784e2e85790e4ec1b5715901e40cd1804e86b46dd197b3092e5c4134",
+            "sourceTitle": "开赛了产品全局布局规范",
+            "targetCategory": "设计",
+            "targetFilename": "全局布局规范.md",
+            "targetPath": "docs/zh-cn/设计/全局布局规范.md",
+            "targetSha256": "508566ac8d09534fcb76ca00268a4537c86254dcb9012086b61348bf88cb0341",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 7397 Han characters",
+            "linksRewritten": 16,
+            "linksScanned": 16,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "61081a806c8a874f3c1157747a8de14ac22a7251cac9c1048584cbe7b15dc974",
+            "sourceTitle": "开赛了产品全局状态规范",
+            "targetCategory": "设计",
+            "targetFilename": "全局状态规范.md",
+            "targetPath": "docs/zh-cn/设计/全局状态规范.md",
+            "targetSha256": "23b33986254b174f9e5edf66993157c1ff1622bf48ca9f2844cefe840f16b182",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 3904 Han characters",
+            "linksRewritten": 24,
+            "linksScanned": 26,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "6ecfd3c6131482263e88178d609888705676757d9b6acbd7cf4de5640f2d362a",
+            "sourceTitle": "开赛了产品响应式规范",
+            "targetCategory": "设计",
+            "targetFilename": "响应式规范.md",
+            "targetPath": "docs/zh-cn/设计/响应式规范.md",
+            "targetSha256": "1e978cb47bb19d2bdb5c89da2bf3535201195c88813ee00a475d862ebe2b4c36",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 4763 Han characters",
+            "linksRewritten": 17,
+            "linksScanned": 17,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "fbe6cbe2ed6e8053b964e1bf97a9b0e702155e2cf3571b7cfe1b864029d20ee0",
+            "sourceTitle": "产品实现纠正清单",
+            "targetCategory": "设计",
+            "targetFilename": "实现修正待办清单.md",
+            "targetPath": "docs/zh-cn/设计/实现修正待办清单.md",
+            "targetSha256": "c41675ec688fe477cdcc8123ce3ebc88dc2e41985d4c7def9c768f2c507a2470",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 2494 Han characters",
+            "linksRewritten": 36,
+            "linksScanned": 36,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "9b3fef7d2379fe68d3e613cb45c8d8670ad8d6eade0f3f2e82efe9ef0bc5b504",
+            "sourceTitle": "开赛了产品设计表面清单",
+            "targetCategory": "设计",
+            "targetFilename": "屏幕清单.md",
+            "targetPath": "docs/zh-cn/设计/屏幕清单.md",
+            "targetSha256": "87d6537d13b7b1c75ee2878055f52cfe9af5ef1b2fa7d81ad18983a3bda293b1",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 4775 Han characters",
+            "linksRewritten": 16,
+            "linksScanned": 16,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "52e8cb85fdfdf09a21c69612fa94126f93dfd4f7dc8f7d1a59a6228ad711ca81",
+            "sourceTitle": "产品组件责任规范",
+            "targetCategory": "设计",
+            "targetFilename": "组件职责规范.md",
+            "targetPath": "docs/zh-cn/设计/组件职责规范.md",
+            "targetSha256": "38d25d9f648c20926e073eb78f4db13baf9aae8f6dbfa976f1fb82c06d2bca8d",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 8093 Han characters",
+            "linksRewritten": 19,
+            "linksScanned": 19,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "3ecffc2425808867bf8546bc4ebdd6761a0e18e93e65fc96564c615b58c9e102",
+            "sourceTitle": "开赛了产品共用覆盖层与对话框规范",
+            "targetCategory": "设计",
+            "targetFilename": "通用浮层与对话框规范.md",
+            "targetPath": "docs/zh-cn/设计/通用浮层与对话框规范.md",
+            "targetSha256": "d2e543e498fcc5aade97a41d073002aa18ab46871b148fdfee92d8a9f3fa5eaf",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 4389 Han characters",
+            "linksRewritten": 12,
+            "linksScanned": 12,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/pages/COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "4cc4913adaf170c5d9f96e0732e99f5951e6b7d7d87f34cf6512c0724d721fbe",
+            "sourceTitle": "开赛了兼容入口与不可用表面设计规范",
+            "targetCategory": "设计",
+            "targetFilename": "兼容性与不可用界面规范.md",
+            "targetPath": "docs/zh-cn/设计/页面/兼容性与不可用界面规范.md",
+            "targetSha256": "32b4b473a3a6c983a5f6ee0accd801e900be2987dfe77563ed7425cc6d8f3a73",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 5059 Han characters",
+            "linksRewritten": 12,
+            "linksScanned": 12,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "169a9e116921e0dc12777e7436597ee3363310d3456a2e626c37068e70899b1d",
+            "sourceTitle": "赛事列表页规范",
+            "targetCategory": "设计",
+            "targetFilename": "比赛列表页规范.md",
+            "targetPath": "docs/zh-cn/设计/页面/比赛列表页规范.md",
+            "targetSha256": "a82b26adc58d0970aa94b9dc37f0d35621e9865e74bbc879c25f3401bd83767b",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 7412 Han characters",
+            "linksRewritten": 12,
+            "linksScanned": 12,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "90a01cc6f5c2078c925771866c446adbd89ed96034b1954836e9c6a6dfa8e615",
+            "sourceTitle": "赛事详情页规范",
+            "targetCategory": "设计",
+            "targetFilename": "比赛详情页规范.md",
+            "targetPath": "docs/zh-cn/设计/页面/比赛详情页规范.md",
+            "targetSha256": "ff1c3f8af9a704a826832a3028dfc0ed4c2ae786fce9d20e8c9f150f920aa8b1",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 4096 Han characters",
+            "linksRewritten": 13,
+            "linksScanned": 13,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "LOGIN_PAGE_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/pages/LOGIN_PAGE_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "b954bf4ddb296e9b6f83661e05efadfa4acd2af66a595857d797dc954f2c150a",
+            "sourceTitle": "开赛了登录页设计规范",
+            "targetCategory": "设计",
+            "targetFilename": "登录页规范.md",
+            "targetPath": "docs/zh-cn/设计/页面/登录页规范.md",
+            "targetSha256": "3df82111198cedd6d6e6e87e84b2e1652cab0457d29b383e544c18a6ad58f864",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 14031 Han characters",
+            "linksRewritten": 27,
+            "linksScanned": 28,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "03a8cab4065c4e73c61bf8aa7ba2ef7cf8a3b02f050d108ffcc41254d7c1ea6c",
+            "sourceTitle": "开赛了统一工作区页面规范",
+            "targetCategory": "设计",
+            "targetFilename": "统一工作区页规范.md",
+            "targetPath": "docs/zh-cn/设计/页面/统一工作区页规范.md",
+            "targetSha256": "f575235ca03d3a9f4dce4508cff66b38000c2d122da21cae6c4c854227c9ba09",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 4369 Han characters",
+            "linksRewritten": 12,
+            "linksScanned": 12,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "SETTINGS_SURFACE_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/pages/SETTINGS_SURFACE_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "a173db8f106ab3333dfe58495f53cc3363c70a246665210eabdf5d0d26271666",
+            "sourceTitle": "开赛了设置表面设计规范",
+            "targetCategory": "设计",
+            "targetFilename": "设置界面规范.md",
+            "targetPath": "docs/zh-cn/设计/页面/设置界面规范.md",
+            "targetSha256": "da476e0cdd3553e6c316b5b32d949645d7efcfda5671eec22372ca11dbbc3c97",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "设计",
+            "detectionReason": "filename contains Chinese locale marker; 7380 Han characters",
+            "linksRewritten": 20,
+            "linksScanned": 20,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "VENUE_DISPLAY_PAGE_SPEC.zh-CN.md",
+            "sourcePath": "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md",
+            "sourceRoot": "docs/design",
+            "sourceSha256": "84fba5c07d7330acef1746f8bf945eb41311c2181ce1ec986d8d59b936efca9a",
+            "sourceTitle": "开赛了场外大屏页设计规范",
+            "targetCategory": "设计",
+            "targetFilename": "赛场展示页规范.md",
+            "targetPath": "docs/zh-cn/设计/页面/赛场展示页规范.md",
+            "targetSha256": "eb5bae81798368791a9dd1c8f46eb2527fce2453a03cc426014a8036fc46fbba",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": false,
+            "classification": "产品",
+            "detectionReason": "structured registry: 1092 Han value chars (22.46%)",
+            "linksRewritten": 0,
+            "linksScanned": 0,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".json",
+            "sourceFilename": "PRODUCT_INFORMATION_ARCHITECTURE.json",
+            "sourcePath": "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+            "sourceRoot": "docs/product",
+            "sourceSha256": "39761a2ced8a52b5d47d892192ec2a7d7bd8e1f4955021b920bfa288815677db",
+            "sourceTitle": "",
+            "targetCategory": "产品",
+            "targetFilename": "产品信息架构.json",
+            "targetPath": "docs/zh-cn/产品/产品信息架构.json",
+            "targetSha256": "39761a2ced8a52b5d47d892192ec2a7d7bd8e1f4955021b920bfa288815677db",
+            "transformation": "BYTE_IDENTICAL_JSON_COPY"
+        },
+        {
+            "canonicalNoticePresent": false,
+            "classification": "产品",
+            "detectionReason": "structured registry: 1363 Han value chars (22.78%)",
+            "linksRewritten": 0,
+            "linksScanned": 0,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".json",
+            "sourceFilename": "PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+            "sourcePath": "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+            "sourceRoot": "docs/product",
+            "sourceSha256": "bc5037de7400814e3fb9b58ec3eb83df15a3d3f78de98d50c904c57b56e6fa27",
+            "sourceTitle": "",
+            "targetCategory": "产品",
+            "targetFilename": "产品模式与能力矩阵.json",
+            "targetPath": "docs/zh-cn/产品/产品模式与能力矩阵.json",
+            "targetSha256": "bc5037de7400814e3fb9b58ec3eb83df15a3d3f78de98d50c904c57b56e6fa27",
+            "transformation": "BYTE_IDENTICAL_JSON_COPY"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "产品",
+            "detectionReason": "filename contains Chinese locale marker; 11023 Han characters",
+            "linksRewritten": 4,
+            "linksScanned": 4,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+            "sourcePath": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+            "sourceRoot": "docs/product",
+            "sourceSha256": "ac94f68a1a643b63d325639f92313e1c092f508ad5dd6a429c9247be2e8f55d0",
+            "sourceTitle": "开赛了融合产品全量需求与中文设计蓝图",
+            "targetCategory": "产品",
+            "targetFilename": "产品设计蓝图.md",
+            "targetPath": "docs/zh-cn/产品/产品设计蓝图.md",
+            "targetSha256": "91a9658d6a98a489d9d7bdd5028813aff42fe2d4e6f76ebba5da0a8a71dec082",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": true,
+            "classification": "产品",
+            "detectionReason": "filename contains Chinese locale marker; 1181 Han characters",
+            "linksRewritten": 1,
+            "linksScanned": 1,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".md",
+            "sourceFilename": "OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+            "sourcePath": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+            "sourceRoot": "docs/product",
+            "sourceSha256": "a50e04b3211c1cf46a0b0dd0a740b211e63859de1efe229c198d096852d3a547",
+            "sourceTitle": "产品所有者需求基线",
+            "targetCategory": "产品",
+            "targetFilename": "产品负责人需求基线.md",
+            "targetPath": "docs/zh-cn/产品/产品负责人需求基线.md",
+            "targetSha256": "15c6bbfdf6d3a0c454838564c1979529bda54b8fc835d546a402597bb90d0389",
+            "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+        },
+        {
+            "canonicalNoticePresent": false,
+            "classification": "产品",
+            "detectionReason": "structured registry: 8721 Han value chars (25.91%)",
+            "linksRewritten": 0,
+            "linksScanned": 0,
+            "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+            "relativeLinksValidated": true,
+            "sourceExtension": ".json",
+            "sourceFilename": "PRODUCT_REQUIREMENT_TRACEABILITY.json",
+            "sourcePath": "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+            "sourceRoot": "docs/product",
+            "sourceSha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6",
+            "sourceTitle": "",
+            "targetCategory": "产品",
+            "targetFilename": "产品需求可追溯性.json",
+            "targetPath": "docs/zh-cn/产品/产品需求可追溯性.json",
+            "targetSha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6",
+            "transformation": "BYTE_IDENTICAL_JSON_COPY"
+        }
+    ],
+    "excludedCandidates": [
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/API_BOUNDARY_ADR.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".json",
+            "sourcePath": "docs/architecture/FOUNDATION_READINESS_MATRIX.json"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/NAIVE_UI_THEME_PROVIDER_BASELINE.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/PERSISTENCE_ADR.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/SOURCE_ADAPTER_ADR.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/TECH_STACK_DECISION.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/TOKEN_AND_THEME_ARCHITECTURE_BASELINE.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".json",
+            "sourcePath": "docs/architecture/WEB_API_CONTRACT_COVERAGE_MATRIX.json"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".json",
+            "sourcePath": "docs/architecture/WEB_API_ENDPOINT_INVENTORY.json"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".json",
+            "sourcePath": "docs/architecture/WEB_API_READINESS_MATRIX.json"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/WEB_API_SOURCE_AUTHORITY.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".json",
+            "sourcePath": "docs/migration/CAPABILITY_MATRIX.json"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".json",
+            "sourcePath": "docs/migration/DEPENDENCY_VERSION_BASELINE.json"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".json",
+            "sourcePath": "docs/migration/DOCUMENT_INVENTORY.json"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/migration/SOURCE_PROVENANCE.md"
+        },
+        {
+            "approximateChineseRatio": 0.004,
+            "chineseCharacterCount": 24,
+            "exclusionReason": "Markdown file with only 24 Han characters (0.40%); below inclusion threshold.",
+            "extension": ".md",
+            "sourcePath": "docs/product/PRODUCT_DEFINITION.md"
+        },
+        {
+            "approximateChineseRatio": 0.0021,
+            "chineseCharacterCount": 18,
+            "exclusionReason": "Markdown file with only 18 Han characters (0.21%); below inclusion threshold.",
+            "extension": ".md",
+            "sourcePath": "docs/product/WORKSPACE_MODES.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/ACCESSIBILITY_SPEC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/CHESSBOARD_COMPONENT_API.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/COMPONENT_SYSTEM_SPEC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0017,
+            "chineseCharacterCount": 6,
+            "exclusionReason": "Markdown file with only 6 Han characters (0.17%); below inclusion threshold.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/I18N_SPEC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/LAYOUT_SYSTEM_SPEC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0011,
+            "chineseCharacterCount": 6,
+            "exclusionReason": "Markdown file with only 6 Han characters (0.11%); below inclusion threshold.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/PAGE_STYLE_SPEC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/PERSISTENCE_RECOVERY_SPEC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/RESPONSIVE_SCREEN_SPEC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0,
+            "chineseCharacterCount": 0,
+            "exclusionReason": "No Chinese human-readable content detected.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/THEME_SYSTEM_SPEC.md"
+        },
+        {
+            "approximateChineseRatio": 0.0005,
+            "chineseCharacterCount": 3,
+            "exclusionReason": "Markdown file with only 3 Han characters (0.05%); below inclusion threshold.",
+            "extension": ".md",
+            "sourcePath": "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+        }
+    ],
+    "extensionCounts": {
+        ".json": 3,
+        ".md": 21
+    },
+    "firstCorrectionCommit": "97080beb437db65b1dfd83371d3dba9a6db5eec9",
+    "firstMirrorCommit": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
+    "generatedAt": "2026-07-14T13:13:22.845522+00:00",
+    "linkValidation": {
+        "canonicalLinksRewritten": 70,
+        "externalLinksPreserved": 0,
+        "fragmentsValidated": 10,
+        "invalidFragments": 0,
+        "markdownFilesValidated": 27,
+        "mirrorLinksRewritten": 387,
+        "missingTargets": 0,
+        "pureAnchorLinksValidated": 0,
+        "relativeLinksScanned": 457,
+        "repositoryEscapeAttempts": 0,
+        "rootRelativeLinksPreserved": 0,
+        "totalLinksScanned": 457,
+        "unresolvedRelativeLinks": 0
+    },
+    "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+    "repository": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "schemaVersion": "1.1.0",
+    "sourceCommit": "97080beb437db65b1dfd83371d3dba9a6db5eec9",
+    "supportFiles": [
+        {
+            "path": "docs/zh-cn/说明.md",
+            "purpose": "non-authoritative navigation or machine mapping support",
+            "sha256": "4717a8c91f7219d07d21f86ee74cb523cb8968ed803130c281353599980dec8e"
+        },
+        {
+            "path": "docs/zh-cn/中文文档总索引.md",
+            "purpose": "non-authoritative navigation or machine mapping support",
+            "sha256": "1923ecfa9bffb84289e2409375d63144100c5c6ec8ad2491d134c2cea1c93035"
+        },
+        {
+            "path": "docs/zh-cn/中文文档映射.json",
+            "purpose": "non-authoritative navigation or machine mapping support",
+            "sha256": "a5ad946d0042b9074a0253d0142cfb5be6a8ca248ff0f69de8355b25db63281c"
+        },
+        {
+            "path": "docs/zh-cn/架构/说明.md",
+            "purpose": "non-authoritative navigation or machine mapping support",
+            "sha256": "484755a515f36bceb31cb4772c3dd219b2b327bd5c3c2b3e4b5c98f4286b0c90"
+        },
+        {
+            "path": "docs/zh-cn/归档/说明.md",
+            "purpose": "non-authoritative navigation or machine mapping support",
+            "sha256": "aca192ddfea2271998a7eec4ea736d2be76236817a976f81968fa4762a6b3b66"
+        },
+        {
+            "path": "docs/zh-cn/迁移/说明.md",
+            "purpose": "non-authoritative navigation or machine mapping support",
+            "sha256": "43661a7aa5783acb34b18fff9d24069bd9dd411e36b4679f28c7c21195693347"
+        },
+        {
+            "path": "docs/zh-cn/界面/说明.md",
+            "purpose": "non-authoritative navigation or machine mapping support",
+            "sha256": "224db2c19ebc99053e00692ac502067d27e1253f6fe43837cf7bf4393baafd3e"
+        }
+    ],
+    "totals": {
+        "borderlineIncluded": 3,
+        "designDocuments": 19,
+        "emptyCategories": 4,
+        "excludedCandidates": 35,
+        "includedDocuments": 24,
+        "invalidFragments": 0,
+        "jsonDocuments": 3,
+        "linksRewritten": 363,
+        "linksScanned": 457,
+        "markdownDocuments": 21,
+        "nameCollisions": 0,
+        "pageDocuments": 7,
+        "productDocuments": 5,
+        "scannedCandidates": 59,
+        "supportFiles": 7,
+        "trackedFilesUnderMirror": 31,
+        "unresolvedRelativeLinks": 0
     }
-  },
-  "mappings": [
-    {
-      "source_path": "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/通用浮层与对话框规范.md",
-      "chinese_filename": "通用浮层与对话框规范.md",
-      "source_sha256": "3ecffc2425808867bf8546bc4ebdd6761a0e18e93e65fc96564c615b58c9e102",
-      "target_sha256": "b5eaa6ed0cdb650e948f3fa9cd6133851fa6f856811efe061c6434c9b740d64c"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/组件职责规范.md",
-      "chinese_filename": "组件职责规范.md",
-      "source_sha256": "52e8cb85fdfdf09a21c69612fa94126f93dfd4f7dc8f7d1a59a6228ad711ca81",
-      "target_sha256": "7cf7485ac60cec8378e724d5aa2f2362a427bd83ba5bf04a90b22bee1fdebe98"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/全局交互规范.md",
-      "chinese_filename": "全局交互规范.md",
-      "source_sha256": "4db3894348b25b6dec03837f430d65fb0b816a8fef00e7c37ae296ab8f000ec7",
-      "target_sha256": "0739dbed8a16088bb28e7238c6fb4439df454d426102f2d85506d696a7cc6109"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/全局布局规范.md",
-      "chinese_filename": "全局布局规范.md",
-      "source_sha256": "d17f631c784e2e85790e4ec1b5715901e40cd1804e86b46dd197b3092e5c4134",
-      "target_sha256": "1112e001dfcb3876a11725ba44a0cb0a225c0b71855bb00d2312a2ca72089097"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/全局状态规范.md",
-      "chinese_filename": "全局状态规范.md",
-      "source_sha256": "61081a806c8a874f3c1157747a8de14ac22a7251cac9c1048584cbe7b15dc974",
-      "target_sha256": "24a739b7097b6d26f444ffd24a4f8cfae341d5718955185ff71f91fea9738ce1"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/实现修正待办清单.md",
-      "chinese_filename": "实现修正待办清单.md",
-      "source_sha256": "fbe6cbe2ed6e8053b964e1bf97a9b0e702155e2cf3571b7cfe1b864029d20ee0",
-      "target_sha256": "e701a9f9339277ef29be718360404d1a49aac7c44784c4b280d74cfc3abf2900"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/Naive UI映射.md",
-      "chinese_filename": "Naive UI映射.md",
-      "source_sha256": "5e1241d1133c33be0cf0197c0936ab53a7b82056ee1865f4940ef4cb58808236",
-      "target_sha256": "84863467488838b933df5dbc02a033cd005dcda54a14a563b6d171832166cd89"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/响应式规范.md",
-      "chinese_filename": "响应式规范.md",
-      "source_sha256": "6ecfd3c6131482263e88178d609888705676757d9b6acbd7cf4de5640f2d362a",
-      "target_sha256": "6dd7b9a3f47c32477272dfe0a92f9584021de39a4b7a37acc28bf66c23dad820"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/屏幕清单.md",
-      "chinese_filename": "屏幕清单.md",
-      "source_sha256": "9b3fef7d2379fe68d3e613cb45c8d8670ad8d6eade0f3f2e82efe9ef0bc5b504",
-      "target_sha256": "59fcadf801b2e802fc2367eeb699be392e699a92d2a961f6124f4ab4a0c31c4e"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/UI设计索引.md",
-      "chinese_filename": "UI设计索引.md",
-      "source_sha256": "491ca8d665427a738b3d984adbb41327b68e1318eaca3110f40c0c11eaafa470",
-      "target_sha256": "1e1e4194e5a8a2529bcf6a62e19fa16bdf13f77f79e872ea868166fdd2912520"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/UI设计系统.md",
-      "chinese_filename": "UI设计系统.md",
-      "source_sha256": "475d7eeb3f6a7f6a12cda162714b0269745a521340978f6eeb1456fdd844e81a",
-      "target_sha256": "5129473558ccf64a7e8efd920f44c19909e5becc8e4782beb4808b172491ceab"
-    },
-    {
-      "source_path": "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/UI实现交接.md",
-      "chinese_filename": "UI实现交接.md",
-      "source_sha256": "4ea7202f85ed53a0b270843470faa8bb72b095d0602c1a70746ec865cebc4e1c",
-      "target_sha256": "4920f8ba4008afc524a942e908a5ca8caf51d7c81c9ed99fe94a4010e82d29fb"
-    },
-    {
-      "source_path": "docs/design/pages/COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/页面/兼容性与不可用界面规范.md",
-      "chinese_filename": "兼容性与不可用界面规范.md",
-      "source_sha256": "4cc4913adaf170c5d9f96e0732e99f5951e6b7d7d87f34cf6512c0724d721fbe",
-      "target_sha256": "f1bc0ae5d76669c5ce771cd3a3464b58870b912953d3be5a5b9a80abdff1b482"
-    },
-    {
-      "source_path": "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/页面/比赛详情页规范.md",
-      "chinese_filename": "比赛详情页规范.md",
-      "source_sha256": "90a01cc6f5c2078c925771866c446adbd89ed96034b1954836e9c6a6dfa8e615",
-      "target_sha256": "7fba8ceb470702be735ff2be802d926efb581559eed5576ec4465265f8fb7e2e"
-    },
-    {
-      "source_path": "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/页面/比赛列表页规范.md",
-      "chinese_filename": "比赛列表页规范.md",
-      "source_sha256": "169a9e116921e0dc12777e7436597ee3363310d3456a2e626c37068e70899b1d",
-      "target_sha256": "d6d471d6722c833ae7e2fe196df9f47ed39c089b8784df63f40c5702980038f1"
-    },
-    {
-      "source_path": "docs/design/pages/LOGIN_PAGE_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/页面/登录页规范.md",
-      "chinese_filename": "登录页规范.md",
-      "source_sha256": "b954bf4ddb296e9b6f83661e05efadfa4acd2af66a595857d797dc954f2c150a",
-      "target_sha256": "df81b4166712f2f0f486ac60ba541f0f788c45b784cbdbc00efbb5cc179e061b"
-    },
-    {
-      "source_path": "docs/design/pages/SETTINGS_SURFACE_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/页面/设置界面规范.md",
-      "chinese_filename": "设置界面规范.md",
-      "source_sha256": "a173db8f106ab3333dfe58495f53cc3363c70a246665210eabdf5d0d26271666",
-      "target_sha256": "24c3e7f7c0d101493afed85855e165fb6f6bb0a15b95d1edbafdb4514674b58e"
-    },
-    {
-      "source_path": "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/页面/统一工作区页规范.md",
-      "chinese_filename": "统一工作区页规范.md",
-      "source_sha256": "03a8cab4065c4e73c61bf8aa7ba2ef7cf8a3b02f050d108ffcc41254d7c1ea6c",
-      "target_sha256": "4f444b6f636741ad71ae8c7c77984654a49b382b65152d95b13ae2e27e496cc2"
-    },
-    {
-      "source_path": "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md",
-      "target_path": "docs/zh-cn/设计/页面/赛场展示页规范.md",
-      "chinese_filename": "赛场展示页规范.md",
-      "source_sha256": "84fba5c07d7330acef1746f8bf945eb41311c2181ce1ec986d8d59b936efca9a",
-      "target_sha256": "bbbc8b3a97f38e405eceb3f774878a0fef9093de97d89d8fdc093ffc4b06428a"
-    },
-    {
-      "source_path": "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
-      "target_path": "docs/zh-cn/产品/产品负责人需求基线.md",
-      "chinese_filename": "产品负责人需求基线.md",
-      "source_sha256": "a50e04b3211c1cf46a0b0dd0a740b211e63859de1efe229c198d096852d3a547",
-      "target_sha256": "5140a10185cfa1c74042df556a0a68303fd64b182590e98c95b5cb445a2bf3d9"
-    },
-    {
-      "source_path": "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
-      "target_path": "docs/zh-cn/产品/产品设计蓝图.md",
-      "chinese_filename": "产品设计蓝图.md",
-      "source_sha256": "ac94f68a1a643b63d325639f92313e1c092f508ad5dd6a429c9247be2e8f55d0",
-      "target_sha256": "67f040bb5685bb2cacc4d56cda03a5c5339e83195d5c3da87de97aefd07e97a0"
-    },
-    {
-      "source_path": "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
-      "target_path": "docs/zh-cn/产品/产品信息架构.json",
-      "chinese_filename": "产品信息架构.json",
-      "source_sha256": "39761a2ced8a52b5d47d892192ec2a7d7bd8e1f4955021b920bfa288815677db",
-      "target_sha256": "39761a2ced8a52b5d47d892192ec2a7d7bd8e1f4955021b920bfa288815677db"
-    },
-    {
-      "source_path": "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
-      "target_path": "docs/zh-cn/产品/产品模式与能力矩阵.json",
-      "chinese_filename": "产品模式与能力矩阵.json",
-      "source_sha256": "bc5037de7400814e3fb9b58ec3eb83df15a3d3f78de98d50c904c57b56e6fa27",
-      "target_sha256": "bc5037de7400814e3fb9b58ec3eb83df15a3d3f78de98d50c904c57b56e6fa27"
-    },
-    {
-      "source_path": "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
-      "target_path": "docs/zh-cn/产品/产品需求可追溯性.json",
-      "chinese_filename": "产品需求可追溯性.json",
-      "source_sha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6",
-      "target_sha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6"
-    }
-  ]
 }

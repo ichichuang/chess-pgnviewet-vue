@@ -1,0 +1,475 @@
+{
+  "authorizedWriteScope": [
+    "docs/zh-cn/**",
+    ".ai/reports/CHINESE_DOCUMENT_READING_MIRROR_FINAL_CLOSURE_REPORT.json"
+  ],
+  "branch": "main",
+  "canonicalSourceRoots": [
+    "docs/architecture",
+    "docs/archive",
+    "docs/design",
+    "docs/migration",
+    "docs/product",
+    "docs/ui"
+  ],
+  "changedFiles": [
+    ".ai/reports/CHINESE_DOCUMENT_READING_MIRROR_FINAL_CLOSURE_REPORT.json",
+    "docs/zh-cn/中文文档总索引.md",
+    "docs/zh-cn/中文文档映射.json",
+    "docs/zh-cn/产品/产品信息架构.json",
+    "docs/zh-cn/产品/产品模式与能力矩阵.json",
+    "docs/zh-cn/产品/产品设计蓝图.md",
+    "docs/zh-cn/产品/产品负责人需求基线.md",
+    "docs/zh-cn/产品/产品需求可追溯性.json",
+    "docs/zh-cn/归档/说明.md",
+    "docs/zh-cn/架构/说明.md",
+    "docs/zh-cn/界面/说明.md",
+    "docs/zh-cn/设计/Naive UI映射.md",
+    "docs/zh-cn/设计/UI实现交接.md",
+    "docs/zh-cn/设计/UI设计系统.md",
+    "docs/zh-cn/设计/UI设计索引.md",
+    "docs/zh-cn/设计/全局交互规范.md",
+    "docs/zh-cn/设计/全局布局规范.md",
+    "docs/zh-cn/设计/全局状态规范.md",
+    "docs/zh-cn/设计/响应式规范.md",
+    "docs/zh-cn/设计/实现修正待办清单.md",
+    "docs/zh-cn/设计/屏幕清单.md",
+    "docs/zh-cn/设计/组件职责规范.md",
+    "docs/zh-cn/设计/通用浮层与对话框规范.md",
+    "docs/zh-cn/设计/页面/兼容性与不可用界面规范.md",
+    "docs/zh-cn/设计/页面/比赛列表页规范.md",
+    "docs/zh-cn/设计/页面/比赛详情页规范.md",
+    "docs/zh-cn/设计/页面/登录页规范.md",
+    "docs/zh-cn/设计/页面/统一工作区页规范.md",
+    "docs/zh-cn/设计/页面/设置界面规范.md",
+    "docs/zh-cn/设计/页面/赛场展示页规范.md",
+    "docs/zh-cn/说明.md",
+    "docs/zh-cn/迁移/说明.md"
+  ],
+  "confirmedRemainingDefects": [
+    "Each of the 21 Markdown mirror notices lacked a clickable relative link to the exact canonical source document.",
+    "Each of the 21 Markdown mirror notices lacked the mirror source baseline SHA.",
+    "docs/zh-cn/中文文档总索引.md lacked required complete counts, links, metadata, descriptions, source hashes, transformation types, link statistics, support-file statistics, and empty-category navigation.",
+    "docs/zh-cn/中文文档映射.json did not implement required deterministic schema version 1.1.0.",
+    "The mapping lacked complete document metadata, transformation metadata, excluded candidate records, borderline decisions, support-file records, and link-validation evidence.",
+    "The current correction report was incomplete and lacked the final verdict and full validation evidence.",
+    "The 4 category explanation files lacked the exact source baseline, canonical root, and return-to-index link.",
+    "docs/zh-cn/说明.md lacked complete discovery statistics, clickable navigation, AI/implementation authority warning, support-file count, total tracked-file count, and link-validation result.",
+    "Full relative-link and fragment validation had not been independently proven.",
+    "Idempotency had not been independently proven.",
+    "Full governance command results had not been recorded in a final immutable report."
+  ],
+  "correctionsApplied": [
+    "Regenerated all 21 Markdown mirrors with the exact required notice, canonical relative link, and source baseline.",
+    "Rewrote Markdown links to mirror targets or back to canonical targets; preserved external and root-relative URLs.",
+    "Regenerated docs/zh-cn/说明.md with full counts, warnings, and navigation.",
+    "Regenerated docs/zh-cn/中文文档总索引.md with complete metadata, source hashes, and links.",
+    "Upgraded docs/zh-cn/中文文档映射.json to schema version 1.1.0 with full records.",
+    "Regenerated the 4 empty-category explanation files with baseline and return links.",
+    "Created .ai/reports/CHINESE_DOCUMENT_READING_MIRROR_FINAL_CLOSURE_REPORT.json with complete validation evidence."
+  ],
+  "countConsistencyValidation": {
+    "agreedFacts": {
+      "borderlineIncluded": 3,
+      "designDocuments": 19,
+      "emptySourceCategories": 4,
+      "excludedCandidates": 35,
+      "includedCanonicalDocuments": 24,
+      "invalidFragments": 0,
+      "jsonMirrors": 3,
+      "markdownMirrors": 21,
+      "nameCollisions": 0,
+      "pageDocuments": 7,
+      "productDocuments": 5,
+      "scannedCandidates": 59,
+      "sourceCommit": "97080beb437db65b1dfd83371d3dba9a6db5eec9",
+      "supportFiles": 7,
+      "trackedFilesUnderMirror": 31,
+      "unresolvedRelativeLinks": 0
+    },
+    "differences": 0
+  },
+  "discoveryValidation": {
+    "borderlineIncluded": 3,
+    "excludedCandidates": 35,
+    "includedDocuments": 24,
+    "nameCollisions": 0,
+    "scannedCandidates": 59,
+    "sourceDriftBlocked": false
+  },
+  "finalVerdict": "CHINESE_DOCUMENT_READING_MIRROR_FINAL_CLOSURE_PASS",
+  "firstCorrectionCommit": "97080beb437db65b1dfd83371d3dba9a6db5eec9",
+  "firstMirrorCommit": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
+  "generatedAt": "2026-07-14T13:13:22.845522+00:00",
+  "governanceValidation": [
+    {
+      "command": "mise exec -- pnpm run check:residue",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "obsolete-architecture-residue: PASS"
+    },
+    {
+      "command": "mise exec -- pnpm run check:deps",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "dependency-policy: PASS"
+    },
+    {
+      "command": "mise exec -- pnpm run check:architecture",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "architecture-boundaries: PASS"
+    },
+    {
+      "command": "mise exec -- pnpm run check:tokens",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "raw-visual-values: PASS"
+    },
+    {
+      "command": "mise exec -- pnpm run check:mocks",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "forbidden-mock-data: PASS"
+    },
+    {
+      "command": "mise exec -- pnpm run check:secrets",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "secret-patterns: PASS"
+    },
+    {
+      "command": "mise exec -- pnpm run check:copy",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "user-visible-copy: PASS"
+    },
+    {
+      "command": "mise exec -- pnpm run check:governance",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "user-visible-copy: PASS"
+    },
+    {
+      "command": "mise exec -- pnpm run format:check",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "All matched files use Prettier code style!"
+    },
+    {
+      "command": "mise exec -- pnpm run lint",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "OK"
+    },
+    {
+      "command": "mise exec -- pnpm run lint:style",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "OK"
+    },
+    {
+      "command": "mise exec -- pnpm run check:unused",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "OK"
+    },
+    {
+      "command": "mise exec -- pnpm run check:static",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "No known vulnerabilities found"
+    },
+    {
+      "command": "mise exec -- pnpm run typecheck",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "OK"
+    },
+    {
+      "command": "mise exec -- pnpm exec vite build --outDir /tmp/vite_build_test_final_closure",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "✓ built in 296ms"
+    },
+    {
+      "command": "mise exec -- pnpm run audit:prod",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "No known vulnerabilities found"
+    },
+    {
+      "command": "mise exec -- pnpm audit",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "No known vulnerabilities found"
+    },
+    {
+      "command": "mise exec -- pnpm list --depth 0",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "30 packages"
+    },
+    {
+      "command": "git diff --check",
+      "exitStatus": 0,
+      "result": "PASS",
+      "summary": "OK"
+    }
+  ],
+  "idempotencyValidation": {
+    "duplicateNotices": 0,
+    "filenameDifferences": 0,
+    "linkDifferences": 0,
+    "mappingDifferences": 0,
+    "newSuffixes": 0,
+    "secondGeneratorRunChangedFiles": 0
+  },
+  "indexValidation": {
+    "complete": true,
+    "countsAgree": true,
+    "requiredFieldsPresent": true
+  },
+  "jsonByteIntegrity": [
+    {
+      "byteIdentical": true,
+      "source": "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+      "sourceSha256": "39761a2ced8a52b5d47d892192ec2a7d7bd8e1f4955021b920bfa288815677db",
+      "target": "docs/zh-cn/产品/产品信息架构.json",
+      "targetSha256": "39761a2ced8a52b5d47d892192ec2a7d7bd8e1f4955021b920bfa288815677db"
+    },
+    {
+      "byteIdentical": true,
+      "source": "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+      "sourceSha256": "bc5037de7400814e3fb9b58ec3eb83df15a3d3f78de98d50c904c57b56e6fa27",
+      "target": "docs/zh-cn/产品/产品模式与能力矩阵.json",
+      "targetSha256": "bc5037de7400814e3fb9b58ec3eb83df15a3d3f78de98d50c904c57b56e6fa27"
+    },
+    {
+      "byteIdentical": true,
+      "source": "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+      "sourceSha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6",
+      "target": "docs/zh-cn/产品/产品需求可追溯性.json",
+      "targetSha256": "e296e0b5c4a2638764fa241714b55a291de3c3b811200a01bc1f2b111e6710a6"
+    }
+  ],
+  "linkFailures": [],
+  "linkRewriteSummary": {
+    "canonicalLinksRewritten": 9,
+    "mirrorLinksRewritten": 363,
+    "totalLinksScanned": 457
+  },
+  "linkValidation": {
+    "canonicalLinksRewritten": 70,
+    "externalLinksPreserved": 0,
+    "fragmentsValidated": 10,
+    "invalidFragments": 0,
+    "mirrorLinksRewritten": 387,
+    "missingTargets": 0,
+    "pureAnchorLinksValidated": 0,
+    "relativeLinksScanned": 457,
+    "repositoryEscapeAttempts": 0,
+    "rootRelativeLinksPreserved": 0,
+    "totalLinksScanned": 457,
+    "unresolvedRelativeLinks": 0
+  },
+  "mappingValidation": {
+    "allRequiredProperties": true,
+    "borderlineRecords": 3,
+    "deterministicOrder": true,
+    "documentRecords": 24,
+    "excludedRecords": 35,
+    "noAbsoluteLocalPaths": true,
+    "schemaVersion": "1.1.0",
+    "supportFiles": 7
+  },
+  "markdownTransformationValidation": {
+    "aggregate": {
+      "filesValidated": 21,
+      "h1Preserved": true
+    },
+    "perFile": [
+      {
+        "h1Preserved": true,
+        "sourceHash": "3ecffc2425808867bf8546bc4ebdd6761a0e18e93e65fc96564c615b58c9e102",
+        "target": "docs/zh-cn/设计/通用浮层与对话框规范.md",
+        "targetHash": "d2e543e498fcc5aade97a41d073002aa18ab46871b148fdfee92d8a9f3fa5eaf"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "52e8cb85fdfdf09a21c69612fa94126f93dfd4f7dc8f7d1a59a6228ad711ca81",
+        "target": "docs/zh-cn/设计/组件职责规范.md",
+        "targetHash": "38d25d9f648c20926e073eb78f4db13baf9aae8f6dbfa976f1fb82c06d2bca8d"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "4db3894348b25b6dec03837f430d65fb0b816a8fef00e7c37ae296ab8f000ec7",
+        "target": "docs/zh-cn/设计/全局交互规范.md",
+        "targetHash": "26773ecb3b95703ff9f1988bd9cb7e5aaecf6e199432f4edce6f2ce260f691f3"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "d17f631c784e2e85790e4ec1b5715901e40cd1804e86b46dd197b3092e5c4134",
+        "target": "docs/zh-cn/设计/全局布局规范.md",
+        "targetHash": "508566ac8d09534fcb76ca00268a4537c86254dcb9012086b61348bf88cb0341"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "61081a806c8a874f3c1157747a8de14ac22a7251cac9c1048584cbe7b15dc974",
+        "target": "docs/zh-cn/设计/全局状态规范.md",
+        "targetHash": "23b33986254b174f9e5edf66993157c1ff1622bf48ca9f2844cefe840f16b182"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "fbe6cbe2ed6e8053b964e1bf97a9b0e702155e2cf3571b7cfe1b864029d20ee0",
+        "target": "docs/zh-cn/设计/实现修正待办清单.md",
+        "targetHash": "c41675ec688fe477cdcc8123ce3ebc88dc2e41985d4c7def9c768f2c507a2470"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "5e1241d1133c33be0cf0197c0936ab53a7b82056ee1865f4940ef4cb58808236",
+        "target": "docs/zh-cn/设计/Naive UI映射.md",
+        "targetHash": "1b54a7cdd886b797b5eaacacb5838fa8f18f21e0e1e5d6434044b9de352d5296"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "6ecfd3c6131482263e88178d609888705676757d9b6acbd7cf4de5640f2d362a",
+        "target": "docs/zh-cn/设计/响应式规范.md",
+        "targetHash": "1e978cb47bb19d2bdb5c89da2bf3535201195c88813ee00a475d862ebe2b4c36"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "9b3fef7d2379fe68d3e613cb45c8d8670ad8d6eade0f3f2e82efe9ef0bc5b504",
+        "target": "docs/zh-cn/设计/屏幕清单.md",
+        "targetHash": "87d6537d13b7b1c75ee2878055f52cfe9af5ef1b2fa7d81ad18983a3bda293b1"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "491ca8d665427a738b3d984adbb41327b68e1318eaca3110f40c0c11eaafa470",
+        "target": "docs/zh-cn/设计/UI设计索引.md",
+        "targetHash": "4b855fb6128c9b214337b048cbd210bcb3517dee7c62e8939f8ebc4f17dfeecb"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "475d7eeb3f6a7f6a12cda162714b0269745a521340978f6eeb1456fdd844e81a",
+        "target": "docs/zh-cn/设计/UI设计系统.md",
+        "targetHash": "d04dff8f0714d43b01fec9a7bebd159bf43f10541a4ef9f61c9c2a12eb8a0023"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "4ea7202f85ed53a0b270843470faa8bb72b095d0602c1a70746ec865cebc4e1c",
+        "target": "docs/zh-cn/设计/UI实现交接.md",
+        "targetHash": "437308bd9cc68a25c0ae59f793ef84343ad705ddb4f4b80dfab04289bb212af3"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "4cc4913adaf170c5d9f96e0732e99f5951e6b7d7d87f34cf6512c0724d721fbe",
+        "target": "docs/zh-cn/设计/页面/兼容性与不可用界面规范.md",
+        "targetHash": "32b4b473a3a6c983a5f6ee0accd801e900be2987dfe77563ed7425cc6d8f3a73"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "90a01cc6f5c2078c925771866c446adbd89ed96034b1954836e9c6a6dfa8e615",
+        "target": "docs/zh-cn/设计/页面/比赛详情页规范.md",
+        "targetHash": "ff1c3f8af9a704a826832a3028dfc0ed4c2ae786fce9d20e8c9f150f920aa8b1"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "169a9e116921e0dc12777e7436597ee3363310d3456a2e626c37068e70899b1d",
+        "target": "docs/zh-cn/设计/页面/比赛列表页规范.md",
+        "targetHash": "a82b26adc58d0970aa94b9dc37f0d35621e9865e74bbc879c25f3401bd83767b"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "b954bf4ddb296e9b6f83661e05efadfa4acd2af66a595857d797dc954f2c150a",
+        "target": "docs/zh-cn/设计/页面/登录页规范.md",
+        "targetHash": "3df82111198cedd6d6e6e87e84b2e1652cab0457d29b383e544c18a6ad58f864"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "a173db8f106ab3333dfe58495f53cc3363c70a246665210eabdf5d0d26271666",
+        "target": "docs/zh-cn/设计/页面/设置界面规范.md",
+        "targetHash": "da476e0cdd3553e6c316b5b32d949645d7efcfda5671eec22372ca11dbbc3c97"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "03a8cab4065c4e73c61bf8aa7ba2ef7cf8a3b02f050d108ffcc41254d7c1ea6c",
+        "target": "docs/zh-cn/设计/页面/统一工作区页规范.md",
+        "targetHash": "f575235ca03d3a9f4dce4508cff66b38000c2d122da21cae6c4c854227c9ba09"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "84fba5c07d7330acef1746f8bf945eb41311c2181ce1ec986d8d59b936efca9a",
+        "target": "docs/zh-cn/设计/页面/赛场展示页规范.md",
+        "targetHash": "eb5bae81798368791a9dd1c8f46eb2527fce2453a03cc426014a8036fc46fbba"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "a50e04b3211c1cf46a0b0dd0a740b211e63859de1efe229c198d096852d3a547",
+        "target": "docs/zh-cn/产品/产品负责人需求基线.md",
+        "targetHash": "15c6bbfdf6d3a0c454838564c1979529bda54b8fc835d546a402597bb90d0389"
+      },
+      {
+        "h1Preserved": true,
+        "sourceHash": "ac94f68a1a643b63d325639f92313e1c092f508ad5dd6a429c9247be2e8f55d0",
+        "target": "docs/zh-cn/产品/产品设计蓝图.md",
+        "targetHash": "91a9658d6a98a489d9d7bdd5028813aff42fe2d4e6f76ebba5da0a8a71dec082"
+      }
+    ]
+  },
+  "mirrorDocumentCounts": {
+    "jsonMirrors": 3,
+    "markdownMirrors": 21,
+    "totalMirrored": 24
+  },
+  "noticeValidation": {
+    "duplicateNotices": 0,
+    "invalidCanonicalLinks": 0,
+    "markdownMirrorsExpected": 21,
+    "missingNotices": 0,
+    "missingSourceBaselines": 0,
+    "noticesFound": 21
+  },
+  "pageHierarchyValidation": {
+    "flattenedDuplicates": [],
+    "pageDocumentsExpected": 7,
+    "pageDocumentsFound": 7,
+    "pagePaths": [
+      "docs/zh-cn/设计/页面/兼容性与不可用界面规范.md",
+      "docs/zh-cn/设计/页面/比赛列表页规范.md",
+      "docs/zh-cn/设计/页面/比赛详情页规范.md",
+      "docs/zh-cn/设计/页面/登录页规范.md",
+      "docs/zh-cn/设计/页面/统一工作区页规范.md",
+      "docs/zh-cn/设计/页面/设置界面规范.md",
+      "docs/zh-cn/设计/页面/赛场展示页规范.md"
+    ]
+  },
+  "previousCorrectionReport": ".ai/reports/CHINESE_DOCUMENT_READING_MIRROR_CORRECTION_REPORT.json",
+  "previousExecutionReport": ".ai/reports/CHINESE_DOCUMENT_READING_MIRROR_EXECUTION_REPORT.json",
+  "prohibitedActionsAvoided": [
+    "No canonical source root files modified.",
+    "No AGENTS.md, CLAUDE.md, .ai/skills/**, src/**, routes, APIs, Stores, persistence, assets, tokens, dependencies, lockfiles, scanners, or configuration modified.",
+    "No previous mirror report modified.",
+    "No test files, fixtures, snapshots, or automated runners created.",
+    "No symlinks created.",
+    "No scanner exclusions added."
+  ],
+  "remainingRisks": [
+    "Future canonical source changes require mirror regeneration.",
+    "The mirror remains non-authoritative; implementers must continue to use original canonical paths."
+  ],
+  "reportType": "CHINESE_DOCUMENT_READING_MIRROR_FINAL_CLOSURE_REPORT",
+  "repository": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "97080beb437db65b1dfd83371d3dba9a6db5eec9",
+  "sourceIntegrity": {
+    "afterManifestSha256": "2b1c36be89ea5c79527f870fcbdbce76b4f66e48927c3e5bf6cce22e7fa1e152",
+    "beforeManifestSha256": "2b1c36be89ea5c79527f870fcbdbce76b4f66e48927c3e5bf6cce22e7fa1e152",
+    "changedCanonicalSourceFiles": [],
+    "exactEquality": true,
+    "sourceFileCount": 59
+  },
+  "startingLiveRemoteSha": "97080beb437db65b1dfd83371d3dba9a6db5eec9",
+  "startingLocalSha": "97080beb437db65b1dfd83371d3dba9a6db5eec9",
+  "startingOriginSha": "97080beb437db65b1dfd83371d3dba9a6db5eec9"
+}
