@@ -51,13 +51,10 @@ const CompetitionDetailSchema = z.object({
   act_endtime: z.string(),
   type: NullableTextDtoSchema,
   ext_catgory: NullableTextDtoSchema,
-  organizer: NullableTextDtoSchema,
   shoptitle: NullableTextDtoSchema,
   sponsor: NullableTextDtoSchema,
   description: NullableTextDtoSchema,
   act_addr: NullableTextDtoSchema,
-  act_total: NullableTextDtoSchema,
-  sign_total: NullableTextDtoSchema,
 })
 
 const CompetitionDetailEnvelopeSchema = z.object({
@@ -212,7 +209,7 @@ export function mapCompetitionDetail(raw: unknown, expectedId: string): Competit
     endTime: item.act_endtime.trim(),
     type: text(item.type),
     category: text(item.ext_catgory),
-    organizer: text(item.shoptitle) || text(item.organizer) || text(item.sponsor),
+    organizer: text(item.shoptitle) || text(item.sponsor),
     countSummary: '',
     description: text(item.description),
     address: text(item.act_addr),

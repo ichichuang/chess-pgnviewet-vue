@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { ApiClientError, requestJson } from './client'
+import { WEB_API_ENDPOINTS } from './endpoints'
 import {
   mapCompetitionDetail,
   mapCompetitionGroups,
@@ -74,6 +75,40 @@ const PairingListInputSchema = z.object({
   name: SearchSchema.default(''),
 })
 
+const CompetitionListRequestSchema = z.strictObject({
+  start: z.number().int().min(0).max(1_000_000),
+  max: z.number().int().min(1).max(100),
+  search: SearchSchema,
+  type: z.number().int().nonnegative(),
+  actflag: z.number().int().nonnegative(),
+  month: z.array(z.number().int().min(1).max(12)).max(1),
+  year: YearSchema,
+})
+
+const CompetitionDetailRequestSchema = z.strictObject({
+  id: IdentifierSchema,
+  sid: z.null(),
+})
+
+const CompetitionGroupsRequestSchema = z.strictObject({
+  hdid: IdentifierSchema,
+})
+
+const CompetitionRoundsRequestSchema = z.strictObject({
+  hdid: IdentifierSchema,
+  ticketid: IdentifierSchema,
+})
+
+const CompetitionPairingsRequestSchema = z.strictObject({
+  hdid: IdentifierSchema,
+  ticketid: IdentifierSchema,
+  round_id: IdentifierSchema,
+  st: z.number().int().min(0).max(1_000_000),
+  plen: z.number().int().min(1).max(100),
+  type: z.literal(2),
+  name: SearchSchema.optional(),
+})
+
 function invalidInput(label: string): ApiClientError {
   return new ApiClientError({
     kind: 'invalid-input',
@@ -92,10 +127,9 @@ async function fetchCompetitionList(
   signal?: AbortSignal
 ): Promise<PageResult<Competition>> {
   const normalized = parseInput(CompetitionListInputSchema, input, '赛事列表')
-  const raw = await requestJson({
-    path: '/liveproxy/GetActList',
-    signal,
-    body: {
+  const body = parseInput(
+    CompetitionListRequestSchema,
+    {
       start: normalized.start,
       max: normalized.max,
       search: normalized.search,
@@ -104,6 +138,12 @@ async function fetchCompetitionList(
       year: normalized.year,
       actflag: normalized.actflag ? Number(normalized.actflag) : 0,
     },
+    '赛事列表'
+  )
+  const raw = await requestJson({
+    path: WEB_API_ENDPOINTS.competitionList,
+    signal,
+    body,
   })
 
   return mapCompetitionList(raw)
@@ -114,10 +154,11 @@ async function fetchCompetitionDetail(
   signal?: AbortSignal
 ): Promise<CompetitionDetail> {
   const id = parseInput(IdentifierSchema, hdid, '赛事详情')
+  const body = parseInput(CompetitionDetailRequestSchema, { id, sid: null }, '赛事详情')
   const raw = await requestJson({
-    path: '/award/c-GetActDetail?token=&type=10',
+    path: WEB_API_ENDPOINTS.competitionDetail,
     signal,
-    body: { id, sid: null },
+    body,
   })
 
   return mapCompetitionDetail(raw, id)
@@ -128,10 +169,11 @@ async function fetchCompetitionGroups(
   signal?: AbortSignal
 ): Promise<CompetitionGroup[]> {
   const id = parseInput(IdentifierSchema, hdid, '赛事组别')
+  const body = parseInput(CompetitionGroupsRequestSchema, { hdid: id }, '赛事组别')
   const raw = await requestJson({
-    path: '/liveproxy/GetActGroups',
+    path: WEB_API_ENDPOINTS.competitionGroups,
     signal,
-    body: { hdid: id },
+    body,
   })
 
   return mapCompetitionGroups(raw, id)
@@ -144,10 +186,15 @@ async function fetchCompetitionRounds(
 ): Promise<CompetitionRound[]> {
   const competitionId = parseInput(IdentifierSchema, hdid, '赛事轮次')
   const groupId = parseInput(IdentifierSchema, ticketid, '赛事轮次')
+  const body = parseInput(
+    CompetitionRoundsRequestSchema,
+    { hdid: competitionId, ticketid: groupId },
+    '赛事轮次'
+  )
   const raw = await requestJson({
-    path: '/award/c-GetMatchRoundlist',
+    path: WEB_API_ENDPOINTS.competitionRounds,
     signal,
-    body: { hdid: competitionId, ticketid: groupId },
+    body,
   })
 
   return mapCompetitionRounds(raw, competitionId, groupId)
@@ -158,7 +205,7 @@ async function fetchCompetitionPairings(
   signal?: AbortSignal
 ): Promise<PageResult<CompetitionPairing>> {
   const normalized = parseInput(PairingListInputSchema, input, '赛事对阵')
-  const body: Record<string, string | number> = {
+  const requestInput: Record<string, string | number> = {
     hdid: normalized.hdid,
     ticketid: normalized.ticketid,
     round_id: normalized.roundId,
@@ -166,10 +213,11 @@ async function fetchCompetitionPairings(
     plen: normalized.pageSize,
     type: 2,
   }
-  if (normalized.name) body.name = normalized.name
+  if (normalized.name) requestInput.name = normalized.name
+  const body = parseInput(CompetitionPairingsRequestSchema, requestInput, '赛事对阵')
 
   const raw = await requestJson({
-    path: '/award/c-GetMatchPairlist',
+    path: WEB_API_ENDPOINTS.competitionPairings,
     signal,
     body,
   })
@@ -192,6 +240,13 @@ function fetchFinishedGameReplay(
 
 export const tournamentRepository = Object.freeze({
   list: fetchCompetitionList,
+  detail: fetchCompetitionDetail,
+  groups: fetchCompetitionGroups,
+  rounds: fetchCompetitionRounds,
+  pairings: fetchCompetitionPairings,
+})
+
+export const competitionDisplayRepository = Object.freeze({
   detail: fetchCompetitionDetail,
   groups: fetchCompetitionGroups,
   rounds: fetchCompetitionRounds,

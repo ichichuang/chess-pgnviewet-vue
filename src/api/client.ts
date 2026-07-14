@@ -3,6 +3,8 @@ import { z } from 'zod'
 
 import { productionApiConfig } from '@/runtime/config/productionApi'
 
+import type { WebApiEndpoint } from './endpoints'
+
 export type ApiClientErrorKind =
   | 'auth-required'
   | 'cancelled'
@@ -45,18 +47,14 @@ export class ApiClientError extends Error {
   }
 }
 
-type JsonRequestMethod = 'GET' | 'POST'
-
 export interface JsonRequestInput {
-  readonly path: string
-  readonly method?: JsonRequestMethod
-  readonly body?: unknown
+  readonly path: WebApiEndpoint
+  readonly body: unknown
   readonly signal?: AbortSignal | undefined
   readonly timeoutMs?: number
 }
 
 const JsonResponseSchema = z.unknown()
-const DEFAULT_JSON_METHOD = 'POST'
 const SENSITIVE_MESSAGE_PATTERN =
   /authorization|bearer|cookie|password|secret|stack|(?:^|[^a-z])token(?:[^a-z]|$)/iu
 
@@ -127,7 +125,7 @@ function validatedBase(base: string | undefined): string {
 function validatedTimeout(timeoutMs: number | undefined): number {
   const candidate = timeoutMs ?? productionApiConfig.requestTimeoutMs
 
-  if (!Number.isInteger(candidate) || candidate < 1 || candidate > 30_000) {
+  if (!Number.isInteger(candidate) || candidate < 3_000 || candidate > 30_000) {
     throw configurationError('Web API request timeout is invalid.')
   }
 
@@ -135,10 +133,6 @@ function validatedTimeout(timeoutMs: number | undefined): number {
 }
 
 function assertBrowserTransportAvailable(): void {
-  if (productionApiConfig.configurationIssue) {
-    throw configurationError(productionApiConfig.configurationIssue)
-  }
-
   if (productionApiConfig.browserAccess === 'cross-origin-unconfirmed') {
     throw new ApiClientError({
       kind: 'service-unavailable',
@@ -263,21 +257,21 @@ if (import.meta.hot) {
   })
 }
 
-export async function requestJson<T = unknown>(input: JsonRequestInput): Promise<T> {
+export async function requestJson(input: JsonRequestInput): Promise<unknown> {
   assertBrowserTransportAvailable()
 
   const request: AxiosRequestConfig = {
     baseURL: productionApiConfig.chessApiBase,
-    method: input.method ?? DEFAULT_JSON_METHOD,
+    method: 'POST',
     timeout: validatedTimeout(input.timeoutMs),
     url: normalizedRelativePath(input.path),
   }
 
-  if (input.body !== undefined && request.method !== 'GET') request.data = input.body
+  request.data = input.body
   if (input.signal) request.signal = input.signal
 
   const response = await httpClient.request<unknown>(request)
-  return JsonResponseSchema.parse(response.data) as T
+  return JsonResponseSchema.parse(response.data)
 }
 
 export function apiErrorMessage(error: unknown): string {

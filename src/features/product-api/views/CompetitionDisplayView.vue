@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { tournamentRepository } from '@/api/productApi'
+import { competitionDisplayRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import { resourceError } from '@/features/product-api/domain/resourceError'
@@ -18,14 +18,14 @@ const selectedRoundId = ref(routeText(route.query.round))
 const detailQuery = useQuery({
   queryKey: computed(() => productQueryKeys.displayDetail(hdid.value)),
   meta: publicQueryMeta,
-  queryFn: ({ signal }) => tournamentRepository.detail(hdid.value, signal),
+  queryFn: ({ signal }) => competitionDisplayRepository.detail(hdid.value, signal),
   enabled: computed(() => Boolean(hdid.value)),
 })
 
 const groupsQuery = useQuery({
   queryKey: computed(() => productQueryKeys.displayGroups(hdid.value)),
   meta: publicQueryMeta,
-  queryFn: ({ signal }) => tournamentRepository.groups(hdid.value, signal),
+  queryFn: ({ signal }) => competitionDisplayRepository.groups(hdid.value, signal),
   enabled: computed(() => Boolean(hdid.value)),
 })
 
@@ -34,7 +34,7 @@ const roundsQuery = useQuery({
   queryKey: computed(() => productQueryKeys.displayRounds(hdid.value, selectedGroupId.value)),
   meta: publicQueryMeta,
   queryFn: ({ signal }) =>
-    tournamentRepository.rounds(hdid.value, selectedGroupId.value, signal),
+    competitionDisplayRepository.rounds(hdid.value, selectedGroupId.value, signal),
   enabled: computed(() => Boolean(hdid.value && selectedGroupId.value)),
 })
 const rounds = computed(() => roundsQuery.data.value ?? [])
@@ -45,7 +45,7 @@ const pairingsQuery = useQuery({
   ),
   meta: publicQueryMeta,
   queryFn: ({ signal }) =>
-    tournamentRepository.pairings(
+    competitionDisplayRepository.pairings(
       {
         hdid: hdid.value,
         ticketid: selectedGroupId.value,

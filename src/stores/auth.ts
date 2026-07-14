@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 
 import { registerPrivateAuthLossHandler } from '@/api/privateAuthLifecycle'
 import { clearPrivateProductQueries } from '@/api/queryClient'
-import { clearLegacyAuthState } from '@/persistence/auth/sessionPersistence'
 import { clearPrivateWorkspaceHandoffContexts } from '@/persistence/workspace/workspaceHandoff'
 
 import { useAnalysisStore } from './analysis'
@@ -51,21 +50,18 @@ export const useAuthStore = defineStore('auth', {
       registerPrivateAuthLossHandler((message) => this.handleAuthLoss(message))
       if (this.initialized) return
 
-      clearLegacyAuthState()
       clearPrivateProductState()
       this.status = 'unavailable'
       this.lastError = null
       this.initialized = true
     },
     handleAuthLoss(message = '认证状态不可用，私有数据已清除。'): void {
-      clearLegacyAuthState()
       clearPrivateProductState()
       this.status = 'unavailable'
       this.lastError = message
       this.initialized = true
     },
     logout(): void {
-      clearLegacyAuthState()
       clearPrivateProductState()
       this.status = 'unavailable'
       this.lastError = null
