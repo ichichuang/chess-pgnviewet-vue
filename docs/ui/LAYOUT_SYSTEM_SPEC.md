@@ -1,5 +1,10 @@
 # Layout System Specification
 
+| Field   | Value                                                |
+| ------- | ---------------------------------------------------- |
+| Version | 1.1.0                                                |
+| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
+
 ## Purpose
 
 Freeze the global layout law: the app body must never be the main scroll container, every surface must fit the viewport, and each module must own its internal overflow behavior.
@@ -73,23 +78,23 @@ To prevent layout jumps when scrollbars appear:
 
 ## Resizable panels
 
-The workspace uses project-owned Vue layout adapters. A resizable-panel dependency may be selected only after an implementation gate proves it preserves this contract; it must never own product state or tokens.
+The workspace uses project-owned Vue layout components. Any later layout dependency must preserve this contract and must never own product state or tokens.
 
-| Requirement      | Rule                                                        |
-| ---------------- | ----------------------------------------------------------- |
-| Panel sizes      | Persisted in Dexie as workspace session state               |
-| Collapsed panels | Restore collapsed state after refresh                       |
-| Min/max sizes    | Enforced by adapter; never allow zero-width panels silently |
-| Keyboard resize  | Resize handles are keyboard focusable and operable          |
-| Touch            | Collapse/expand handles work with pointer and touch         |
+| Requirement      | Rule                                                                                                                                                                                                                         |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Current recovery | Only `showLeftSidebar`, `showAnalysisRegion`, `toolbarCollapsed`, `boardAlignment`, `boardOrientation`, `activeRightTab`, and `rightPgnHeightPx` are persisted by `src/persistence/workspace/workspaceLayoutPersistence.ts`. |
+| Target recovery  | Additional panel sizes or collapsed states require an approved persistence field and owner before they are treated as recoverable.                                                                                           |
+| Min/max sizes    | Enforced by the owning component; never allow zero-width panels silently.                                                                                                                                                    |
+| Keyboard resize  | Resize handles are keyboard focusable and operable.                                                                                                                                                                          |
+| Touch            | Collapse/expand controls work with pointer and touch.                                                                                                                                                                        |
 
 ### Layout adapter contract
 
-Each adapter:
+Each current or future layout control:
 
-- Accepts `defaultSize`, `minSize`, `maxSize`, `collapsible`, `collapsedSize`.
-- Emits `onResize` and `onCollapse` callbacks.
-- Reads persisted size from the layout store on mount.
+- accepts typed size and collapse inputs appropriate to its verified API;
+- emits typed resize/collapse events rather than owning product state;
+- reads only fields exposed by the owning layout store;
 - Does not cause body scroll or layout shift when panels resize.
 
 ## Board-size calculation
@@ -146,9 +151,9 @@ Only designated content modules scroll. Header, toolbar, filter, pagination, and
 
 Changing group, round, board, mode, theme, or login state must not shift the outer chrome.
 
-### R5. Panel state is recoverable
+### R5. Implemented panel state is recoverable
 
-Panel sizes and collapsed state are persisted and restored across refresh.
+Only the layout fields implemented by the current Dexie adapter are persisted and restored. Page design must not assume broader panel recovery.
 
 ### R6. Board is square and fully visible
 
@@ -158,28 +163,28 @@ The board container must calculate a square size that fits within the available 
 
 1. The no-body-scroll rule is stated and referenced by every root component contract comment.
 2. Module taxonomy and scroll-ownership rules are documented.
-3. Resizable panel adapter contract is defined with persisted size/collapse behavior.
+3. Current persisted layout fields and the target gate for additional fields are explicit.
 4. Board-size calculation formula is documented.
 5. Geometry preservation rules cover loading, empty, error, and context-switch states.
 6. Layout contract comment template is provided and required.
 
 ## Open questions / risks
 
-- Whether to provide a shared `PageShell` component that enforces the contract automatically.
-- Whether very long pairing lists need virtual scrolling (see `docs/ui/RESPONSIVE_SCREEN_SPEC.md`).
+- Long lists require runtime evidence before virtualization or another heavy list strategy is selected.
 
 ## Machine-readable summary
 
 ```json
 {
   "document": "layout-system-spec",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "status": "COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS",
   "rules": [
     "no_body_scroll",
     "explicit_modules",
     "modules_own_internal_overflow",
     "preserve_geometry_across_context_switches",
-    "panel_state_recoverable",
+    "implemented_panel_state_recoverable",
     "board_square_and_fully_visible"
   ],
   "modules": [

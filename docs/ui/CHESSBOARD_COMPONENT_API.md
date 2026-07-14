@@ -1,6 +1,9 @@
 # Chessboard Component API
 
-Status: `P1B4_PUBLIC_API_AUTHORITY`
+| Field   | Value                                                |
+| ------- | ---------------------------------------------------- |
+| Version | 1.1.0                                                |
+| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
 
 ## Imports
 

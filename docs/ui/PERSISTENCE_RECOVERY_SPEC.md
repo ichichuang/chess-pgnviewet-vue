@@ -1,296 +1,209 @@
 # Persistence and Recovery Specification
 
+| Field   | Value                                                |
+| ------- | ---------------------------------------------------- |
+| Version | 1.1.0                                                |
+| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
+
 ## Purpose
 
-Define how user preferences, workspace session state, draft state, URL state, API cache, live transient state, auth state, and never-persist state are stored, versioned, migrated, expired, secured, recovered, reset, and validated.
+Define the verified persistence and recovery behavior of the current runtime, distinguish approved target requirements from implementation, preserve unresolved owner decisions, and prohibit sensitive or transient state from being persisted.
 
-## Scope
+## Authority
 
-This document governs:
+Current behavior is derived from tracked runtime owners. Product requirements come from `docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md`; technical persistence rules come from `docs/architecture/PERSISTENCE_ADR.md`. Active Web API authority is:
 
-- Persistence categories and ownership.
-- Storage technology per category.
-- Refresh recovery sequence.
-- Security constraints for sensitive data.
-- Migration and versioning rules.
-- Validation requirements.
+- `docs/architecture/WEB_API_SOURCE_AUTHORITY.md`
+- `docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md`
+- `docs/architecture/API_BOUNDARY_ADR.md`
+- `docs/architecture/WEB_API_READINESS_MATRIX.json`
+- `docs/architecture/WEB_API_ENDPOINT_INVENTORY.json`
+- `docs/architecture/WEB_API_CONTRACT_COVERAGE_MATRIX.json`
 
-## Non-goals
+## Current implemented persistence
 
-- Domain model definitions live in `docs/architecture/FRONTEND_ARCHITECTURE_RFC.md`.
-- API contracts live in `docs/api/*`.
-- Theme tokens live in `docs/ui/THEME_SYSTEM_SPEC.md`.
+### Synchronous theme bootstrap preference
 
-## Persistence categories
+| Attribute | Current implementation                                                                                                                                                                                                            |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Owner     | `index.html`, `src/bootstrap/preferences/themePreference.ts`, `src/theme/constants.ts`, `src/theme/runtime.ts`, and `src/stores/theme.ts`                                                                                         |
+| Storage   | `localStorage` key `themeMode`                                                                                                                                                                                                    |
+| Values    | `light`, `dark`, or `system`                                                                                                                                                                                                      |
+| Startup   | `index.html` reads the narrow preference synchronously before Vue mounts, applies `data-theme-mode`, resolved `data-theme`, `color-scheme`, and the theme-color metadata, then exposes the bootstrap snapshot to the theme store. |
+| Failure   | Invalid or inaccessible storage falls back to the project default without blocking mount.                                                                                                                                         |
 
-### 1. Durable user preferences
+This record contains no accent, board appearance, locale, sound, or AI preference. Dexie does not own current prepaint theme recovery.
 
-| Attribute        | Value                                                                                                                       |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Storage          | Dexie `preferences` table                                                                                                   |
-| Example fields   | `themeMode`, `accentColor`, `boardTheme`, `language`, `defaultAnalysisDepth`, `pieceSet`, `showCoordinates`, `soundEnabled` |
-| Versioning       | Schema version per table; migration function per version bump                                                               |
-| Migration        | Zod schema validates stored record; invalid records reset to defaults                                                       |
-| Expiration       | None; persisted indefinitely                                                                                                |
-| Security         | Non-sensitive; may be read by app                                                                                           |
-| Refresh recovery | Rehydrated before first paint; theme mode applied to `html`                                                                 |
-| Reset behavior   | Reset to defaults via settings; clears table rows                                                                           |
-| Validation       | Static ownership scan, Zod schema inspection, TypeScript checking, and storage/reset/reload inspection in a real browser    |
+### Workspace-layout record
 
-### 2. Workspace session state
+| Attribute  | Current implementation                                                                                                                                                                                      |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Owner      | `src/persistence/workspace/workspaceLayoutPersistence.ts`                                                                                                                                                   |
+| Storage    | Dexie database `chess-pgnviewer-vue`, version 1, table `workspaceSession`, record id `current`                                                                                                              |
+| Validation | Strict Zod record with schema version 1                                                                                                                                                                     |
+| Fields     | `showLeftSidebar`, `showAnalysisRegion`, `toolbarCollapsed`, `boardAlignment`, `boardOrientation`, `activeRightTab`, and `rightPgnHeightPx`                                                                 |
+| Startup    | `src/main.ts` awaits the validated layout record before mounting the application.                                                                                                                           |
+| Cleanup    | The current adapter removes invalid, unknown-version, or code-defined stale records. That existing maximum-age behavior is implementation evidence, not a general retention policy for future product data. |
 
-| Attribute        | Value                                                                                                                                                                                                                                                                               |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Storage          | Dexie `workspaceSession` table                                                                                                                                                                                                                                                      |
-| Example fields   | `selectedMode`, `selectedSource`, `workspaceTabs`, `selectedTournamentId`, `selectedRoundId`, `selectedPairingId`, `selectedGameId`, `selectedBoardId`, `selectedPgnPosition`, `currentMoveIndex`, `panelLayout`, `collapsedPanels`, `splitSizes`, `displayMode`, `bigScreenConfig` |
-| Versioning       | Schema version per table                                                                                                                                                                                                                                                            |
-| Migration        | Zod migration pipeline; drop unknown fields; preserve known fields                                                                                                                                                                                                                  |
-| Expiration       | Cleared by explicit workspace reset or after 30 days of inactivity (configurable)                                                                                                                                                                                                   |
-| Security         | Non-sensitive; auth-bound private references are forbidden and must live in a separate private cache                                                                                                                                                                                |
-| Refresh recovery | Rehydrated before workspace render; stale sources fall back safely                                                                                                                                                                                                                  |
-| Reset behavior   | New workspace clears non-pinned tabs; logout retains public selections/layout while clearing auth-bound private state                                                                                                                                                               |
-| Validation       | Static ownership scan, TypeScript checking, refresh/reload inspection, and logout public/private-state inspection in a real browser                                                                                                                                                 |
+The current table does not contain mode/source selection, teaching collections, games, nodes, notes, locale, board appearance, sound, analysis defaults, live payloads, or protected source data.
 
-### 3. Recoverable draft state
+### Sanitized workspace handoff
 
-| Attribute        | Value                                                                                                                                    |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Storage          | Dexie `drafts` table                                                                                                                     |
-| Example fields   | `gameTeachingNoteDraft`, `pendingNodeAnnotationEdits`, `unsavedLocalPgnMutations`; lesson/session notes only after `OD-02` approval      |
-| Versioning       | Schema version per draft type                                                                                                            |
-| Migration        | Validate against draft schema; discard unrecoverable drafts                                                                              |
-| Expiration       | 7 days or until explicitly saved/discarded                                                                                               |
-| Security         | Non-sensitive local-copy data only; no protected source payload, remote write target, auth value, or credential reference                |
-| Refresh recovery | Restored only with the same validated local teaching-game/node owner; conflicts prompt user                                              |
-| Reset behavior   | Discard on explicit local commit/discard or when its owning local copy is deleted                                                        |
-| Validation       | Zod schema inspection, TypeScript checking, and manual restore/conflict/discard validation in a real browser without creating test files |
+| Attribute | Current implementation                                                                                                                        |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Owner     | `src/persistence/workspace/workspaceHandoff.ts`                                                                                               |
+| Storage   | `sessionStorage` key `pgnViewer.workspaceHandoff.v1`, with an in-memory fallback when storage is unavailable                                  |
+| Purpose   | Carries sanitized non-sensitive source selection and return context between route surfaces and the unified workspace.                         |
+| Security  | Rejects unknown and secret-like fields; never carries credentials, auth tokens, cookies, passwords, signing material, or secret-bearing URLs. |
 
-### 4. URL-shareable state
+The handoff is not a teaching-record store, draft store, live-message store, or authentication store.
 
-| Attribute        | Value                                                                                                               |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Storage          | URL query parameters                                                                                                |
-| Example fields   | `handoff`, `mode`, `source` (only when shareable), `moveIndex`, `panelVisible`                                      |
-| Versioning       | Project-owned handoff context identifiers and URL params are versioned by app                                       |
-| Migration        | Unknown params ignored; deprecated params mapped once                                                               |
-| Expiration       | Lives with URL                                                                                                      |
-| Security         | Must not contain tokens, MQTT credentials, or PII                                                                   |
-| Refresh recovery | Re-read safe URL state; resolve a local handoff context when present                                                |
-| Reset behavior   | Browser back/forward updates URL state                                                                              |
-| Validation       | Static URL-secret scan, TypeScript checking, manual URL round-trip/handoff resolution, and contract-evidence review |
+### Account session
 
-### 5. API query cache
+| Attribute        | Current implementation                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------- |
+| Owner            | `src/persistence/auth/authPersistence.ts`                                                         |
+| Storage          | `localStorage` key `kaisaile.auth.v1`                                                             |
+| Schema           | Strict Zod version 1; unknown fields rejected                                                     |
+| Data fields      | `token`, `uid`, `accountLabel`, and `expiresAt`                                                   |
+| Maximum lifetime | 43,200 seconds                                                                                    |
+| Recovery         | Restore only when valid and unexpired; otherwise remove the record and remain anonymous.          |
+| Reset            | Logout, expiry, or HTTP 401 clears the session and private state; HTTP 403 preserves the session. |
 
-| Attribute        | Value                                                                                                                         |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Storage          | TanStack Query cache in memory only                                                                                           |
-| Example fields   | Competition list, pairing data, game info, PGN history, user profile                                                          |
-| Versioning       | Query key includes endpoint version tag                                                                                       |
-| Migration        | Invalidate keys on schema version change                                                                                      |
-| Expiration       | Per-query `staleTime`/`gcTime`; typically minutes to hours                                                                    |
-| Security         | May contain user data; no Query authentication data or server response is persisted                                           |
-| Refresh recovery | Re-fetched from validated URL/source selection; no Query cache rehydration                                                    |
-| Reset behavior   | Logout evicts authenticated/private entries and replay reads; public tournament queries remain and must revalidate            |
-| Validation       | Static ownership scan, TypeScript checking, production build, and manual refresh/re-fetch/logout inspection in a real browser |
+This is the sole approved account-session record. It is not a blanket authorization for other browser authentication records.
 
-### 6. Live stream transient state
+### TanStack Vue Query cache
 
-| Attribute        | Value                                                                                                                                  |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Storage          | In-memory Pinia state and explicit service/composable state only                                                                       |
-| Example fields   | Current live board FEN, last move, clock, connection status, pending moves                                                             |
-| Versioning       | Not persisted                                                                                                                          |
-| Migration        | Not applicable                                                                                                                         |
-| Expiration       | Cleared when leaving live mode or on disconnect                                                                                        |
-| Security         | May contain live credentials; never persisted                                                                                          |
-| Refresh recovery | Re-establish stream from persisted selection; replay recent moves from API history if available                                        |
-| Reset behavior   | Clear on disconnect, mode switch, or logout                                                                                            |
-| Validation       | Static no-persistence scan, TypeScript checking, contract-evidence review, and manual disconnect/recovery inspection in a real browser |
+| Attribute       | Current implementation                                                                                                            |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Owner           | `src/api/queryClient.ts`                                                                                                          |
+| Storage         | Memory only                                                                                                                       |
+| Reload behavior | Starts empty after page reload; public and protected reads refetch from validated route/source selection.                         |
+| Logout behavior | `clearPrivateProductQueries()` removes private queries; public tournament queries may remain in memory until normal invalidation. |
+| Persistence     | No dehydrate, hydrate, storage persister, Dexie cache, encrypted cache, authentication cache, or raw-response persistence exists. |
 
-### 7. Sensitive session/auth state
+Query freshness settings control in-memory refetch behavior; they are not persisted retention rules.
 
-| Attribute        | Value                                                                                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| Storage          | `localStorage` key `kaisaile.auth.v1`, owned only by `src/persistence/auth/authPersistence.ts`; never Dexie, URL, or persisted Query cache |
-| Example fields   | `token`, `uid`, `accountLabel`, and `expiresAt` plus the literal schema `version: 1`                                                       |
-| Versioning       | Strict Zod version 1 record; unknown fields are rejected                                                                                   |
-| Migration        | Legacy token/user-info keys are not restored                                                                                               |
-| Expiration       | 43,200 seconds from successful login, matching the tracked browser source                                                                  |
-| Security         | No password/digest, signing input, URL token, or duplicated compatibility constant                                                         |
-| Refresh recovery | Restore only when the record is valid and unexpired; otherwise remove it and remain anonymous                                              |
-| Reset behavior   | Local logout, expiry, or HTTP 401 clears auth and private state; HTTP 403 preserves the session                                            |
-| Validation       | Secret scan, storage inspection, typecheck, production build, and narrow browser evidence                                                  |
+### Active analysis and live state
 
-### 8. Never-persist state
+Running analysis, progress, cancellation, transient errors, live connection state, last received live snapshot, clock interpolation, and live credentials are memory-only. They are cleared or re-established by their owning feature; they are not recovered as completed work after reload.
 
-| Attribute        | Value                                                                                                               |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Storage          | In-memory only                                                                                                      |
-| Example fields   | Temporary tool state (active drawing color), ephemeral UI toggles, transient notification queue, clipboard contents |
-| Versioning       | Not applicable                                                                                                      |
-| Migration        | Not applicable                                                                                                      |
-| Expiration       | Cleared on page unload                                                                                              |
-| Security         | Must not contain secrets                                                                                            |
-| Refresh recovery | Reset to defaults on refresh                                                                                        |
-| Reset behavior   | Always resets                                                                                                       |
-| Validation       | Static ownership/no-persistence scan and manual reload inspection                                                   |
+## Approved target persistence requirements
 
-## Fields preserved across refresh
+The following are confirmed product requirements but are not claims about current tables or adapters:
 
-Refreshing the page must NOT reset:
+- A local teaching collection with its current game and current node.
+- PGN-node comments and PGN-node annotations owned by their PGN node.
+- A game-level teaching note owned by a local teaching-game record.
+- Validated local copies created by explicit import from completed or protected read-only sources.
+- Approved non-sensitive layout and display preferences.
+- Structured application preferences after mount, once their fields and schema are approved.
+- A future locale preference after a project-owned Vue i18n runtime exists.
 
-- Workspace tabs and selected tab.
-- Selected workspace mode and source.
-- Selected tournament, group, round, pairing, game, board.
-- Selected PGN position and current move index.
-- Panel layout, collapsed panels, split sizes.
-- Theme mode, accent color, board theme, language preference.
-- Analysis panel state (visible, engine depth, chart mode).
-- Teaching notes draft and selected annotation layer.
-- Display mode and big-screen configuration.
+Target structured persistence must use project-owned versioned adapters and Zod validation. Page or feature design must define an owner, schema, recovery behavior, reset behavior, security classification, and approved retention rule before adding a field. This document does not predeclare table names or a database interface for unimplemented records.
 
-After refresh, the app must re-call required APIs and re-render fresh data while preserving the above UI state.
+## Owner-decision or feature-gated persistence
 
-## Dexie table design
+| Candidate                                                                              | Boundary                                                                                                                   |
+| -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Lesson/session-level notes                                                             | `OD-02`; no current entity or persistence.                                                                                 |
+| AI setting scope                                                                       | `OD-03`; current running analysis remains memory-only.                                                                     |
+| AI first-use resource defaults, including depth/time/concurrency                       | `OD-04`; no concrete persisted defaults are approved.                                                                      |
+| Sound default                                                                          | `OD-11`; no current sound preference is persisted.                                                                         |
+| Board appearance, coordinate display, piece set, accent, and other display preferences | Approved only as product-setting candidates until page design and a versioned persistence owner are accepted.              |
+| Locale                                                                                 | Target-only until the project-owned Vue i18n runtime and locale synchronization contract exist.                            |
+| Cloud, shared content, replay, hardware history, and live snapshots                    | Contract-blocked; remote payloads do not become editable persistence without explicit import and an approved local schema. |
 
-```ts
-interface AppDatabase {
-  preferences: {
-    key: string;
-    value: unknown;
-    updatedAt: number;
-  };
-  workspaceSession: {
-    id: 'current';
-    mode: WorkspaceMode;
-    source: WorkspaceSource;
-    selections: SelectionState;
-    layout: LayoutState;
-    updatedAt: number;
-  };
-  drafts: {
-    id: string;
-    scope: string;
-    payload: unknown;
-    createdAt: number;
-    updatedAt: number;
-  };
-}
-```
+No feature receives an invented expiry duration. Explicit reset/deletion is always supported; any time-based expiry must be defined by the owning feature after approval. The existing account-session lifetime remains the explicit exception above.
 
-Each table has a `schemaVersion` constant. Migrations run inside Dexie `upgrade` callbacks and validate with Zod.
+## Never-persist state
 
-## Refresh recovery sequence
+The following never enter Dexie, Query persistence, workspace handoff, PGN, annotations, URL state, or alternate browser records:
 
-1. **Prepaint preferences** — read `themeMode`, `accentColor`, and `language` from Dexie and apply them to `html` before Vue mounts.
-2. **Hydrate workspace session** — read `workspaceSession` and restore mode/source/selections/layout.
-3. **Validate and migrate** — run Zod schemas; drop or reset invalid fields.
-4. **Restore drafts** — load teaching notes and pending annotations for the current scope.
-5. **Initialize Query cache** — start an empty in-memory TanStack Query cache; restore no authentication data or server response.
-6. **Fetch required data** — TanStack Query triggers fetches using restored query keys.
-7. **Render workspace** — components receive fresh data without resetting user selections.
-8. **Handle stale source** — if the persisted source is unavailable, fall back safely and notify.
+- passwords and password digests;
+- arbitrary or duplicate authentication records;
+- auth values in URLs or router state;
+- signing secrets and duplicate signing inputs;
+- shared upstream credentials, MQTT credentials, and secret-bearing URLs;
+- complete sensitive API responses and protected raw payloads;
+- running AI tasks, intermediate engine state, and transient analysis errors;
+- live credentials, subscriptions, messages, and transient connection state;
+- protected source payloads disguised as local drafts;
+- clipboard contents and ephemeral notification/tool state.
 
-## Notes, annotations, and source ownership
+## Notes, annotations, drafts, and source ownership
 
-- PGN-node comments and PGN-node annotations follow the validated PGN node.
-- Game-level teaching notes follow the local teaching-game record.
-- Lesson/session-level notes remain unimplemented owner decision `OD-02`.
-- Protected source metadata and payloads remain read-only and are not converted into editable drafts.
-- Explicit import creates a distinct local copy. No note, comment, annotation, or PGN mutation writes back to a remote source without a separately confirmed write contract.
+- PGN-node comments and annotations follow their validated PGN node.
+- Game-level teaching notes follow a local teaching-game record.
+- Lesson/session notes remain `OD-02` and are not implemented.
+- No general draft adapter or draft table currently exists.
+- Protected sources remain read-only. Explicit import creates a distinct validated local copy.
+- No local comment, annotation, note, or PGN change writes back to a remote source without a separately confirmed write contract.
+
+## Current refresh-recovery sequence
+
+1. `index.html` synchronously resolves the narrow `themeMode` preference and applies no-flash markers.
+2. `src/main.ts` creates the application and Pinia graph.
+3. The validated Dexie workspace-layout record is awaited and restored when available.
+4. The theme store adopts the synchronous bootstrap state and installs runtime synchronization.
+5. The auth store restores only a valid, unexpired `kaisaile.auth.v1` record.
+6. The in-memory QueryClient and Router are installed.
+7. Route/source selection resolves a current local context, a truthful source picker, or an unavailable/recovery state.
+8. Required server reads refetch into the empty in-memory Query cache.
+
+Current recovery does not restore a teaching collection, current game/node, game note, node comments/annotations, locale, AI defaults, analysis task, live connection, or general draft because no accepted current persistence owner exists for those records.
+
+## Approved target recovery
+
+Once their owners and schemas are implemented, recovery should restore the local teaching collection, current game/node, game-level note, node comments/annotations, and approved display preferences. Locale recovery starts only after the Vue i18n boundary exists. A missing or invalid source resolves to a truthful source picker, a validated existing local game, or an unavailable/recovery state; it never fabricates a successful blank game.
 
 ## Rules
 
-### R1. Categorize every persisted field
-
-Every field stored on the client must belong to one of the eight categories above.
-
-### R2. Auth state is narrowly owned
-
-Only the strict 43,200-second `kaisaile.auth.v1` compatibility record owned by
-`src/persistence/auth/authPersistence.ts` is accepted in `localStorage`. Its
-data fields are `token`, `uid`, `accountLabel`, and `expiresAt`; the schema also
-requires literal `version: 1`. Cookie sessions, BFFs, refresh endpoints, and
-alternate browser stores are not invented. Passwords, password digests,
-signing inputs, complete profiles or responses, and URL credentials never
-touch client storage.
-
-### R3. Version and migrate every persisted table
-
-Dexie tables have schema versions and Zod-validated migrations.
-
-### R4. URL state must not leak secrets
-
-URL query parameters must not contain tokens, MQTT credentials, PII, or live board secrets.
-
-### R5. Live state is transient
-
-Live stream data is in-memory only. Recovery re-establishes the stream, not a snapshot.
-
-### R6. Reset behavior is explicit
-
-Each category documents what clears it: logout, new workspace, explicit reset, or expiry. Logout clears auth/private caches, protected handoffs, replay, and active analysis while preserving public local PGN work, public tournament context, and non-sensitive layout preferences.
+1. Current and target persistence must remain explicitly separated.
+2. Every new persisted field requires one owner, one category, one versioned schema, one reset path, one security classification, and an approved retention rule.
+3. Presentational components never access browser storage or persistence adapters.
+4. Query server state remains memory-only and refetches after reload.
+5. Ongoing live and running AI state remain transient and memory-only.
+6. The strict `kaisaile.auth.v1` record is the only approved account-session persistence.
+7. Invalid or unknown records fail closed without fabricated fallback data.
 
 ## Acceptance criteria
 
-1. Eight persistence categories are defined with storage location, example fields, versioning, migration, expiration, security, refresh recovery, reset behavior, and explicit validation evidence.
-2. The list of fields preserved across refresh matches the user requirement.
-3. Dexie table design and refresh recovery sequence are documented.
-4. Auth data is excluded from Dexie, persisted Query cache, and URL; only the strict `kaisaile.auth.v1` record is accepted in `localStorage`.
-5. URL state security constraints are documented.
-6. Live stream state is classified as transient and in-memory only.
-
-## Open questions / risks
-
-- Whether 30-day inactivity expiration for workspace session is acceptable to users.
+1. Every current persistence claim resolves to tracked runtime code.
+2. The current workspace-layout schema lists only implemented fields.
+3. Dexie ownership of theme prepaint is forbidden; the synchronous `themeMode` bootstrap owns it.
+4. Locale is explicitly unimplemented and is not claimed as restored before mount.
+5. Query cache starts empty after reload and is never described as persisted.
+6. Target teaching records and preferences are not presented as current tables.
+7. `OD-02`, `OD-03`, `OD-04`, and `OD-11` remain unresolved.
+8. Authentication, protected source, live, and AI sensitive/transient boundaries remain intact.
 
 ## Machine-readable summary
 
 ```json
 {
   "document": "persistence-recovery-spec",
-  "version": "1.0.0",
-  "rules": [
-    "categorize_every_persisted_field",
-    "only_strict_kaisaile_auth_v1_may_persist_in_local_storage",
-    "version_and_migrate_every_persisted_table",
-    "url_state_no_secrets",
-    "live_state_is_transient",
-    "reset_behavior_is_explicit"
-  ],
-  "categories": [
-    "durable_user_preferences",
-    "workspace_session_state",
-    "recoverable_draft_state",
-    "url_shareable_state",
-    "api_query_cache",
-    "live_stream_transient_state",
-    "sensitive_session_auth_state",
-    "never_persist_state"
-  ],
-  "storage_technologies": {
-    "dexie": ["durable_user_preferences", "workspace_session_state", "recoverable_draft_state"],
-    "url_query_params": ["url_shareable_state"],
-    "tanstack_query_cache": ["api_query_cache"],
-    "in_memory": ["live_stream_transient_state", "never_persist_state"],
-    "local_storage_kaisaile_auth_v1": ["sensitive_session_auth_state"]
+  "version": "1.1.0",
+  "status": "COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS",
+  "current_implemented": {
+    "theme_bootstrap": "localStorage:themeMode",
+    "workspace_layout": "Dexie:chess-pgnviewer-vue/workspaceSession/current",
+    "workspace_handoff": "sessionStorage:pgnViewer.workspaceHandoff.v1_with_memory_fallback",
+    "account_session": "localStorage:kaisaile.auth.v1",
+    "query_cache": "memory_only",
+    "active_analysis_and_live": "memory_only"
   },
-  "refresh_recovery_sequence": [
-    "prepaint_preferences",
-    "hydrate_workspace_session",
-    "validate_and_migrate",
-    "restore_drafts",
-    "initialize_empty_query_cache",
-    "fetch_required_data",
-    "render_workspace",
-    "handle_stale_source"
-  ],
+  "current_general_preferences_table": false,
+  "current_drafts_table": false,
+  "current_locale_runtime": false,
+  "query_cache_persisted": false,
+  "open_owner_decisions": ["OD-02", "OD-03", "OD-04", "OD-11"],
   "related_docs": [
-    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
     "docs/ui/THEME_SYSTEM_SPEC.md",
-    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
-    "docs/ui/LAYOUT_SYSTEM_SPEC.md"
-  ],
-  "next_doc": "docs/ui/ACCESSIBILITY_SPEC.md"
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md"
+  ]
 }
 ```

@@ -30,7 +30,7 @@
         ],
         "namespaces": [
             "--p3-pending-canonical-extraction",
-            "--bg/--surface/--text neutral P0 semantic namespace",
+            "--bg/--surface/--text initial neutral semantic namespace",
             "--cg-* board namespace",
             "--annotation-* annotation namespace",
             "--eval-* evaluation namespace",
@@ -220,7 +220,7 @@
         ],
         "namespaces": [
             "--p3-pending-canonical-extraction",
-            "--bg/--surface/--text neutral P0 semantic namespace",
+            "--bg/--surface/--text initial neutral semantic namespace",
             "--cg-* board namespace",
             "--annotation-* annotation namespace",
             "--eval-* evaluation namespace",

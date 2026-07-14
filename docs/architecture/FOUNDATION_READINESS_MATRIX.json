@@ -80,7 +80,7 @@
     "productDevelopmentState": {
         "mockOrFakeData": "ABSENT",
         "automatedTestInfrastructure": "ABSENT",
-        "i18nAndGeneralizedUiFoundations": "FUTURE_PRODUCT_DEVELOPMENT"
+        "i18nAndGeneralizedUiFoundations": "NOT_IMPLEMENTED_PAGE_DESIGN_TARGET_NO_RUNTIME_OWNER"
     },
     "validation": [
         "formatting",

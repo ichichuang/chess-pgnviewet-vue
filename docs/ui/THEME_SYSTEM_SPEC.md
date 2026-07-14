@@ -1,248 +1,110 @@
 # Theme System Specification
 
+| Field   | Value                                                |
+| ------- | ---------------------------------------------------- |
+| Version | 1.1.0                                                |
+| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
+
 ## Purpose
 
-Define the design token layers, theme modes, accent color system, chessboard themes, large-screen themes, and the rules that prevent raw color values from appearing in feature code.
+Define the single token and theme ownership model, distinguish the current theme runtime from approved product-setting targets, and prevent feature code from creating parallel visual values.
 
-## Scope
+## Current implementation
 
-This document governs:
+- `src/styles/tokens.css` is the only global token registry.
+- `src/theme/constants.ts`, `src/theme/runtime.ts`, `src/bootstrap/preferences/themePreference.ts`, and `src/stores/theme.ts` own the current theme runtime.
+- The current preference is only `light`, `dark`, or `system` under the synchronous `localStorage` key `themeMode`.
+- `index.html` reads that narrow preference before Vue mounts and applies `data-theme-mode`, resolved `data-theme`, `color-scheme`, and theme-color metadata.
+- Project-owned Vue UI adapters consume the registry; Naive UI is not the token or product-component authority.
 
-- Semantic, component, chessboard, state, and data-visualization tokens.
-- Light, dark, and system theme modes.
-- User-selectable accent colors and future client-specific custom themes.
-- Chessboard themes and large-screen display themes.
-- Project-owned CSS registry integration and token lint rules.
-
-## Non-goals
-
-- Layout and scroll rules are defined in `docs/ui/LAYOUT_SYSTEM_SPEC.md`.
-- Component APIs are defined in `docs/ui/COMPONENT_SYSTEM_SPEC.md`.
-- Accessibility contrast requirements are defined in `docs/ui/ACCESSIBILITY_SPEC.md`.
+No current persistence owner exists for accent selection, board appearance selection, locale, sound, or AI defaults.
 
 ## Token layers
 
-All colors, shadows, borders, radii, spacing, and typography must come from the token system. Canonical values are declared once as CSS custom properties in `src/styles/tokens.css`. Typed metadata may reference that registry but must not duplicate or redefine its values.
+All feature values that belong to the design system reference the global registry.
 
-### Semantic tokens
+| Layer              | Responsibility                                                       | Examples                                                                  |
+| ------------------ | -------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Semantic           | Surface, text, border, accent, feedback, focus, and elevation intent | `--surface`, `--text`, `--border`, `--accent`, `--danger`                 |
+| Component          | Project-owned control and container roles                            | button, input, card, dialog, tooltip aliases when present in the registry |
+| Chessboard         | Board squares, coordinates, pieces, move state, and annotations      | current `--cg-*` families                                                 |
+| State              | Hover, active, focus, disabled, loading, blocked, and stale states   | semantic state tokens                                                     |
+| Data visualization | Evaluation and analysis visualization roles                          | current evaluation and classification tokens                              |
+| Layout and type    | Spacing, radius, typography, control sizing, and motion              | current registry values                                                   |
 
-Semantic tokens describe the meaning of a value, not its concrete color.
+Examples describe semantic ownership; they do not authorize adding an undeclared token outside `src/styles/tokens.css`.
 
-| Token family | Examples                                                                        |
-| ------------ | ------------------------------------------------------------------------------- |
-| Background   | `--bg`, `--surface`, `--surface-2`, `--surface-3`                               |
-| Text         | `--text`, `--text-2`, `--text-muted`, `--text-faint`, `--text-on-accent`        |
-| Border       | `--border`, `--border-strong`, `--border-focus`                                 |
-| Accent       | `--accent`, `--accent-strong`, `--accent-press`, `--accent-soft`, `--accent-bg` |
-| State        | `--success`, `--warning`, `--danger`, `--info` and their `-bg` variants         |
-| Shadow       | `--shadow-xs`, `--shadow-sm`, `--shadow-md`, `--shadow-lg`, `--ring-accent`     |
-| Radius       | `--r-xs`, `--r-sm`, `--r-md`, `--r-lg`, `--r-xl`, `--r-full`                    |
-| Spacing      | `--s-1`, `--s-2`, `--s-3`, `--s-4`, `--s-5`, `--s-6`, `--s-8`, `--s-10`         |
-| Typography   | `--font-sans`, `--font-mono`, `--fs-xs`...`--fs-2xl`                            |
+## Current theme modes
 
-### Component tokens
+| Mode     | Behavior                                                                    |
+| -------- | --------------------------------------------------------------------------- |
+| `light`  | Applies light semantic tokens.                                              |
+| `dark`   | Applies dark semantic tokens.                                               |
+| `system` | Resolves against `prefers-color-scheme` and follows runtime system changes. |
 
-Component tokens map semantic tokens to specific components. They are optional aliases that make component code more readable and allow per-component theming without forking semantic tokens.
+The stored preference and resolved applied theme remain separate. Cross-tab and system changes are reconciled by the current theme owner.
 
-| Token family | Examples                                                                |
-| ------------ | ----------------------------------------------------------------------- |
-| Button       | `--button-primary-bg`, `--button-primary-text`, `--button-secondary-bg` |
-| Input        | `--input-bg`, `--input-border`, `--input-focus-ring`                    |
-| Card         | `--card-bg`, `--card-border`, `--card-radius`                           |
-| Dialog       | `--dialog-bg`, `--dialog-backdrop`, `--dialog-shadow`                   |
-| Tooltip      | `--tooltip-bg`, `--tooltip-text`                                        |
+## Approved target setting roles
 
-### Chessboard tokens
+The product blueprint permits future settings for board appearance, layout, accessibility, sound, locale, and AI default policy. These are target responsibilities, not current fields:
 
-Chessboard tokens are scoped under `--cg-*` and are independent of the UI chrome theme so a board can keep its style in light or dark mode.
+- Accent selection may remap semantic accent roles only after a curated accessible set and a persistence owner are approved.
+- Board appearance may select a named token-backed board style without changing the UI light/dark preference.
+- Display appearance may apply route-scoped typography, spacing, contrast, and board-role overrides for viewing distance.
+- A custom theme manifest is not an active contract. Any later manifest requires an owner-approved schema, security boundary, registry mapping, and failure behavior.
+- Locale belongs to the future project-owned Vue i18n boundary, not the theme bootstrap record.
+- Sound default remains `OD-11`; AI setting scope and resource defaults remain `OD-03` and `OD-04`.
 
-| Token family | Examples                                                                                                                |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| Squares      | `--cg-square-light`, `--cg-square-dark`                                                                                 |
-| Highlights   | `--cg-last-move`, `--cg-selected`, `--cg-check`, `--cg-premove`                                                         |
-| Annotations  | `--cg-arrow-red`, `--cg-arrow-green`, `--cg-arrow-yellow`, `--cg-arrow-orange`, `--cg-arrow-purple`, `--cg-arrow-black` |
-| Pieces       | `--cg-piece-set` (identifier), `--cg-piece-outline`                                                                     |
-| Coordinates  | `--cg-coord-light`, `--cg-coord-dark`                                                                                   |
+No target setting is persisted until `docs/ui/PERSISTENCE_RECOVERY_SPEC.md` records an implemented owner.
 
-### State tokens
+## Big-screen theming
 
-State tokens describe interactive and feedback states.
+The independent `/competitions/:hdid/display` route reuses the single token registry and canonical chessboard visual roles. It may compose approved display-specific player/status primitives and route-scoped token aliases. It does not import the complete teaching workspace, teaching right panel, teaching toolbar, or analysis panel.
 
-| Token family   | Examples                                       |
-| -------------- | ---------------------------------------------- |
-| Hover          | `--state-hover`, `--state-hover-bg`            |
-| Active/pressed | `--state-active`, `--state-active-bg`          |
-| Focus          | `--state-focus-ring`, `--state-focus-border`   |
-| Disabled       | `--state-disabled-bg`, `--state-disabled-text` |
-| Loading        | `--state-loading-bg`, `--state-loading-text`   |
+## No raw visual-value rule
 
-### Data visualization tokens
-
-Data visualization tokens are used for evaluation charts, classification bars, and statistics.
-
-| Token family | Examples                                                                                                                                  |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Evaluation   | `--eval-white`, `--eval-black`, `--eval-advantage-line`                                                                                   |
-| Move quality | `--eval-blunder`, `--eval-mistake`, `--eval-inaccuracy`, `--eval-good`, `--eval-excellent`, `--eval-best`, `--eval-book`, `--eval-forced` |
-| Charts       | categorical palette tokens `--chart-1`...`--chart-8`                                                                                      |
-
-## Theme modes
-
-| Mode     | Behavior                                  |
-| -------- | ----------------------------------------- |
-| `light`  | Forces light semantic tokens              |
-| `dark`   | Forces dark semantic tokens               |
-| `system` | Matches `prefers-color-scheme` at runtime |
-
-The active mode is stored as a durable user preference. The `html` element receives a `data-theme="light|dark"` attribute; `system` is resolved to the actual applied mode.
-
-## Accent colors
-
-Users may select an accent color from a curated palette. The default is **Kaisaile Green**.
-
-| Accent name    | Token prefix        | Default role           |
-| -------------- | ------------------- | ---------------------- |
-| Kaisaile Green | `--accent-green-*`  | Default product accent |
-| Royal Blue     | `--accent-blue-*`   | Alternative            |
-| Deep Purple    | `--accent-purple-*` | Alternative            |
-| Warm Orange    | `--accent-orange-*` | Alternative            |
-| Neutral Slate  | `--accent-slate-*`  | Accessible/gray        |
-
-When an accent is selected, the semantic `--accent` family is remapped to the chosen scale. Feature code always reads `--accent` and never the accent-specific prefix.
-
-## Client-specific custom themes
-
-Custom themes are an extension point, not a phase-one implementation. The token system must support:
-
-- A JSON theme manifest that overrides semantic/component/chessboard token values.
-- Runtime injection without recompiling the app.
-- Validation against the token dictionary (Zod schema).
-- A fallback to the default theme if validation fails.
-
-## Chessboard themes
-
-Each chessboard theme is a named set of `--cg-*` token values. At minimum the product supports:
-
-- `wood` (default)
-- `blue`
-- `green`
-- `gray`
-
-Board themes are independent of UI light/dark mode and are stored as durable user preferences.
-
-## Large-screen themes
-
-Large-screen/display mode uses the same token system but scales typography and spacing for long viewing distances. It may override:
-
-- `--fs-*` scale (larger minimums)
-- `--control-h` and `--toolbar-h`
-- `--s-*` spacing scale
-- Contrast-enhanced board tokens
-
-Display themes are selected automatically in `/competitions/:hdid/display` but may be toggled manually.
-
-## Project-owned CSS integration
-
-Vue SFCs and project-owned UI adapters consume semantic variables from `src/styles/tokens.css`. Feature styles may add selectors and layout rules, but values that belong to the token taxonomy must remain references such as `var(--surface)`, `var(--text)`, and `var(--border)`.
-
-## No raw color rule
-
-Feature code must not contain:
-
-- Hex values (`#1f9d57`, `#fff`).
-- `rgb()`, `rgba()`, `hsl()`, `hsla()`, `oklch()`.
-- Named CSS colors (`red`, `white`).
-- Utility or component classes that encode literal colors instead of registry tokens.
-- Inline `style` color values on feature components.
-
-The only places raw values are permitted:
-
-- The token dictionary CSS file.
-- Theme manifest JSON files validated by Zod.
-- Legacy evidence documents.
-
-## Token lint rules
-
-A token lint pass must reject any new `.ts`, `.css`, or `.vue` file in `src/features/` or `src/ui/` that contains raw color values outside `src/styles/tokens.css` or an owner-approved validated theme manifest.
+Feature code must not create raw color values, parallel token registries, literal-color utility classes, or inline color values. Raw registry values are owned only by `src/styles/tokens.css` and other explicit governance allowlists. A future validated theme manifest does not become an exception until its contract is approved and the scanner policy is updated.
 
 ## Rules
 
-### R1. Tokens are the single source of color truth
-
-Every color, shadow, border, and background must reference a token. No ad hoc values.
-
-### R2. Semantic tokens describe intent
-
-Use `--text-muted` for secondary text, not `--gray-500`. Use `--danger` for errors, not `--red`.
-
-### R3. Board tokens are independent of UI theme
-
-The chessboard palette must remain stable when toggling light/dark mode unless the user explicitly changes board theme.
-
-### R4. Accent selection remaps semantic tokens
-
-Feature code reads `--accent`; accent-specific prefixes are resolved by the theme provider.
-
-### R5. Custom themes are validated
-
-Any runtime theme manifest must pass a Zod schema before being applied.
-
-### R6. Display themes do not fork the component system
-
-`/competitions/:hdid/display` uses the same components with token overrides, not a parallel component set.
+1. `src/styles/tokens.css` is the only global token registry.
+2. Semantic tokens describe intent; feature code does not consume palette literals.
+3. Current theme persistence contains only `light`, `dark`, or `system` under `themeMode`.
+4. Board appearance remains independent of UI light/dark preference when implemented.
+5. Target accent, board, locale, sound, and AI settings are not described as current runtime fields.
+6. Big-screen uses the same token authority and canonical board; importing the complete teaching composition is forbidden.
 
 ## Acceptance criteria
 
-1. Token layers (semantic, component, chessboard, state, data-viz) are enumerated.
-2. Light/dark/system modes and user-selectable accent colors are defined.
-3. Chessboard themes and large-screen themes are documented as token overrides.
-4. Project-owned Vue styles consume the single CSS token registry without a parallel utility token system.
-5. No-raw-color rule lists forbidden patterns and the only permitted exceptions.
-6. Token lint rules are defined and referenced by `docs/ui/UI_ACCEPTANCE_CHECKLIST.md`.
-
-## Open questions / risks
-
-- The exact number of chart categorical colors depends on the final analysis report design.
-- Client-specific custom theme manifest format needs owner approval before implementation.
+1. Current theme modes work through the tracked synchronous bootstrap and theme-store owners.
+2. Feature code consumes registry tokens and introduces no parallel value source.
+3. Current and target theme/settings behavior remain explicit and separate.
+4. Big-screen display uses shared token and board authorities without importing teaching-only panels.
+5. `OD-03`, `OD-04`, and `OD-11` remain unresolved.
 
 ## Machine-readable summary
 
 ```json
 {
   "document": "theme-system-spec",
-  "version": "1.0.0",
-  "rules": [
-    "tokens_single_source_of_color_truth",
-    "semantic_tokens_describe_intent",
-    "board_tokens_independent_of_ui_theme",
-    "accent_selection_remaps_semantic_tokens",
-    "custom_themes_validated",
-    "display_themes_no_fork"
+  "version": "1.1.0",
+  "status": "COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS",
+  "current_theme_modes": ["light", "dark", "system"],
+  "current_storage": "localStorage:themeMode",
+  "current_accent_selector": false,
+  "current_board_appearance_selector": false,
+  "current_locale_owner": false,
+  "target_setting_roles": [
+    "accent",
+    "board_appearance",
+    "display_appearance",
+    "accessibility",
+    "sound",
+    "locale",
+    "ai_default_policy"
   ],
-  "token_layers": [
-    "semantic",
-    "component",
-    "chessboard",
-    "state",
-    "data_visualization"
-  ],
-  "theme_modes": ["light", "dark", "system"],
-  "accent_colors": ["green", "blue", "purple", "orange", "slate"],
-  "board_themes": ["wood", "blue", "green", "gray"],
-  "forbidden_color_patterns": [
-    "hex_values",
-    "rgb_rgba_hsl_hsla_oklch",
-    "named_colors",
-    "literal_color_utility_classes",
-    "inline_style_color_values"
-  ],
-  "related_docs": [
-    "docs/ui/PAGE_STYLE_SPEC.md",
-    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
-    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
-    "docs/ui/ACCESSIBILITY_SPEC.md",
-    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
-  ],
-  "next_doc": "docs/ui/LAYOUT_SYSTEM_SPEC.md"
+  "global_token_registry": "src/styles/tokens.css",
+  "big_screen_reuses_full_teaching_composition": false,
+  "open_owner_decisions": ["OD-03", "OD-04", "OD-11"]
 }
 ```

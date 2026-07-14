@@ -62,7 +62,7 @@ Version exception: `typescript` stays at `6.0.3` although registry `latest` is `
 | depcheck or multiple unused-code tools                    | Overlaps Knip; F2 selects one maintained unused-code owner.                                                                               |
 | secretlint or generic secret scanner package              | Project must redact findings and encode product-specific VITE/MQTT/HMAC rules; use a small project-owned scanner first.                   |
 | blanket Markdown exclusion from formatting                | Would hide new documentation drift; only the four known legacy lines may be handled by a dedicated remediation slice.                     |
-| automated tests or test runners                           | Explicitly forbidden by P0E/F1 governance for the active target.                                                                          |
+| automated tests or test runners                           | Explicitly forbidden by current owner governance for the active target.                                                                   |
 
 ## ESLint Ownership
 

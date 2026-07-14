@@ -1,9 +1,7 @@
 # Static Governance Scanner Baseline
 
 Status: `ACTIVE_AUTHORITY`
-Phase: `F2D_PROJECT_OWNED_STATIC_GOVERNANCE_SCANNER_IMPLEMENTATION`
 Target: `/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue`
-Final F2 validation: `F2E_TOOLCHAIN_AND_STATIC_GOVERNANCE_FINAL_CLOSURE`
 
 ## Ownership
 
@@ -55,8 +53,8 @@ Reserved paths `src/providers/`, `src/ui/icons/`, and `src/repositories/` do not
 
 ## Rule Inventory
 
-Current inventory: 94 blocking rules. The current totals are dependency policy
-12, obsolete authority residue 17, architecture boundaries 33, raw visual
+Current inventory: 104 blocking rules. The current totals are dependency policy
+12, obsolete authority residue 27, architecture boundaries 33, raw visual
 values 10, mock product data 9, secret patterns 11, rendered product copy 1,
 and shared invalid JSON handling 1.
 
@@ -113,6 +111,16 @@ Architecture boundaries:
 
 Obsolete authority residue:
 
+- `RESIDUE_ACTIVE_UI_PHASE_GATE`
+- `RESIDUE_CURRENT_API_AUTHORITY_PATH`
+- `RESIDUE_DEXIE_PREPAINT_OWNER`
+- `RESIDUE_QUERY_CACHE_PERSISTENCE_CLAIM`
+- `RESIDUE_UNCONFIRMED_ADAPTER_DETAIL`
+- `RESIDUE_BIG_SCREEN_FULL_TEACHING_SHELL`
+- `RESIDUE_UNAPPROVED_RETENTION`
+- `RESIDUE_NONEXISTENT_COMPONENT_MODEL`
+- `RESIDUE_UNIMPLEMENTED_PERSISTENCE_MODEL`
+- `RESIDUE_ONGOING_LIVE_AI_EVALUATION`
 - `RESIDUE_REJECTED_API_PHASE`
 - `RESIDUE_DELETED_AUTHORITY_ARTIFACT`
 - `RESIDUE_REJECTED_HARDENING_PHASE`
@@ -210,7 +218,7 @@ The secret scanner prints only redacted fingerprints and redacted excerpts. It m
 
 ## Validation
 
-Required F2D validation commands:
+Required validation commands:
 
 - `pnpm run check:deps`
 - `pnpm run check:residue`
@@ -233,14 +241,10 @@ Required F2D validation commands:
 
 Controlled negative and clean scanner probes must be created only in an operating-system temporary directory and removed after validation. They are execution-time scanner validation, not automated tests.
 
-Browser validation is not applicable to F2D because no runtime UI behavior changes.
-
-F2E final validation additionally confirmed JSON mode for all scanner entrypoints, deterministic sorted findings, zero real-repository findings, zero skipped paths, controlled negative and clean probes in operating-system temporary directories, redacted secret output, isolated frozen-lockfile validation, `check:governance`, `check:static`, typecheck, temporary-output production build, production audit, full audit, and no dependency, lockfile, scanner source, runtime source, token-value, automated-test, product UI, or evidence-source mutation.
+Browser validation is not applicable to documentation/scanner-only changes because runtime UI behavior is unchanged.
 
 Maintenance ownership remains active in `scripts/governance/policy.mjs`, `scripts/governance/utils.mjs`, and the seven scanner entrypoints. Subsequent false-positive changes must be made only through the owning scanner, policy, package script, ESLint Node-context configuration, or this authority document.
 
-## F2 Completion Gate
+## Current maintenance gate
 
-F2D passed when every scanner passed independently, negative and clean probes proved blocking and allowed behavior with redaction, `check:governance` and `check:static` passed, static tool validation passed, audits passed, no dependency or lockfile change occurred, no automated test infrastructure existed, no runtime source or token value changed, and the implementation and governance evidence commits were pushed normally.
-
-F2E final closure passed and closes F2 toolchain/static governance. The current development gate is `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`.
+Every scanner must pass independently; controlled negative and clean probes must prove blocking and allowed behavior with redaction when scanner rules change. `check:governance`, `check:static`, typecheck, temporary-output production build, and audits remain required. Runtime, dependency, lockfile, token-value, and automated-test drift is forbidden unless separately authorized.

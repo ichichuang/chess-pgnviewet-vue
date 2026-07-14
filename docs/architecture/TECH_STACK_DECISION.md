@@ -1,27 +1,26 @@
 # Technology Stack Decision
 
-Status: `ACTIVE_AUTHORITY`  
-Phase: `P0E_UI_FIRST_DELIVERY_AND_NO_AUTOMATED_TEST_GOVERNANCE_CLOSURE`
+Status: `ACTIVE_AUTHORITY`
 
 ## Decision
 
 The target is one Vue 3 application runtime. This decision supersedes the React-primary source decision at `/Users/cc/Work/neobv/Chess/chess-pgnviewer/docs/architecture/TECH_STACK_DECISION.md`, which is classified `DEPRECATED` for this target.
 
-| Layer                      | Selected technology                                                              | P0 status                                     |
-| -------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------- |
-| Language                   | TypeScript strict                                                                | configured                                    |
-| Runtime                    | Vue 3                                                                            | one root                                      |
-| Build                      | Vite                                                                             | one root                                      |
-| Routing                    | Vue Router                                                                       | one foundation                                |
-| Client state               | Pinia                                                                            | one foundation                                |
-| Server state               | TanStack Vue Query                                                               | sole approved boundary; not initialized in P0 |
-| UI adapters                | Project-owned Vue components; Naive UI only where canonical behavior requires it | empty adapter boundary                        |
-| Motion                     | Vue transitions and GSAP                                                         | dependency only; no P0 motion                 |
-| Chess domain               | chess.js plus reviewed canonical framework-free logic                            | dependency only                               |
-| Persistence                | Dexie                                                                            | dependency only                               |
-| Runtime validation         | Zod                                                                              | dependency only                               |
-| Automated tests            | Not adopted                                                                      | forbidden by P0E owner policy                 |
-| Browser runtime validation | Real browser load/reload smoke for rendered changes                              | narrow validation only; no test files         |
+| Layer                      | Selected technology                                                              | Current authority                                      |
+| -------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Language                   | TypeScript strict                                                                | Current application language and SFC checking boundary |
+| Runtime                    | Vue 3                                                                            | One root                                               |
+| Build                      | Vite                                                                             | One root                                               |
+| Routing                    | Vue Router                                                                       | One Router owner                                       |
+| Client state               | Pinia                                                                            | One store graph                                        |
+| Server state               | TanStack Vue Query                                                               | One in-memory QueryClient                              |
+| UI adapters                | Project-owned Vue components; Naive UI only where canonical behavior requires it | Project-owned adapter boundary                         |
+| Motion                     | Vue transitions and GSAP                                                         | Current motion authority                               |
+| Chess domain               | chess.js plus reviewed canonical framework-free logic                            | Current domain boundary                                |
+| Persistence                | Dexie plus narrow approved synchronous/session adapters                          | Explicit owner per record                              |
+| Runtime validation         | Zod                                                                              | Persisted and transport boundary validation            |
+| Automated tests            | Not adopted                                                                      | Forbidden by owner policy                              |
+| Browser runtime validation | Real browser validation for rendered changes                                     | Narrow validation only; no test files                  |
 
 ## Package manager
 
@@ -64,7 +63,7 @@ The current ecosystem-compatible baseline is recorded in `docs/migration/DEPENDE
 - `@vue/tsconfig 0.9.1`
 - `@types/node 26.1.1`
 
-The P0B independent-latest set blocked on `vue-tsc 3.3.7` requiring `typescript/lib/tsc` while `typescript 7.0.2` does not export that subpath. P0C configured the official Microsoft TypeScript 6 compatibility package under the `typescript` package name and retained TypeScript 7 under `typescript-7`, but `@volar/typescript 2.4.28` could not transform the compatibility package's `typescript/lib/tsc.js` shim and reported `Failed to locate tsc module path from shim`. P0D rejects that bridge for the current toolchain and adopts real official `typescript 6.0.3` with `vue-tsc 3.3.7`. Do not resolve future TypeScript 7 adoption by patching package exports, editing `node_modules`, bypassing `vue-tsc`, or adding a custom compiler wrapper.
+The rejected compatibility attempt proved that the current stable Vue tooling cannot consume the TypeScript compatibility shim. The accepted toolchain therefore uses official `typescript 6.0.3` with `vue-tsc 3.3.7`. Do not resolve later TypeScript 7 adoption by patching package exports, editing `node_modules`, bypassing `vue-tsc`, or adding a custom compiler wrapper.
 
 ## Constraints
 
@@ -72,7 +71,7 @@ The P0B independent-latest set blocked on `vue-tsc 3.3.7` requiring `typescript/
 - No Tailwind or second token system. CSS custom properties in `src/styles/tokens.css` are authoritative.
 - Naive UI is never the product token authority and is consumed only through project adapters.
 - No runtime mocks, product fixtures, fake APIs, sample tournaments, sample replay, fake live messages, fake AI output, or silent fallback success states.
-- Dependencies present only for future architecture are not initialized until their feature gate passes.
+- A dependency is initialized only by an implemented owner and accepted architecture contract.
 
 ## Validation authority
 

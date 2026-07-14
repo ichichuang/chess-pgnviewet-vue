@@ -1,109 +1,29 @@
 # Semantic Token Registry Baseline
 
-Status: `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTED`
-Phase: `F3B_GLOBAL_SEMANTIC_TOKEN_REGISTRY_IMPLEMENTATION`
+Status: `ACTIVE_RUNTIME_AUTHORITY`
+
 Authority path: `src/styles/tokens.css`
-Inventory source: `docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json`
-Project namespace: project-owned CSS custom properties in `src/styles/tokens.css`
 
-## Scope
+## Decision
 
-F3B implements the evidence-backed semantic token registry only. It does not
-implement theme preference, system mode resolution, persistence, no-flash startup,
-HTML marker mutation, runtime `color-scheme`, runtime `meta[name="theme-color"]`,
-Pinia theme state, Dexie integration, Naive UI providers, Naive UI theme
-overrides, reusable UI adapters, product routes, or product UI.
+`src/styles/tokens.css` is the only global visual token registry. Project-owned feature and UI code consumes semantic custom properties from that file and does not create parallel palettes, raw governed values, or Naive UI literal theme authority.
 
-## Inventory Coverage
+## Current ownership
 
-The accepted inventory contains 86 entries. F3B implements all 86 entries in the
-single registry authority.
+- Shared, light, and dark declarations are owned by the registry.
+- `src/styles/index.css` imports the registry through the single global style entry.
+- The current theme engine resolves and applies the light/dark scope.
+- Project-owned Naive UI adapters derive their theme overrides from project tokens.
+- Board, annotation, evaluation, layout, typography, spacing, radius, state, focus, and motion roles use existing registry families.
 
-Domain counts:
+Inventory documents are evidence for established values; they do not authorize a second registry or imply that an undeclared target preference is implemented.
 
-- `ui-chrome`: 31
-- `radius`: 6
-- `spacing`: 8
-- `typography`: 8
-- `control-geometry`: 4
-- `board`: 13
-- `annotation`: 6
-- `annotation-geometry`: 6
-- `evaluation`: 4
+## Governance
 
-Declaration counts:
+New token values require a demonstrated product/runtime need, a project-owned semantic name, owner review, and raw-value scanner validation. Raw feature values, feature-local palettes, duplicate namespaces, alias cycles, undefined token references, and literal theme-provider values are prohibited.
 
-- Implemented inventory entries: 86
-- Deferred inventory entries: 0
-- Shared declarations: 55
-- Light-scope declarations: 31
-- Dark-scope declarations: 31
-- Governed compatibility aliases: 3
+Compatibility aliases remain acceptable only while a tracked consumer or canonical compatibility need exists. Their removal condition is zero active consumers and no accepted source-compatibility requirement.
 
-The light values are declared in `:root, :root[data-theme='light']` so the
-current static document remains visually truthful without adding runtime theme
-resolution. Dark declarations exist in `:root[data-theme='dark']` for later F3C
-runtime ownership.
+## Validation contract
 
-## Compatibility Aliases
-
-F3B keeps only the compatibility aliases explicitly authorized by F3A and needed
-to bridge canonical naming:
-
-| Alias           | Target               | Current consumer | Review trigger                       | Removal condition                                   |
-| --------------- | -------------------- | ---------------- | ------------------------------------ | --------------------------------------------------- |
-| `--hover`       | `--state-hover-bg`   | none             | Before F3D/F3E consumes legacy names | Remove when no canonical migration code requires it |
-| `--active-bg`   | `--state-active-bg`  | none             | Before F3D/F3E consumes legacy names | Remove when no canonical migration code requires it |
-| `--ring-accent` | `--state-focus-ring` | none             | Before F3D/F3E consumes legacy names | Remove when no canonical migration code requires it |
-
-No alias chain exceeds one level. No alias contains a raw visual value.
-
-## Consumer Migration
-
-The F3B validation consumer set was limited to the neutral bootstrap:
-
-- `src/styles/index.css` imports `src/styles/tokens.css` exactly once.
-- `src/styles/base.css` consumes `--font-sans`, `--fs-base`, `--text`, `--bg`,
-  and `--state-focus-ring`.
-- `src/App.vue` consumes `--bg` and `--text`.
-- `src/main.ts` imports `src/styles/index.css`.
-
-The only mechanical consumer migration in F3B is replacing the old
-`--focus-ring` reference with `--state-focus-ring`.
-
-## Governance Rules
-
-Subsequent token additions require canonical source evidence, an approved inventory
-entry, a project-owned semantic name, owner review, and validation through the
-raw visual-value scanner. Raw feature values, parallel namespaces, feature-local
-palettes, and Naive UI literal theme overrides are prohibited.
-
-The raw visual-value scanner permits raw visual values only in the token
-authority and approved evidence documents. Current Naive UI mappings derive
-from project tokens through the project-owned F3D provider. The F3C theme engine
-owns preference resolution, startup markers, persistence boundaries, system
-listeners, cross-tab behavior, and runtime document color metadata.
-
-Missing domains remain unimplemented unless a later approved inventory adds
-evidence-backed entries: player and connection states, z-index, motion and
-easing, reduced motion, safe-area geometry, panel and splitter geometry,
-responsive breakpoints, scroll surfaces, meta theme-color values, complete icon
-roles, disabled roles, link roles, overlay/dialog/menu/tooltip roles, and
-line-height/font-weight scales.
-
-## Validation Contract
-
-F3B completion requires:
-
-- Inventory-to-CSS parity for all 86 entries.
-- Correct shared, light, and dark scopes.
-- No duplicate same-scope declarations.
-- No alias cycle.
-- No alias reference to an undefined variable.
-- No consumer reference to an undefined project token.
-- No parallel token namespace.
-- Raw visual governance passing.
-- `pnpm` static validation, typecheck, production build, production and full
-  audits, and real-browser token-loading validation.
-
-Current development gate: `PRODUCT_UI_DEVELOPMENT_BASELINE_PASS`.
+Changes require registry/consumer integrity checks, raw-value governance, style lint, typecheck, production build, audits, and narrow real-browser validation for visible behavior. Target setting roles such as accent or board appearance do not become current until they have an approved UI and persistence owner.

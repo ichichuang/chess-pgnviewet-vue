@@ -1,0 +1,520 @@
+{
+  "phase": "FINAL_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_AND_PUSH",
+  "startedAt": "2026-07-14T04:20:00Z",
+  "completedAt": "2026-07-14T05:07:05Z",
+  "targetDirectory": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "localHeadBefore": "fc3a1207758c0d1b56e66304a22e8979a66a0b7d",
+  "originMainBefore": "fc3a1207758c0d1b56e66304a22e8979a66a0b7d",
+  "liveRemoteMainBefore": "fc3a1207758c0d1b56e66304a22e8979a66a0b7d",
+  "aheadBehindBefore": "0/0",
+  "worktreeBefore": {
+    "indexClean": true,
+    "trackedWorktreeClean": true,
+    "untrackedFiles": [],
+    "gitLocks": [],
+    "activeTrackedFileWriters": []
+  },
+  "authoritiesRead": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    ".ai/skills/gsap/SKILL.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/PAGE_STYLE_SPEC.md",
+    "docs/ui/THEME_SYSTEM_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/I18N_SPEC.md",
+    "docs/ui/CHESSBOARD_COMPONENT_API.md",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    ".ai/reports/COMPLETE_PRODUCT_DESIGN_OWNER_REVIEW_CORRECTION_AND_PUSH_REPORT.json",
+    ".ai/reports/GLOBAL_ACTIVE_AUTHORITY_CONSISTENCY_PURGE_AND_PUSH_REPORT.json"
+  ],
+  "runtimeEvidenceInspected": [
+    "index.html",
+    "vite.config.ts",
+    "package.json",
+    "src/main.ts",
+    "src/App.vue",
+    "src/router",
+    "src/stores",
+    "src/api",
+    "src/persistence",
+    "src/theme",
+    "src/ui",
+    "src/features/teaching-workspace",
+    "src/features/board",
+    "src/features/pgn",
+    "src/features/annotations",
+    "src/features/analysis",
+    "src/features/product-api"
+  ],
+  "activeFilesScanned": {
+    "trackedCurrentAuthorityFiles": 62,
+    "roots": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".ai/skills",
+      "docs/product",
+      "docs/ui",
+      "docs/architecture",
+      "docs/migration",
+      "scripts/governance"
+    ],
+    "historicalReportsExcludedFromRuleRewriting": true
+  },
+  "occurrencesReviewed": {
+    "searchFamilies": [
+      "obsolete phase and successor wording",
+      "automated-test requirements and package commands",
+      "unconfirmed cloud/share/live/MQTT contract detail",
+      "hypothetical or nonexistent component identifiers",
+      "current versus target persistence claims",
+      "theme and locale prepaint ownership",
+      "Query-cache persistence and rehydration",
+      "numeric retention claims",
+      "big-screen teaching-shell coupling",
+      "ongoing-live AI or evaluation",
+      "API authority paths",
+      "blank-game and fake-success fallbacks"
+    ],
+    "finalLiteralMatches": {
+      "obsoletePhase": {
+        "count": 4,
+        "classification": "Two owner-policy/origin labels in repository instructions plus two scanner/policy definition meanings; no active UI specification gate remains."
+      },
+      "unconfirmedConcreteContract": {
+        "count": 2,
+        "classification": "Scanner pattern definitions only."
+      },
+      "nonexistentComponentModel": {
+        "count": 9,
+        "classification": "Scanner pattern definitions only."
+      },
+      "stalePersistenceModel": {
+        "count": 7,
+        "classification": "Scanner pattern definitions only."
+      }
+    }
+  },
+  "occurrenceClassifications": [
+    {
+      "classification": "ACTIVE_INCORRECT_CONTENT",
+      "disposition": "REWRITTEN_OR_DELETED",
+      "remaining": 0
+    },
+    {
+      "classification": "ACTIVE_STALE_PHASE_CONTENT",
+      "disposition": "PHASE_SPECIFICATIONS_DELETED_AND_CURRENT_OWNERS_RECONCILED",
+      "remainingInActiveSpecifications": 0
+    },
+    {
+      "classification": "ACTIVE_UNCONFIRMED_CONTRACT_DETAIL",
+      "disposition": "REPLACED_WITH_ABSTRACT_BLOCKED_ADAPTER_ROLES",
+      "remaining": 0
+    },
+    {
+      "classification": "ACTIVE_UNIMPLEMENTED_CLAIM",
+      "disposition": "MOVED_TO_EXPLICIT_TARGET_OR_OWNER_DECISION_SECTIONS",
+      "remaining": 0
+    },
+    {
+      "classification": "VALID_CURRENT_REQUIREMENT",
+      "disposition": "PRESERVED",
+      "examples": [
+        "single Vue/Router/Pinia/Query/Axios/token/theme owners",
+        "strict kaisaile.auth.v1 account-session exception",
+        "owner no-automated-test policy provenance",
+        "ongoing-live read-only and AI/evaluation-free rule"
+      ]
+    },
+    {
+      "classification": "VALID_PROHIBITION_TEXT",
+      "disposition": "PRESERVED_AND_SCANNER_ALLOWED",
+      "examples": [
+        "no automated-test infrastructure",
+        "no fake success data",
+        "no persisted Query cache",
+        "no live AI or evaluation"
+      ]
+    },
+    {
+      "classification": "HISTORICAL_REPORT_CONTENT",
+      "disposition": "EXCLUDED_FROM_CURRENT_RULE_REWRITING"
+    },
+    {
+      "classification": "NON_RELEVANT_MEANING",
+      "disposition": "SCANNER_REGEX_AND_POLICY_DEFINITIONS_RETAINED"
+    }
+  ],
+  "componentSpecIssuesBefore": [
+    "Hypothetical identifiers were presented as implemented target components.",
+    "Big-screen was coupled to the complete teaching workspace and teaching panels.",
+    "Concrete cloud/share/live adapter inputs were presented without confirmed contracts.",
+    "A virtualized move-list claim had no current implementation or approved requirement.",
+    "Obsolete migration and automated-test review language remained active."
+  ],
+  "componentSpecIssuesAfter": [],
+  "persistenceSpecIssuesBefore": [
+    "General preferences and drafts tables were presented as current.",
+    "Workspace recovery listed fields absent from the current schema.",
+    "Dexie was incorrectly assigned prepaint theme and locale ownership.",
+    "Locale, accent, board appearance, sound, and AI defaults were presented as current persisted fields.",
+    "Query-cache retention and broad recovery semantics were overstated.",
+    "Numeric retention requirements were imposed without an owner decision.",
+    "The API authority path pointed to a nonexistent docs/api tree."
+  ],
+  "persistenceSpecIssuesAfter": [],
+  "obsoletePhaseContentRemoved": {
+    "activeDocumentsDeleted": 12,
+    "remainingActiveUiPhaseGates": 0,
+    "currentArchitectureDocumentsRewritten": [
+      "docs/architecture/TECH_STACK_DECISION.md",
+      "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+      "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+      "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md",
+      "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+      "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+      "docs/migration/DEPENDENCY_VERSION_BASELINE.json"
+    ]
+  },
+  "automatedTestContentRemoved": {
+    "requirementsRemoved": true,
+    "canonicalTestEvidenceRemovedFromCurrentClosure": true,
+    "validOwnerProhibitionPreserved": true,
+    "infrastructureAdded": false
+  },
+  "unconfirmedContractDetailsRemoved": [
+    "concrete cloud provider record input",
+    "concrete shared-response input",
+    "generic live stream/HTTP input",
+    "unconfirmed DTO and payload shapes"
+  ],
+  "nonexistentComponentClaimsRemoved": [
+    "WorkspaceShell",
+    "BoardContainer",
+    "BoardViewAdapter",
+    "CompetitionNavigator",
+    "LiveInfoPanel",
+    "ReplayPanel",
+    "DisplayLayout",
+    "AnnotationLayer",
+    "MoveList"
+  ],
+  "currentComponentOwnersDocumented": [
+    "TeachingWorkspace",
+    "WorkspaceToolbar",
+    "WorkspaceRightPanel",
+    "WorkspaceSplitter",
+    "CanonicalChessBoard",
+    "PgnChessBoard",
+    "PgnGameList",
+    "AnalysisPanel",
+    "EvalBar",
+    "CompetitionListView",
+    "CompetitionDetailView",
+    "CompetitionDisplayView",
+    "CompetitionLiveRedirectView",
+    "CompatibilityEntryView",
+    "LoginView"
+  ],
+  "conceptualComponentRolesDocumented": [
+    "contextual source navigation",
+    "tournament source navigator",
+    "live status presentation",
+    "replay import control",
+    "display grid primitive",
+    "display player/status primitive",
+    "product settings surface"
+  ],
+  "bigScreenCompositionCorrected": {
+    "independentRouteComposition": true,
+    "reusesCanonicalBoardAndTokens": true,
+    "reusesFullTeachingWorkspace": false,
+    "ongoingLiveAiOrEvaluation": false,
+    "currentPairingDisplaySeparatedFromContractBlockedMultiBoardLive": true
+  },
+  "currentPersistenceOwnersDocumented": [
+    "index.html and theme owner: localStorage themeMode",
+    "workspaceLayoutPersistence.ts: exact Dexie workspaceSession/current layout record",
+    "workspaceHandoff.ts: sanitized sessionStorage handoff with memory fallback",
+    "authPersistence.ts: strict localStorage kaisaile.auth.v1",
+    "queryClient.ts: memory-only Query cache",
+    "analysis and live owners: memory-only active state"
+  ],
+  "targetPersistenceRequirementsDocumented": [
+    "local teaching collection",
+    "current game and node",
+    "PGN-node comments and annotations",
+    "game-level teaching note",
+    "explicit imported local copies",
+    "approved non-sensitive display/application preferences",
+    "future locale preference after the Vue i18n owner exists"
+  ],
+  "prepaintOwnershipCorrected": true,
+  "localeImplementationClaimsCorrected": true,
+  "queryPersistenceClaimsRemoved": true,
+  "arbitraryRetentionClaimsRemoved": true,
+  "ownerDecisionBoundariesPreserved": ["OD-02", "OD-03", "OD-04", "OD-11"],
+  "apiAuthorityReferencesCorrected": [
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/WEB_API_READINESS_MATRIX.json",
+    "docs/architecture/WEB_API_ENDPOINT_INVENTORY.json",
+    "docs/architecture/WEB_API_CONTRACT_COVERAGE_MATRIX.json"
+  ],
+  "activeSectionsDeleted": [
+    "hypothetical unified component catalog",
+    "concrete unconfirmed source-adapter table",
+    "source-copy and test-review migration section",
+    "hypothetical current persistence categories",
+    "conceptual current AppDatabase model",
+    "broad unsupported refresh-preservation list"
+  ],
+  "activeDocumentsDeleted": [
+    "docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json",
+    "docs/architecture/P1A_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_BASELINE.md",
+    "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md",
+    "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+    "docs/architecture/P1B4_REUSABLE_CHESSBOARD_COMPONENT_BASELINE.md",
+    "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+    "docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md",
+    "docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md",
+    "docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md",
+    "docs/architecture/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_BASELINE.md",
+    "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+  ],
+  "referencesUpdated": {
+    "activeInboundReferencesToDeletedDocuments": 0,
+    "gsapSkillReferencePreservedByCurrentBoardAuthorityRewrite": true,
+    "historicalReportReferencesUntouched": true
+  },
+  "scannerRulesAdded": [
+    "RESIDUE_ACTIVE_UI_PHASE_GATE",
+    "RESIDUE_CURRENT_API_AUTHORITY_PATH",
+    "RESIDUE_DEXIE_PREPAINT_OWNER",
+    "RESIDUE_QUERY_CACHE_PERSISTENCE_CLAIM",
+    "RESIDUE_UNCONFIRMED_ADAPTER_DETAIL",
+    "RESIDUE_BIG_SCREEN_FULL_TEACHING_SHELL",
+    "RESIDUE_UNAPPROVED_RETENTION",
+    "RESIDUE_NONEXISTENT_COMPONENT_MODEL",
+    "RESIDUE_UNIMPLEMENTED_PERSISTENCE_MODEL",
+    "RESIDUE_ONGOING_LIVE_AI_EVALUATION"
+  ],
+  "filesCreated": [
+    ".ai/reports/FINAL_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_AND_PUSH_REPORT.json"
+  ],
+  "filesModified": [
+    "docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/CANONICAL_TOKEN_THEME_INVENTORY.json",
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md",
+    "docs/architecture/STATIC_GOVERNANCE_SCANNER_BASELINE.md",
+    "docs/architecture/TECH_STACK_DECISION.md",
+    "docs/architecture/THEME_ENGINE_RUNTIME_BASELINE.md",
+    "docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md",
+    "docs/migration/ASSET_INVENTORY.json",
+    "docs/migration/CANONICAL_RUNTIME_CLOSURE.json",
+    "docs/migration/CANONICAL_TOOLCHAIN_PARITY.json",
+    "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/ui/CHESSBOARD_COMPONENT_API.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/I18N_SPEC.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/ui/THEME_SYSTEM_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md",
+    "scripts/governance/check-obsolete-architecture-residue.mjs"
+  ],
+  "filesDeleted": [
+    "docs/architecture/CANONICAL_BOARD_ADVANCED_CAPABILITY_INVENTORY.json",
+    "docs/architecture/P1A_APPLICATION_SHELL_AND_WORKSPACE_GEOMETRY_BASELINE.md",
+    "docs/architecture/P1B_CANONICAL_BOARD_RUNTIME_BASELINE.md",
+    "docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md",
+    "docs/architecture/P1B4_REUSABLE_CHESSBOARD_COMPONENT_BASELINE.md",
+    "docs/architecture/P1C_REAL_PGN_RUNTIME_BASELINE.md",
+    "docs/architecture/P1D_CANONICAL_ANNOTATION_RUNTIME_BASELINE.md",
+    "docs/architecture/P1E_CANONICAL_WORKSPACE_CONTROL_RUNTIME_BASELINE.md",
+    "docs/architecture/P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_BASELINE.md",
+    "docs/architecture/P1H_PRODUCT_COMPLETE_USABLE_INTEGRATION_BASELINE.md",
+    "docs/architecture/PRODUCT_UI_MIGRATION_GATE_BASELINE.md",
+    "docs/migration/P1_CANONICAL_PRODUCT_MIGRATION_SEQUENCE.md"
+  ],
+  "protectedHashesBefore": {
+    "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+    "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+    "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d",
+    "index.html": "6884ba9c56bed31df241cb66ca2b5adca5519b2dcf327aed7745b2fddbdcae68",
+    "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+    "src/App.vue": "44f3160cb33fa0a7847f6311798cb1f7a9c71a289e83ad35a865a5b21da64ad7",
+    "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+    "src/stores/index.ts": "00760ba4ac0d4e771426293a4754c9315939403551249810779b6d02d09ff90e",
+    "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+    "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+    "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+    "src/persistence/workspace/workspaceLayoutPersistence.ts": "6fe681d2b17eb37f5cfbf9eda68d0efb403a4338ca6c7fd10ba4a5ee2dd449bd",
+    "src/features/teaching-workspace/TeachingWorkspace.vue": "6f6eb96f7ee88edd0a256e412c9e6c97e555b20d81fe36c0ab37d995f5bcf03a",
+    "src/styles/tokens.css": "54b172c48deaaf305fe31fe57d9fed68b8b6b9d1126337a3ef904df5c8e7574a"
+  },
+  "protectedHashesAfter": {
+    "package.json": "a79c438f65846826870b0b0f05e480c57ff57d8d0219677bac7ef6f0d76f48c0",
+    "pnpm-lock.yaml": "667197496b433fec47f9cf83df3e4655f47c5dddfff7720f5ce5c0668eb19162",
+    "vite.config.ts": "2086f470d5492c73ee6c1e4aaf734eded9bac6889a83a037b5d35cbe3eaadc3d",
+    "index.html": "6884ba9c56bed31df241cb66ca2b5adca5519b2dcf327aed7745b2fddbdcae68",
+    "src/main.ts": "0f01a9792758f64824bf15d09709dd34610794af2bd69d24ec7b135895528711",
+    "src/App.vue": "44f3160cb33fa0a7847f6311798cb1f7a9c71a289e83ad35a865a5b21da64ad7",
+    "src/router/index.ts": "527dad2c74e33301b908285d952919842a0bb997855f9246c43802bc6300f9d6",
+    "src/stores/index.ts": "00760ba4ac0d4e771426293a4754c9315939403551249810779b6d02d09ff90e",
+    "src/api/client.ts": "6760f245cc4d90fda9881b46135839228dd897e3f8bfd21099eeb6979f6bcd1b",
+    "src/api/authRepository.ts": "dffd1ff56e122a72f7f5d4a320ff163c221e6ed1228543cdd9c0c1bd2fff8648",
+    "src/persistence/auth/authPersistence.ts": "303936e8898ecd0384025a4179f1efa9abdd0b695e6faa7823b25f0d50a4842d",
+    "src/persistence/workspace/workspaceLayoutPersistence.ts": "6fe681d2b17eb37f5cfbf9eda68d0efb403a4338ca6c7fd10ba4a5ee2dd449bd",
+    "src/features/teaching-workspace/TeachingWorkspace.vue": "6f6eb96f7ee88edd0a256e412c9e6c97e555b20d81fe36c0ab37d995f5bcf03a",
+    "src/styles/tokens.css": "54b172c48deaaf305fe31fe57d9fed68b8b6b9d1126337a3ef904df5c8e7574a"
+  },
+  "protectedRuntimeUnchanged": true,
+  "mockDataAudit": {
+    "status": "PASS",
+    "mockFakeFixtureSampleFallbackDataAdded": false
+  },
+  "automatedTestAudit": {
+    "status": "PASS",
+    "infrastructureAdded": false,
+    "testCommandRun": false
+  },
+  "sensitiveDataAudit": {
+    "status": "PASS",
+    "secretsCredentialsPrivateLogsOrBrowserStateInspected": false,
+    "realLoginOrProtectedApiCalled": false
+  },
+  "exactPathValidation": {
+    "status": "PASS",
+    "currentPathsValidated": 55,
+    "unresolvedCurrentComponentPaths": 0,
+    "unresolvedPersistenceOwnerPaths": 0
+  },
+  "componentSymbolValidation": {
+    "status": "PASS",
+    "symbolsAndFieldsValidated": 10,
+    "failures": []
+  },
+  "markdownValidation": {
+    "status": "PASS",
+    "modifiedMarkdownFiles": 16,
+    "relativeLinksValidated": 0,
+    "headingsValidated": 183,
+    "brokenLinks": 0,
+    "brokenOrDuplicateAnchors": 0
+  },
+  "mermaidValidation": {
+    "status": "PASS_NOT_APPLICABLE",
+    "modifiedMermaidBlocks": 0
+  },
+  "jsonValidation": {
+    "status": "PASS",
+    "method": "jq empty for every created or modified JSON file"
+  },
+  "staticValidation": {
+    "status": "PASS",
+    "commands": [
+      "mise exec -- pnpm run check:residue",
+      "mise exec -- pnpm run check:deps",
+      "mise exec -- pnpm run check:architecture",
+      "mise exec -- pnpm run check:tokens",
+      "mise exec -- pnpm run check:mocks",
+      "mise exec -- pnpm run check:secrets",
+      "mise exec -- pnpm run check:copy",
+      "mise exec -- pnpm run check:governance",
+      "mise exec -- pnpm run format:check",
+      "mise exec -- pnpm run lint",
+      "mise exec -- pnpm run lint:style",
+      "mise exec -- pnpm run check:unused",
+      "mise exec -- pnpm run check:static"
+    ],
+    "scannerProbe": {
+      "negative": "PASS_ALL_10_NEW_RULES_OBSERVED",
+      "clean": "PASS_ZERO_FINDINGS"
+    }
+  },
+  "typecheck": {
+    "command": "mise exec -- pnpm run typecheck",
+    "status": "PASS"
+  },
+  "productionBuild": {
+    "commands": [
+      "mise exec -- pnpm run typecheck",
+      "mise exec -- pnpm exec vite build --outDir <temporary-outside-repository> --emptyOutDir"
+    ],
+    "status": "PASS",
+    "outputRetained": false
+  },
+  "securityAudits": {
+    "production": "PASS_NO_KNOWN_VULNERABILITIES",
+    "full": "PASS_NO_KNOWN_VULNERABILITIES"
+  },
+  "browserValidation": "NOT_RUN_DOCUMENTATION_AND_GOVERNANCE_ONLY_PROTECTED_RUNTIME_UNCHANGED",
+  "gitDiffCheck": "PASS",
+  "commit": {
+    "subject": "docs(ui): 清除组件与持久化规范残留并闭合设计权威",
+    "status": "REPORT_INCLUDED_IN_ENCLOSING_PHASE_COMMIT"
+  },
+  "push": {
+    "remote": "origin",
+    "branch": "main",
+    "force": false,
+    "status": "ENCLOSING_PHASE_COMMIT_PUSH_VERIFIED_IN_FINAL_CONSOLE_RESPONSE"
+  },
+  "localHeadAfter": "ENCLOSING_PHASE_COMMIT_VERIFIED_IN_FINAL_CONSOLE_RESPONSE",
+  "remoteMainAfter": "ENCLOSING_PHASE_COMMIT_VERIFIED_IN_FINAL_CONSOLE_RESPONSE",
+  "localRemoteEqual": "VERIFIED_IN_FINAL_CONSOLE_RESPONSE",
+  "worktreeAfter": "CLEAN_INDEX_TRACKED_WORKTREE_AND_UNTRACKED_VERIFIED_IN_FINAL_CONSOLE_RESPONSE",
+  "remainingActiveIncorrectContent": 0,
+  "remainingActiveStalePhaseContent": 0,
+  "remainingUnconfirmedConcreteContractClaims": 0,
+  "remainingOwnerDecisions": [
+    "OD-01",
+    "OD-02",
+    "OD-03",
+    "OD-04",
+    "OD-05",
+    "OD-06",
+    "OD-07",
+    "OD-08",
+    "OD-09",
+    "OD-10",
+    "OD-11"
+  ],
+  "finalProductDesignStatus": "COMPLETE_PRODUCT_DESIGN_CORRECTED_READY_FOR_OWNER_REVIEW",
+  "finalPageDesignGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+  "finalVerdict": "FINAL_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_AND_PUSH_PASS"
+}

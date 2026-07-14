@@ -5,7 +5,7 @@
         "total_assets_semantics": "Source asset candidates inventoried for admission review; this is not a migrated or retained target-asset count.",
         "source_root_for_relative_consumer_paths": "/Users/cc/Work/neobv/Chess/pgnViewer-new",
         "target_roots": ["src/assets", "public"],
-        "expected_future_target_consumer_semantics": "Planned repository-relative paths only. They are not present or active in P0 and do not prove admission eligibility.",
+        "expected_future_target_consumer_semantics": "Planned repository-relative paths only. They are not present or active in the current target and do not prove admission eligibility.",
         "rights_evidence_semantics": "Source lineage and active consumption prove provenance only. They do not prove ownership, license, or attribution rights.",
         "duplicate_group_semantics": "duplicate_groups records one Merida filename family; the reconciliation report records the twelve objective current SHA-256 equivalence classes."
     },

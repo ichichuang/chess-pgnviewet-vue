@@ -1,195 +1,99 @@
 # Responsive Screen Specification
 
+| Field   | Value                                                |
+| ------- | ---------------------------------------------------- |
+| Version | 1.1.0                                                |
+| Status  | `COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS` |
+
 ## Purpose
 
-Define screen profiles, breakpoints, container-query strategy, board sizing per profile, panel behavior, and touch/pointer rules so the workspace works on laptops, tablets, mobile devices, and large venue displays.
+Define responsive responsibilities for the unified teaching workspace, public tournament surfaces, and independent big-screen display without pre-resolving open device and layout decisions.
 
-## Scope
+## Screen contexts
 
-This document governs:
+| Context        | Primary use                                           | Required behavior                                                                                       |
+| -------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Narrow mobile  | Review, navigation, share entry, and light annotation | Board first; contextual regions switch without body scroll; full editing scope remains `OD-09`.         |
+| Tablet         | Portable teaching and review                          | Preserve a complete square board; reveal one contextual region at a time when width is constrained.     |
+| Laptop/desktop | Primary teaching and commentary                       | Maintain left source navigation, dominant center board, and right context workspace when space permits. |
+| Venue display  | Independent read-only public/operator surface         | Optimize board and status readability, paging, focus, and failure states for viewing distance.          |
 
-- Screen profiles and breakpoints.
-- Board sizing algorithm per profile.
-- Panel collapse order and stacking behavior.
-- Big-screen display mode rules.
-- Touch and pointer interaction differences.
-- Safe-area and viewport unit usage.
+Exact breakpoint values are implementation-owned and must be derived from the existing layout and real content rather than copied into this product specification as universal guarantees.
 
-## Non-goals
+## Teaching-workspace adaptation
 
-- Token values are defined in `docs/ui/THEME_SYSTEM_SPEC.md`.
-- Layout law is defined in `docs/ui/LAYOUT_SYSTEM_SPEC.md`.
-- Component APIs are defined in `docs/ui/COMPONENT_SYSTEM_SPEC.md`.
+When space narrows:
 
-## Screen profiles
+1. Preserve the board as a complete square and keep core navigation reachable.
+2. Convert the right contextual area to a controlled drawer, sheet, or context switcher.
+3. Convert the left source navigation to a controlled drawer or hierarchical selector.
+4. Keep each visual area to one scroll owner; the document body remains fixed.
+5. Preserve focus and return it to the invoking control when overlays close.
 
-| Profile      | Typical viewport       | Primary input   | Use case                     |
-| ------------ | ---------------------- | --------------- | ---------------------------- |
-| `mobile`     | < 640px                | Touch           | Quick review, share links    |
-| `tablet`     | 640px – 1024px         | Touch + pointer | Coaching on portable devices |
-| `laptop`     | 1024px – 1440px        | Pointer         | Teacher desk, personal study |
-| `desktop`    | 1440px – 2560px        | Pointer         | Classroom presentation       |
-| `big-screen` | > 1920px or projection | Pointer/remote  | Venue/projector display      |
+Collapsed and resized state is recovered only where a current persistence field exists. The current tracked layout record is listed in `docs/ui/PERSISTENCE_RECOVERY_SPEC.md`; page design must not assume additional per-profile persistence.
 
-Breakpoints are minimum-width. The layout adapts upward using container queries where possible.
+## Board sizing
 
-## Breakpoint tokens
+The board host owns measurable geometry. A board fits the smaller available dimension and remains square:
 
-```css
---bp-mobile: 640px;
---bp-tablet: 1024px;
---bp-laptop: 1440px;
---bp-desktop: 1920px;
+```text
+boardSize = min(availableWidth, availableHeight) - requiredGutters
 ```
 
-Project-owned responsive CSS maps these values directly:
+No universal minimum for teaching, mobile, or display boards is accepted here. Big-screen minimum and preferred board sizes remain `OD-05`. Multi-board spacing, margin, and rotation timing remain `OD-06`. Page design may use provisional values only when they stay explicitly tracked against those decisions.
 
-```css
-@media (width < 640px) { /* mobile profile */ }
-@media (640px <= width < 1024px) { /* tablet profile */ }
-@media (1024px <= width < 1440px) { /* laptop profile */ }
-@media (1440px <= width) { /* desktop profile */ }
-```
+## Independent big-screen composition
 
-## Board sizing per profile
+The `/competitions/:hdid/display` route:
 
-The board container uses container queries to determine board size:
+- is read-only and independent from the teaching-workspace shell;
+- reuses the canonical chessboard, the single token registry, and approved display player/status primitives;
+- supports the target single-focus and multi-board grid responsibilities;
+- rejects a candidate grid that would violate the tracked minimum-readable-size decision and pages instead;
+- keeps operator controls, paging, focus, freshness, disconnection, completion, and unavailable states stable;
+- contains no teaching PGN panel, analysis panel, editing toolbar, AI, or evaluation for ongoing games.
 
-```
-boardSize = min(availableWidth, availableHeight) - coordinateGutter
-```
+The current route renders public pairing information. Multi-board live positions remain contract-blocked; the specification does not imply that they are implemented.
 
-| Profile      | Minimum board size | Panel default behavior                                         |
-| ------------ | ------------------ | -------------------------------------------------------------- |
-| `mobile`     | 280px              | Single column; side panels become bottom sheets or drawers     |
-| `tablet`     | 420px              | One side panel visible by default; second panel collapses      |
-| `laptop`     | 520px              | Two side panels visible with default widths                    |
-| `desktop`    | 640px              | Two side panels visible; board scales with viewport            |
-| `big-screen` | 800px+             | Side panels may collapse; board maximized for distance viewing |
+## Touch, pointer, and keyboard
 
-The board must never be clipped by the viewport or by a panel.
+- Every core action has keyboard and touch equivalents.
+- Touch targets are at least 44 by 44 CSS pixels unless a stricter project token applies.
+- Hover-only discovery is forbidden for essential controls.
+- Drag operations provide an alternative control path.
+- Reduced-motion preferences disable nonessential travel, spring, and automatic motion; display rotation remains pausable.
+- Mobile full-position editing remains `OD-09` and is not silently enabled by responsive layout.
 
-## Panel behavior
+## Safe areas and viewport ownership
 
-### Collapse order
-
-When viewport shrinks, panels collapse in this order:
-
-1. Right auxiliary panel (analysis, info).
-2. Left library/navigator panel.
-3. Board remains visible until the absolute minimum size is reached.
-
-### Stacking
-
-On `mobile` and narrow `tablet`, the workspace switches to a single-column stacked layout:
-
-- Board first.
-- Move list / PGN panel second.
-- Navigator / library third (collapsible).
-
-### Drawer behavior
-
-Collapsed panels on touch profiles reopen as drawers or sheets with a visible scrim. They do not push the board; they overlay it.
-
-## Big-screen display mode
-
-`/competitions/:hdid/display` targets venue projectors:
-
-- Uses the `big-screen` profile by default.
-- Hides most chrome; shows board, player names, result, and live status.
-- Typography and spacing scale up via display theme overrides.
-- Board occupies the largest available square.
-- Optional side/info overlays are semi-transparent and auto-hide.
-- Phase one is single-board focus. Multi-board rotation is a future extension.
-
-## Touch vs. pointer
-
-| Interaction   | Pointer               | Touch                                   |
-| ------------- | --------------------- | --------------------------------------- |
-| Piece move    | Drag or click-to-move | Drag or tap-to-move                     |
-| Arrows/shapes | Click-drag            | Two-finger or long-press gesture        |
-| Context menu  | Right-click           | Long-press                              |
-| Panel resize  | Drag handle           | Swipe edge or button toggle             |
-| Toolbar       | Hover tooltips        | No hover; icons self-evident or labeled |
-
-Touch targets must be at least 44×44 CSS pixels.
-
-## Safe areas and viewport units
-
-- Use `100dvh` for the app root to handle mobile dynamic toolbars.
-- Respect `env(safe-area-inset-*)` on mobile browsers.
-- Avoid `100vh` except as a `dvh` fallback.
-
-## Rules
-
-### R1. Mobile is supported but secondary
-
-The workspace is optimized for laptop/desktop teaching. Mobile supports review and share flows; complex editing is deferred.
-
-### R2. Board must remain visible and square
-
-No profile may clip the board or allow non-square board distortion.
-
-### R3. Panel collapse preserves user intent
-
-Collapsed state is persisted per profile and restored on return.
-
-### R4. Display mode uses the same components
-
-Big-screen display does not fork the component catalog; it uses token overrides and conditional visibility.
-
-### R5. Touch targets meet minimum size
-
-All interactive touch targets are at least 44×44 CSS pixels.
+- Use dynamic viewport sizing for the application root with an appropriate fallback.
+- Respect safe-area insets on devices that expose them.
+- The body is not the main scroll container.
+- Module-local overflow follows `docs/ui/LAYOUT_SYSTEM_SPEC.md`.
 
 ## Acceptance criteria
 
-1. Screen profiles and breakpoints are documented.
-2. Board sizing algorithm and minimum sizes are defined per profile.
-3. Panel collapse order and stacking behavior are documented.
-4. Big-screen display mode rules are defined.
-5. Touch/pointer differences are documented with minimum touch-target size.
-6. Viewport units and safe-area rules are documented.
-
-## Open questions / risks
-
-- Whether mobile editing features are ever required.
-- Whether multi-board rotation in big-screen mode needs a separate mode or only a screen profile.
+1. The board remains square, visible, and dominant in every teaching context.
+2. Narrow layouts preserve context through accessible drawers, sheets, or switchers without body scroll.
+3. Big-screen is validated as an independent display composition, not the teaching shell at a larger width.
+4. Ongoing live display contains no AI or evaluation.
+5. `OD-05`, `OD-06`, and `OD-09` remain tracked rather than converted into final constants.
+6. Current pairing display and contract-blocked multi-board live target are clearly separated.
 
 ## Machine-readable summary
 
 ```json
 {
   "document": "responsive-screen-spec",
-  "version": "1.0.0",
-  "rules": [
-    "mobile_supported_secondary",
-    "board_visible_and_square",
-    "panel_collapse_preserves_intent",
-    "display_mode_same_components",
-    "touch_targets_minimum_size"
-  ],
-  "profiles": ["mobile", "tablet", "laptop", "desktop", "big-screen"],
-  "breakpoints": {
-    "sm": "640px",
-    "md": "1024px",
-    "lg": "1440px",
-    "xl": "1920px"
-  },
-  "board_min_sizes": {
-    "mobile": "280px",
-    "tablet": "420px",
-    "laptop": "520px",
-    "desktop": "640px",
-    "big-screen": "800px"
-  },
-  "panel_collapse_order": ["right_auxiliary", "left_library", "board_last"],
-  "touch_target_min": "44px",
-  "related_docs": [
-    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
-    "docs/ui/THEME_SYSTEM_SPEC.md",
-    "docs/ui/COMPONENT_SYSTEM_SPEC.md"
-  ],
-  "next_doc": "docs/ui/COMPONENT_SYSTEM_SPEC.md"
+  "version": "1.1.0",
+  "status": "COMPLETE_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_PASS",
+  "contexts": ["mobile", "tablet", "laptop_desktop", "venue_display"],
+  "board_sizing": "min_available_dimension_minus_required_gutters",
+  "fixed_board_minimums_approved": false,
+  "big_screen_independent_route_composition": true,
+  "big_screen_reuses_full_teaching_workspace": false,
+  "multi_board_live_currently_implemented": false,
+  "ongoing_live_ai_or_evaluation": false,
+  "open_owner_decisions": ["OD-05", "OD-06", "OD-09"]
 }
 ```

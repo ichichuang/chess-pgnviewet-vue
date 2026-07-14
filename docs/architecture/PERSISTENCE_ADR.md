@@ -4,56 +4,51 @@ Status: `ACTIVE_AUTHORITY`
 
 ## Decision
 
-Dexie is the single structured browser-persistence boundary for approved
-non-secret product records. Pinia owns active client state; TanStack Vue Query
-owns server reads; explicit adapters serialize versioned records. Zod validates
-every persisted version before hydration.
+Pinia owns active client state. TanStack Vue Query owns server-read cache in memory. Project-owned persistence adapters own only their explicitly versioned records. Zod validates persisted and transport data at their boundaries.
 
-Authentication is not a Dexie or Query-persistence category. No cookie session
-or BFF is assumed. The confirmed compatibility lifecycle uses one project-owned
-`localStorage` adapter at `src/persistence/auth/authPersistence.ts` with the key
-`kaisaile.auth.v1`, a strict Zod version 1 schema, and a maximum 43,200-second
-lifetime. Its data fields are `token`, `uid`, `accountLabel`, and `expiresAt`;
-no other authentication persistence is approved.
+Dexie is the approved structured browser-persistence boundary for non-secret product records, but a target requirement is not an implemented table. Current and target ownership must remain separate.
 
-## Categories
+## Current implemented owners
 
-1. Durable public preferences.
-2. Workspace layout/session metadata.
-3. Recoverable local drafts.
-4. Sanitized URL-shareable selection state.
-5. Memory-only API Query cache.
-6. Memory-only live state.
-7. Minimum accepted auth state, only after a Web contract is verified.
-8. Never-persist state.
+| Category             | Current owner                                                                                                                         | Storage and scope                                                                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Theme bootstrap      | `index.html`, `src/bootstrap/preferences/themePreference.ts`, `src/theme/constants.ts`, `src/theme/runtime.ts`, `src/stores/theme.ts` | Synchronous `localStorage` key `themeMode`; values are `light`, `dark`, or `system`.                                                                               |
+| Workspace layout     | `src/persistence/workspace/workspaceLayoutPersistence.ts`                                                                             | Dexie database `chess-pgnviewer-vue`, version 1, table `workspaceSession`, record `current`; only the strict implemented layout fields.                            |
+| Workspace handoff    | `src/persistence/workspace/workspaceHandoff.ts`                                                                                       | Sanitized selection context in `sessionStorage` key `pgnViewer.workspaceHandoff.v1`, with memory fallback.                                                         |
+| Account session      | `src/persistence/auth/authPersistence.ts`                                                                                             | Sole approved `localStorage` record `kaisaile.auth.v1`; strict Zod version 1, maximum 43,200 seconds, data fields `token`, `uid`, `accountLabel`, and `expiresAt`. |
+| Server reads         | `src/api/queryClient.ts`                                                                                                              | TanStack Vue Query cache in memory only; no dehydrate, hydrate, or storage persister.                                                                              |
+| Active analysis/live | Owning feature state                                                                                                                  | Memory only.                                                                                                                                                       |
 
-Every new field names exactly one category, owner, schema version, expiration,
-recovery behavior, reset behavior, and security classification.
+The current runtime has no general preferences table, draft table, teaching-collection record, locale record, persisted Query cache, live-message record, or AI-default record.
+
+## Approved target categories
+
+Structured target persistence may cover:
+
+1. Local teaching collection and current game/node.
+2. PGN-node comments and annotations.
+3. Game-level teaching notes.
+4. Approved non-sensitive display and application preferences.
+5. Explicitly imported local copies of completed/read-only content.
+
+Each new record requires an accepted owner, schema, version, reset/recovery behavior, security classification, and retention rule before implementation. No conceptual database interface or table name is authoritative until code exists.
+
+Lesson/session notes remain `OD-02`. AI setting scope and resource defaults remain `OD-03` and `OD-04`. Sound default remains `OD-11`. Locale remains target-only until a project-owned Vue i18n runtime exists.
 
 ## Rules
 
 - Passwords and password digests are never persisted.
-- URL/query tokens, upstream shared credentials, HMAC secrets, MQTT material,
-  cookies, raw API responses, and credential-bearing URLs are never persisted.
-- Obsolete identity and guest-credential keys are not restored or recreated.
-- Initialization restores only `kaisaile.auth.v1` after schema and expiry
-  validation; invalid or expired records are removed.
-- Live payloads and replay API data are memory-only. Private Query entries are
-  never dehydrated or written to Dexie.
-- Workspace handoffs reject token-like fields and store only sanitized source
-  selection context.
-- Logout/auth loss clears private Query entries, protected replay, protected
-  handoffs, and active analysis. It preserves local/public PGN work, theme,
-  language, layout, and public tournament selection.
-- Invalid or unknown persisted versions fail closed and expose a recoverable
-  reset path without fabricating state.
+- Authentication values never enter URLs, router state, Dexie, persisted Query data, workspace handoffs, PGN, annotations, AI state, or duplicate account records.
+- Signing secrets, shared upstream credentials, MQTT credentials, secret-bearing URLs, protected raw payloads, and complete sensitive responses are never persisted.
+- Invalid or expired `kaisaile.auth.v1` records are removed. No cookie, BFF, or alternate session architecture is introduced.
+- Private Query entries are removed on logout; public tournament queries may remain in memory until normal invalidation.
+- Workspace handoffs accept only sanitized non-sensitive source selection context.
+- Live payloads, live credentials, running AI tasks, and transient errors remain memory-only.
+- Protected sources remain read-only. Explicit import creates a distinct validated local copy.
+- Invalid or unknown records fail closed to a reset, picker, validated existing local game, or unavailable state; they never fabricate successful content.
 
-## Existing approved persistence
+## Recovery
 
-- theme preference through the project preference adapter;
-- non-sensitive workspace layout through the versioned Dexie adapter;
-- sanitized short-lived workspace handoff context through its project adapter.
+Current recovery order is synchronous theme bootstrap, validated workspace-layout restoration, theme-store initialization, auth restoration, Router/source resolution, and Query refetch into an empty memory cache. Target teaching records and locale preferences join this sequence only after their persistence owners exist.
 
-Any new cloud/share persistence remains blocked by
-`WEB_API_ENDPOINT_INVENTORY.json` until its credential and response contracts
-are verified.
+Detailed field and recovery truth is owned by `docs/ui/PERSISTENCE_RECOVERY_SPEC.md`.
