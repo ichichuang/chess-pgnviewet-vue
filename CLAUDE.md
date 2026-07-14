@@ -38,7 +38,7 @@ Before UI or feature work, read `AGENTS.md`, `.ai/skills/project-ui/SKILL.md`, r
 - No raw visual values in feature files.
 - GSAP animation, animated board interaction, and later animated UI work must read and obey `.ai/skills/gsap/SKILL.md`.
 - Persist only categorized, non-secret state; logout clears private/auth state while preserving non-sensitive public workspace context.
-- Confirmed reads use typed repositories and a same-origin server boundary. Unknown contracts remain blocked, never faked.
+- Confirmed reads use typed repositories and the exact source-confirmed HTTPS origin. Cross-origin browser deployments fail closed until the upstream origin grants them; unknown contracts remain blocked, never faked.
 - Browser code never owns upstream credentials or signing secrets.
-- Do not modify any of the three evidence-source repositories.
-- `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden. P1 product UI migration remains blocked until `PRODUCT_UI_MIGRATION_READY` is set by `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`; P0E remains accepted but is no longer the only pre-product gate.
+- Do not modify any evidence-source repository.
+- `package-lock.json`, npm dependency management, Yarn, and Bun are forbidden. The accepted product runtime remains governed by `PRODUCT_UI_MIGRATION_READY` in `docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md`.

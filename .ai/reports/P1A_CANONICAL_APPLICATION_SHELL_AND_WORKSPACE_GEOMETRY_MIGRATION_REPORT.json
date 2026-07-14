@@ -417,7 +417,7 @@
     "P1D annotation and drawing runtime",
     "P1E complete panels, toolbars, splitters, drawers, persistence, responsive panel behavior",
     "P1F AI analysis and worker runtime",
-    "P1G authentication and production API-backed product capabilities",
+    "production API-backed product capabilities",
     "P1H complete product integration and acceptance"
   ],
   "prematureLaterPhaseAudit": {

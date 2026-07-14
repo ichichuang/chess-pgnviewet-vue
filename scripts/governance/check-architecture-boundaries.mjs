@@ -19,7 +19,7 @@ const context = createContext(args)
 
 const files = listFiles(context, {
   scopes: architecturePolicy.implementationScopes,
-  extensions: ['.ts', '.vue', '.js', '.mjs', '.cjs'],
+  extensions: ['.ts', '.vue', '.js', '.mjs', '.cjs', '.json'],
   excludeDirectories: ['scripts'],
   includeFiles: [
     'vite.config.ts',
@@ -173,6 +173,51 @@ function scanBoundaries(file, text) {
       pattern: /\bproxyRequest\b/gu,
       allowlist: [],
       reason: 'proxyRequest usage is forbidden without explicit API authority.',
+    },
+    {
+      ruleId: 'ARCH_INTERNAL_API_PROXY',
+      pattern: /['"`]\/api\/ksl(?:['"`/?#]|$)|\b\/api\/ksl\b/giu,
+      allowlist: [],
+      reason: 'A same-project /api/ksl proxy boundary is forbidden.',
+    },
+    {
+      ruleId: 'ARCH_NODE_SERVER_RUNTIME',
+      pattern:
+        /(?:from\s+|require\s*\(\s*)['"](?:node:)?(?:http|https|http2|net|tls)['"]|(?:from\s+|require\s*\(\s*)['"](?:express|fastify|koa|http-proxy|http-proxy-middleware)['"]/giu,
+      allowlist: [],
+      reason: 'Node server or proxy runtime ownership is forbidden in this frontend repository.',
+    },
+    {
+      ruleId: 'ARCH_COOKIE_SESSION_AUTH',
+      pattern:
+        /\bdocument\.cookie\b|\bwithCredentials\s*:\s*true\b|\bcredentials\s*:\s*['"]include['"]|\b(?:HttpOnly|sessionVault|csrfToken)\b/giu,
+      allowlist: [],
+      reason: 'Cookie, session-vault, and CSRF authentication architecture is forbidden.',
+    },
+    {
+      ruleId: 'ARCH_URL_TOKEN_AUTH',
+      pattern:
+        /\b(?:route|router|location)\.(?:query|search)[^.\n]{0,80}\btoken\b|\bsearchParams\.get\s*\(\s*['"]token['"]\s*\)/giu,
+      allowlist: [],
+      reason: 'URL or query-token authentication is forbidden.',
+    },
+    {
+      ruleId: 'ARCH_DEVICE_GUEST_IDENTITY',
+      pattern: /\b(?:openid|visitorId|deviceFingerprint|fingerprintId)\b/giu,
+      allowlist: [],
+      reason: 'Invented device, fingerprint, or Mini Program guest identity is forbidden.',
+    },
+    {
+      ruleId: 'ARCH_MINI_PROGRAM_TRANSPORT',
+      pattern: /\b(?:wx|uni)\.request\s*\(/gu,
+      allowlist: [],
+      reason: 'Mini Program transport is not Web API authority.',
+    },
+    {
+      ruleId: 'ARCH_SECRET_HEADER',
+      pattern: /['"](?:authorization|x-api-key|x-signature|x-hmac-signature)['"]\s*:/giu,
+      allowlist: architecturePolicy.browserAuthHeaderAllowlist,
+      reason: 'Browser-authored credential or signature headers are forbidden.',
     },
     {
       ruleId: 'ARCH_MQTT_PUBLISH',

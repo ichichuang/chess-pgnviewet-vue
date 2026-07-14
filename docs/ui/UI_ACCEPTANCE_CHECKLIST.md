@@ -12,7 +12,8 @@ This document covers all `docs/ui/*` specifications. Each item includes the veri
 
 - Product rules live in `docs/product/*`.
 - Architecture rules live in `docs/architecture/*`.
-- API contract rules live in `docs/api/*` and `docs/PROJECT_REBUILD_BASELINE_DRAFT.md`.
+- API contract rules live in the active authority set named by
+  `docs/migration/SOURCE_PROVENANCE.md`.
 
 ## How to use this checklist
 

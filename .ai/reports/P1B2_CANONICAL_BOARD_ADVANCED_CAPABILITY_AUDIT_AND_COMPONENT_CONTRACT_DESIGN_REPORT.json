@@ -57,7 +57,7 @@
     "p1c": "P1C_REAL_PGN_RUNTIME_PASS_READY_FOR_P1D_ANNOTATION_MIGRATION",
     "p1d": "P1D_CANONICAL_ANNOTATION_PASS_READY_FOR_WORKSPACE_COMPLETION",
     "p1e": "P1E_CANONICAL_WORKSPACE_PASS_READY_FOR_AI_MIGRATION",
-    "p1f": "P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_PASS_READY_FOR_P1G"
+    "p1f": "P1F_CANONICAL_AI_ANALYSIS_WORKER_RUNTIME_PASS"
   },
   "prePhaseState": {
     "latestSubject": "docs(governance): 记录 P1F AI 分析运行时验收证据",
@@ -167,7 +167,7 @@
     "product integration and validation"
   ],
   "validationPlan": "Static governance, typecheck, temporary production build, audits, browser matrix, and capability-combination validation are required in P1B3.",
-  "deferredP1GImpact": "P1G is paused until P1B3 closes.",
+  "productionApiImpact": "The production API boundary was outside this board-design slice.",
   "dependenciesReviewed": [
     "gsap",
     "vue",
@@ -207,9 +207,9 @@
     "docs/architecture/PRODUCT_FIRST_DELIVERY_REBASE.md"
   ],
   "filesDeleted": [],
-  "documentationReconciliation": "P1B2 inserted advanced board design authority and paused P1G until P1B3 implementation closes.",
+  "documentationReconciliation": "P1B2 inserted advanced board design authority before its implementation closure.",
   "readinessMatrixUpdate": "Advanced board capability lane added as REQUIRED_BEFORE_CORE_RUNTIME_FOUNDATION_CLOSURE.",
-  "migrationSequenceUpdate": "P1B2 and P1B3 inserted before P1G.",
+  "migrationSequenceUpdate": "P1B2 and P1B3 were inserted before later product integration.",
   "gitStateBeforeCommit": {
     "status": "CLEAN_BEFORE_WRITES",
     "protectedHashManifest": "/tmp/chess-pgnviewer-vue-p1b2-protected-before.sha256"

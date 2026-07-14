@@ -16,12 +16,13 @@ This document governs:
 
 It applies to all new code in the rebuilt product. `pgnViewer-new` is the canonical visual, interaction, and active-runtime migration source for the teaching workspace; its runtime source is not copied during P0 and must pass later dependency-closure gates before reuse.
 
-## Non-goals
+## Related authority
 
-- Implementation phases and gates are defined in `docs/PROJECT_REBUILD_BASELINE_DRAFT.md` and `docs/architecture/FRONTEND_ARCHITECTURE_RFC.md`.
-- API contracts are defined in `docs/api/*`.
+- API scope is defined only by the active Web API authorities listed in
+  `docs/migration/SOURCE_PROVENANCE.md`.
 - Detailed UI tokens, layout, and component rules are defined in `docs/ui/*`.
-- Agent workflow rules are defined in `docs/ai/PROJECT_UI_SKILL_SPEC.md` and `.ai/skills/project-ui/SKILL.md`.
+- Agent workflow rules are defined in `AGENTS.md` and
+  `.ai/skills/project-ui/SKILL.md`.
 
 ## Product identity
 
@@ -118,18 +119,18 @@ A bare `/pgnViewer/` route with no handoff or source query always renders the de
 
 ## Out of scope
 
-| Capability                                 | Status       | Rationale                                                                                                                                                         |
-| ------------------------------------------ | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Admin console replacement                  | OUT_OF_SCOPE | The product consumes data; it does not manage tournaments, users, or organizations                                                                                |
-| Mini-program replacement                   | OUT_OF_SCOPE | The mini program remains a separate product surface                                                                                                               |
-| Write/admin tooling                        | FORBIDDEN    | All 871 write/admin endpoints identified in `docs/api/API_FORBIDDEN_WRITE_ADMIN.md` are excluded unless an owner explicitly approves a product-specific exception |
-| 3D-first or WebGL live room                | OUT_OF_SCOPE | The product is board-first; any 3D/QMLive work is reference-only until a separate contract is approved                                                            |
-| Online game lobby / real-time play         | OUT_OF_SCOPE | Game creation/join/start endpoints are forbidden                                                                                                                  |
-| Personal results / `ShowScoreList` runtime | RETIRED      | Removed from PC runtime scope                                                                                                                                     |
-| Generic dashboard                          | OUT_OF_SCOPE | The product is a chess-specific workspace, not a generic dashboard                                                                                                |
-| Generic PGN viewer only                    | OUT_OF_SCOPE | The product is a teaching, tournament, live, replay, and big-screen workspace, not a standalone generic PGN viewer                                                |
-| Generic `proxyRequest` tunnel              | FORBIDDEN    | Replaced by explicit, confirmed repository methods                                                                                                                |
-| Old PC `/CALL`-equivalent transport        | UNTRUSTED    | Requires owner approval per endpoint before use                                                                                                                   |
+| Capability                                 | Status       | Rationale                                                                                                          |
+| ------------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Admin console replacement                  | OUT_OF_SCOPE | The product consumes data; it does not manage tournaments, users, or organizations                                 |
+| Mini-program replacement                   | OUT_OF_SCOPE | The mini program remains a separate product surface                                                                |
+| Write/admin tooling                        | FORBIDDEN    | The current read-only product has no approved write or administration contract                                     |
+| 3D-first or WebGL live room                | OUT_OF_SCOPE | The product is board-first; any 3D/QMLive work is reference-only until a separate contract is approved             |
+| Online game lobby / real-time play         | OUT_OF_SCOPE | Game creation/join/start endpoints are forbidden                                                                   |
+| Personal results / `ShowScoreList` runtime | RETIRED      | Removed from PC runtime scope                                                                                      |
+| Generic dashboard                          | OUT_OF_SCOPE | The product is a chess-specific workspace, not a generic dashboard                                                 |
+| Generic PGN viewer only                    | OUT_OF_SCOPE | The product is a teaching, tournament, live, replay, and big-screen workspace, not a standalone generic PGN viewer |
+| Generic `proxyRequest` tunnel              | FORBIDDEN    | Replaced by explicit, confirmed repository methods                                                                 |
+| Old PC `/CALL`-equivalent transport        | UNTRUSTED    | Requires owner approval per endpoint before use                                                                    |
 
 ## Rules
 
@@ -278,8 +279,7 @@ Production deployment requirements are defined in
     "docs/ui/COMPONENT_SYSTEM_SPEC.md",
     "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
     "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
-    "docs/PROJECT_REBUILD_BASELINE_DRAFT.md"
-  ],
-  "next_doc": "docs/product/WORKSPACE_MODES.md"
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md"
+  ]
 }
 ```

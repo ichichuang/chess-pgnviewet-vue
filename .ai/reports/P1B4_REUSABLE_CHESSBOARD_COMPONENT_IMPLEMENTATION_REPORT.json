@@ -241,11 +241,10 @@
     "automated test files or infrastructure"
   ],
   "warnings": [
-    "Automated test files are prohibited by project policy; validation uses the complete static gate set and ephemeral real-browser evidence.",
-    "P1G is ready after P1B4 closure but remains not started."
+    "Automated test files are prohibited by project policy; validation uses the complete static gate set and ephemeral real-browser evidence."
   ],
   "blockers": [],
-  "nextRequiredPhase": "P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES",
-  "p1gStatus": "NOT_STARTED",
+  "nextRequiredPhase": null,
+  "productionApiStatus": "OUTSIDE_THIS_REUSABLE_BOARD_SLICE",
   "finalVerdict": "P1B4_BOARD_COMPONENT_FULLY_PARAMETERIZED_REUSABLE_TYPESAFE_AND_MOTION_READY"
 }

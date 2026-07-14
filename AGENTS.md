@@ -19,7 +19,7 @@ Before changing UI, architecture, persistence, API, or migration code, read:
 
 - Exactly one Vite root, Vue root, Vue Router foundation, Pinia foundation, global token registry, and application shell.
 - Vue 3 + TypeScript strict is the only application runtime. React and framework bridges are forbidden.
-- `pgnViewer-new` is the canonical visual, interaction, and active teaching-runtime migration source. P0 copies no runtime feature code.
+- `pgnViewer-new` is the canonical visual, interaction, and teaching-runtime migration source. The accepted runtime preserves its reviewed behavior without importing source-project infrastructure.
 - The target follows the canonical Vue architecture from `pgnViewer-new`: one Vue bootstrap, one Router owner, one Pinia owner, one style/token entry model, Vite worker-compatible bundling, and Vite asset import handling. The canonical automated-test model is intentionally not adopted under the P0E owner policy.
 - One unified board-centric workspace; mode/source differences use typed adapters and conditional composition, not duplicate shells.
 - Framework-free chess, PGN, annotation, and analysis domains remain independent of Vue UI.
@@ -37,6 +37,7 @@ The following roots are read-only evidence sources and must never be modified:
 
 - `/Users/cc/Work/neobv/Chess/pgnViewer-new`
 - `/Users/cc/Work/neobv/Chess/pgnViewer`
+- `/Users/cc/Work/neobv/Chess/chess-main-overseas`
 - `/Users/cc/Work/neobv/Chess/chess-pgnviewer`
 
 Never inspect or copy environment files, credentials, certificates, keys, databases, browser state, logs, dependency stores, build output, caches, generated Serena caches, or unproven screenshots. Do not follow symlinks outside an approved source root.

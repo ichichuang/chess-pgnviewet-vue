@@ -4,7 +4,6 @@ Status: `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTED_PENDING_GOVERNANCE
 Phase: `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
 Target route: `/pgnViewer/`
 Previous authority: `docs/architecture/BOARD_ADVANCED_CAPABILITY_ARCHITECTURE_BASELINE.md`
-Next phase: `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
 
 ## Scope
 
@@ -157,8 +156,7 @@ P1B3 implementation is complete only when:
 - local `HEAD`, `origin/main`, and live remote `refs/heads/main` match after
   push.
 
-## Deferred
+## Boundary
 
-P1B3 does not enable P1G itself. P1G may resume only after the separate
-governance closure report accepts this runtime slice and updates the readiness
-authorities.
+P1B3 closes the advanced-board runtime slice. Production API authority is
+defined separately by the current Web API architecture documents.

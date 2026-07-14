@@ -33,13 +33,12 @@ recovery behavior, reset behavior, and security classification.
 - Passwords and password digests are never persisted.
 - URL/query tokens, upstream shared credentials, HMAC secrets, MQTT material,
   cookies, raw API responses, and credential-bearing URLs are never persisted.
-- Legacy `logintoken`, `ksllogintoken`, `jwttoken`, `passtoken`, user-info, and
-  ChessService guest-token keys are not restoration authorities.
-- Until the password-login lifecycle is unblocked, auth restoration produces an
-  anonymous state and clears only obsolete auth keys through the auth adapter.
-- If a later verified Web contract requires browser token restoration, the
-  adapter stores one schema-validated minimum record, honors verified expiry,
-  and never duplicates the token across compatibility keys.
+- Obsolete identity and guest-credential keys are not part of the target
+  persistence contract and are never restored or recreated.
+- Until an account lifecycle is independently verified, initialization produces
+  an anonymous unavailable state with no auth persistence adapter.
+- A future verified account contract requires a new owner-approved persistence
+  decision; no compatibility restoration behavior is reserved.
 - Live payloads and replay API data are memory-only. Private Query entries are
   never dehydrated or written to Dexie.
 - Workspace handoffs reject token-like fields and store only sanitized source

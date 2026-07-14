@@ -20,10 +20,11 @@
     "format:write": "prettier . --write",
     "check:deps": "node scripts/governance/check-dependency-policy.mjs",
     "check:architecture": "node scripts/governance/check-architecture-boundaries.mjs",
+    "check:residue": "node scripts/governance/check-obsolete-architecture-residue.mjs",
     "check:tokens": "node scripts/governance/check-raw-visual-values.mjs",
     "check:mocks": "node scripts/governance/check-forbidden-mock-data.mjs",
     "check:secrets": "node scripts/governance/check-secret-patterns.mjs",
-    "check:governance": "run-s check:deps check:architecture check:tokens check:mocks check:secrets",
+    "check:governance": "run-s check:deps check:architecture check:residue check:tokens check:mocks check:secrets",
     "check:unused": "knip --no-progress",
     "audit:prod": "pnpm audit --prod",
     "check:static": "run-s lint lint:style format:check check:governance check:unused audit:prod"

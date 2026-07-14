@@ -5,8 +5,6 @@ Phase: `P1B4_REUSABLE_CHESSBOARD_COMPONENT_ARCHITECTURE_AND_PUBLIC_API`
 Implementation commit: `22f9cddc191b4f7cb4e91f466526918a08e165b0`
 Target route: `/pgnViewer/`
 Previous authority: `docs/architecture/P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_RUNTIME_BASELINE.md`
-Next phase: `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
-P1G status: `NOT_STARTED`
 
 ## Result
 
@@ -125,7 +123,7 @@ used a verified temporary outDir and left repository `dist/` absent.
 
 ## Deferred and forbidden scope
 
-P1B4 does not start P1G, authentication, production APIs, cloud persistence,
+P1B4 does not start authentication, production APIs, cloud persistence,
 settings, tournament/live transport, report export, a second UI system, a second
 board renderer, mock product data, or automated test infrastructure. Those
 boundaries remain governed by their existing phases.

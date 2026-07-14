@@ -46,22 +46,22 @@ data.
 
 ## Source To Target Mapping
 
-| Canonical owner                   | Target owner                               | P1C classification |
-| --------------------------------- | ------------------------------------------ | ------------------ |
-| PGN item, tree, node types        | `features/pgn/domain/types.ts`             | `REQUIRED_IN_P1C`  |
-| PGN tokenization and parsing      | `features/pgn/domain/parsePgn.ts`          | `REQUIRED_IN_P1C`  |
-| PGN list filtering and pagination | `features/pgn/domain/pgnStorage.ts`        | `REQUIRED_IN_P1C`  |
-| Move-row projection               | `features/pgn/domain/moveRows.ts`          | `REQUIRED_IN_P1C`  |
-| Legal move and branch mutation    | `features/pgn/domain/mutations.ts`         | `REQUIRED_IN_P1C`  |
-| Current game and node ownership   | `stores/pgn.ts`                            | `REQUIRED_IN_P1C`  |
-| PGN library panel                 | `components/PgnGameList.vue`               | `REQUIRED_IN_P1C`  |
-| PGN notation/navigation panel     | `components/PgnNotationPanel.vue`          | `REQUIRED_IN_P1C`  |
-| Workspace board and PGN wiring    | `usePgnWorkspaceRuntime.ts`, workspace Vue | `REQUIRED_IN_P1C`  |
-| Board controlled-move handoff     | board wrapper and composable               | `REQUIRED_IN_P1C`  |
-| Annotation runtime                | not copied                                 | `DEFERRED_TO_P1D`  |
-| Full toolbar/splitter completion  | not copied                                 | `DEFERRED_TO_P1E`  |
-| AI analysis and workers           | not copied                                 | `DEFERRED_TO_P1F`  |
-| Auth and production APIs          | not copied                                 | `DEFERRED_TO_P1G`  |
+| Canonical owner                   | Target owner                               | P1C classification   |
+| --------------------------------- | ------------------------------------------ | -------------------- |
+| PGN item, tree, node types        | `features/pgn/domain/types.ts`             | `REQUIRED_IN_P1C`    |
+| PGN tokenization and parsing      | `features/pgn/domain/parsePgn.ts`          | `REQUIRED_IN_P1C`    |
+| PGN list filtering and pagination | `features/pgn/domain/pgnStorage.ts`        | `REQUIRED_IN_P1C`    |
+| Move-row projection               | `features/pgn/domain/moveRows.ts`          | `REQUIRED_IN_P1C`    |
+| Legal move and branch mutation    | `features/pgn/domain/mutations.ts`         | `REQUIRED_IN_P1C`    |
+| Current game and node ownership   | `stores/pgn.ts`                            | `REQUIRED_IN_P1C`    |
+| PGN library panel                 | `components/PgnGameList.vue`               | `REQUIRED_IN_P1C`    |
+| PGN notation/navigation panel     | `components/PgnNotationPanel.vue`          | `REQUIRED_IN_P1C`    |
+| Workspace board and PGN wiring    | `usePgnWorkspaceRuntime.ts`, workspace Vue | `REQUIRED_IN_P1C`    |
+| Board controlled-move handoff     | board wrapper and composable               | `REQUIRED_IN_P1C`    |
+| Annotation runtime                | not copied                                 | `DEFERRED_TO_P1D`    |
+| Full toolbar/splitter completion  | not copied                                 | `DEFERRED_TO_P1E`    |
+| AI analysis and workers           | not copied                                 | `DEFERRED_TO_P1F`    |
+| Auth and production APIs          | not copied                                 | `SEPARATE_AUTHORITY` |
 
 ## Runtime Contract
 

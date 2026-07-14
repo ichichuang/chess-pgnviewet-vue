@@ -322,7 +322,7 @@
     "committedAnnotationOwner": "PASS stores/pgn.ts owns committed annotation state per node; BoardView owns preview only",
     "semanticGeometry": "PASS token scanner passed; annotation geometry uses existing board transform and annotation tokens",
     "listeners": "PASS drag/drop listeners are paired with removal; board ResizeObserver remains singular and disconnected on unmount",
-    "laterRuntimeExposure": "PASS no P1E/P1F/P1G runtime introduced"
+    "laterRuntimeExposure": "PASS no workspace-completion, AI, or production API runtime introduced"
   },
   "protectionEvidence": {
     "dependencyChange": "No package.json or pnpm-lock.yaml change.",

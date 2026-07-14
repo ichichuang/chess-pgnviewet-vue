@@ -4,7 +4,6 @@ Status: `P1B3_BOARD_ADVANCED_CAPABILITY_IMPLEMENTED_BROWSER_VALIDATED`
 Phase: `P1B2_CANONICAL_BOARD_ADVANCED_CAPABILITY_AUDIT_AND_COMPONENT_CONTRACT_DESIGN`
 Target route: `/pgnViewer/`
 Implemented by: `P1B3_CANONICAL_BOARD_ADVANCED_CAPABILITY_IMPLEMENTATION_AND_GSAP_SKILL`
-Next phase: `P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`
 
 ## Owner Requirement
 
@@ -16,11 +15,9 @@ runtime with parameter-controlled canonical capabilities:
 - canonical free-placement/editor mode;
 - canonical wheel navigation.
 
-P1B2 was design-first and read-only for runtime code. It changed no runtime
-source, package file, lockfile, asset, scanner, style, token, Router, Pinia,
-provider, PGN, annotation, or analysis implementation. P1B3 has since closed the
-advanced board component implementation prerequisite for
-`P1G_REAL_AUTHENTICATION_AND_PRODUCTION_API_PRODUCT_CAPABILITIES`.
+P1B2 was design-first and read-only for runtime code. P1B3 has since closed the
+advanced board component implementation prerequisite, and the board runtime is
+accepted for current product use.
 
 ## Provenance Findings
 
@@ -364,4 +361,4 @@ Accepted implementation evidence:
   navigation, radial command selection, editor cancel, editor commit, no Vite
   overlay, and no console/page/request errors.
 
-P1G is no longer paused by this advanced-board prerequisite.
+The advanced-board prerequisite is closed.

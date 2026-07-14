@@ -168,7 +168,7 @@ Deferred to later P1 phases:
 - `P1E`: complete workspace panels, toolbars, splitters, drawers, persistence,
   and responsive panel behavior;
 - `P1F`: AI analysis and worker runtime;
-- `P1G`: authentication and production API-backed product capabilities;
+- production API-backed product capabilities;
 - `P1H`: complete product integration and acceptance.
 
 ## Validation

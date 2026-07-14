@@ -139,7 +139,16 @@ export const dependencyPolicy = {
 
 export const architecturePolicy = {
   runtimeScopes: ['src'],
-  implementationScopes: ['src', 'vite.config.ts', '*.config.mjs'],
+  implementationScopes: [
+    'src',
+    'server',
+    'api',
+    'functions',
+    'middleware',
+    'vite.config.ts',
+    'vercel.json',
+    '*.config.mjs',
+  ],
   approvedVueBootstrap: 'src/main.ts',
   approvedRouterOwner: 'src/router/index.ts',
   approvedPiniaOwner: 'src/stores/index.ts',
@@ -163,6 +172,24 @@ export const architecturePolicy = {
     persistence: ['src/persistence/', 'src/bootstrap/preferences/'],
     runtimeConfig: ['src/runtime/config/'],
   },
+}
+
+export const obsoleteArchitecturePolicy = {
+  explicitProhibitionAllowlist: [
+    'AGENTS.md',
+    'docs/architecture/API_BOUNDARY_ADR.md',
+    'docs/architecture/FRONTEND_ARCHITECTURE_RFC.md',
+    'docs/architecture/PERSISTENCE_ADR.md',
+    'docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md',
+    'docs/architecture/SOURCE_ADAPTER_ADR.md',
+    'docs/architecture/TOOLCHAIN_AND_STATIC_GOVERNANCE_BASELINE.md',
+    'docs/architecture/WEB_API_ENDPOINT_INVENTORY.json',
+    'docs/architecture/WEB_API_SOURCE_AUTHORITY.md',
+    'docs/product/PRODUCT_DEFINITION.md',
+    'docs/ui/PERSISTENCE_RECOVERY_SPEC.md',
+    'docs/ui/UI_ACCEPTANCE_CHECKLIST.md',
+    'scripts/governance/check-architecture-boundaries.mjs',
+  ],
 }
 
 export const visualValuePolicy = {

@@ -4,141 +4,99 @@ Status: `ACTIVE_AUTHORITY`
 
 Effective date: `2026-07-14`
 
-## Decision
+## Authority
 
-Only these read-only Web projects may establish API, authentication, request,
-environment, transport, and production behavior for this target:
+Only these read-only Web projects establish API bases, endpoint paths, request
+payloads, response envelopes, authentication, request behavior, and production
+evidence:
 
 1. `/Users/cc/Work/neobv/Chess/pgnViewer`
 2. `/Users/cc/Work/neobv/Chess/chess-main-overseas`
 
-They are co-equal evidence sources. A field, token rule, host, or lifecycle that
-appears in only one source may be adopted only when it is internally complete
-and compatible with the target security invariants. A conflict remains
-`BLOCKED_UNCONFIRMED`; it is not resolved by guessing.
+`/Users/cc/Work/neobv/Chess/pgnViewer-new` is authoritative only for board,
+PGN, annotation, AI, workspace, layout, motion, and UI behavior. The target
+repository owns the reconciled implementation.
 
-`/Users/cc/Work/neobv/Chess/pgnViewer-new` remains authoritative only for the
-board, PGN, annotations, AI, workspace, layout, motion, and visual behavior. It
-does not establish Web API facts.
+A contract may enter runtime only when the Web sources or an approved
+no-credential production probe establish a complete compatible read. Conflicts
+and incomplete credential lifecycles remain blocked.
 
-The following are non-authoritative for this scope:
+## Confirmed public reads
 
-- `/Users/cc/Work/neobv/Chess/chess-pgnviewer`
-- Mini Program API documents and derived inventories
-- `wx.request`, URL-token, WeChat `openid`, and Mini Program login handoffs
-- hosts, payload aliases, gateway rules, or session designs derived from those
-  sources
+The confirmed chess origin is `https://wxapi.kaisaile.org`. No other runtime
+base is authorized.
 
-Historical reports may describe earlier decisions. They remain evidence of
-what was done, not authority for what the target does now.
+| Repository method   | Method and path                             |
+| ------------------- | ------------------------------------------- |
+| Tournament list     | `POST /liveproxy/GetActList`                |
+| Tournament detail   | `POST /award/c-GetActDetail?token=&type=10` |
+| Tournament groups   | `POST /liveproxy/GetActGroups`              |
+| Tournament rounds   | `POST /award/c-GetMatchRoundlist`           |
+| Tournament pairings | `POST /award/c-GetMatchPairlist`            |
 
-## Source transport evidence
+On `2026-07-14`, direct no-credential HTTPS probes confirmed these five
+request/response contracts. The fixed empty `token` parameter in the detail
+path is part of the verified public path; it does not authorize dynamic
+query-token authentication.
 
-### `pgnViewer`
+The big-screen display has no independent endpoint. It composes the confirmed
+detail, group, round, and pairing repositories.
 
-- `src/config/index.js` identifies the chess production base as
-  `https://wxapi.kaisaile.org` and the management production base as
-  `https://manage.yoursclass.com`.
-- `src/api/chessivy.js` routes chess calls through
-  `/yike_mgr/v1/chessivy/proxyRequest`. That generic tunnel is
-  `REJECTED_OBSOLETE` for this target.
-- `src/libs/axios.js` uses an eight-second timeout and unwraps a legacy envelope.
-- `src/api/cloudreve.js` owns a separate Cloudreve client with browser bearer
-  credentials and credentialed requests. Its reads remain
-  `BLOCKED_UNCONFIRMED`; its writes are not authorized.
-- `src/router/index.js` and `src/api/UC.js` contain URL-token, refresh-token, and
-  WeChat compatibility flows. They are `REMOVE_MINIAPP_ONLY`.
+## Browser deployment status
 
-### `chess-main-overseas`
+The production probes retained only status, envelope keys, field names, field
+types, and row counts. They used no account, credential, signing material, or
+cookie jar.
 
-- `src/utils/request.js` selects `VITE_API_URL` in production, `/CALL` in
-  development, a fifteen-second timeout, credentialed JSON requests, and a
-  browser HMAC header.
-- The source contains hard-coded credential-like and signing material. Values
-  are deliberately not copied or recorded. Browser HMAC and the `/CALL` tunnel
-  are `REJECTED_OBSOLETE`.
-- `src/utils/api.js` establishes the endpoint paths and concrete consumer
-  payloads used by the Web product.
-- `src/view/login/index.vue`, `src/utils/index.js`, and
-  `src/layout/Header/Header.vue` establish the password-login, browser restore,
-  and local logout behavior. The source has no verified remote logout endpoint.
-- `src/utils/userInfoService.js` creates a fingerprint-based guest chess-service
-  token and `src/utils/api.js` injects that token into replay request bodies.
-  That lifecycle is not the Kaisaile account session and is
-  `REJECTED_OBSOLETE` for this target.
+An upstream preflight and a POST carrying a localhost Origin returned no usable
+cross-origin grant. Direct browser deployment from a different origin is
+therefore unavailable. Server-to-server success is contract evidence, not
+browser-deployment evidence.
 
-## Live no-credential verification
+## Blocked capabilities
 
-On `2026-07-14`, direct server-side HTTPS probes to
-`https://wxapi.kaisaile.org` verified the following public tournament reads:
+The following remain unavailable and issue no protected request:
 
-- `POST /liveproxy/GetActList`
-- `POST /award/c-GetActDetail?token=&type=10`
-- `POST /liveproxy/GetActGroups`
-- `POST /award/c-GetMatchRoundlist`
-- `POST /award/c-GetMatchPairlist`
+- password login and account detail;
+- finished-game replay;
+- cloud and shared-storage reads;
+- hardware-board history and latest-position reads;
+- live credential issuance and subscriptions;
+- course, quiz, chessbook, score, personal-signup, and configuration reads.
 
-The probes used no account, token, HMAC header, cookie jar, or private data and
-retained only status, envelope keys, field names, field types, and row counts.
-Each endpoint returned the Web envelopes documented in
-`WEB_API_ENDPOINT_INVENTORY.json`.
+Their observed source paths are not sufficient because authentication,
+side-effect, exhaustive response, origin, or browser transport behavior is
+incomplete. A later implementation requires new compatible evidence from both
+Web authority scope and a real-browser deployment validation.
 
-An `OPTIONS` probe and an actual `POST` carrying a localhost `Origin` both
-returned empty `Access-Control-Allow-*` values. Therefore:
+## Explicit prohibitions
 
-- the upstream endpoint contracts are confirmed for server-to-server HTTPS;
-- direct cross-origin browser deployment is not confirmed;
-- the previous `/api/ksl` Vite proxy proves only a development experiment;
-- no production proxy, BFF, cookie session, Node server, or same-origin gateway
-  may be invented in this repository.
+The target must not contain or recreate:
 
-## Authentication decision
+- `/api/ksl`, `/CALL`, or `proxyRequest`;
+- a Node API server, reverse proxy, BFF, edge handler, or invented production
+  gateway;
+- cookie-session, HttpOnly-session, CSRF-server, or session-vault designs;
+- browser HMAC, browser-owned shared credentials, or generic browser Bearer
+  injection;
+- URL-token absorption, dynamic query-token authentication, hard-coded
+  compatibility identities, or fingerprint-derived guest credentials;
+- Mini Program API authority, write/admin calls, MQTT publish, mocks, fixtures,
+  or synthetic success data.
 
-`POST /liveproxy/PostLoginByPhone` and its password-digest payload are visible
-in the authoritative Web source. The same source also sends a hard-coded
-`login_func.openid`, uses browser HMAC signing, and has incomplete logout-token
-cleanup. Those parts are explicitly disallowed or internally inconsistent.
+These names appear here only to define permanent prohibitions. Historical
+phase documents and rejected-source inventories do not remain in the
+repository.
 
-The target therefore classifies password login as `BLOCKED_UNCONFIRMED` until a
-Web-only request accepted without `openid` and browser signing is verified.
-The endpoint path and non-secret field names may remain inventoried, but the
-runtime must not claim a working account session from this evidence alone.
+## Consumers
 
-No remote logout, refresh, revocation, or stable expiry contract is verified.
-The target must remove URL-token absorption immediately. Any later accepted
-browser session must be centralized, must never persist a password or digest,
-must use only the minimum token/identity fields required by a confirmed
-repository method, and must fail closed on expiry or HTTP 401.
-
-## Capability decisions
-
-| Capability                                                | Classification        | Decision                                                                                                                           |
-| --------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Public tournament list/detail/groups/rounds/pairings      | `MERGE`               | Endpoint and response envelopes verified; browser transport remains unavailable when cross-origin.                                 |
-| Account password login                                    | `BLOCKED_UNCONFIRMED` | Path exists, but the authoritative Web request depends on disallowed `openid` compatibility and browser signing.                   |
-| Finished-game replay                                      | `BLOCKED_UNCONFIRMED` | Path and game object are visible; usable request auth depends on a separate fingerprint guest token and forbidden browser signing. |
-| Hardware-board history/live                               | `BLOCKED_UNCONFIRMED` | Read paths exist, but token, credential, and live lifecycle are incomplete.                                                        |
-| MQTT subscription                                         | `BLOCKED_UNCONFIRMED` | No safe credential-issuance and subscribe-only contract is confirmed.                                                              |
-| MQTT publish                                              | `REJECTED_OBSOLETE`   | Product is read-only and browser publish is forbidden.                                                                             |
-| Cloudreve reads                                           | `BLOCKED_UNCONFIRMED` | Paths exist; credential, CORS, response, and production ownership are incomplete.                                                  |
-| Cloudreve writes and directory creation                   | `REJECTED_OBSOLETE`   | No approved write contract.                                                                                                        |
-| Personal/org remote-storage reads                         | `BLOCKED_UNCONFIRMED` | Explicit paths exist behind the rejected management transport.                                                                     |
-| Personal/org remote-storage writes                        | `REJECTED_OBSOLETE`   | Generic persistence writes are not approved.                                                                                       |
-| Share/match compatibility resolution                      | `BLOCKED_UNCONFIRMED` | Legacy keys exist, but no independent safe Web resolver contract is confirmed.                                                     |
-| Game create/join/quick-start/start and quiz-result writes | `REJECTED_OBSOLETE`   | Outside the read-heavy product and explicitly forbidden.                                                                           |
-| Score list                                                | `REJECTED_OBSOLETE`   | Retired by the active product definition.                                                                                          |
-| WeChat, `openid`, URL token, refresh-token handoffs       | `REMOVE_MINIAPP_ONLY` | Mini Program compatibility is not Web authority.                                                                                   |
-| `/CALL`, `proxyRequest`, browser HMAC, query-token auth   | `REJECTED_OBSOLETE`   | Generic or secret-bearing transports are forbidden.                                                                                |
-
-## Required consumers
-
-- Endpoint and field authority:
+- Endpoint and field inventory:
   `docs/architecture/WEB_API_ENDPOINT_INVENTORY.json`
-- Field-by-field coverage:
+- Field coverage:
   `docs/architecture/WEB_API_CONTRACT_COVERAGE_MATRIX.json`
-- Request implementation rules:
+- Request architecture:
   `docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md`
-- Migration and target audit:
-  `docs/migration/WEB_API_MIGRATION_BASELINE.json`
 - Readiness:
   `docs/architecture/WEB_API_READINESS_MATRIX.json`
+- Deployment:
+  `docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md`

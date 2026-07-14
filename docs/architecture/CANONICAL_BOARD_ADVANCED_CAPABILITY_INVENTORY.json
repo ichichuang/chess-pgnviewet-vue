@@ -255,7 +255,7 @@
             "migrationClassification": "MECHANICAL_TARGET_ARCHITECTURE_INTEGRATION",
             "canonicalBehavior": "Toolbar freeSetup action enters editor, hides incompatible UI, finish inserts generated FEN as a manual PGN through PGN owner.",
             "currentTargetBehavior": "Toolbar has no free setup action and PGN store lacks insertPgnFromFen.",
-            "requiredAction": "Add explicit product enablement and PGN acceptance callback in P1B3; keep P1G paused.",
+            "requiredAction": "Add explicit product enablement and PGN acceptance callback in P1B3.",
             "integrationRisk": "HIGH",
             "validationRequirement": "No unintended PGN mutation while editing; restoration of normal board mode after finish/cancel.",
             "evidenceStatus": "TRACED"

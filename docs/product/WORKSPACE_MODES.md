@@ -17,7 +17,8 @@ This document governs:
 
 - Product identity and routes are defined in `docs/product/PRODUCT_DEFINITION.md`.
 - Component APIs are defined in `docs/ui/COMPONENT_SYSTEM_SPEC.md`.
-- API contracts are defined in `docs/api/*`.
+- API contracts are defined by the active authority set in
+  `docs/migration/SOURCE_PROVENANCE.md`.
 - Persistence details are defined in `docs/ui/PERSISTENCE_RECOVERY_SPEC.md`.
 
 ## Canonical modes

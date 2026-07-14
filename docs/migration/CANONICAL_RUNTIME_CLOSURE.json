@@ -604,7 +604,6 @@
                 "pgnStorage.ts",
                 "mutations.ts",
                 "fenBoard.ts",
-                "sessionPersistence.ts",
                 "ycdw.ts"
             ],
             "directConsumers": [
@@ -615,18 +614,14 @@
                 "analysisStore.ts"
             ],
             "runtimeRole": "Canonical PGN collection, selection, tree, move index, and mutation owner.",
-            "stateDependencies": ["Pinia pgn store", "sessionPersistence"],
+            "stateDependencies": ["Pinia pgn store"],
             "assetDependencies": [],
             "styleDependencies": [],
-            "testEvidence": [
-                "tests/pgnStore.spec.ts",
-                "tests/pgnStoreIntegration.spec.ts",
-                "tests/sessionPersistence.spec.ts"
-            ],
+            "testEvidence": ["tests/pgnStore.spec.ts", "tests/pgnStoreIntegration.spec.ts"],
             "migrationPhase": "P1_PGN_DOMAIN_AND_STATE",
             "migrationPriority": "BLOCKING",
             "canonicalStatus": "CANONICAL_ACTIVE_CLOSURE",
-            "knownUnsafeInfrastructureBoundary": "Source sessionPersistence uses browser storage and needs Dexie/Zod replacement.",
+            "knownUnsafeInfrastructureBoundary": "Source persistence is not adopted; target persistence remains governed by the target persistence authority.",
             "notes": null
         },
         {
