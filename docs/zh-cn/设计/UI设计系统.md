@@ -2,18 +2,20 @@
 >
 > 本文件仅用于人工浏览，不是活动权威。活动权威始终是：[原始文档](../../design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md)。
 >
-> 镜像源基线：`97080beb437db65b1dfd83371d3dba9a6db5eec9`
+> 镜像源基线：`bcd39d8`
 
 # 开赛了产品 UI 设计系统
 
-| 字段       | 值                                                        |
-| ---------- | --------------------------------------------------------- |
-| 设计方向   | 静稳棋室                                                  |
-| 文档状态   | ACTIVE_IMPLEMENTATION_AUTHORITY                           |
-| 产品状态   | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN       |
-| 页面门禁   | PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS |
-| Token 权威 | src/styles/tokens.css                                     |
-| 适用范围   | 全部产品页面、项目自有组件、棋盘、棋谱、分析与场外大屏    |
+| 字段         | 值                                                                  |
+| ------------ | ------------------------------------------------------------------- |
+| 设计方向     | 静稳棋室                                                            |
+| 文档状态     | ACTIVE_IMPLEMENTATION_AUTHORITY                                     |
+| 产品状态     | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN                 |
+| 产品基线     | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN                 |
+| 设计阶段门禁 | PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS（已完成） |
+| 当前实施门禁 | PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION          |
+| Token 权威   | src/styles/tokens.css                                               |
+| 适用范围     | 全部产品页面、项目自有组件、棋盘、棋谱、分析与场外大屏              |
 
 ## 1. 文档关系与使用顺序
 
@@ -33,7 +35,7 @@
 10. [实施纠正清单](实现修正待办清单.md)
 11. 目标[页面族规范](页面/统一工作区页规范.md)
 
-上游权威为[产品设计蓝图](../产品/产品设计蓝图.md)、[主题规范](../../ui/THEME_SYSTEM_SPEC.md)、[页面样式规范](../../ui/PAGE_STYLE_SPEC.md)、[无障碍规范](../../ui/ACCESSIBILITY_SPEC.md)和[语义 Token 权威](../../architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md)。
+上游权威为[产品设计蓝图](../产品/产品设计蓝图.md)、[主题规范](../ui/THEME_SYSTEM_SPEC.md)、[页面样式规范](../ui/PAGE_STYLE_SPEC.md)、[无障碍规范](../ui/ACCESSIBILITY_SPEC.md)和[语义 Token 权威](../architecture/SEMANTIC_TOKEN_REGISTRY_BASELINE.md)。
 
 ## 2. 能力分类
 

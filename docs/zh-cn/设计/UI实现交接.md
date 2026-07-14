@@ -2,7 +2,7 @@
 >
 > 本文件仅用于人工浏览，不是活动权威。活动权威始终是：[原始文档](../../design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md)。
 >
-> 镜像源基线：`97080beb437db65b1dfd83371d3dba9a6db5eec9`
+> 镜像源基线：`bcd39d8`
 
 # 产品 UI 实施交接
 

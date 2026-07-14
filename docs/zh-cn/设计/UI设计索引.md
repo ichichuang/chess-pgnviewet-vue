@@ -2,7 +2,7 @@
 >
 > 本文件仅用于人工浏览，不是活动权威。活动权威始终是：[原始文档](../../design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md)。
 >
-> 镜像源基线：`97080beb437db65b1dfd83371d3dba9a6db5eec9`
+> 镜像源基线：`bcd39d8`
 
 # 开赛了产品逐页 UI 设计文档索引
 
@@ -11,7 +11,9 @@
 | 产品         | 开赛了                                                                                 |
 | 设计方向     | `静稳棋室`                                                                             |
 | 产品状态     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                                  |
-| 页面门禁     | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`                            |
+| 产品基线     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                                  |
+| 设计阶段门禁 | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS（已完成）`                  |
+| 当前实施门禁 | `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`                           |
 | 文档包状态   | `ACTIVE_IMPLEMENTATION_AUTHORITY`                                                      |
 | 最终门禁     | 仅当执行报告结论为 `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION` 时通过 |
 | 适用仓库基线 | `4f05f6dfff611420a66d799689a2d93e5dbf94e7`                                             |
@@ -26,7 +28,7 @@
 
 1. [产品设计蓝图](../产品/产品设计蓝图.md)拥有产品定位、用户、模式、旅程、信息架构、需求、页面责任和验收概念。
 2. [所有者需求基线](../产品/产品负责人需求基线.md)记录稳定的所有者来源；`OD-01` 至 `OD-11` 全部保持 `OPEN`。
-3. [产品定义](../../product/PRODUCT_DEFINITION.md)、[技术工作区模式](../../product/WORKSPACE_MODES.md)、[需求追踪](../产品/产品需求可追溯性.json)、[模式能力矩阵](../产品/产品模式与能力矩阵.json)与[产品信息架构](../产品/产品信息架构.json)分别拥有其声明范围。
+3. [产品定义](../product/PRODUCT_DEFINITION.md)、[技术工作区模式](../product/WORKSPACE_MODES.md)、[需求追踪](../产品/产品需求可追溯性.json)、[模式能力矩阵](../产品/产品模式与能力矩阵.json)与[产品信息架构](../产品/产品信息架构.json)分别拥有其声明范围。
 4. 当前 `docs/ui/**`、`docs/architecture/**` 与当前运行时代码拥有 Token、组件、状态、数据、持久化和安全的实现事实。
 5. 本目录拥有页面级显示、区域内容、交互、状态、响应式、组件组合和实施验收决定；不得覆盖以上权威。
 6. `.ai/reports/**`、旧计划和源项目只作证据，不是本目录的活动设计权威。

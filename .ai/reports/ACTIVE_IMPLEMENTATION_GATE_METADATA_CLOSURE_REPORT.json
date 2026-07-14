@@ -1,0 +1,184 @@
+{
+  "reportType": "ACTIVE_IMPLEMENTATION_GATE_METADATA_CLOSURE_REPORT",
+  "generatedAt": "2026-07-15T00:55:00.000Z",
+  "repository": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+  "branch": "main",
+  "baseline": {
+    "initialExpectedSha": "d3b23778c058549749d67fe062d504d0da6634a8",
+    "commitASha": "bcd39d8a244bc756d4da3d832f79fe44d7df91d1",
+    "commitBSha": null,
+    "commitASubject": "docs(governance): 统一逐页设计完成后的活动实施门禁",
+    "commitBSubject": "docs(zh-cn): 同步活动实施门禁中文阅读镜像"
+  },
+  "purpose": "Remove stale active-stage metadata that still presented PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS as the current implementation gate. Preserve the distinction between product-design baseline, completed page-design phase, and current active implementation gate.",
+  "gateTaxonomy": {
+    "productDesignBaseline": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
+    "completedPageDesignPhase": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+    "activeImplementationGate": "PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION"
+  },
+  "activeAuthoritiesCorrected": [
+    "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+    "docs/architecture/TECH_STACK_DECISION.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_DEFINITION.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/CHESSBOARD_COMPONENT_API.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+    "docs/ui/I18N_SPEC.md",
+    "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+    "docs/ui/PAGE_STYLE_SPEC.md",
+    "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/ui/THEME_SYSTEM_SPEC.md",
+    "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+  ],
+  "occurrenceClassification": {
+    "ACTIVE_CURRENT_METADATA": {
+      "count": 28,
+      "description": "Canonical active authority documents where the old gate now appears only as a completed historical phase and the active implementation gate is exactly PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION.",
+      "files": [
+        "docs/architecture/FOUNDATION_READINESS_MATRIX.json",
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+        "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+        "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+        "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+        "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+        "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+        "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+        "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+        "docs/migration/SOURCE_PROVENANCE.md",
+        "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+        "docs/product/PRODUCT_DEFINITION.md",
+        "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+        "docs/product/PRODUCT_INFORMATION_ARCHITECTURE.json",
+        "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+        "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+        "docs/product/WORKSPACE_MODES.md",
+        "docs/ui/ACCESSIBILITY_SPEC.md",
+        "docs/ui/CHESSBOARD_COMPONENT_API.md",
+        "docs/ui/COMPONENT_SYSTEM_SPEC.md",
+        "docs/ui/I18N_SPEC.md",
+        "docs/ui/LAYOUT_SYSTEM_SPEC.md",
+        "docs/ui/PAGE_STYLE_SPEC.md",
+        "docs/ui/PERSISTENCE_RECOVERY_SPEC.md",
+        "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+        "docs/ui/THEME_SYSTEM_SPEC.md",
+        "docs/ui/UI_ACCEPTANCE_CHECKLIST.md"
+      ]
+    },
+    "MIRROR_NOW_UPDATED": {
+      "count": 24,
+      "description": "docs/zh-cn/** non-authoritative reading mirrors regenerated from Commit A so that the old gate is shown only as completed and the active implementation gate is PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION.",
+      "files": [
+        "docs/zh-cn/产品/产品信息架构.json",
+        "docs/zh-cn/产品/产品模式与能力矩阵.json",
+        "docs/zh-cn/产品/产品设计蓝图.md",
+        "docs/zh-cn/产品/产品负责人需求基线.md",
+        "docs/zh-cn/产品/产品需求可追溯性.json",
+        "docs/zh-cn/设计/Naive UI映射.md",
+        "docs/zh-cn/设计/UI实现交接.md",
+        "docs/zh-cn/设计/UI设计系统.md",
+        "docs/zh-cn/设计/UI设计索引.md",
+        "docs/zh-cn/设计/全局交互规范.md",
+        "docs/zh-cn/设计/全局布局规范.md",
+        "docs/zh-cn/设计/全局状态规范.md",
+        "docs/zh-cn/设计/响应式规范.md",
+        "docs/zh-cn/设计/实现修正待办清单.md",
+        "docs/zh-cn/设计/屏幕清单.md",
+        "docs/zh-cn/设计/组件职责规范.md",
+        "docs/zh-cn/设计/通用浮层与对话框规范.md",
+        "docs/zh-cn/设计/页面/兼容性与不可用界面规范.md",
+        "docs/zh-cn/设计/页面/比赛列表页规范.md",
+        "docs/zh-cn/设计/页面/比赛详情页规范.md",
+        "docs/zh-cn/设计/页面/登录页规范.md",
+        "docs/zh-cn/设计/页面/统一工作区页规范.md",
+        "docs/zh-cn/设计/页面/设置界面规范.md",
+        "docs/zh-cn/设计/页面/赛场展示页规范.md"
+      ]
+    },
+    "IMMUTABLE_REPORT": {
+      "count": 5,
+      "description": "Historical .ai/reports evidence retained unchanged. They contain the old gate as part of archived review and closure records.",
+      "files": [
+        ".ai/reports/COMPLETE_PRODUCT_DESIGN_OWNER_REVIEW_CORRECTION_AND_PUSH_REPORT.json",
+        ".ai/reports/COMPLETE_PRODUCT_REQUIREMENT_DISCOVERY_AND_CHINESE_DESIGN_BLUEPRINT_REPORT.json",
+        ".ai/reports/FINAL_ACTIVE_PRODUCT_UI_SPEC_RESIDUE_PURGE_AND_PUSH_REPORT.json",
+        ".ai/reports/FINAL_AUTHORITY_SEMANTIC_CLOSURE_POST_PUSH_VERIFICATION_REPORT.json",
+        ".ai/reports/FINAL_GLOBAL_ACTIVE_AUTHORITY_AND_PRODUCT_DESIGN_CLOSURE_REPORT.json"
+      ]
+    },
+    "ARCHIVED": {
+      "count": 2,
+      "description": "Migration inventory and capability matrix documents retained unchanged. They are not active implementation authorities.",
+      "files": [
+        "docs/migration/CAPABILITY_MATRIX.json",
+        "docs/migration/DOCUMENT_INVENTORY.json"
+      ]
+    },
+    "HISTORICAL_EVIDENCE": {
+      "count": 0,
+      "description": "No separate historical-evidence documents outside of immutable reports and archived migration files required modification.",
+      "files": []
+    },
+    "USER_FACING_EXAMPLE": {
+      "count": 0,
+      "description": "No user-facing examples contained the old gate.",
+      "files": []
+    },
+    "FALSE_POSITIVE": {
+      "count": 0,
+      "description": "No false positives were identified.",
+      "files": []
+    }
+  },
+  "mirrorSynchronization": {
+    "sourceCommit": "bcd39d8",
+    "mirrorDocuments": 24,
+    "markdownMirrors": 21,
+    "jsonMirrors": 3,
+    "supportFiles": 7,
+    "linksScanned": 375,
+    "linksRewritten": 364,
+    "unresolvedRelativeLinks": 0,
+    "updatedSupportFiles": [
+      "docs/zh-cn/说明.md",
+      "docs/zh-cn/中文文档总索引.md",
+      "docs/zh-cn/中文文档映射.json",
+      "docs/zh-cn/架构/说明.md",
+      "docs/zh-cn/归档/说明.md",
+      "docs/zh-cn/迁移/说明.md",
+      "docs/zh-cn/界面/说明.md"
+    ]
+  },
+  "validation": {
+    "checkGovernance": "PASS",
+    "formatCheck": "PASS",
+    "lint": "PASS",
+    "lintStyle": "PASS",
+    "checkUnused": "PASS",
+    "checkStatic": "PASS",
+    "typecheck": "PASS",
+    "productionBuild": "PASS",
+    "auditProd": "PASS",
+    "pnpmAudit": "PASS",
+    "gitDiffCheck": "PASS"
+  },
+  "ownerDecisionsStatus": "OD-01 through OD-11 remain open.",
+  "contractBlockedStatus": "Contract-blocked capabilities remain blocked.",
+  "finalVerdict": "ACTIVE_IMPLEMENTATION_GATE_METADATA_CLOSURE_PASS"
+}
