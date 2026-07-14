@@ -1,0 +1,328 @@
+# 开赛了设置表面设计规范
+
+## 1. 表面合同
+
+- 表面责任：在当前页面上调整本设备的非敏感显示与工作区布局偏好；不新增产品路由，不拥有账户、权限、数据来源或远端同步。
+- Router path：无。设置是受治理的覆盖表面，不得创建 `/settings`。
+- 部署 URL：沿用打开它的当前 `/pgnViewer/**`页面；打开状态不进入 URL。
+- 覆盖层 ID：`OV-SETTINGS-DRAWER`。
+- 桌面设计决定：右侧模态 Drawer。
+- 窄屏设计决定：底部进入、全宽、受安全区约束的 Sheet。
+- 精确标题：“设置”。
+- 精确说明：“调整本设备上的非敏感显示与操作偏好。”
+
+本表面继承以下唯一全局所有者：
+
+- [产品逐页 UI 设计文档索引](../PRODUCT_UI_DESIGN_INDEX.zh-CN.md)
+- [产品 UI 设计系统](../PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md)
+- [全局布局规范](../PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md)
+- [全局交互规范](../PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md)
+- [全局状态规范](../PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md)
+- [响应式规范](../PRODUCT_RESPONSIVE_SPEC.zh-CN.md)
+- [组件责任规范](../PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md)
+- [Naive UI 映射](../PRODUCT_NAIVE_UI_MAPPING.zh-CN.md)
+- [共用覆盖层与对话框规范](../PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md)
+- [实施纠正清单](../PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md)
+
+## 2. 入口、出口、用户与任务
+
+### 2.1 入口
+
+- 产品级“设置”按钮是唯一语义入口。不同页面壳可放置同一命令，但必须打开同一个表面与同一状态，不创建页面专属设置副本。
+- 打开前记录真实触发按钮；设置表面读取 Theme Store 和 Workspace Store 的当前投影。
+- 未登录也可打开，因为当前设置全部为本设备非敏感偏好；登录状态不改变当前字段集合。
+- 设置触发器在进行中实时、赛事页和登录页可见时，仍不能由设置绕过来源权限或页面能力门禁。
+
+### 2.2 出口
+
+- 固定动作“关闭设置”、`Escape`和安全遮罩点击关闭表面。
+- 关闭后焦点返回原“设置”按钮；断点变化使原按钮消失时，返回同一壳的产品操作区标题或等价“设置”按钮。
+- 当前设置即时应用，没有“保存”提交；关闭不会回滚已经成功应用的主题或布局。
+- 浏览器后退不用于关闭设置，因为打开状态不进入历史记录；页面导航先关闭表面，再由新页标题接管焦点。
+
+### 2.3 用户与任务
+
+- 教师/教练：选择主题，恢复适合备课与讲课的工作区布局。
+- 赛事操作员：调整当前设备的显示偏好，但不能从这里改变赛事、权限或大屏合同。
+- 观众：仅调整本设备可用的非敏感显示项。
+- 主任务：查看并改变一个当前有所有者的偏好。
+- 次任务：理解某项为什么尚未提供；目标项未闭合时默认不渲染假控件。
+
+## 3. 五类能力分类
+
+### `CURRENT_IMPLEMENTED`
+
+- 主题偏好 `light`、`dark`、`system`，由 Theme Store 和同步 `themeMode`记录拥有；默认值为 `system`。
+- 工作区布局记录由 Workspace Store 与 `workspaceLayoutPersistence.ts`拥有，字段仅为 `showLeftSidebar`、`showAnalysisRegion`、`toolbarCollapsed`、`boardAlignment`、`boardOrientation`、`activeRightTab`、`rightPgnHeightPx`。
+- Light/Dark/System 解析、系统主题监听、跨标签主题更新和无可用存储时的内存继续均已存在。
+- 当前没有设置 Drawer、Sheet 或通用设置组件文件；以上只是可组合进设置表面的现有状态所有者。
+
+### `APPROVED_TARGET`
+
+- 唯一 `SettingsSurface`与 `OV-SETTINGS-DRAWER`组合；桌面 Drawer、窄屏全宽 Sheet、固定 header/footer 和唯一滚动 body。
+- 未来设置类别：棋盘外观、无障碍偏好、语言、声音、AI 默认策略；它们只在各自运行时与版本化持久化所有者闭合后进入实际表单。
+- 项目自有 Field、Choice、Switch、Select、Drawer、Sheet、State 适配器统一 Token、焦点与错误表达。
+
+### `CONTRACT_BLOCKED`
+
+- 当前设置均为本地能力，没有远端设置读取或同步合同。
+- 任何账户级/组织级偏好同步、云端主题、设备管理或服务端 AI 策略提案在真实合同存在前均为 `CONTRACT_BLOCKED`，并且不在本表面显示入口、登录要求或重试。
+
+### `OPEN_OWNER_DECISION`
+
+- `OD-03`：AI 默认设置作用域仍开放；不得把设备级建议写成事实。
+- `OD-04`：AI 首次资源提示确认范围及深度、时间、并发默认值仍开放。
+- `OD-11`：声音默认状态与持久化仍开放；声音不能成为唯一反馈。
+- 以上决定不因出现设置分组名称、Drawer 或窄屏 Sheet 而关闭。
+
+### `PROHIBITED`
+
+- 新建 `/settings`路由、第二 Theme Store、第二 Workspace Store、`generalPreferences`裸记录或新的局部 Token 表。
+- 把棋盘外观、无障碍、语言、声音或 AI 默认伪装成当前可保存字段。
+- 在设置中提供账号管理、权限、内部诊断、API、端点、实时凭据、设备秘密、MQTT 或赛事管理。
+- 通过设置启用进行中实时的 AI、评价、编辑、变例、批注写回或来源写回。
+- 直接读写 `localStorage`/Dexie、保存覆盖层打开状态、复制认证记录或持久化错误详情。
+
+## 4. 信息层级与精确控件
+
+### 4.1 固定层级
+
+1. Header：标题“设置”、说明、“关闭设置”。
+2. Body 第一组：“外观”。
+3. Body 第二组：“工作区布局”。
+4. Body 状态槽：保存失败或外部变化说明，仅在需要时出现。
+5. Footer：固定“关闭设置”；没有伪“保存全部”。
+
+### 4.2 当前外观组
+
+- 字段标签：“主题”。
+- 选项：“浅色”“深色”“跟随系统”，分别映射 `light`、`dark`、`system`。
+- 选择后立即应用；焦点保留在所选项；保存结果在组内播报。
+- 主题选择只改变产品 UI 主题，不等于棋盘外观设置。
+
+### 4.3 当前工作区布局组
+
+只允许以下已实现字段进入表面：
+
+- “显示来源导航” → `showLeftSidebar`。
+- “显示分析区域” → `showAnalysisRegion`。在进行中实时或其他禁止分析的上下文中隐藏该控件；持久值不能让被禁止区域出现。
+- “收起工作区工具栏” → `toolbarCollapsed`。
+- “棋盘位置” → `boardAlignment`，选项“靠左”“居中”“靠右”。
+- “棋盘朝向” → `boardOrientation`，选项“白方在下”“黑方在下”。
+- “当前右侧内容” → `activeRightTab`，候选为“棋谱”“评论”“标注”“分析”，但必须先经过当前 mode/source capability 过滤。进行中实时与远端只读上下文不渲染“分析”选项；已持久化的 `analysis`值只作为失效偏好忽略，不能让被禁止的选项或区域进入 DOM。其他因临时条件不可用但仍获当前模式允许的选项才可禁用并说明原因。
+- “恢复棋谱与分析自动分区” → 仅把 `rightPgnHeightPx`恢复为 `null`。不得显示原始 px 数字输入或复制分隔器；具体调整继续由工作区 splitter 拥有。
+
+设置表面改变的是同一 Workspace Store；页面内工具栏、棋盘翻转、页签和 splitter 仍是相同状态的直接操作入口，不产生两套值。
+
+### 4.4 目标设置目录
+
+以下内容只记录实施顺序，当前表单中隐藏，不使用 disabled 假控件占位：
+
+- 棋盘外观：仅可选择经过 Token 治理的命名样式，不允许任意颜色输入；当前无选择与持久化所有者。
+- 无障碍：当前运行时已服从系统 `prefers-reduced-motion`，但没有独立可保存偏好；未来字段需先定义优先级、恢复和 Token 影响。
+- 语言：当前产品文案为简体中文，没有项目自有 Vue i18n 运行时或 locale 记录。
+- 声音：`OD-11`；默认、事件范围和持久化未定，声音始终只是冗余反馈。
+- AI 默认：`OD-03`、`OD-04`；AI 仍默认关闭并由用户显式开启，设置不得自动启动 Worker。
+
+## 5. 动作优先级、隐藏、禁用与危险动作
+
+设置打开/关闭复用[全局交互规范](../PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md)的 `IA-DRAWER-SHEET`，放弃未应用变化或关闭任务复用 `IA-CANCEL`，主题/布局恢复与存储失败回退复用 `IA-RECOVERY`。设置项即时变更是本表面专用动作，其 Store owner、持久化结果、失败文案和焦点结果由第 7、8、10 节定义。
+
+- 主动作：每个设置项自身的即时可逆选择；表面级固定动作是“关闭设置”。
+- 次动作：“恢复棋谱与分析自动分区”；只有当前存在手动分区值时启用。
+- 隐藏：所有未闭合 target 分组；当前上下文中从产品上禁止的分析布局动作；账户/远端/诊断项。
+- 禁用：正在写入的单个控件短时禁用，其他设置保持可操作；禁用不得改变控件宽度。
+- 存储不可用：控件仍可改变当前内存状态，但显示“已应用到当前页面，未能保存到本设备。”，不伪装持久化成功。
+- 危险动作：当前无。不得把“恢复自动分区”或“跟随系统”涂成危险动作；未来“清除全部偏好”必须先建立明确确认合同。
+
+## 6. 文本布局、固定区与滚动
+
+### 6.1 大桌面
+
+```text
+当前页面（锁定滚动与交互）
+└─ 右侧 Settings Drawer
+   ├─ 固定 Header：设置 / 说明 / 关闭
+   ├─ 弹性 Body：唯一滚动
+   │  ├─ 外观
+   │  ├─ 工作区布局
+   │  └─ 状态说明
+   └─ 固定 Footer：关闭设置
+```
+
+Drawer 不覆盖整个宽度，不改变底层页面轨道；底层内容保持原几何但不可交互。
+
+### 6.2 紧凑桌面
+
+- 继续使用右侧 Drawer；Header/Footer 固定，Body 独立滚动。
+- 控件从同行说明转为组内纵向排列，不缩小标签或触控目标。
+
+### 6.3 平板
+
+- 使用右侧、接近可用宽度的模态 Drawer，仍保留进入方向和关闭返回语义。
+- 单列设置组；虚拟键盘不是当前控件所需，但安全区和旋转后焦点必须保持。
+
+### 6.4 窄屏
+
+```text
+Backdrop
+└─ 全宽 Bottom Sheet
+   ├─ 固定 Header：设置 / 关闭
+   ├─ Body：单列设置组，唯一滚动
+   └─ 固定 Footer：关闭设置 + 底部安全区
+```
+
+- Sheet 占用安全区内全部 inline size；高度受可用动态视口约束，不产生 body 滚动。
+- 拖拽关闭不得成为唯一方式；关闭按钮、`Escape`和安全遮罩始终可用。
+
+固定/弹性/滚动责任：
+
+- 固定：Header、Footer、关闭动作。
+- 弹性：Body 和组内说明。
+- 唯一滚动：覆盖层 Body。
+- 锁定：下层页面模块和 body；打开设置不改变其滚动位置。
+
+## 7. 组件、Store、持久化与 Naive UI 边界
+
+### 7.1 当前所有者
+
+- `src/stores/theme.ts`及主题 runtime：当前主题、系统解析、跨标签同步和存储可用性。
+- `src/bootstrap/preferences/themePreference.ts`：`themeMode`原始存储访问。
+- `src/stores/workspace.ts`：当前布局状态与语义动作。
+- `src/persistence/workspace/workspaceLayoutPersistence.ts`：严格布局 Schema、Dexie `workspaceSession/current`记录。
+- `src/app/providers/AppProviders.vue`：唯一 Naive UI 主题提供层；不拥有设置产品行为。
+
+### 7.2 概念责任
+
+- `SettingsSurface`：注入 Theme/Workspace 投影，组合当前分组并发出类型化 change/reset/close 事件。
+- `ProductDrawer`、`ProductSheet`：遮罩、scroll lock、焦点陷阱、Escape、返回焦点与响应式形态。
+- `ProductChoiceField`、`ProductSwitch`、`ProductSelect`：纯展示设置控件。
+- `ProductStateBanner`：保存失败与恢复说明；不拥有持久化策略。
+
+概念责任不是当前文件。Settings Surface 可以协调 Store，但其字段组件不得直接读取 Store、持久化或浏览器存储。
+
+### 7.3 Naive UI 候选
+
+- `NDrawer`/`NDrawerContent`、`NRadioGroup`、`NSwitch`、`NSelect`、`NButton`、`NAlert`可作为基础组件。
+- 所有候选必须通过项目适配器使用现有 Token、焦点、动作和状态合同。
+- Naive UI 不保存设置、不决定 target 字段是否出现、不拥有 OD、不创建 Provider 副本。
+
+## 8. 状态覆盖
+
+### 8.1 打开 / 当前成功态
+
+- 打开时同步读取 Store 投影，不显示加载骨架；标题、关闭按钮和当前值立即可用。
+- 当前字段值来自各自唯一 owner；任何未知枚举值先由 owner 失败关闭到安全默认，不在 Select 中伪装首项。
+- 初始焦点在 Header 的“关闭设置”；随后按 DOM 顺序进入第一个可用主题选项。
+
+### 8.2 应用中
+
+- 当前设置是即时、局部操作；仅被改变的控件进入 busy/disabled，其他组保持可用。
+- 主题应先应用到文档，再报告写入结果；工作区布局先更新 Store，再由既有 owner 持久化。
+- 不显示百分比、全局 loading bar 或整面 Skeleton。
+
+### 8.3 成功 / `GS-SUCCESS`
+
+- 主题或布局改变后使用一次 `polite`播报：“设置已更新。”
+- 焦点留在原控件；不显示长期成功卡，不关闭设置。
+- 外部标签页改变有效 `themeMode`时更新所选值并播报“主题已在其他页面更新。”，不抢焦点。
+
+### 8.4 部分保存失败 / `GS-FAIL-PARTIAL`
+
+- 精确标题：“设置未能保存”。
+- 精确说明：“更改已应用到当前页面，但未能保存到本设备。关闭或刷新后可能恢复原值。”
+- 保留当前内存值和其他成功设置；主动作“重试保存”只在 owner 提供真实重试时出现，次动作“继续使用当前设置”。
+- 焦点保留在触发控件；状态 banner 不抢焦点。
+
+### 8.5 完整读取失败 / `GS-FAIL-COMPLETE`
+
+- 仅在 Theme/Workspace 投影本身无法建立时使用；保留 Header、说明和“关闭设置”。
+- 精确标题：“设置暂时无法打开”。
+- 精确说明：“当前设置未能读取。页面仍可继续使用，你可以关闭设置后重试。”
+- 不显示未确认默认值，不写新记录；主动作“关闭设置”。
+
+### 8.6 无效或过期持久化记录
+
+- Theme owner 忽略无效 `themeMode`并使用安全默认；Workspace owner 丢弃无效/超过现有保留期限的布局记录。
+- 设置表面显示 owner 已恢复后的当前值；需要提示时使用非阻塞说明“部分设置已恢复为默认值。”
+- 不显示原始记录、Schema、时间戳或错误详情。
+
+### 8.7 不适用状态
+
+- `GS-LOAD-INITIAL`、`GS-LOAD-REFRESH`和`GS-EMPTY`不适用于同步本地设置投影。
+- `GS-AUTH-REQUIRED`、`GS-AUTH-DENIED`不适用；当前设置不依赖账户。
+- `GS-CONTRACT-BLOCKED`不在当前表面渲染，因为无远端设置合同，也没有可点击入口；target 字段保持隐藏。
+- 实时、回放、AI 生命周期只决定某些布局项是否允许，不成为设置表面的数据状态。
+- 来源只读/可编辑状态不适用于设置数据；当前获准字段可即时修改，但 mode/source capability 仍可把不允许的布局项从 DOM 移除，设置不能把远端来源变为可编辑。
+
+## 9. 鼠标、键盘、触控、焦点与动效
+
+### 9.1 鼠标与触控
+
+- 单击/触控选择主题、开关或选项并即时应用；Hover 只增强，不承载说明。
+- 粗指针目标不小于 `--board-touch-target-min`；整行可扩大命中区，但标签必须明确关联控件。
+- Sheet 不要求拖动才能关闭；边缘手势不与系统返回竞争。
+
+### 9.2 键盘
+
+- Tab 顺序：关闭设置 → 外观组控件 → 工作区布局组控件 → 状态动作 → Footer 关闭。
+- Radio 使用方向键/Home/End；Switch 使用 Space；Select 使用标准列表框键盘模式；`Enter`只激活当前焦点控件。
+- `Escape`只关闭最上层设置表面；若未来设置内再开确认层，第一次 Escape 只关闭确认层。
+- 背景页面快捷键、棋盘方向键和滚轮导航在设置打开时不响应。
+
+### 9.3 焦点与返回
+
+- 初始焦点固定为“关闭设置”，与 `OV-SETTINGS-DRAWER`一致。
+- `Tab`/`Shift+Tab`圈定在最上层 Drawer/Sheet；不可用控件不进入 Tab 顺序，但说明保持可读。
+- 关闭立即返回触发“设置”的按钮；关闭动画不得延迟返回。
+- 断点变化时，Drawer 转 Sheet 或 Sheet 转 Drawer 不重置当前组、滚动位置和焦点语义。
+
+### 9.4 动效与减弱动效
+
+- Drawer/Sheet 只使用现有 workspace motion Token 解释进入/离开；状态在动画前已经可读。
+- 中断、卸载、路由离开和断点切换清理时间线与 scroll lock。
+- `prefers-reduced-motion: reduce`下直接呈现最终位置，不滑动、不弹性；主题切换仍即时正确。
+
+## 10. 持久化与安全
+
+- 当前主题：`localStorage:themeMode`，值只允许 `light`、`dark`、`system`；由 Theme owner 独占。
+- 当前布局：Dexie 数据库 `chess-pgnviewer-vue`、表 `workspaceSession`、记录 `current`、Schema version 1；只允许第 4.3 节七个字段。
+- 设置表面、打开状态、活动焦点、滚动位置、错误和 busy 状态只在内存，不进入 URL、Dexie 或 localStorage。
+- 没有 general preferences、locale、sound、AI-default、board-appearance、persisted Query 或账户级设置记录。
+- 组件不得直接读写浏览器存储；所有改变经 Theme/Workspace owner。
+- 设置不读取或显示 token、账号、保护 DTO、实时凭据、设备秘密、文件路径或内部错误。
+- 注销不清除已批准的非敏感主题与布局；过期认证不改变设置持久化边界。
+
+## 11. Token 与产品术语
+
+- Drawer/Sheet：`--surface`、`--border`、`--shadow-lg`；分组：`--surface-2`、`--border`。
+- 文本：`--text`、`--text-2`、`--text-muted`、`--fs-base`、`--fs-sm`、`--fs-xl`。
+- 控件：`--control-h`、`--control-h-sm`、`--board-touch-target-min`、`--r-sm`、`--r-md`、`--s-*`。
+- 选择：`--accent`、`--accent-bg`、`--accent-strong`、`--accent-line`。
+- 状态：`--info`、`--warning`、`--danger`；焦点：`--border-focus`、`--state-focus-ring`。
+- 覆盖层堆叠由项目 adapter 拥有；页面不得写原始 z-index、颜色、宽度、阴影或新 Token。
+
+用户可见术语只使用：“设置”“外观”“主题”“浅色”“深色”“跟随系统”“工作区布局”“显示来源导航”“显示分析区域”“收起工作区工具栏”“棋盘位置”“棋盘朝向”“当前右侧内容”“恢复棋谱与分析自动分区”“关闭设置”。字段名、Schema、localStorage、Dexie、AI Worker 或内部错误不得出现在 UI。
+
+## 12. 纠正项、交接与实施验收
+
+相关实施纠正集中在[实施纠正清单](../PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md)：`COR-002`/`COR-003`模式能力门禁、`COR-011`/`COR-012`Token、`COR-013`焦点、`COR-026`设置所有者、`COR-027`项目 UI 适配器、`COR-028`页面验收。
+
+设置交接合同：
+
+1. 页面壳发出统一 `open-settings`意图并提供真实触发元素。
+2. Settings container 从 Theme/Workspace owner 读取投影，向纯设置控件传 props，并把类型化 change/reset/close 事件送回 owner。
+3. 响应式只替换 Drawer/Sheet 组合，不创建第二 Store 或复制持久化。
+4. 关闭返回触发器；导航时关闭并让目标页标题接管；不把设置状态写入路由。
+
+实现完成必须满足：
+
+1. Large/Compact/Tablet 使用右侧 Drawer，Narrow 使用全宽 Sheet；Header/Footer 固定、Body 唯一滚动、body 锁定。
+2. 运行时表单只包含主题与第 4.3 节已实现布局字段；target 字段没有控件、默认值或持久化承诺。
+3. 主题三态、系统变化、跨标签变化、布局即时更新、分区恢复和存储不可用均有正确状态与焦点结果。
+4. 进行中实时不能通过布局设置显示分析或评价；持久值不越过模式权限适配器。
+5. 打开初焦点、完整 Tab 顺序、Escape、遮罩、关闭返回、断点转换和减弱动效符合覆盖层合同。
+6. 只写当前 `themeMode`和既有 `workspaceSession/current`；没有新增 key、表、字段、账户值或持久化 Query。
+7. Light、Dark、System 下控件、状态与焦点可读；所有视觉值解析到现有 Token。
+8. `OD-03`、`OD-04`、`OD-11`仍为 OPEN；文案和控件没有暗示已解决。
+9. 实施阶段运行治理、format、lint、Stylelint、Knip、`check:static`、typecheck 和 production build，并完成一次从真实“设置”触发器打开、改变主题或布局、关闭并返回焦点的窄浏览器验证；文档阶段不运行浏览器或测试。

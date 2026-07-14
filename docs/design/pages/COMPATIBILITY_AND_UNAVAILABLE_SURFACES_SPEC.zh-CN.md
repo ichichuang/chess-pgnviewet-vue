@@ -1,0 +1,313 @@
+# 开赛了兼容入口与不可用表面设计规范
+
+## 1. 页面族合同
+
+本页面族只做两件事：把已验证、非敏感、合同允许的来源选择交接到唯一统一工作区，或显示真实、可恢复的不可用状态。它不渲染棋盘、棋谱、批注、分析或第二工作区。
+
+正式路径与部署 URL：
+
+- 受保护回放入口：`/match/:key` → `/pgnViewer/match/:key`。
+- 分享入口：`/share/:uuid` → `/pgnViewer/share/:uuid`。
+- 云端棋谱入口：`/cloud/:fileid` → `/pgnViewer/cloud/:fileid`。
+- 实时入口：`/competitions/:hdid/live` → `/pgnViewer/competitions/:hdid/live`。
+- 统一工作区交接落点：`/?handoff=<opaque-id>` → `/pgnViewer/?handoff=<opaque-id>`；该 URL 只携带非敏感交接记录 ID。
+
+本页继承以下唯一全局所有者：
+
+- [产品逐页 UI 设计文档索引](../PRODUCT_UI_DESIGN_INDEX.zh-CN.md)
+- [产品 UI 设计系统](../PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md)
+- [全局布局规范](../PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md)
+- [全局交互规范](../PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md)
+- [全局状态规范](../PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md)
+- [响应式规范](../PRODUCT_RESPONSIVE_SPEC.zh-CN.md)
+- [组件责任规范](../PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md)
+- [Naive UI 映射](../PRODUCT_NAIVE_UI_MAPPING.zh-CN.md)
+- [共用覆盖层与对话框规范](../PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md)
+- [实施纠正清单](../PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md)
+
+## 2. 用户、入口、出口与任务
+
+### 2.1 用户与任务
+
+- 教师/教练：打开已结束棋局回放、受保护分享或云端棋谱；合同允许时进入统一工作区查看，再显式导入本地副本。
+- 赛事观众/家长：从赛事详情打开实时棋局；进行中内容始终只读。
+- 赛事操作员：验证赛事实时入口是否可用，并在失败时返回赛事详情。
+- 主任务：打开指定内容。
+- 失败任务：理解“链接无效、需要登录、没有权限、当前版本暂不支持或暂时失败”中的唯一真实原因，并选择安全下一步。
+
+### 2.2 入口前置条件
+
+1. 路由参数必须存在、非空，并通过当前文本消毒边界；消毒通过不等于资源存在或合同可用。
+2. 合同状态先于认证状态判断。没有确认合同时直接显示 `GS-CONTRACT-BLOCKED`，不得先诱导登录。
+3. 已确认保护合同存在但没有有效会话时才使用 `GS-AUTH-REQUIRED`和安全登录返回。
+4. 有有效会话但真实权限结果为无权时使用 `GS-AUTH-DENIED`；不自动注销或重复请求。
+5. 只有参数、合同、认证、权限和来源映射全部有效时，才可保存类型化交接并 replace 到统一工作区。
+
+### 2.3 出口与安全返回
+
+- 实时入口的首选返回是 `/competitions/:hdid`；只保留已消毒且仍有效的组别/轮次选择。
+- 回放、分享和云端入口的通用返回是 `/competitions`；次级动作可进入 `/`的本地工作区。
+- 登录成功返回原兼容路径，再重新执行合同、权限和来源校验；登录成功不等于内容成功。
+- 交接成功使用 Router replace 到统一工作区，避免后退重复生成交接。
+- 无效参数、无效交接、阻断和无权不得自动跳到默认本地分析并显示成功。
+
+## 3. 当前事实与目标语义
+
+### 3.1 当前实现
+
+- `CompatibilityEntryView.vue`当前处理 `/match/:key`、`/share/:uuid`和`/cloud/:fileid`，生成经消毒的 `analysis`交接并自动 replace。
+- `CompetitionLiveRedirectView.vue`当前生成 `live_spectator`、`electronic_board_live`、`readonly: true`交接。
+- Router 当前把 `/match`、`/cloud`、`/competitions/:hdid/live`标为 `requiresAuth`；`/share`当前匿名进入。
+- `workspaceHandoff.ts`限制字段、文本长度、站内返回路径与敏感标记，保存到 `sessionStorage:pgnViewer.workspaceHandoff.v1`并提供内存 fallback。
+- `WorkspaceModeController.vue`读取交接后只渲染一个 `TeachingWorkspace`；但交接 ID 无效时当前会回退到普通路由解析。
+- `useRemoteReplayLoader.ts`当前对 cloud/share/live 显示暂不可用，对回放调用的仓储仍固定返回不可用；这些是当前失败事实，不是成功合同。
+
+### 3.2 四条路径的批准语义
+
+- `/match/:key`：“棋局回放”。只有确认的已结束回放合同、有效会话和权限都闭合后，才能生成 `replay`/`replay_only`只读交接；当前保持合同阻断。
+- `/share/:uuid`：“分享内容”。匿名/保护规则、分享生命周期和来源模型未确认；不得沿用当前通用 backend handoff 伪装成功，当前保持合同阻断。
+- `/cloud/:fileid`：“云端棋谱”。未来只读选择进入统一工作区，编辑必须显式导入本地副本；读/权限合同未确认，当前保持合同阻断。
+- `/competitions/:hdid/live`：“实时棋局”。有效 `hdid`是最低必要标识；group/round/board 只作为已消毒选择。局面、订阅、时间和棋钟合同未确认，当前保持合同阻断。
+
+## 4. 五类能力分类
+
+### `CURRENT_IMPLEMENTED`
+
+- 四条路由、三类兼容 View、Router auth guard、类型化交接记录、敏感字段过滤、sessionStorage + memory fallback 和单一工作区落点。
+- 当前页面具备简单“正在进入工作区/参数无效”状态；工作区具备暂不可用文本。
+
+### `APPROVED_TARGET`
+
+- 统一 `ProductRouteShell`、类型化入口策略、`UnavailableStateSurface`、安全返回、真实 retry、完整焦点和响应式状态页。
+- 无效 `?handoff=`在工作区落点失败关闭，不渲染默认工作区。
+- 合同闭合后的交接成功仍进入同一个工作区；受保护/实时来源保持只读，显式导入才产生本地副本。
+
+### `CONTRACT_BLOCKED`
+
+- 受保护回放、分享读取、云端棋谱、电子棋盘快照、实时凭据/订阅、权威棋钟和新鲜度。
+- 阻断状态不发请求、不显示重试、不要求登录、不生成 PGN/FEN/棋钟或空白成功内容。
+
+### `OPEN_OWNER_DECISION`
+
+- `OD-08`只决定匿名实时大屏范围；不改变当前四条入口的合同状态。
+- 本页不关闭其他 OD，也不把推荐值写入交接或 URL。
+
+### `PROHIBITED`
+
+- 第二 WorkspaceShell、来源专属棋盘、嵌入 TeachingWorkspace、默认本地成功回退、样例棋局、合成 PGN/FEN、假实时、假棋钟或 fallback success。
+- 把合同阻断写成登录问题；对无效/无权/阻断状态循环重试或自动跳转。
+- 在 UI 显示“兼容入口”“handoff”“生产”“MQTT”“API”“DTO”、端点、主题、设备秘密、原始 ID 或错误堆栈。
+- 在 URL/交接中放入 token、cookie、authorization、password、secret、完整保护响应或含秘密 URL。
+
+## 5. 信息层级与精确术语
+
+安全返回/成功 replace 复用[全局交互规范](../PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md)的 `IA-PRODUCT-NAV`，同上下文重试复用 `IA-RETRY`，无效交接、登录返回与可用内容恢复复用 `IA-RECOVERY`，登录要求覆盖层复用 `IA-DIALOG`。路径解析和类型化交接仍由本页 Router/handoff owner 按第 8 节处理。
+
+1. 固定页面头：产品入口、安全返回、当前页面一级标题。
+2. 主状态：发生了什么。
+3. 说明：是否保留内容、为什么不能继续、下一步是什么。
+4. 主动作：登录、重试或返回可用内容中的一个。
+5. 次动作：返回工作区或赛事；只有真实安全目的地时出现。
+
+一级标题按路径使用：“棋局回放”“分享内容”“云端棋谱”“实时棋局”。用户界面不得出现“兼容入口”。
+
+动作优先级：
+
+- 交接中：主动作无；保留可达的“返回赛事详情”或“返回赛事”。
+- 需要登录：主动作“去登录”，次动作“暂不登录”。
+- 可重试失败：主动作“重试”，次动作“返回可用内容”。
+- 无效、无权、合同阻断：主动作“返回可用内容”；无真实恢复时不显示 retry。
+- 危险动作：无。
+- 始终隐藏：棋盘、棋谱、编辑、批注、AI、评价、导入、凭据输入、设备诊断和管理动作。
+
+## 6. 文本布局、响应式与滚动
+
+### 6.1 大桌面
+
+```text
+ProductRouteShell：动态视口，body 不滚动
+├─ 固定 RouteHeader：开赛了 / 页面标题 / 返回
+└─ 弹性 RouteBody：唯一滚动区
+   └─ 居中 StateSurface
+      ├─ 状态标题
+      ├─ 产品说明
+      └─ 主动作 / 次动作
+```
+
+状态表面保持克制，不使用棋盘占位、KPI 卡片或大面积错误装饰。
+
+### 6.2 紧凑桌面
+
+- 保持固定 Header + 弹性 RouteBody；动作可换行但顺序不变。
+- 状态卡宽度由可用空间约束，不引入页面横向滚动。
+
+### 6.3 平板
+
+- 状态表面在安全区内居中；RouteBody 仍是唯一滚动区。
+- Header 可纵向换行，返回动作始终可见。
+
+### 6.4 窄屏
+
+- 单列状态；动作纵向排列并满足 `--board-touch-target-min`。
+- 低高度或大字号时 RouteBody 滚动；Header 固定，body 不滚动。
+- 技术详情、内部 ID 和多余元数据不因空间变窄而出现。
+
+固定/弹性/滚动责任：Header 固定；RouteBody 弹性且是唯一滚动所有者；StateSurface 随内容增长但不建立嵌套滚动。Loading、invalid、auth、denied、blocked 和 error 均占同一状态槽，不改变外壳轨道。
+
+## 7. 组件、Router、交接与 Naive UI 边界
+
+### 7.1 当前所有者
+
+- `CompatibilityEntryView.vue`、`CompetitionLiveRedirectView.vue`：路由组合和当前自动交接。
+- `src/router/index.ts`：路由、保护元数据、登录返回和 catch-all。
+- `workspaceHandoff.ts`：交接字段消毒、保存、读取、私有交接清理和工作区路由构造。
+- `WorkspaceModeController.vue`：工作区落点解析与唯一工作区挂载。
+- `useRemoteReplayLoader.ts`与 replay repository：当前不可用/失败事实。
+- `RouteHeader.vue`：当前共享页头；`ResourceState.vue`可作为当前状态基础但当前兼容 View 尚未使用。
+
+### 7.2 概念责任
+
+- `ProductRouteShell`：稳定 Header、RouteBody 与唯一滚动。
+- `UnavailableStateSurface`：接收 `kind/title/explanation/safeReturn/retryable`并发出 login/retry/return；自身不读 Store 或 Router。
+- 页面入口策略：校验路径所需标识、合同、认证、权限和目标模式，再决定 handoff 或 state。
+
+概念责任不是当前文件。页面容器拥有 Router 和交接副作用；状态展示不得写 persistence 或调用 repository。
+
+### 7.3 Naive UI 候选
+
+- `NResult`/`NAlert`、`NButton`、短时 `NSpin`可作为基础控件。
+- 必须经 `ProductUnavailableState`、`ProductButton`、`ProductBusyIndicator`适配责任统一 Token、语义、动作和焦点。
+- Naive UI 不决定状态分类、retry 资格、安全返回、认证、合同或交接内容。
+
+## 8. 类型化交接算法
+
+成功交接严格按以下顺序：
+
+1. 读取当前 route name 和必要参数；数组只取首个安全文本，去除首尾空白。
+2. 验证必要标识非空、长度受限、无控制字符、HTML/引号/反斜杠、外部 scheme、`//`或敏感标记。
+3. 查询活动架构权威中的合同状态；合同未闭合立即进入 `GS-CONTRACT-BLOCKED`，不发请求。
+4. 合同要求保护身份时检查有效会话；无会话进入 `GS-AUTH-REQUIRED`，有会话再由真实仓储判定权限。
+5. 将已验证结果映射为允许的 mode/source/readonly 组合；实时、回放、云端和分享来源不得默认可编辑。
+6. 仅保存允许字段和非敏感可见标签；认证值、保护 DTO、草稿、PGN、FEN、时钟和实时凭据均不进入交接。
+7. 保存成功后 `router.replace({ name: 'workspace', query: { handoff: id } })`。
+8. 工作区落点再次读取并验证同一 ID；缺失、损坏、被清理或模式/来源不兼容时显示无效状态，不挂载 TeachingWorkspace。
+
+每条路径的最低必要标识：match=`key`，share=`uuid`，cloud=`fileid`，live=`hdid`。group/round/board 只在存在时作为选择；qrcode/sn 只有真实合同确认其为非秘密选择字段后才可保存，且普通用户界面永不显示。
+
+## 9. 状态覆盖
+
+### 9.1 正在打开 / `GS-LOAD-INITIAL`
+
+- 标题：“正在打开{资源名称}”。资源名称只取“棋局回放”“分享内容”“云端棋谱”“实时棋局”。
+- 说明：“正在确认内容是否可用，请稍候。”
+- 保留安全返回；不显示伪骨架、棋盘或百分比。
+- 路由初入焦点到页面 h1；自动 replace 成功时新工作区标题接管，不先闪回动作。
+
+### 9.2 交接成功
+
+- 兼容页不显示持久成功卡；保存成功立即 replace。
+- 统一工作区复用同一 Board/PGN/annotation/analysis 运行时，并按 mode/source/readonly capability 门控。
+- 实时成功仍无编辑、变例、来源批注、AI、评价或写回；完成内容只有显式导入本地副本后可编辑。
+
+### 9.3 无效入口或无效交接
+
+- 通用标题：“无法打开此内容”。
+- 通用说明：“这个入口缺少有效信息，或已经失效。你可以返回可用页面重新选择。”
+- 分享专用标题：“分享链接无效”；说明：“这个分享链接缺少有效信息或已经失效。”
+- 主动作“返回可用内容”；live 有有效赛事标识时使用“返回赛事详情”，其他路径默认“返回赛事”。
+- 不提供 retry，不自动修复为默认 local analysis；路由初入焦点到状态标题。
+
+### 9.4 登录需要 / `GS-AUTH-REQUIRED`、`OV-LOGIN-REQUIRED`
+
+- 仅在真实保护合同已确认时使用全局精确文案：“需要登录”“登录后才能继续此操作。当前公开内容和本地教学内容不会被清除。”
+- 整页入口优先使用内联状态；用户从已有公开页面激活保护动作时可使用 `OV-LOGIN-REQUIRED`。
+- 主动作“去登录”携带已校验相对返回路径；次动作“暂不登录”返回公开内容。
+
+### 9.5 会话过期 / `OV-SESSION-EXPIRED`
+
+- 先清账户会话、私有 Query、保护交接与实时连接，再显示全局过期文案。
+- 主动作“重新登录”；次动作“继续使用公开内容”。
+- 不保留旧 token、私有交接或未经确认的恢复请求。
+
+### 9.6 权限不足 / `GS-AUTH-DENIED`
+
+- 精确标题：“没有访问权限”。
+- 精确说明：“你的账号无权查看此内容。现有公开内容和本地教学内容保持不变。”
+- 主动作“返回可用内容”；只有明确切换账号流程时显示次动作。
+- 403 不注销，不重试同一无权请求，不显示保护内容摘要。
+
+### 9.7 合同未就绪 / `GS-CONTRACT-BLOCKED`、`OV-CONTRACT-BLOCKED`
+
+- 精确标题：“当前版本暂不支持”。
+- 精确说明：“这项能力尚未具备已确认的读取合同，当前不会发起请求。”
+- 主动作“返回可用内容”；不显示登录、重试、订阅、导入或虚构结果。
+- 回放、分享、云端和实时当前均落入此状态；页面 h1仍保持对应产品名称。
+
+### 9.8 可重试的暂时失败 / `GS-FAIL-COMPLETE`、`OV-RECOVERABLE-ERROR`
+
+- 只在真实合同存在且仓储明确标记 network/timeout/service 等为 retryable 时出现。
+- 标题：“内容暂时无法打开”。
+- 说明：“当前内容暂时无法加载。你可以重试，当前选择不会改变。”
+- 主动作“重试”；重试中进入 `GS-RETRYING`，保留按钮位置与路由参数；取消不算错误。
+
+### 9.9 真实空结果 / `GS-EMPTY`
+
+- 只在合同确认且成功响应明确表示无内容时出现，不用于缺参数、无权或合同阻断。
+- 标题：“暂无可显示的{资源名称}”。
+- 主动作“返回可用内容”；不生成空 PGN 或空棋盘。
+
+### 9.10 不适用状态
+
+- `GS-LOAD-REFRESH`和`GS-FAIL-PARTIAL`通常不适用，因为兼容页不保留内容集合；若未来入口拥有可保留摘要，必须先由页面权威定义。
+- `GS-SOURCE-READONLY`、实时生命周期和 AI 状态只在成功进入统一工作区后由工作区页面拥有；兼容页不渲染这些模块。
+
+## 10. 鼠标、键盘、触控、焦点与动效
+
+- 鼠标/触控：单击明确动作；Hover、双击、长按、拖动和滚轮不承载交接或 retry。窄屏动作满足 `--board-touch-target-min`。
+- Tab 顺序：产品页头返回/导航 → 状态主动作 → 状态次动作。隐藏和不可用动作不进入 Tab 顺序。
+- Enter/Space 只激活当前按钮；不注册全局 Enter 自动重试，不劫持浏览器后退。
+- `Escape`只关闭最上层登录/过期对话框；内联不可用页不因 Escape 消失。
+- 路由初入、invalid、denied、blocked 和完整失败把焦点置于页面/状态标题；页内被动失败不抢焦点。
+- Retry 焦点留在按钮；成功导航由工作区标题接管；返回动作由目标页 h1 接管。
+- 自动交接不使用延迟倒计时或循环动画；状态可读后立即执行。
+- `prefers-reduced-motion: reduce`下状态直接切换，spinner 静态化，导航与焦点结果不变。
+
+## 11. 持久化、安全、Token 与文案
+
+### 11.1 持久化与安全
+
+- 交接只使用 `sessionStorage:pgnViewer.workspaceHandoff.v1`与内存 fallback；记录必须通过允许字段、mode/source、readonly、长度、字符和安全返回验证。
+- 私有交接在注销、过期或认证丢失时清除；无效 JSON、未知字段或不兼容 mode/source 失败关闭。
+- URL只保存交接 ID和非敏感可分享选择；认证值、PGN、FEN、保护 DTO、实时凭据、完整 URL和草稿禁止进入。
+- 参数与可见标签均转义并限长；内部设备标识不向普通用户显示。
+- 无合同不发试探请求；失败不写成功标记、不缓存伪数据、不记录秘密。
+
+### 11.2 Token
+
+- 页面/状态：`--bg`、`--surface`、`--surface-2`、`--border`、`--text`、`--text-2`、`--text-muted`。
+- 标题与正文：`--fs-xl`、`--fs-lg`、`--fs-base`、`--fs-sm`。
+- 动作与焦点：`--accent`、`--text-on-accent`、`--control-h`、`--board-touch-target-min`、`--border-focus`、`--state-focus-ring`。
+- 状态：`--info`、`--warning`、`--danger`；几何只使用现有 `--s-*`、`--r-*`和 RouteShell Token。
+- 页面不得写原始颜色、z-index、阴影、断点、动画时间或未定义 Token。
+
+### 11.3 精确术语
+
+允许：“棋局回放”“分享内容”“云端棋谱”“实时棋局”“正在打开”“无法打开此内容”“分享链接无效”“需要登录”“没有访问权限”“当前版本暂不支持”“内容暂时无法打开”“返回可用内容”“返回赛事详情”“返回赛事”“返回工作区”。
+
+禁止：“兼容入口”“参数错误”“handoff”“生产回放”“MQTT”“API”“DTO”“请求号”“位置 hash”、端点、主题、凭据、内部 ID和原始服务消息。
+
+## 12. 纠正项、交接验收与完成标准
+
+相关实施纠正集中在[实施纠正清单](../PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md)：`COR-002`/`COR-003`只读能力门禁、`COR-006`回放动作真相、`COR-007`阻断合同、`COR-008`无效交接失败关闭、`COR-009`认证状态、`COR-010`取消与晚到结果、`COR-015`RouteShell 滚动、`COR-018`旧内容标记、`COR-021`技术术语、`COR-027`状态适配器、`COR-028`页面验收。
+
+实施完成必须满足：
+
+1. 四条部署 URL分别覆盖缺失/不安全参数、合同阻断、登录需要、权限不足、真实可重试失败和成功交接允许的状态；分类顺序不冲突。
+2. 当前合同未就绪时，四条路径均显示 truthful blocked，不发请求、不诱导登录、不生成交接成功内容。
+3. 合同未来闭合后，成功交接只保存消毒的类型化非敏感上下文，并 replace 到唯一工作区；没有第二棋盘、PGN、批注或分析运行时。
+4. `/pgnViewer/?handoff=unknown-or-cleared`显示“无法打开此内容”，不回退为默认本地工作区。
+5. 登录返回只接受安全相对路径；过期清私有状态；403 保留会话；invalid/blocked/denied 不提供假 retry。
+6. Large/Compact/Tablet/Narrow 均有固定 Header、唯一 RouteBody 滚动、可达返回和稳定状态槽；无 body/横向滚动。
+7. 页面标题、状态文案、动作、播报、初始焦点、retry 焦点、返回焦点和减弱动效符合全局状态/覆盖层规范。
+8. Light、Dark、System 下对比、焦点和状态可读；所有视觉值解析到现有 Token。
+9. 实施阶段运行治理、format、lint、Stylelint、Knip、`check:static`、typecheck 和 production build；对每类入口至少完成一个窄真实浏览器状态路径，且不创建测试、截图循环或像素工件。文档阶段不运行浏览器或测试。

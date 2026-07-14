@@ -1,0 +1,461 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-07-14T11:10:10Z",
+  "repository": {
+    "name": "chess-pgnviewer-vue",
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue"
+  },
+  "branch": "main",
+  "startingLocalSha": "4f05f6dfff611420a66d799689a2d93e5dbf94e7",
+  "startingOriginSha": "4f05f6dfff611420a66d799689a2d93e5dbf94e7",
+  "startingLiveRemoteSha": "4f05f6dfff611420a66d799689a2d93e5dbf94e7",
+  "changedFiles": [
+    ".ai/reports/PRODUCT_PAGE_DESIGN_DOCUMENTATION_EXECUTION_REPORT.json",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/pages/COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md",
+    "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/LOGIN_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/SETTINGS_SURFACE_SPEC.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md"
+  ],
+  "documentsCreated": {
+    "total": 20,
+    "markdownDocuments": 19,
+    "executionReports": 1,
+    "designIndex": "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "executionReport": ".ai/reports/PRODUCT_PAGE_DESIGN_DOCUMENTATION_EXECUTION_REPORT.json"
+  },
+  "pageFamiliesCompleted": [
+    {
+      "name": "登录",
+      "routes": ["/login"],
+      "document": "docs/design/pages/LOGIN_PAGE_SPEC.zh-CN.md"
+    },
+    {
+      "name": "统一工作区",
+      "routes": ["/"],
+      "document": "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md"
+    },
+    {
+      "name": "赛事列表",
+      "routes": ["/competitions"],
+      "document": "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md"
+    },
+    {
+      "name": "赛事详情",
+      "routes": ["/competitions/:hdid"],
+      "document": "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md"
+    },
+    {
+      "name": "场外大屏",
+      "routes": ["/competitions/:hdid/display"],
+      "document": "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md"
+    },
+    {
+      "name": "设置与偏好",
+      "routes": [],
+      "document": "docs/design/pages/SETTINGS_SURFACE_SPEC.zh-CN.md"
+    },
+    {
+      "name": "兼容入口与不可用表面",
+      "routes": [
+        "/competitions/:hdid/live",
+        "/match/:key",
+        "/share/:uuid",
+        "/cloud/:fileid"
+      ],
+      "document": "docs/design/pages/COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md"
+    }
+  ],
+  "designSurfacesCompleted": {
+    "total": 31,
+    "prefixCounts": {
+      "DS": 1,
+      "LG": 2,
+      "WS": 12,
+      "CP": 2,
+      "CD": 2,
+      "VD": 4,
+      "ST": 1,
+      "OV": 1,
+      "RP": 6
+    },
+    "ids": [
+      "DS-001",
+      "LG-001",
+      "LG-002",
+      "WS-001",
+      "WS-002",
+      "WS-003",
+      "WS-004",
+      "WS-005",
+      "WS-006",
+      "WS-007",
+      "WS-008",
+      "WS-009",
+      "WS-010",
+      "WS-011",
+      "WS-012",
+      "CP-001",
+      "CP-002",
+      "CD-001",
+      "CD-002",
+      "VD-001",
+      "VD-002",
+      "VD-003",
+      "VD-004",
+      "ST-001",
+      "OV-001",
+      "RP-001",
+      "RP-002",
+      "RP-003",
+      "RP-004",
+      "RP-005",
+      "RP-006"
+    ]
+  },
+  "workspaceModesCovered": {
+    "activeModes": [
+      "analysis",
+      "competition_commentary",
+      "live_spectator",
+      "replay"
+    ],
+    "failureClosedSentinel": "unknown",
+    "totalActiveModes": 4
+  },
+  "stateCoverage": {
+    "globalStates": 29,
+    "overlayAndDialogStates": 15,
+    "liveLifecycleStates": 8,
+    "aiLifecycleStates": 7,
+    "globalInteractionContracts": 18,
+    "globalStateIds": [
+      "GS-IDLE",
+      "GS-LOAD-INITIAL",
+      "GS-SUCCESS",
+      "GS-EMPTY",
+      "GS-FAIL-COMPLETE",
+      "GS-AUTH-REQUIRED",
+      "GS-AUTH-DENIED",
+      "GS-CONTRACT-BLOCKED",
+      "GS-LOAD-REFRESH",
+      "GS-FAIL-PARTIAL",
+      "GS-RETRYING",
+      "GS-SOURCE-READONLY",
+      "GS-SOURCE-LOCAL-COPY",
+      "GS-LIVE-UNCONNECTED",
+      "GS-LIVE-CONNECTING",
+      "GS-LIVE",
+      "GS-LIVE-UNAVAILABLE",
+      "GS-LIVE-STALE",
+      "GS-LIVE-COMPLETED",
+      "GS-LIVE-RECONNECTING",
+      "GS-LIVE-DISCONNECTED",
+      "GS-AI-OFF",
+      "GS-AI-FIRST-USE",
+      "GS-AI-RUNNING",
+      "GS-AI-COMPLETED",
+      "GS-AI-CANCELLED",
+      "GS-AI-FAILED",
+      "GS-AI-STALE-RESULT",
+      "GS-CONFIRM-DESTRUCTIVE"
+    ]
+  },
+  "responsiveProfiles": {
+    "total": 7,
+    "profiles": [
+      "Large desktop",
+      "Compact desktop",
+      "Tablet",
+      "Narrow",
+      "1080p venue display",
+      "4K venue display",
+      "21:9 venue display"
+    ]
+  },
+  "componentInventoryCounts": {
+    "currentImplementedOwners": 23,
+    "approvedConceptualResponsibilities": 23,
+    "pageLocalCompositions": 7
+  },
+  "naiveUiMappingSummary": {
+    "generalResponsibilityMappings": 32,
+    "projectOwnedResponsibilities": 7,
+    "singleProviderOwner": "src/app/providers/AppProviders.vue",
+    "providerOwnerCount": 1,
+    "productAuthorityTransferredToNaiveUi": false
+  },
+  "currentTargetBlockedSummary": {
+    "inventoryPrimaryClassification": {
+      "CURRENT_IMPLEMENTED": 5,
+      "APPROVED_TARGET": 17,
+      "CONTRACT_BLOCKED": 7,
+      "OPEN_OWNER_DECISION": 2,
+      "PROHIBITED": 0
+    },
+    "classificationLaw": [
+      "CURRENT_IMPLEMENTED",
+      "APPROVED_TARGET",
+      "CONTRACT_BLOCKED",
+      "OPEN_OWNER_DECISION",
+      "PROHIBITED"
+    ],
+    "note": "清单主分类不等于页面内全部次级能力；每页按五类逐项分类，禁止把目标、合同阻断或未决能力表示为当前实现。"
+  },
+  "openOwnerDecisions": [
+    {
+      "id": "OD-01",
+      "status": "OPEN",
+      "remainingDecision": "教学集合层级与持久化实体"
+    },
+    {
+      "id": "OD-02",
+      "status": "OPEN",
+      "remainingDecision": "课次或课堂笔记语义"
+    },
+    {
+      "id": "OD-03",
+      "status": "OPEN",
+      "remainingDecision": "AI 资源设置持久化范围"
+    },
+    {
+      "id": "OD-04",
+      "status": "OPEN",
+      "remainingDecision": "首次使用提示确认周期与资源措辞"
+    },
+    {
+      "id": "OD-05",
+      "status": "OPEN",
+      "remainingDecision": "大屏最小与首选棋盘尺寸及间距"
+    },
+    {
+      "id": "OD-06",
+      "status": "OPEN",
+      "remainingDecision": "大屏轮换时间与策略"
+    },
+    {
+      "id": "OD-07",
+      "status": "OPEN",
+      "remainingDecision": "实时陈旧阈值与棋钟插值"
+    },
+    {
+      "id": "OD-08",
+      "status": "OPEN",
+      "remainingDecision": "匿名实时棋盘范围"
+    },
+    {
+      "id": "OD-09",
+      "status": "OPEN",
+      "remainingDecision": "完整窄屏编辑范围"
+    },
+    {
+      "id": "OD-10",
+      "status": "OPEN",
+      "remainingDecision": "导出与打印范围"
+    },
+    {
+      "id": "OD-11",
+      "status": "OPEN",
+      "remainingDecision": "声音默认状态"
+    }
+  ],
+  "contractBlockedCapabilities": [
+    "权威受保护回放读取",
+    "云端与分享内容读取及权限",
+    "实时棋盘、走法、来源版本与新鲜度",
+    "实时凭据与订阅",
+    "权威棋钟与插值",
+    "硬件历史与最新快照",
+    "团体赛事聚合与总分",
+    "匿名实时大屏范围"
+  ],
+  "implementationCorrectionBacklog": {
+    "total": 28,
+    "bySeverity": {
+      "S1": 11,
+      "S2": 14,
+      "S3": 3
+    },
+    "anchorsPresent": 28,
+    "document": "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md"
+  },
+  "validationResults": {
+    "documentation": {
+      "requiredMarkdownDocuments": {
+        "status": "PASS",
+        "actual": 19,
+        "expected": 19
+      },
+      "relativeMarkdownLinks": {
+        "status": "PASS",
+        "checked": 367
+      },
+      "headingAnchors": {
+        "status": "PASS",
+        "checked": 10
+      },
+      "mermaidStructure": {
+        "status": "PASS",
+        "blocks": 6
+      },
+      "designSurfaceIds": {
+        "status": "PASS",
+        "actual": 31,
+        "unique": 31
+      },
+      "pageFamilyDocuments": {
+        "status": "PASS",
+        "actual": 7
+      },
+      "canonicalRoutes": {
+        "status": "PASS",
+        "actual": 9
+      },
+      "workspaceModes": {
+        "status": "PASS",
+        "activeModes": 4,
+        "unknownSentinel": true
+      },
+      "openOwnerDecisions": {
+        "status": "PASS",
+        "actual": 11
+      },
+      "classificationCoverage": {
+        "status": "PASS",
+        "classificationsPerPage": 5
+      },
+      "imageSectionsPromptsAndArtifacts": {
+        "status": "PASS",
+        "artifacts": 0
+      },
+      "writeScope": {
+        "status": "PASS",
+        "allowedRootsOnly": true
+      }
+    },
+    "commands": [
+      {
+        "command": "mise exec -- pnpm run check:deps",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run check:architecture",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run check:residue",
+        "status": "PASS",
+        "attempts": 2,
+        "note": "首次扫描命中登录页中的保留架构关键词；保持原安全含义改写后复检通过。"
+      },
+      {
+        "command": "mise exec -- pnpm run check:tokens",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run check:mocks",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run check:secrets",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run check:copy",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run check:governance",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run format:check",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run lint",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run lint:style",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run check:unused",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run check:static",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm run typecheck",
+        "status": "PASS"
+      },
+      {
+        "command": "mise exec -- pnpm exec vite build --outDir <temporary-directory>",
+        "status": "PASS",
+        "outputFiles": 27,
+        "temporaryOutputRemoved": true
+      },
+      {
+        "command": "mise exec -- pnpm run audit:prod",
+        "status": "PASS",
+        "result": "No known vulnerabilities found"
+      },
+      {
+        "command": "mise exec -- pnpm audit",
+        "status": "PASS",
+        "result": "No known vulnerabilities found"
+      },
+      {
+        "command": "mise exec -- pnpm list --depth 0",
+        "status": "PASS",
+        "topLevelPackages": 30
+      },
+      {
+        "command": "git diff --check",
+        "status": "PASS"
+      }
+    ],
+    "browserValidation": {
+      "status": "NOT_RUN_AS_REQUIRED",
+      "reason": "本任务仅修改设计文档，明确禁止浏览器验证。"
+    },
+    "automatedTests": {
+      "status": "NOT_RUN_AS_REQUIRED",
+      "commandAvoided": "pnpm test",
+      "reason": "仓库政策与任务要求均禁止运行或创建自动化测试。"
+    }
+  },
+  "prohibitedActionsAvoided": [
+    "未修改 src、package、lockfile、Token、资产或路由文件",
+    "未创建或修改测试文件、测试基础设施、fixture、snapshot 或 coverage",
+    "未生成图像、图像提示词、预览图或图像目录",
+    "未运行浏览器验证或 pnpm test",
+    "未读取或输出秘密、环境文件、凭据、日志或浏览器状态",
+    "未修改只读来源项目",
+    "未 stage、commit、push、切换分支或改写 Git 历史"
+  ],
+  "remainingIssues": [
+    "OD-01 至 OD-11 仍全部开放；相应默认值、范围、阈值与持久化承诺不得提前固化。",
+    "受保护回放、云端、分享、实时棋盘/时钟/订阅、硬件与团体聚合仍缺权威合同，只能实现真实阻断状态。",
+    "28 项实施纠正仍需按交接顺序落地；本次交付只完成页面设计文档，不代表运行时实现完成。",
+    "依据任务要求未执行浏览器验收；任何后续可见实现必须按页面窄验证合同补充浏览器证据。"
+  ],
+  "finalVerdict": "PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION"
+}
