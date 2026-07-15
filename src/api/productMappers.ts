@@ -25,13 +25,13 @@ const CompetitionListItemSchema = z.object({
   act_starttime: z.string(),
   act_endtime: z.string(),
   sign_endtime: z.string(),
-  poster: z.string(),
+  poster: z.string().nullable(),
   act_sign: z.number(),
   ext_catgory: z.number(),
   sponsor: z.string(),
   delaymatchtime: z.number(),
   actflag: z.number(),
-  sponsorLogo: z.string(),
+  sponsorLogo: z.string().nullable(),
 })
 
 const CompetitionListEnvelopeSchema = z.object({

@@ -1,0 +1,214 @@
+{
+  "reportType": "PAGE_COMPETITION_LIST_IMPLEMENTATION_REPORT",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "baseCommit": "ef62508affe38cdaa3453c8a223ded65ee60deaf",
+  "pageFamily": "competition-list",
+  "pageRoute": "/competitions",
+  "affectedCorEntries": ["COR-010", "COR-012", "COR-013", "COR-015", "COR-021", "COR-022", "COR-027", "COR-028"],
+  "summary": {
+    "status": "PAGE_IMPLEMENTATION_PASS",
+    "note": "Competition list slice implements all non-blocked requirements from COMPETITION_LIST_PAGE_SPEC.zh-CN.md. Static governance, typecheck, production build, dependency audits, and narrow real-browser validation all pass. URL owns applied filters and page; retained refresh preserves old results; responsive desktop table and narrow semantic list render real API data. Contract-blocked capabilities (date range, registration, private events, live boards) remain excluded. COR closure remains owned by Direction 4."
+  },
+  "capabilityClassification": {
+    "CURRENT_IMPLEMENTED": [
+      "Anonymous public /competitions route",
+      "URL-owned search, status, type, date and page state",
+      "Canonical query normalization and invalid-value correction notice",
+      "Explicit submit via Enter or 查询 button; no input debounce",
+      "Pagination preserves filters and writes page to URL",
+      "Desktop table and narrow semantic list",
+      "Result meta with total and page info",
+      "Initial loading, empty, complete failure and partial failure (retained refresh) states",
+      "Filter Sheet for tablet/narrow with apply/cancel",
+      "Single scroll owner (result-region)",
+      "AbortSignal carried through Query→repository→Axios",
+      "Stable pagination slot even with one or zero pages"
+    ],
+    "APPROVED_TARGET": [],
+    "CONTRACT_BLOCKED": [
+      "Date range filter",
+      "Registration eligibility filter",
+      "Private event filter",
+      "Per-game content or live board data"
+    ],
+    "OPEN_OWNER_DECISION": [
+      "OD-08 only constrains future anonymous live multi-board scope"
+    ],
+    "PROHIBITED": [
+      "Event create/edit/delete/admin actions",
+      "Registration or result editing",
+      "Per-game live/replay entry from the list",
+      "Mock/fixture/fallback success data",
+      "Raw response or internal code display"
+    ]
+  },
+  "corEvidence": {
+    "COR-010": {
+      "title": "Query → repository → Axios 取消链路",
+      "files": ["src/features/product-api/views/CompetitionListView.vue", "src/api/productApi.ts"],
+      "changes": [
+        "useQuery queryFn passes signal to tournamentRepository.list.",
+        "fetchCompetitionList forwards signal to requestJson/Axios.",
+        "placeholderData: keepPreviousData keeps old results while new query fetches; cancellation does not show as error."
+      ],
+      "validation": [
+        "Browser: navigating between filter pages does not produce error flashes.",
+        "Network inspection: AbortSignal attached to GetActList requests."
+      ]
+    },
+    "COR-012": {
+      "title": "共享 Token 整理与原始视觉值归一",
+      "files": ["src/features/product-api/views/CompetitionListView.vue"],
+      "changes": [
+        "Replaced fixed table min-width and raw filter grid constants with flex-based, token-driven layout.",
+        "All spacing, colors, borders, radii, typography and control heights use src/styles/tokens.css."
+      ],
+      "validation": [
+        "pnpm run check:raw-visual-values PASS",
+        "pnpm run lint:style PASS"
+      ]
+    },
+    "COR-013": {
+      "title": "无障碍与键盘基础",
+      "files": ["src/features/product-api/views/CompetitionListView.vue", "src/ui/ProductRouteShell.vue"],
+      "changes": [
+        "ProductRouteShell focuses h1 on route entry.",
+        "Result heading is focusable and receives focus after apply/page-change.",
+        "Filter Sheet uses ProductDrawer trap-focus and auto-focus.",
+        "Desktop table rows do not add extra tab stops; only 查看详情 links are focusable."
+      ],
+      "validation": [
+        "Browser: Tab order reaches skip link, search, status/type/date fields, query, reset, result links, pagination.",
+        "Browser: filter Sheet opens with focus inside and closes via Escape/cancel."
+      ]
+    },
+    "COR-015": {
+      "title": "RouteShell 滚动所有权",
+      "files": ["src/ui/ProductRouteShell.vue", "src/features/product-api/views/CompetitionListView.vue"],
+      "changes": [
+        "CompetitionListView wraps content in a bounded flex column with result-region as the sole overflow:auto scroll owner.",
+        "Header, filter, summary and pagination regions are fixed/flex tracks.",
+        "Long lists and 200% zoom remain reachable inside result-region; body does not scroll."
+      ],
+      "validation": [
+        "Browser: document.body.scrollHeight === document.body.clientHeight at 1280x720 and 375x667.",
+        "Browser: result-region scrolls with PageDown/End."
+      ]
+    },
+    "COR-021": {
+      "title": "产品术语清理",
+      "files": ["src/features/product-api/views/CompetitionListView.vue", "src/features/product-api/components/RouteHeader.vue"],
+      "changes": [
+        "Removed '生产赛事列表' subtitle; replaced with '查找公开赛事并查看组别、轮次和对阵。'.",
+        "All user-facing copy uses '赛事', '赛事列表', '查看详情', '查询', '清除筛选', '暂无赛事', '正在加载赛事列表'."
+      ],
+      "validation": [
+        "pnpm run check:user-visible-copy PASS",
+        "Browser: no actflag/endpoint/internal hash terms visible."
+      ]
+    },
+    "COR-022": {
+      "title": "URL 成为筛选/分页 owner",
+      "files": ["src/features/product-api/views/CompetitionListView.vue"],
+      "changes": [
+        "Applied filters, date and page are derived from route.query.",
+        "applyFilters and updatePage push normalized query with router.push.",
+        "Back/forward restores form draft and query key.",
+        "Invalid query values are corrected via router.replace and a transient warning banner."
+      ],
+      "validation": [
+        "Browser: deep link /competitions?type=1&status=&date=2026-07 renders matching results.",
+        "Browser: page=2 deep link renders second page meta.",
+        "Browser: invalid status=99&page=abc&date=2026-13 is corrected to status=21&date=2026-07 with a warning banner.",
+        "Browser: browser back restores previous query and results."
+      ]
+    },
+    "COR-027": {
+      "title": "Naive UI 项目适配层复用",
+      "files": ["src/ui/ProductButton.vue", "src/ui/ProductField.vue", "src/ui/ProductSelect.vue", "src/ui/ProductPagination.vue", "src/ui/ProductRouteShell.vue", "src/ui/ProductSheet.vue", "src/ui/ProductStateBanner.vue"],
+      "changes": [
+        "Competition list uses existing project adapters for all shared controls.",
+        "No direct Naive UI palette overrides in page scoped styles."
+      ],
+      "validation": [
+        "pnpm run check:architecture-boundaries PASS",
+        "Browser: controls render consistently with login/settings surfaces."
+      ]
+    },
+    "COR-028": {
+      "title": "真实浏览器验收跨阶段门",
+      "files": ["src/features/product-api/views/CompetitionListView.vue"],
+      "changes": [
+        "Performed route-specific narrow browser validation on /pgnViewer/competitions with multiple query states and viewports."
+      ],
+      "validation": [
+        "Non-empty DOM for default, filtered and paginated states.",
+        "No Vite error overlay.",
+        "No breaking console errors.",
+        "Keyboard Tab reaches all interactive regions; filter Sheet traps focus.",
+        "Real state changes: filter apply, page change, invalid query correction, narrow sheet open/close."
+      ]
+    }
+  },
+  "browserValidation": {
+    "routes": [
+      "/pgnViewer/competitions",
+      "/pgnViewer/competitions?type=1&status=&date=2026-07",
+      "/pgnViewer/competitions?status=&date=2026-07&page=2",
+      "/pgnViewer/competitions?status=99&page=abc&date=2026-13"
+    ],
+    "viewportProfiles": [
+      { "name": "desktop", "width": 1280, "height": 720 },
+      { "name": "narrow", "width": 375, "height": 667 }
+    ],
+    "checks": {
+      "defaultState": "Route header, page title, filters, result meta and pagination render; initial query canonicalizes to status=21&date=YYYY-MM.",
+      "filteredResults": "Deep link with type=1&status=&date=2026-07 shows '共 5 项' and desktop table or narrow list with 查看详情 links.",
+      "pagination": "Deep link page=2 shows '第 2 / 1120 页' and 22,382 total.",
+      "invalidQueryCorrection": "Invalid status/page/date are replaced with canonical defaults and a warning banner is shown.",
+      "backForward": "Browser back restores previous query URL and result state.",
+      "filterSheet": "Narrow viewport shows 筛选 button; opening Sheet displays filter fields and closes via cancel/Escape.",
+      "scrollOwnership": "document.body.scrollHeight equals clientHeight; result-region owns overflow.",
+      "focus": "Route h1 focused on entry; result heading focused after page/filter change.",
+      "viteOverlay": "None observed.",
+      "consoleErrors": "Only favicon.ico 404 (non-breaking)."
+    },
+    "screenshots": [
+      ".ai/reports/PAGE_COMPETITION_LIST_DESKTOP_EVIDENCE.png",
+      ".ai/reports/PAGE_COMPETITION_LIST_NARROW_EVIDENCE.png"
+    ]
+  },
+  "staticValidation": {
+    "commands": [
+      "pnpm run check:governance PASS",
+      "pnpm run format:check PASS",
+      "pnpm run lint PASS",
+      "pnpm run lint:style PASS",
+      "pnpm run check:unused PASS",
+      "pnpm run check:static PASS",
+      "pnpm run typecheck PASS",
+      "pnpm run build PASS",
+      "pnpm run audit:prod PASS (No known vulnerabilities)",
+      "pnpm audit PASS (No known vulnerabilities)",
+      "git diff --check PASS"
+    ]
+  },
+  "filesChanged": {
+    "created": [
+      ".ai/reports/PAGE_COMPETITION_LIST_IMPLEMENTATION_REPORT.json",
+      ".ai/reports/PAGE_COMPETITION_LIST_DESKTOP_EVIDENCE.png",
+      ".ai/reports/PAGE_COMPETITION_LIST_NARROW_EVIDENCE.png"
+    ],
+    "modified": [
+      "src/features/product-api/views/CompetitionListView.vue",
+      "src/api/productMappers.ts"
+    ]
+  },
+  "risksAndNextSteps": [
+    "The live API returns actflag values outside the design-approved status options (20/21/22); the UI keeps the approved options and status='' (全部) returns all lifecycle states.",
+    "Some CompetitionListItem DTO fields (poster, sponsorLogo) can be null; mapper schema was relaxed to accept nullable strings.",
+    "Retained refresh (placeholderData) keeps old results during fetches; partial-failure banner shown when a refresh fails while old data exists.",
+    "Next slice: PAGE 3 — Competition detail."
+  ]
+}
