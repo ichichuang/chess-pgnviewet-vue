@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { apiErrorMessage } from '@/api/client'
+import { apiErrorMessage, ApiClientError, type ApiClientErrorKind } from '@/api/client'
 import { authRepository } from '@/api/authRepository'
 import {
   registerPrivateAuthLossHandler,
@@ -24,6 +24,7 @@ interface AuthState {
   status: AuthStatus
   session: PersistedAuthSession | null
   lastError: string | null
+  lastErrorKind: ApiClientErrorKind | null
   initialized: boolean
 }
 
@@ -48,6 +49,7 @@ export const useAuthStore = defineStore('auth', {
     status: 'checking',
     session: null,
     lastError: null,
+    lastErrorKind: null,
     initialized: false,
   }),
 
@@ -92,6 +94,7 @@ export const useAuthStore = defineStore('auth', {
       this.session = restored
       this.status = restored ? 'authenticated' : 'anonymous'
       this.lastError = null
+      this.lastErrorKind = null
       this.initialized = true
       if (restored) this.scheduleExpiry(restored.expiresAt)
     },
@@ -111,6 +114,8 @@ export const useAuthStore = defineStore('auth', {
         this.session = session
         this.status = 'authenticated'
         this.initialized = true
+        this.lastError = null
+        this.lastErrorKind = null
         this.scheduleExpiry(session.expiresAt)
         return true
       } catch (error) {
@@ -119,6 +124,7 @@ export const useAuthStore = defineStore('auth', {
         this.session = null
         this.status = 'anonymous'
         this.lastError = apiErrorMessage(error)
+        this.lastErrorKind = error instanceof ApiClientError ? error.kind : null
         this.initialized = true
         clearPrivateProductState()
         return false
@@ -131,6 +137,7 @@ export const useAuthStore = defineStore('auth', {
       this.session = null
       this.status = 'anonymous'
       this.lastError = message
+      this.lastErrorKind = null
       this.initialized = true
     },
     logout(): void {
@@ -140,6 +147,7 @@ export const useAuthStore = defineStore('auth', {
       this.session = null
       this.status = 'anonymous'
       this.lastError = null
+      this.lastErrorKind = null
       this.initialized = true
     },
   },

@@ -8,7 +8,7 @@ const props = defineProps<{
   id?: string
   type?: 'text' | 'password'
   placeholder?: string
-  error?: string
+  error?: string | undefined
   disabled?: boolean
   autocomplete?: string
   inputMode?: string

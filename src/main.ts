@@ -22,6 +22,7 @@ themeStore.initialize()
 app.config.globalProperties.$theme = themeStore
 const authStore = useAuthStore(pinia)
 authStore.initialize()
+let wasAuthenticated = authStore.isAuthenticated
 authStore.$subscribe(() => {
   const currentRoute = router.currentRoute.value
   if (
@@ -29,8 +30,10 @@ authStore.$subscribe(() => {
     currentRoute.meta.requiresAuth &&
     currentRoute.name !== 'login'
   ) {
-    void router.replace(loginRouteFor(currentRoute.fullPath))
+    const reason = wasAuthenticated ? 'expired' : undefined
+    void router.replace(loginRouteFor(currentRoute.fullPath, reason))
   }
+  wasAuthenticated = authStore.isAuthenticated
 })
 
 app.use(VueQueryPlugin, { queryClient })

@@ -96,9 +96,15 @@ export function safeAuthReturnPath(value: unknown): string | null {
   }
 }
 
-export function loginRouteFor(returnPath: string): RouteLocationRaw {
+export function loginRouteFor(
+  returnPath: string,
+  reason?: 'expired' | 'required'
+): RouteLocationRaw {
   const safeReturnPath = safeAuthReturnPath(returnPath)
-  return safeReturnPath ? { name: 'login', query: { return: safeReturnPath } } : { name: 'login' }
+  const query: Record<string, string> = {}
+  if (safeReturnPath) query.return = safeReturnPath
+  if (reason) query.reason = reason
+  return Object.keys(query).length > 0 ? { name: 'login', query } : { name: 'login' }
 }
 
 router.beforeEach((to) => {

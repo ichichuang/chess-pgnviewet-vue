@@ -9,7 +9,7 @@ const props = defineProps<{
   label?: string
   id?: string
   placeholder?: string
-  error?: string
+  error?: string | undefined
   disabled?: boolean
   autocomplete?: string
   enterkeyhint?: string

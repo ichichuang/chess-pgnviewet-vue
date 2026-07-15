@@ -56,7 +56,7 @@ const isGhost = computed(() => props.variant === 'ghost')
     :ghost="isGhost"
     :loading="busy"
     :disabled="disabled || busy"
-    :native-type="nativeType"
+    :attr-type="nativeType"
     :title="title"
     :focusable="true"
     @click="emit('click', $event)"
