@@ -140,9 +140,9 @@ function routeText(value: unknown): string {
 </script>
 
 <template>
-  <ProductRouteShell :title="`${title} 大屏`" subtitle="生产对阵数据只读展示">
+  <ProductRouteShell :title="`${title} 大屏`" subtitle="公开对阵数据只读展示">
     <template #header>
-      <RouteHeader :title="`${title} 大屏`" subtitle="生产对阵数据只读展示" />
+      <RouteHeader :title="`${title} 大屏`" subtitle="公开对阵数据只读展示" />
     </template>
 
     <section class="display-content" aria-label="大屏对阵">

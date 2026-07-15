@@ -34,7 +34,13 @@ export const productQueryKeys = {
     [PRODUCT_QUERY_KEY, 'competition-groups', competitionId] as const,
   competitionRounds: (competitionId: string, groupId: string) =>
     [PRODUCT_QUERY_KEY, 'competition-rounds', competitionId, groupId] as const,
-  competitionPairings: (competitionId: string, groupId: string, roundId: string, search: string) =>
+  competitionPairings: (
+    competitionId: string,
+    groupId: string,
+    roundId: string,
+    search: string,
+    page: number
+  ) =>
     [
       PRODUCT_QUERY_KEY,
       'competition-pairings',
@@ -42,6 +48,7 @@ export const productQueryKeys = {
       groupId,
       roundId,
       search.trim(),
+      page,
     ] as const,
   displayDetail: (competitionId: string) =>
     [PRODUCT_QUERY_KEY, 'competition-display-detail', competitionId] as const,

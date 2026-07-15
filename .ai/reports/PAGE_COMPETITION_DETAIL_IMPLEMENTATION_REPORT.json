@@ -1,0 +1,211 @@
+{
+  "reportType": "PAGE_IMPLEMENTATION_REPORT",
+  "pageFamily": "competition-detail",
+  "designSurfaceIds": ["CD-001", "CD-002"],
+  "baseCommit": "abc0eccd06cb2de19e87a5ceb056cf48540e7de3",
+  "implementationScope": "赛事详情页（/competitions/:hdid）逐页设计实现",
+  "completedAt": "2026-07-15T03:15:00.000Z",
+  "affectedCorrectionEntries": [
+    {
+      "id": "COR-005",
+      "status": "PARTIALLY_ADDRESSED",
+      "evidence": "显式 URL round 优先级已实现；讲解/display 默认策略统一降级为 sourceCurrentRoundId → 首个有效轮次。mapper 仍丢弃 roundfinish 且 round.status 为空，无法可信区分完成/进行/即将开始，完整生命周期规则待真实 DTO 支持。"
+    },
+    {
+      "id": "COR-006",
+      "status": "ADDRESSED",
+      "evidence": "已移除无条件“打开回放”；仅对已结束对局显示“回放暂不可用”，对进行中显示“实时暂不可用”，对未开始不显示回放/实时入口。commentary handoff 与 replay/live 不混用。"
+    },
+    {
+      "id": "COR-007",
+      "status": "ADDRESSED",
+      "evidence": "团体聚合、权威回放、实时棋盘/凭据/订阅/棋钟保持 CONTRACT_BLOCKED，页面仅显示真实不可用说明，未编造 DTO、provider 或成功数据。"
+    },
+    {
+      "id": "COR-008",
+      "status": "ADDRESSED",
+      "evidence": "进入讲解创建最小消毒 handoff，handoff ID 不可读时由工作区路由处理，未在详情页静默回落为本地空工作区。"
+    },
+    {
+      "id": "COR-009",
+      "status": "ADDRESSED",
+      "evidence": "公开详情/组别/轮次/对阵读取失败时按区域显示真实不可用/重试，不因登录状态改变公共内容；OD-08 保持开放。"
+    },
+    {
+      "id": "COR-010",
+      "status": "ADDRESSED",
+      "evidence": "TanStack Query 已透传 AbortSignal；切换 hdid/group/round 时 query key 变更，旧结果不会覆盖当前选择。"
+    },
+    {
+      "id": "COR-012",
+      "status": "ADDRESSED",
+      "evidence": "详情页全部几何、颜色、间距使用 src/styles/tokens.css 已有 Token，未新增平行 Token 或裸治理值。"
+    },
+    {
+      "id": "COR-013",
+      "status": "ADDRESSED",
+      "evidence": "新增 h1 与区域标题；个人台次选择按钮使用 aria-pressed；搜索、Sheet、选择按钮有可达焦点；窄屏有层级选择 Sheet。"
+    },
+    {
+      "id": "COR-015",
+      "status": "ADDRESSED",
+      "evidence": "ProductRouteShell 内 .detail-content 占满 RouteBody，PairingRegion 是唯一 overflow:auto 滚动区，body overflow:hidden，团体/卡片展开不创建嵌套纵向滚动。"
+    },
+    {
+      "id": "COR-021",
+      "status": "ADDRESSED",
+      "evidence": "移除“生产”文案（DisplayView subtitle 改为“公开对阵数据只读展示”）；详情页不再暴露协议、endpoint、request ID、hash；生命周期统一为“未开始/进行中/已结束/状态待确认”。"
+    },
+    {
+      "id": "COR-023",
+      "status": "PARTIALLY_ADDRESSED",
+      "evidence": "详情、组别、轮次、对阵拆分为独立 Query 与区域错误/加载/空状态；个人对阵设计完成；团体聚合保持 CONTRACT_BLOCKED 未实现成功态。"
+    },
+    {
+      "id": "COR-027",
+      "status": "ADDRESSED",
+      "evidence": "使用 ProductRouteShell、ProductButton、ProductField、ProductSelect、ProductSheet、ProductStateBanner 等项目自有适配器；展示子组件不读 Store/repository。"
+    },
+    {
+      "id": "COR-028",
+      "status": "ADDRESSED",
+      "evidence": "完成一次窄真实浏览器验证（见 browserValidationSummary），未生成测试文件、脚本套件或截图循环。"
+    }
+  ],
+  "capabilityClassification": {
+    "CURRENT_IMPLEMENTED": [
+      "匿名公开赛事详情、组别、轮次、个人对阵读取",
+      "URL group/round/pairing_search/page 解析、校验与校正",
+      "用户选择通过 router.push 写入 URL，back/forward 恢复状态",
+      "场外大屏链接携带当前 group/round",
+      "最小消毒 competition_commentary handoff 进入统一工作区",
+      "区域独立 loading/error/empty 状态（详情、组别、轮次、对阵）",
+      "保留刷新（placeholderData: keepPreviousData）",
+      "个人台次选择、搜索、清除搜索"
+    ],
+    "APPROVED_TARGET": [
+      "赛事摘要与组别/轮次/对阵区域独立状态",
+      "个人台次层级、选择按钮、aria-pressed",
+      "桌面表格/窄屏卡片响应式组合",
+      "窄屏组别轮次 Sheet",
+      "PairingRegion 作为唯一滚动区",
+      "进入讲解 event-level 与 pairing-level handoff"
+    ],
+    "CONTRACT_BLOCKED": [
+      "团体总比分与单台聚合 DTO",
+      "权威已结束回放（仅显示“回放暂不可用”）",
+      "实时棋盘/凭据/订阅/棋钟（仅显示“实时暂不可用”）",
+      "可信分页总数（page 保留在 URL 与 query key 中，但无分页 UI）"
+    ],
+    "OPEN_OWNER_DECISION": [
+      "OD-08：公开对阵组合匿名，实时多棋盘匿名范围未定"
+    ],
+    "PROHIBITED": [
+      "赛事/组别/轮次/配对写入",
+      "从个人台次推导团体总分",
+      "第二工作区、第二棋盘、第二 PGN 运行时",
+      "mock/fixture/fallback success 数据"
+    ]
+  },
+  "browserValidationSummary": {
+    "tool": "Playwright (chromium) one-off script, no test files retained",
+    "server": "http://127.0.0.1:5177/pgnViewer",
+    "route": "/pgnViewer/competitions/50567",
+    "viewportProfiles": ["desktop 1280x800", "narrow 500x800"],
+    "checks": [
+      {
+        "check": "页面身份与非空 DOM",
+        "result": "PASS",
+        "details": "h1 显示赛事名“国际象棋每日训练签到等级分赛（7月13日-7月17日）”；摘要、主动作、组别/轮次/搜索控件、对阵列表均渲染。"
+      },
+      {
+        "check": "Vite error overlay",
+        "result": "PASS",
+        "details": "未检测到 .vue-error-overlay / .vite-error-overlay。"
+      },
+      {
+        "check": "Console breaking errors",
+        "result": "PASS",
+        "details": "未产生 error / warning / pageerror。"
+      },
+      {
+        "check": "URL 状态同步",
+        "result": "PASS",
+        "details": "提交搜索后 URL 写入 pairing_search；显式 group/round URL 被保留；无效 group/round/search 被 router.replace 清理并显示校正提示。"
+      },
+      {
+        "check": "back/forward 恢复",
+        "result": "PASS",
+        "details": "搜索后 goBack 回到无搜索状态，goForward 恢复搜索 URL。"
+      },
+      {
+        "check": "选择对阵",
+        "result": "PASS",
+        "details": "点击选择按钮后按钮文案变为“已选择”，aria-pressed 为 true。"
+      },
+      {
+        "check": "进入讲解 handoff",
+        "result": "PASS",
+        "details": "点击“进入讲解”后导航到 /pgnViewer/?handoff=...，工作区 h1 显示“开赛了教学工作区”。"
+      },
+      {
+        "check": "场外大屏链接",
+        "result": "PASS",
+        "details": "“场外大屏”链接指向 /pgnViewer/competitions/50567/display?group=...&round=...。"
+      },
+      {
+        "check": "回放/实时阻断文案",
+        "result": "PASS",
+        "details": "对已结束对局显示“回放暂 unavailable”；未创建 replay/live handoff。"
+      },
+      {
+        "check": "滚动所有权",
+        "result": "PASS",
+        "details": "body overflow:hidden；.pairing-region overflow:auto；其他区域为稳定轨。"
+      },
+      {
+        "check": "窄屏布局",
+        "result": "PASS",
+        "details": "<=900px 隐藏桌面控件，显示“选择组别与轮次”按钮与卡片列表；Sheet 可打开并显示标题“选择组别与轮次”。"
+      }
+    ]
+  },
+  "staticValidationCommands": [
+    "pnpm run check:governance",
+    "pnpm run format:check",
+    "pnpm run lint",
+    "pnpm run lint:style",
+    "pnpm run check:unused",
+    "pnpm run check:static",
+    "pnpm run typecheck",
+    "pnpm run build",
+    "pnpm run audit:prod",
+    "pnpm audit",
+    "git diff --check"
+  ],
+  "staticValidationResults": {
+    "check:governance": "PASS",
+    "format:check": "PASS",
+    "lint": "PASS",
+    "lint:style": "PASS",
+    "check:unused": "PASS",
+    "check:static": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "audit:prod": "PASS",
+    "pnpm audit": "PASS",
+    "git diff --check": "PASS"
+  },
+  "filesChanged": [
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/api/productMappers.ts",
+    "src/api/queryClient.ts",
+    "src/features/product-api/views/CompetitionDisplayView.vue",
+    ".ai/reports/PAGE_COMPETITION_DETAIL_IMPLEMENTATION_REPORT.json"
+  ],
+  "remainingRisks": [
+    "COR-005 完整生命周期规则依赖未来 repository 输出可判定 round lifecycle（roundfinish/status）",
+    "团体聚合 DTO 缺失，团体赛事详情保持 CONTRACT_BLOCKED",
+    "分页 UI 待可信 total/hasMore 合同就绪后启用"
+  ]
+}

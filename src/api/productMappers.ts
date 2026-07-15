@@ -160,11 +160,11 @@ function lifecycleFromStatus(value: string, isBye: boolean): string {
   if (isBye) return '轮空'
 
   const status = Number(value)
-  if (!Number.isInteger(status)) return ''
+  if (!Number.isInteger(status)) return '状态待确认'
 
   switch (status & 0x0f) {
     case 0:
-      return '待开赛'
+      return '未开始'
     case 1:
       return '进行中'
     case 2:
@@ -173,8 +173,22 @@ function lifecycleFromStatus(value: string, isBye: boolean): string {
     case 5:
       return '已结束'
     default:
-      return ''
+      return '状态待确认'
   }
+}
+
+function competitionLifecycle(
+  state: string | number | null,
+  isFinish: string | number | null
+): string {
+  const finished = text(isFinish)
+  if (finished === '1') return '已结束'
+
+  const stateValue = text(state)
+  if (stateValue === '0' || stateValue === '1') return '未开始'
+  if (stateValue === '2') return '进行中'
+
+  return '状态待确认'
 }
 
 export function mapCompetitionList(raw: unknown): PageResult<Competition> {
@@ -204,7 +218,7 @@ export function mapCompetitionDetail(raw: unknown, expectedId: string): Competit
   return {
     id,
     title: item.title.trim(),
-    status: text(item.state) || text(item.isfinish),
+    status: competitionLifecycle(item.state, item.isfinish),
     startTime: item.act_starttime.trim(),
     endTime: item.act_endtime.trim(),
     type: text(item.type),
