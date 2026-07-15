@@ -10,14 +10,18 @@ import {
 
 import { provideWorkspaceModeContext } from './workspaceModeContext'
 import { resolveWorkspaceModeRouteContext } from './workspaceModeQuery'
+import type { WorkspaceModeContext } from './workspaceModeTypes'
 
 const route = useRoute()
 const workspaceModeContext = computed(() => {
   const handoffId = queryText(route.query.handoff)
-  const handoff = handoffId ? readWorkspaceHandoffContext(handoffId) : null
 
-  if (handoff) {
-    return workspaceModeContextFromHandoff(handoff)
+  if (handoffId) {
+    const handoff = readWorkspaceHandoffContext(handoffId)
+    if (handoff) {
+      return workspaceModeContextFromHandoff(handoff)
+    }
+    return blockedContext()
   }
 
   return resolveWorkspaceModeRouteContext({
@@ -25,6 +29,24 @@ const workspaceModeContext = computed(() => {
     query: route.query,
   })
 })
+
+function blockedContext(): WorkspaceModeContext {
+  return {
+    mode: 'unknown',
+    source: 'unknown',
+    readonly: true,
+    competitionId: '',
+    groupId: '',
+    roundId: '',
+    boardId: '',
+    qrcode: '',
+    serialNumber: '',
+    gameId: '',
+    matchId: '',
+    view: '',
+    warnings: ['handoff unavailable'],
+  }
+}
 
 provideWorkspaceModeContext(workspaceModeContext)
 

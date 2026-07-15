@@ -174,39 +174,9 @@ function normalizeReadonly(raw: string): boolean {
 
 function publicPgnQuerySource(query: WorkspaceModeQuery): WorkspaceSource | null {
   const type = normalizeToken(queryText(query, 'type'))
-  const key = queryText(query, 'key')
-  const fileid = queryText(query, 'fileid')
-  const uuid = queryText(query, 'uuid')
-  const id = queryText(query, 'id')
-  const f = queryText(query, 'f')
-  const t = queryText(query, 't')
 
-  if (type === 'cloud' && fileid) {
-    return 'cloud_pgn'
-  }
-
-  if (type === 'match' && key) {
-    return 'backend_handoff_pgn'
-  }
-
-  if (f === 'pgnViewer' && t === 'chess-detail' && uuid) {
-    return 'backend_handoff_pgn'
-  }
-
-  if (uuid) {
-    return 'backend_handoff_pgn'
-  }
-
-  if (id.startsWith('P:')) {
-    return 'backend_handoff_pgn'
-  }
-
-  if (fileid) {
-    return 'cloud_pgn'
-  }
-
-  if (key.startsWith('PGNShare:')) {
-    return 'backend_handoff_pgn'
+  if (type === 'cloud' || type === 'match' || type === 'share') {
+    return 'unknown'
   }
 
   return null
@@ -260,8 +230,6 @@ function parseWorkspaceModeQuery(query: WorkspaceModeQuery = {}): WorkspaceModeC
   context.groupId = safeField(query, 'group', 'groupId', warnings)
   context.roundId = safeField(query, 'round', 'roundId', warnings)
   context.boardId = safeAliasField(query, ['board', 'boardId'], 'boardId', warnings)
-  context.qrcode = safeField(query, 'qrcode', 'qrcode', warnings)
-  context.serialNumber = safeAliasField(query, ['sn', 'SN'], 'serialNumber', warnings)
   context.gameId = safeAliasField(query, ['gameId', 'gameid'], 'gameId', warnings)
   context.matchId = safeAliasField(query, ['matchId', 'matchid'], 'matchId', warnings)
   context.view = safeField(query, 'view', 'view', warnings)

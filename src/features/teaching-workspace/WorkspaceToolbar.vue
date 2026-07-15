@@ -6,16 +6,24 @@ import {
   type AnnotationShapeKind,
 } from '@/features/annotations/domain/annotationTypes'
 import { BOARD_ORIENTATION_BLACK } from '@/features/board/domain/boardTypes'
-import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
 import { useAuthStore, usePgnStore, useWorkspaceStore } from '@/stores'
-import { ProductConfirmDialog } from '@/ui'
+import { ProductButton, ProductConfirmDialog } from '@/ui'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 
+import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
+import type { WorkspacePermissions } from '@/features/workspace-mode/useWorkspacePermissionAdapter'
+
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
+
+const props = defineProps<{
+  permissions: WorkspacePermissions
+}>()
 
 const emit = defineEmits<{
   action: [name: WorkspaceToolbarAction]
+  openSource: []
+  toggleContext: []
 }>()
 
 const pgn = usePgnStore()
@@ -148,6 +156,10 @@ onBeforeUnmount(() => {
       {{ workspace.toolbarCollapsed ? '展开' : '收起' }}
     </button>
 
+    <button class="toolbar-button source-drawer-trigger" type="button" @click="emit('openSource')">
+      来源
+    </button>
+
     <Transition :css="false" @enter="onGroupsEnter" @leave="onGroupsLeave">
       <div v-if="!workspace.toolbarCollapsed" class="toolbar-groups">
         <nav class="toolbar-group" aria-label="产品入口">
@@ -159,89 +171,78 @@ onBeforeUnmount(() => {
         </nav>
 
         <section class="toolbar-group" aria-label="棋谱文件">
-          <button class="toolbar-button" type="button" @click="emit('action', 'openLocal')">
-            打开
-          </button>
-          <button class="toolbar-button" type="button" @click="emit('action', 'insertLocal')">
+          <ProductButton
+            size="small"
+            :disabled="!props.permissions.canImportLocalPgn"
+            @click="emit('action', 'openLocal')"
+          >
+            打开 PGN
+          </ProductButton>
+          <ProductButton
+            size="small"
+            :disabled="!props.permissions.canImportLocalPgn"
+            @click="emit('action', 'insertLocal')"
+          >
             插入
-          </button>
+          </ProductButton>
         </section>
 
         <section class="toolbar-group" aria-label="棋盘控制">
-          <button
-            class="toolbar-button"
-            type="button"
+          <ProductButton
+            size="small"
             :aria-pressed="workspace.boardOrientation === BOARD_ORIENTATION_BLACK"
             @click="workspace.flipBoardOrientation()"
           >
             翻转
-          </button>
-          <button
+          </ProductButton>
+          <ProductButton
             v-for="alignment in alignments"
             :key="alignment.key"
-            class="toolbar-button compact"
-            type="button"
+            size="small"
             :aria-pressed="workspace.boardAlignment === alignment.key"
             @click="workspace.setBoardAlignment(alignment.key)"
           >
             {{ alignment.label }}
-          </button>
-          <button
-            class="toolbar-button compact"
-            type="button"
+          </ProductButton>
+          <ProductButton
+            size="small"
+            :disabled="!props.permissions.canEnterBoardEditor"
             @click="emit('action', 'enterBoardEditor')"
           >
             摆谱
-          </button>
+          </ProductButton>
         </section>
 
         <section class="toolbar-group" aria-label="棋谱导航">
-          <button
-            class="toolbar-button compact"
-            type="button"
-            :disabled="!pgn.canGoStart"
-            @click="pgn.goToStart()"
-          >
+          <ProductButton size="small" :disabled="!pgn.canGoStart" @click="pgn.goToStart()">
             起始
-          </button>
-          <button
-            class="toolbar-button compact"
-            type="button"
-            :disabled="!pgn.canStepBack"
-            @click="pgn.stepBack()"
-          >
-            上步
-          </button>
-          <button
-            class="toolbar-button compact"
-            type="button"
-            :disabled="!pgn.canStepForward"
-            @click="pgn.stepForward()"
-          >
-            下步
-          </button>
-          <button
-            class="toolbar-button compact"
-            type="button"
-            :disabled="!pgn.canGoEnd"
-            @click="pgn.goToEnd()"
-          >
+          </ProductButton>
+          <ProductButton size="small" :disabled="!pgn.canStepBack" @click="pgn.stepBack()">
+            上一步
+          </ProductButton>
+          <ProductButton size="small" :disabled="!pgn.canStepForward" @click="pgn.stepForward()">
+            下一步
+          </ProductButton>
+          <ProductButton size="small" :disabled="!pgn.canGoEnd" @click="pgn.goToEnd()">
             末尾
-          </button>
+          </ProductButton>
         </section>
 
-        <section class="toolbar-group" aria-label="标注工具">
-          <button
+        <section
+          v-if="props.permissions.canEditAnnotations"
+          class="toolbar-group"
+          aria-label="标注工具"
+        >
+          <ProductButton
             v-for="tool in annotationTools"
             :key="tool.key"
-            class="toolbar-button compact"
-            type="button"
+            size="small"
             :aria-pressed="workspace.annotationTool === tool.key"
             :disabled="!pgn.hasGame"
             @click="workspace.setAnnotationTool(tool.key)"
           >
             {{ tool.label }}
-          </button>
+          </ProductButton>
           <button
             v-for="color in ANNOTATION_COLORS"
             :key="color"
@@ -253,30 +254,27 @@ onBeforeUnmount(() => {
             :disabled="!pgn.hasGame"
             @click="setAnnotationColor(color)"
           />
-          <button
-            class="toolbar-button compact"
-            type="button"
+          <ProductButton
+            size="small"
             :disabled="!pgn.canUndoCurrentDrawing"
             @click="pgn.undoCurrentDrawing()"
           >
             撤销
-          </button>
-          <button
-            class="toolbar-button compact"
-            type="button"
+          </ProductButton>
+          <ProductButton
+            size="small"
             :disabled="!pgn.canRedoCurrentDrawing"
             @click="pgn.redoCurrentDrawing()"
           >
             重做
-          </button>
-          <button
-            class="toolbar-button compact"
-            type="button"
+          </ProductButton>
+          <ProductButton
+            size="small"
             :disabled="!pgn.hasCurrentDrawing"
             @click="confirmClearDrawing()"
           >
             清除
-          </button>
+          </ProductButton>
         </section>
 
         <ProductConfirmDialog
@@ -289,22 +287,24 @@ onBeforeUnmount(() => {
         />
 
         <section class="toolbar-group" aria-label="面板控制">
-          <button
-            class="toolbar-button"
-            type="button"
+          <ProductButton
+            size="small"
             :aria-pressed="workspace.showLeftSidebar"
             @click="workspace.toggleLeftSidebar()"
           >
             列表
-          </button>
-          <button
-            class="toolbar-button"
-            type="button"
+          </ProductButton>
+          <ProductButton
+            v-if="props.permissions.canShowAnalysisPanel"
+            size="small"
             :aria-pressed="workspace.showAnalysisRegion"
             @click="workspace.toggleAnalysisRegion()"
           >
             分析
-          </button>
+          </ProductButton>
+          <ProductButton class="context-toggle" size="small" @click="emit('toggleContext')">
+            上下文
+          </ProductButton>
         </section>
       </div>
     </Transition>
@@ -321,6 +321,27 @@ onBeforeUnmount(() => {
   padding: var(--s-2);
   border-bottom: var(--workspace-border-w) solid var(--border);
   background: var(--surface-2);
+}
+
+.toolbar-collapse,
+.source-drawer-trigger,
+.context-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--control-h-sm);
+  min-height: var(--control-h-sm);
+  padding: 0 var(--s-2);
+  border: var(--workspace-border-w) solid var(--border-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.source-drawer-trigger {
+  display: none;
 }
 
 .toolbar-groups {
@@ -345,7 +366,6 @@ onBeforeUnmount(() => {
 }
 
 .toolbar-button,
-.toolbar-collapse,
 .toolbar-swatch {
   display: inline-flex;
   align-items: center;
@@ -365,10 +385,6 @@ a.toolbar-button {
   text-decoration: none;
 }
 
-.toolbar-button.compact {
-  padding: 0 var(--s-1);
-}
-
 .toolbar-swatch {
   width: var(--control-h-sm);
   min-width: var(--control-h-sm);
@@ -386,6 +402,12 @@ a.toolbar-button {
   border-color: var(--accent);
   background: var(--accent-bg);
   color: var(--accent-strong);
+}
+
+@media (width <= 900px) {
+  .source-drawer-trigger {
+    display: inline-flex;
+  }
 }
 
 @media (width <= 560px) {

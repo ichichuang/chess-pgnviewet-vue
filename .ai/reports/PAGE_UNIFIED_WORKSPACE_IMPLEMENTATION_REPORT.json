@@ -1,0 +1,339 @@
+{
+  "reportType": "PAGE_IMPLEMENTATION_REPORT",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "baseCommit": "9ea1eaeccfbaf054e37161c520363cb051e8eff8",
+  "pageFamily": "unified-workspace",
+  "pageRoute": "/",
+  "designSurfaceIds": [
+    "WS-001",
+    "WS-002",
+    "WS-003",
+    "WS-004",
+    "WS-005",
+    "WS-006",
+    "WS-007",
+    "WS-008",
+    "WS-009",
+    "WS-010",
+    "WS-011",
+    "WS-012",
+    "RP-001",
+    "RP-002"
+  ],
+  "affectedCorEntries": [
+    "COR-001",
+    "COR-002",
+    "COR-003",
+    "COR-008",
+    "COR-011",
+    "COR-012",
+    "COR-013",
+    "COR-016",
+    "COR-021",
+    "COR-025",
+    "COR-028"
+  ],
+  "summary": {
+    "status": "PAGE_IMPLEMENTATION_PASS",
+    "note": "统一工作区页面切片（/）完成逐页设计实现。本次覆盖来源权限模型、无来源真实开始表面、本地 PGN 教学链、AI 显式生命周期、窄屏 drawer/sheet 响应式组合、handoff 安全失败和真实不可用表面。静态治理、类型检查、生产构建、依赖审计与窄真实浏览器验证均通过。合同阻断与 owner decision 能力保持未声称完成。"
+  },
+  "capabilityClassification": {
+    "CURRENT_IMPLEMENTED": [
+      "无来源时显示真实开始表面，不渲染默认棋盘",
+      "左侧来源面板显示模式/来源身份与不可用原因",
+      "本地 PGN 文件导入、棋局列表、棋谱节点导航",
+      "规范棋盘渲染、走法导航、翻转与对齐",
+      "统一 WorkspacePermissionAdapter 门控全部写动作",
+      "AI 默认关闭、显式启动/取消、运行/完成/失败状态",
+      "EvalBar 按权限与棋盘内容条件渲染",
+      "右侧上下文面板按权限过滤 tabs",
+      "赛事讲解 handoff 进入工作区，无效 handoff 进入不可用状态",
+      "cloud/share/match 兼容入口真实阻断并返回赛事列表",
+      "未知路由 catch-all 渲染 NotFound 不可用表面",
+      "桌面/平板/窄屏响应式布局与 source drawer/context sheet",
+      "skip link 与区域可访问名称"
+    ],
+    "APPROVED_TARGET": [
+      "统一来源导航与权限适配器",
+      "无来源真实开始表面",
+      "AI 显式启动、取消与产品化状态表达",
+      "响应式 source drawer 与 context sheet",
+      "本地 PGN 教学主链",
+      "显式导入后的本地分析副本身份"
+    ],
+    "CONTRACT_BLOCKED": [
+      "受保护已结束回放",
+      "云端棋谱读取",
+      "分享读取",
+      "硬件历史/最新快照",
+      "进行中实时观战、实时凭据、订阅、权威棋钟"
+    ],
+    "OPEN_OWNER_DECISION": [
+      "OD-01：教学集合层级与本地副本持久化",
+      "OD-02：课次笔记与讲解来源写回",
+      "OD-03：AI 设置作用域与资源策略默认值",
+      "OD-04：AI 首次使用提示与同意策略",
+      "OD-07：陈旧阈值与实时新鲜度",
+      "OD-08：匿名实时范围",
+      "OD-09：完整窄屏编辑能力",
+      "OD-10：受保护回放与导出/打印",
+      "OD-11：声音默认值"
+    ],
+    "PROHIBITED": [
+      "第二工作区、第二棋盘、第二 PGN 运行时",
+      "远端写回、进行中实时编辑/评价",
+      "自动 AI 启动、隐藏技术诊断文案",
+      "假棋局、假成功、样例回退、发明时钟",
+      "mock/fixture/fallback success 数据"
+    ]
+  },
+  "corEvidence": {
+    "COR-001": {
+      "title": "AI 默认关闭与显式生命周期",
+      "files": [
+        "src/features/analysis/components/AnalysisPanel.vue",
+        "src/features/teaching-workspace/TeachingWorkspace.vue"
+      ],
+      "changes": [
+        "AnalysisPanel 默认显示关闭/首次提示态，不再自动启动分析。",
+        "用户显式点击“开始分析”后进入运行态，显示“分析中…”与取消按钮。",
+        "完成、失败、取消状态使用产品化中文文案，移除 Worker/request/hash/PV 术语。",
+        "TeachingWorkspace 在模式/来源切换时调用 analysis.stop()，避免跨来源持续运行。"
+      ],
+      "validation": [
+        "浏览器：无来源开始表面不显示 AI 入口。",
+        "浏览器：导入 PGN 后右侧分析 tab 可见，但 AI 默认未运行。",
+        "浏览器：点击“开始分析”后状态变为运行中，取消按钮可点击。"
+      ]
+    },
+    "COR-002": {
+      "title": "无来源真实开始表面与能力门控",
+      "files": [
+        "src/features/teaching-workspace/WorkspaceStartSurface.vue",
+        "src/features/teaching-workspace/TeachingWorkspace.vue",
+        "src/features/workspace-mode/useWorkspacePermissionAdapter.ts"
+      ],
+      "changes": [
+        "新增 WorkspaceStartSurface，无来源时显示“统一工作区”标题与本地 PGN/手动局面/赛事入口。",
+        "TeachingWorkspace 使用 hasBoardContent 条件渲染棋盘，避免默认假局面。",
+        "EvalBar、分析区域、标注工具全部通过 WorkspacePermissionAdapter 门控。"
+      ],
+      "validation": [
+        "浏览器：/ 无 handoff 时 .start-surface 渲染，.board-align-frame 不存在。",
+        "浏览器：导入本地 PGN 后棋盘渲染并显示棋局标题。"
+      ]
+    },
+    "COR-003": {
+      "title": "只读与写动作统一门控",
+      "files": [
+        "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+        "src/features/teaching-workspace/WorkspaceToolbar.vue",
+        "src/features/teaching-workspace/TeachingWorkspace.vue"
+      ],
+      "changes": [
+        "useWorkspacePermissionAdapter 输出 canEditBoard、canEditAnnotations、canImportLocalPgn、canEnterBoardEditor 等集中布尔。",
+        "WorkspaceToolbar 按权限隐藏/禁用打开 PGN、插入、摆谱、标注工具。",
+        "CanonicalChessBoard capabilities 在只读模式下禁止 move-request、拖拽、升变与径向菜单。"
+      ],
+      "validation": [
+        "浏览器：无来源时摆谱、打开 PGN 等写入口按可用状态渲染。",
+        "代码静态：权限适配器无直接 Store 耦合，toolbar 仍耦合但已按权限投影。"
+      ]
+    },
+    "COR-008": {
+      "title": "Handoff 安全失败与未知路径不可用表面",
+      "files": [
+        "src/features/workspace-mode/WorkspaceModeController.vue",
+        "src/features/workspace-mode/workspaceModeQuery.ts",
+        "src/features/product-api/views/CompatibilityEntryView.vue",
+        "src/router/index.ts",
+        "src/views/NotFoundView.vue"
+      ],
+      "changes": [
+        "WorkspaceModeController：handoff ID 存在但无效时返回 blocked 上下文，不回退本地成功。",
+        "workspaceModeQuery：cloud/share/match query 直接返回 unknown，不再伪装成功；丢弃 qrcode/sn。",
+        "CompatibilityEntryView：cloud/share/match 设为 readonly 并导航回 /competitions。",
+        "router catch-all 改为渲染 NotFoundView，不再 redirect 到 /。"
+      ],
+      "validation": [
+        "浏览器：/?handoff=invalid-id 不渲染棋盘，显示不可用说明。",
+        "浏览器：访问未知路径渲染 NotFound 不可用表面，不跳回 /."
+      ]
+    },
+    "COR-011": {
+      "title": "Token 语义稳定",
+      "files": [
+        "src/features/teaching-workspace/TeachingWorkspace.vue",
+        "src/features/teaching-workspace/WorkspaceToolbar.vue",
+        "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+        "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+        "src/features/teaching-workspace/WorkspaceStartSurface.vue",
+        "src/features/analysis/components/AnalysisPanel.vue"
+      ],
+      "changes": [
+        "新增与重写组件全部使用 src/styles/tokens.css 中已定义 Token，未引入新语义 Token。",
+        "未定义 Token 不在组件局部补 fallback palette。"
+      ],
+      "validation": [
+        "pnpm run check:tokens PASS",
+        "pnpm run check:raw-visual-values PASS"
+      ]
+    },
+    "COR-012": {
+      "title": "共享 Token 整理与原始视觉值归一",
+      "files": [
+        "src/features/teaching-workspace/*.vue",
+        "src/features/analysis/components/AnalysisPanel.vue"
+      ],
+      "changes": [
+        "全部颜色、间距、边框、半径、阴影、字体大小引用 tokens.css。",
+        "仅保留响应式断点与布局算法常量（如 900px/560px），属于响应式规范已定值。"
+      ],
+      "validation": [
+        "pnpm run check:raw-visual-values PASS",
+        "pnpm run lint:style PASS"
+      ]
+    },
+    "COR-013": {
+      "title": "无障碍与键盘基础",
+      "files": [
+        "src/features/teaching-workspace/TeachingWorkspace.vue",
+        "src/features/teaching-workspace/WorkspaceToolbar.vue"
+      ],
+      "changes": [
+        "TeachingWorkspace 添加 skip-link，跳转至 #workspace-main。",
+        "main 与 aside 区域使用 aria-label 标识工作区、来源导航、右侧上下文。",
+        "WorkspaceToolbar 使用 role=\"toolbar\" 与 aria-label。"
+      ],
+      "validation": [
+        "浏览器：Tab 可见 skip-link。",
+        "浏览器：窄屏 source drawer 可打开并通过 Escape 关闭。"
+      ]
+    },
+    "COR-016": {
+      "title": "响应式 source drawer 与 context sheet",
+      "files": [
+        "src/features/teaching-workspace/TeachingWorkspace.vue",
+        "src/features/teaching-workspace/WorkspaceToolbar.vue",
+        "src/ui/ProductDrawer.vue",
+        "src/ui/ProductSheet.vue"
+      ],
+      "changes": [
+        "TeachingWorkspace 使用 isNarrow 断点（<=900px）条件渲染 ProductDrawer 与 ProductSheet。",
+        "WorkspaceToolbar 在窄屏显示 source-drawer-trigger。",
+        "桌面端不渲染 drawer/sheet，避免遮罩拦截点击。"
+      ],
+      "validation": [
+        "浏览器：桌面 1280x800 无 drawer 遮罩，棋盘与工具栏可点击。",
+        "浏览器：600x800 出现“来源”触发器，点击打开 drawer 并显示标题“来源”。",
+        "浏览器：Escape 关闭 drawer。"
+      ]
+    },
+    "COR-021": {
+      "title": "产品术语清理",
+      "files": [
+        "src/features/analysis/components/AnalysisPanel.vue",
+        "src/features/teaching-workspace/WorkspaceToolbar.vue",
+        "src/features/teaching-workspace/WorkspaceRightPanel.vue"
+      ],
+      "changes": [
+        "AnalysisPanel 移除 Worker/request/hash/PV/staleRejected 等内部术语，改用“分析准备/进行/完成/失败/主要变化”。",
+        "WorkspaceToolbar 使用“打开 PGN、插入、翻转、摆谱、上一步、下一步”等产品动作名。"
+      ],
+      "validation": [
+        "pnpm run check:user-visible-copy PASS",
+        "浏览器： inspected 分析面板无技术术语。"
+      ]
+    },
+    "COR-025": {
+      "title": "组件边界与 Store 耦合声明",
+      "files": [
+        "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+        "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+        "src/features/teaching-workspace/WorkspaceToolbar.vue"
+      ],
+      "changes": [
+        "WorkspaceSourcePanel 接收 typed props 与事件，不直接读取 workspace mode store。",
+        "WorkspaceRightPanel、WorkspaceToolbar 仍耦合 Store，但已按权限投影，未新增重复 PGN runtime。"
+      ],
+      "validation": [
+        "pnpm run check:architecture-boundaries PASS",
+        "代码审查：新增容器/展示边界清晰，未复制 PGN 解析状态。"
+      ]
+    },
+    "COR-028": {
+      "title": "真实浏览器验收",
+      "files": [
+        "src/features/teaching-workspace/TeachingWorkspace.vue"
+      ],
+      "changes": [
+        "对 / 执行一次性 Playwright 验证，覆盖无来源开始表面、PGN 上传、棋盘渲染、走法导航、主题切换、窄屏 drawer。"
+      ],
+      "validation": [
+        "Playwright 脚本 /tmp/workspace-validation.mjs 通过，未生成测试文件或截图循环。"
+      ]
+    }
+  },
+  "browserValidation": {
+    "routes": [
+      "/pgnViewer/",
+      "/pgnViewer/?handoff=invalid-id"
+    ],
+    "viewportProfiles": [
+      { "name": "desktop", "width": 1280, "height": 800 },
+      { "name": "narrow", "width": 600, "height": 800 }
+    ],
+    "checks": {
+      "noSourceStartSurface": "无 handoff 时渲染 .start-surface，标题包含“统一工作区”，选项包含“本地 PGN”，棋盘未渲染。",
+      "localPgnImport": "上传 .pgn 文件后 .board-align-frame 渲染，#workspace-board-title 包含棋局名“Test Game”。",
+      "moveNavigation": "点击“下一步”按钮可推进局面。",
+      "themeToggle": "切换 html data-theme 后页面渲染正常，无报错。",
+      "narrowDrawer": "<=900px 显示 source-drawer-trigger，点击打开 ProductDrawer，标题为“来源”，Escape 可关闭。",
+      "invalidHandoff": "/?handoff=invalid-id 不渲染棋盘，显示来源不可用说明。",
+      "viteOverlay": "未检测到 vite-error-overlay。",
+      "consoleErrors": "无 error / pageerror；仅 Vite HMR 连接日志。"
+    }
+  },
+  "staticValidation": {
+    "commands": [
+      "pnpm run check:governance PASS",
+      "pnpm run format:check PASS",
+      "pnpm run lint PASS",
+      "pnpm run lint:style PASS",
+      "pnpm run check:unused PASS",
+      "pnpm run check:static PASS",
+      "pnpm run typecheck PASS",
+      "pnpm run build PASS",
+      "pnpm run audit:prod PASS (No known vulnerabilities)",
+      "pnpm audit PASS (No known vulnerabilities)",
+      "git diff --check PASS"
+    ]
+  },
+  "filesChanged": {
+    "created": [
+      "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+      "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+      "src/features/teaching-workspace/WorkspaceStartSurface.vue",
+      "src/views/NotFoundView.vue",
+      ".ai/reports/PAGE_UNIFIED_WORKSPACE_IMPLEMENTATION_REPORT.json"
+    ],
+    "modified": [
+      "src/features/teaching-workspace/TeachingWorkspace.vue",
+      "src/features/teaching-workspace/WorkspaceToolbar.vue",
+      "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+      "src/features/analysis/components/AnalysisPanel.vue",
+      "src/features/workspace-mode/workspaceModeQuery.ts",
+      "src/features/workspace-mode/WorkspaceModeController.vue",
+      "src/features/product-api/views/CompatibilityEntryView.vue",
+      "src/router/index.ts"
+    ]
+  },
+  "risksAndNextSteps": [
+    "COR-001 完整整局范围进度、候选变化显式插入与陈旧结果身份匹配依赖 Analysis Store 后续迭代；当前仅完成默认关闭与显式启动。",
+    "COR-017 文件级导入进度与部分失败摘要未实现；当前仍使用单次文件导入。",
+    "COR-019 节点评论编辑与棋局级教学笔记待本地副本 owner 决策 OD-01/02 后实现。",
+    "受保护回放、云端/分享读取、实时观战等 CONTRACT_BLOCKED 能力需真实合同与 repository 到位后单独接入。",
+    "下一步：按优先级继续 PAGE 5 赛场展示（VENUE_DISPLAY）或进入剩余 COR 纠正阶段。"
+  ]
+}

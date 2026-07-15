@@ -1,12 +1,12 @@
 <!--
 Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 - Page height: 100dvh through --workspace-viewport-h
-- Modules: eval rail, left structural list, board stage, right structural panel
-- Scroll owner: right panel content and analysis panel only
-- Panels: left shell panel collapses; right shell panel remains visible for P1A geometry
+- Modules: eval rail, left source navigator, board stage, right context panel
+- Scroll owner: left source list inner; right current tab content
+- body must not scroll; each column has one scroll owner
 -->
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 
 import AnalysisPanel from '@/features/analysis/components/AnalysisPanel.vue'
 import EvalBar from '@/features/analysis/components/EvalBar.vue'
@@ -18,12 +18,18 @@ import type {
   BoardWheelNavigationDirection,
   ChessboardCapabilities,
 } from '@/features/board/domain/boardCapabilities'
-import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
 import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
+import { ProductDrawer, ProductSheet } from '@/ui'
 import { useAnalysisStore, useWorkspaceStore } from '@/stores'
 import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceModeContext'
+import {
+  useWorkspacePermissionAdapter,
+  type WorkspacePermissions,
+} from '@/features/workspace-mode/useWorkspacePermissionAdapter'
 
 import WorkspaceRightPanel from './WorkspaceRightPanel.vue'
+import WorkspaceSourcePanel from './WorkspaceSourcePanel.vue'
+import WorkspaceStartSurface from './WorkspaceStartSurface.vue'
 import WorkspaceSplitter from './WorkspaceSplitter.vue'
 import WorkspaceToolbar from './WorkspaceToolbar.vue'
 import { useRemoteReplayLoader } from './useRemoteReplayLoader'
@@ -32,6 +38,16 @@ import { useWorkspaceSplitter } from './useWorkspaceSplitter'
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
 const workspaceModeContext = useWorkspaceModeContext()
+const permissions = reactive<WorkspacePermissions>(
+  useWorkspacePermissionAdapter(workspaceModeContext.value)
+)
+watch(
+  () => workspaceModeContext.value,
+  (context) => {
+    Object.assign(permissions, useWorkspacePermissionAdapter(context))
+  },
+  { immediate: true }
+)
 const {
   boardInteractive,
   boardPosition,
@@ -51,6 +67,24 @@ const remoteReplayStatus = remoteReplay.status
 const { onSplitterKeyDown, onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
 const boardEditorActive = ref(false)
 const radialWidth = ref<0.08 | 0.16 | 0.28>(0.16)
+const sourceDrawerOpen = ref(false)
+const contextPanelOpen = ref(false)
+const isNarrow = ref(typeof window !== 'undefined' ? window.innerWidth <= 900 : false)
+
+function updateBreakpoint(): void {
+  isNarrow.value = window.innerWidth <= 900
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', updateBreakpoint)
+}
+
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateBreakpoint)
+  }
+})
+
 const {
   listInnerEl,
   onOverlayEnter,
@@ -71,44 +105,38 @@ const radialColors = ANNOTATION_COLORS.map((id) => ({
 }))
 
 const radialColorIndex = computed(() =>
-  Math.max(
-    0,
-    ANNOTATION_COLORS.findIndex((color) => color === workspace.annotationColor)
-  )
+  Math.max(0, ANNOTATION_COLORS.findIndex((color) => color === workspace.annotationColor))
 )
 
-const workspaceReadOnly = computed(
-  () =>
-    workspaceModeContext.value.readonly ||
-    workspaceModeContext.value.mode === 'replay' ||
-    workspaceModeContext.value.mode === 'live_spectator'
-)
+const hasBoardContent = computed(() => pgn.hasGame)
+const showEvalRail = computed(() => permissions.canShowEvalBar && hasBoardContent.value)
+const showAnalysisRegion = computed(() => permissions.canShowAnalysisPanel && workspace.showAnalysisRegion)
 
 const boardCapabilities = computed<ChessboardCapabilities>(() => ({
   position: {
     visible: true,
-    playable: boardInteractive.value && !workspaceReadOnly.value,
-    readOnly: !boardInteractive.value || workspaceReadOnly.value,
+    playable: boardInteractive.value && permissions.canEditBoard && !boardEditorActive.value,
+    readOnly: !boardInteractive.value || !permissions.canEditBoard || boardEditorActive.value,
     controlled: true,
     onMoveRequest: (payload) => pgn.tryMove(payload),
   },
   interaction: {
     click: true,
-    drag: true,
+    drag: permissions.canEditBoard,
     touch: true,
     keyboard: true,
   },
   coordinates: { visible: true },
   orientation: workspace.boardOrientation,
-  promotion: { enabled: true },
+  promotion: { enabled: permissions.canEditBoard },
   animation: {
     move: { enabled: true },
     snapback: { enabled: true },
     reducedMotion: 'system',
   },
   annotations: {
-    enabled: true,
-    drawing: workspace.annotationTool !== null && !boardEditorActive.value,
+    enabled: permissions.canEditAnnotations && !boardEditorActive.value,
+    drawing: workspace.annotationTool !== null && !boardEditorActive.value && permissions.canEditAnnotations,
     activeTool: workspace.annotationTool,
     activeColor: workspace.annotationColor,
     colors: radialColors,
@@ -124,19 +152,19 @@ const boardCapabilities = computed<ChessboardCapabilities>(() => ({
     },
   },
   radialMenu: {
-    enabled: !boardEditorActive.value,
+    enabled: !boardEditorActive.value && permissions.canEditAnnotations,
     activeShape: workspace.annotationTool,
     colorIndex: radialColorIndex.value,
     width: radialWidth.value,
     colors: radialColors,
   },
   editor: {
-    available: true,
+    available: permissions.canEnterBoardEditor,
     active: boardEditorActive.value,
     initialFen: boardPosition.value,
   },
   wheelNavigation: {
-    enabled: !boardEditorActive.value,
+    enabled: !boardEditorActive.value && hasBoardContent.value,
     blocked: workspace.splitterDragging,
   },
 }))
@@ -151,6 +179,17 @@ const boardJustifyContent = computed(() => {
   }
 
   return 'center'
+})
+
+watch(
+  () => workspaceModeContext.value,
+  () => {
+    analysis.stop()
+  }
+)
+
+onBeforeUnmount(() => {
+  analysis.dispose()
 })
 
 defineExpose({
@@ -170,6 +209,7 @@ function handleWorkspaceAction(name: WorkspaceToolbarAction): void {
 }
 
 function enterBoardEditor() {
+  if (!permissions.canEnterBoardEditor) return
   analysis.stop()
   workspace.setAnnotationTool(null)
   boardEditorActive.value = true
@@ -185,7 +225,6 @@ function finishBoardEditor(snapshot: BoardEditorDraftSnapshot): void {
   }
 
   boardEditorActive.value = false
-  void analysis.analyzeCurrent()
 }
 
 function cancelBoardEditor() {
@@ -193,6 +232,8 @@ function cancelBoardEditor() {
 }
 
 function onBoardRadialCommand(command: BoardRadialCommand): void {
+  if (!permissions.canEditAnnotations) return
+
   if (command.kind === 'shape') {
     workspace.setAnnotationTool(command.shape)
     return
@@ -220,43 +261,51 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
 
   pgn.stepBack()
 }
-
-watch(
-  () => `${pgn.selectedIndex}:${pgn.selectedNodeId ?? 'root'}:${pgn.currentFen}`,
-  () => {
-    void analysis.analyzeCurrent()
-  },
-  { immediate: true }
-)
-
-onBeforeUnmount(() => {
-  analysis.dispose()
-})
 </script>
 
 <template>
   <div ref="rootEl" class="workspace" data-p1a-shell>
-    <WorkspaceToolbar @action="handleWorkspaceAction" />
+    <a class="skip-link" href="#workspace-main">跳到主内容</a>
+
+    <WorkspaceToolbar
+      :permissions="permissions"
+      @action="handleWorkspaceAction"
+      @open-source="sourceDrawerOpen = true"
+      @toggle-context="contextPanelOpen = !contextPanelOpen"
+    />
 
     <main
+      id="workspace-main"
       class="layout"
-      :class="{ 'no-list': !workspace.showLeftSidebar }"
-      aria-label="开赛了教学工作区"
+      :class="{
+        'no-list': !workspace.showLeftSidebar,
+        'no-context': !contextPanelOpen,
+      }"
+      aria-label="开赛了统一工作区"
     >
-      <EvalBar class="area-eval" />
+      <EvalBar v-if="showEvalRail" class="area-eval" />
+      <div v-else class="area-eval area-eval-placeholder" aria-hidden="true" />
 
       <aside
         class="area-list"
         :class="{ collapsed: !workspace.showLeftSidebar }"
-        aria-label="左侧棋谱列表结构区域"
+        aria-label="来源导航"
       >
         <div v-show="workspace.showLeftSidebar" ref="listInnerEl" class="list-inner">
-          <PgnGameList @action="handlePgnAction" />
+          <WorkspaceSourcePanel
+            :mode-label="permissions.modeLabel"
+            :source-label="permissions.sourceLabel"
+            :source-unavailable="permissions.sourceUnavailable"
+            :unavailable-reason="permissions.unavailableReason"
+            :can-import-local-pgn="permissions.canImportLocalPgn"
+            :can-enter-board-editor="permissions.canEnterBoardEditor"
+            @action="handleWorkspaceAction"
+          />
         </div>
         <button
           class="list-handle"
           type="button"
-          :aria-label="workspace.showLeftSidebar ? '收起棋谱列表结构区域' : '展开棋谱列表结构区域'"
+          :aria-label="workspace.showLeftSidebar ? '收起来源导航' : '展开来源导航'"
           :aria-pressed="workspace.showLeftSidebar"
           @click="workspace.toggleLeftSidebar()"
         >
@@ -267,7 +316,7 @@ onBeforeUnmount(() => {
       <section
         class="area-board"
         :class="`align-${workspace.boardAlignment}`"
-        aria-label="棋盘舞台结构区域"
+        aria-label="棋盘舞台"
       >
         <div
           v-if="remoteReplayVisible"
@@ -278,9 +327,20 @@ onBeforeUnmount(() => {
           <strong>{{ remoteReplayMessage }}</strong>
           <span v-if="remoteReplayDetail">{{ remoteReplayDetail }}</span>
         </div>
-        <div class="board-stage" :style="{ justifyContent: boardJustifyContent }">
+
+        <div v-if="!hasBoardContent" class="board-stage board-stage-empty">
+          <WorkspaceStartSurface
+            :can-import-local-pgn="permissions.canImportLocalPgn"
+            :can-enter-board-editor="permissions.canEnterBoardEditor"
+            @action="handleWorkspaceAction"
+          />
+        </div>
+
+        <div v-else class="board-stage" :style="{ justifyContent: boardJustifyContent }">
           <section class="board-align-frame" aria-labelledby="workspace-board-title">
-            <h1 id="workspace-board-title" class="board-title">开赛了教学工作区</h1>
+            <h1 id="workspace-board-title" class="board-title">
+              {{ pgn.selectedItem ? pgn.titleFor(pgn.selectedItem, pgn.selectedIndex) : '统一工作区' }}
+            </h1>
             <CanonicalChessBoard
               :position="boardPosition"
               v-bind="{
@@ -301,19 +361,28 @@ onBeforeUnmount(() => {
         ref="rightStackEl"
         class="area-panel"
         :class="{
-          'has-analysis': workspace.showAnalysisRegion,
+          'has-analysis': showAnalysisRegion,
           'is-splitting': workspace.splitterDragging,
         }"
         :style="rightStackStyle"
-        aria-label="右侧棋谱与分析结构区域"
+        aria-label="右侧上下文"
       >
+        <button
+          class="panel-close"
+          type="button"
+          aria-label="关闭上下文面板"
+          @click="contextPanelOpen = false"
+        >
+          ×
+        </button>
+
         <section class="panel-pgn" aria-labelledby="workspace-toolbar-title">
           <h2 id="workspace-toolbar-title" class="sr-only">工作区右侧面板</h2>
-          <WorkspaceRightPanel @action="handlePgnAction" />
+          <WorkspaceRightPanel :permissions="permissions" @action="handleWorkspaceAction" />
         </section>
 
         <WorkspaceSplitter
-          v-if="workspace.showAnalysisRegion"
+          v-if="showAnalysisRegion"
           :dragging="workspace.splitterDragging"
           label="调整棋谱与分析区域高度"
           @pointer-down="onSplitterPointerDown"
@@ -322,12 +391,12 @@ onBeforeUnmount(() => {
 
         <Transition :css="false" @enter="onPanelEnter" @leave="onPanelLeave">
           <section
-            v-if="workspace.showAnalysisRegion"
+            v-if="showAnalysisRegion"
             class="panel-analysis"
             aria-labelledby="workspace-analysis-title"
           >
             <div class="panel-scroll">
-              <AnalysisPanel />
+              <AnalysisPanel :permissions="permissions" />
             </div>
           </section>
         </Transition>
@@ -335,6 +404,28 @@ onBeforeUnmount(() => {
     </main>
 
     <input ref="fileInput" type="file" accept=".pgn" multiple hidden @change="onFiles" />
+
+    <ProductDrawer
+      v-if="isNarrow"
+      v-model:show="sourceDrawerOpen"
+      title="来源"
+      placement="left"
+      :width="workspace.showLeftSidebar ? '320px' : '280px'"
+    >
+      <WorkspaceSourcePanel
+        :mode-label="permissions.modeLabel"
+        :source-label="permissions.sourceLabel"
+        :source-unavailable="permissions.sourceUnavailable"
+        :unavailable-reason="permissions.unavailableReason"
+        :can-import-local-pgn="permissions.canImportLocalPgn"
+        :can-enter-board-editor="permissions.canEnterBoardEditor"
+        @action="handleWorkspaceAction"
+      />
+    </ProductDrawer>
+
+    <ProductSheet v-if="isNarrow" v-model:show="contextPanelOpen" title="上下文" height="80vh">
+      <WorkspaceRightPanel :permissions="permissions" @action="handleWorkspaceAction" />
+    </ProductSheet>
 
     <Transition :css="false" @enter="onOverlayEnter" @leave="onOverlayLeave">
       <div v-if="dragActive" class="drop-overlay" data-p1c-drop-overlay>
@@ -359,6 +450,24 @@ onBeforeUnmount(() => {
   color: var(--text);
 }
 
+.skip-link {
+  position: absolute;
+  top: var(--s-2);
+  left: var(--s-2);
+  z-index: var(--workspace-shell-z-raised);
+  padding: var(--s-2) var(--s-3);
+  border: var(--workspace-border-w) solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--text);
+  transform: translateY(-200%);
+  transition: transform var(--workspace-motion-duration-fast) var(--workspace-motion-ease-standard);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .layout {
   --workspace-list-current-w: var(--workspace-list-w);
 
@@ -381,6 +490,11 @@ onBeforeUnmount(() => {
 .area-eval {
   min-width: 0;
   min-height: 0;
+}
+
+.area-eval-placeholder {
+  border-right: var(--workspace-border-w) solid var(--border);
+  background: var(--surface);
 }
 
 .area-list {
@@ -457,6 +571,10 @@ onBeforeUnmount(() => {
   max-height: 100%;
   min-width: 0;
   min-height: 0;
+}
+
+.board-stage-empty {
+  align-items: stretch;
 }
 
 .remote-status {
@@ -545,40 +663,8 @@ onBeforeUnmount(() => {
   font-size: var(--fs-sm);
 }
 
-.shell-region h2,
-.shell-toolbar h2 {
-  margin: 0;
-  color: var(--text);
-}
-
-.shell-region p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-}
-
-.region-kicker {
-  color: var(--accent-strong);
-  font-size: var(--fs-xs);
-}
-
-.shell-toolbar button {
-  min-height: var(--control-h-sm);
-  padding: 0 var(--s-3);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface-2);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.shell-toolbar button[aria-pressed='true'] {
-  border-color: var(--accent-line);
-  background: var(--accent-bg);
-  color: var(--accent-strong);
-}
-
 .area-panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -588,6 +674,25 @@ onBeforeUnmount(() => {
   overflow: hidden;
   border-left: var(--workspace-border-w) solid var(--border);
   background: var(--surface);
+}
+
+.panel-close {
+  position: absolute;
+  top: var(--s-2);
+  right: var(--s-2);
+  z-index: var(--workspace-shell-z-raised);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-h-sm);
+  height: var(--control-h-sm);
+  padding: 0;
+  border: var(--workspace-border-w) solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
 }
 
 .panel-pgn {
@@ -606,33 +711,11 @@ onBeforeUnmount(() => {
   min-height: var(--workspace-right-pane-min-h);
 }
 
-.shell-toolbar {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: var(--s-2);
-  padding: var(--s-3);
-  border-bottom: var(--workspace-border-w) solid var(--border);
-  background: var(--surface-2);
-}
-
-.shell-toolbar h2 {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: var(--fs-sm);
-}
-
 .panel-scroll {
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
   scrollbar-gutter: stable;
-}
-
-.shell-region {
-  display: grid;
-  gap: var(--s-3);
-  padding: var(--s-4);
 }
 
 .panel-analysis {
@@ -661,11 +744,18 @@ onBeforeUnmount(() => {
 
 @media (width <= 900px) {
   .layout,
-  .layout.no-list {
+  .layout.no-list,
+  .layout.no-context {
     grid-template:
       'eval board' minmax(0, 1fr)
       'eval panel'
       minmax(var(--workspace-panel-row-min-tablet), var(--workspace-panel-row-fluid-tablet))
+      / var(--workspace-eval-w-tablet) minmax(0, 1fr);
+  }
+
+  .layout.no-context {
+    grid-template:
+      'eval board' minmax(0, 1fr)
       / var(--workspace-eval-w-tablet) minmax(0, 1fr);
   }
 
@@ -688,32 +778,44 @@ onBeforeUnmount(() => {
     border-top: var(--workspace-border-w) solid var(--border);
     border-left: 0;
   }
+
+  .panel-close {
+    display: inline-flex;
+  }
 }
 
 @media (width <= 560px) {
   .layout,
-  .layout.no-list {
+  .layout.no-list,
+  .layout.no-context {
     grid-template-columns: var(--workspace-eval-w-mobile) minmax(0, 1fr);
     grid-template-rows:
       minmax(0, 1fr)
       minmax(var(--workspace-panel-row-min-mobile), var(--workspace-panel-row-fluid-mobile));
   }
 
-  .area-board {
-    padding: var(--workspace-board-pad-y) var(--workspace-board-pad-x-mobile);
+  .layout.no-context {
+    grid-template-rows: minmax(0, 1fr);
   }
 
-  .shell-toolbar {
-    flex-wrap: wrap;
+  .area-board {
+    padding: var(--workspace-board-pad-y) var(--workspace-board-pad-x-mobile);
   }
 }
 
 @media (width <= 900px) and (height <= 560px) {
   .layout,
-  .layout.no-list {
+  .layout.no-list,
+  .layout.no-context {
     grid-template:
       'eval board panel' minmax(0, 1fr)
       / var(--workspace-eval-w-tablet) minmax(0, 1fr) var(--workspace-panel-w-compact);
+  }
+
+  .layout.no-context {
+    grid-template:
+      'eval board' minmax(0, 1fr)
+      / var(--workspace-eval-w-tablet) minmax(0, 1fr);
   }
 
   .area-panel {

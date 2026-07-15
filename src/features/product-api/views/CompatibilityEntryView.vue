@@ -29,10 +29,10 @@ onMounted(async () => {
   const context = createWorkspaceHandoffContext({
     mode: 'analysis',
     source: isCloud ? 'cloud_pgn' : 'backend_handoff_pgn',
-    readonly: false,
+    readonly: true,
     matchId: identifier,
     gameId: name === 'match' ? identifier : '',
-    returnRoute: route.fullPath,
+    returnRoute: '/competitions',
   })
 
   if (!identifier || !saveWorkspaceHandoffContext(context)) {

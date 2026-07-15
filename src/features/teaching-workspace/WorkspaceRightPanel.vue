@@ -6,6 +6,11 @@ import type { PgnWorkspaceAction } from '@/features/pgn/pgnWorkspaceTypes'
 import { useAnalysisStore, usePgnStore, useWorkspaceStore } from '@/stores'
 import { ProductTabs } from '@/ui'
 import type { ProductTabPaneDef } from '@/ui/ProductTabs.vue'
+import type { WorkspacePermissions } from '@/features/workspace-mode/useWorkspacePermissionAdapter'
+
+const props = defineProps<{
+  permissions: WorkspacePermissions
+}>()
 
 const emit = defineEmits<{
   action: [name: PgnWorkspaceAction]
@@ -15,12 +20,19 @@ const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
 const analysis = useAnalysisStore()
 
-const panes: ProductTabPaneDef[] = [
-  { name: 'notation', tab: '棋谱' },
-  { name: 'comments', tab: '批注' },
-  { name: 'annotations', tab: '标注' },
-  { name: 'analysis', tab: '分析' },
-]
+const panes = computed<ProductTabPaneDef[]>(() => {
+  const result: ProductTabPaneDef[] = [{ name: 'notation', tab: '棋谱' }]
+  if (props.permissions.canShowComments) {
+    result.push({ name: 'comments', tab: '批注' })
+  }
+  if (props.permissions.canShowAnnotations) {
+    result.push({ name: 'annotations', tab: '标注' })
+  }
+  if (props.permissions.canShowAnalysisPanel) {
+    result.push({ name: 'analysis', tab: '分析' })
+  }
+  return result
+})
 
 const currentComments = computed(() => pgn.currentAnnotation?.plainComments ?? [])
 const currentSystemTexts = computed(() => pgn.currentAnnotation?.systemTexts ?? [])
@@ -109,18 +121,8 @@ const analysisScore = computed(() => {
             <dd>{{ analysis.phase }}</dd>
             <dt>评估</dt>
             <dd>{{ analysisScore }}</dd>
-            <dt>最佳</dt>
+            <dt>最佳着法</dt>
             <dd>{{ analysis.current?.bestMove || '—' }}</dd>
-            <dt>运行方式</dt>
-            <dd>
-              {{
-                analysis.workerMode === 'worker'
-                  ? '后台并行'
-                  : analysis.workerMode === 'main-thread-fallback'
-                    ? '主线程后备'
-                    : '未初始化'
-              }}
-            </dd>
           </dl>
         </section>
       </template>
