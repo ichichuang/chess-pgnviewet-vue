@@ -35,7 +35,7 @@ The target is one Vue application and must not be converted into an artificial m
 
 ## Product delivery policy
 
-The current product-design status is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`; page work proceeds under `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`. `OD-01` through `OD-11` remain open and must not be converted into runtime defaults without owner resolution.
+The current product-design baseline is `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`; the completed page-design phase is `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`; the active implementation gate is `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`. `OD-01` through `OD-11` remain open and must not be converted into runtime defaults without owner resolution.
 
 No automated test files or automated test infrastructure may be created or retained. This includes Vitest, Vue Test Utils, jsdom as a test environment, Playwright, Cypress, Jest, Testing Library, test setup files, test fixtures, snapshots, coverage, automated E2E suites, and `test` package scripts. The absence of automated tests does not permit weakening type checking, production build validation, API contracts, security boundaries, real-browser runtime validation, accessibility, token, focus, reduced-motion, or scroll-ownership requirements.
 

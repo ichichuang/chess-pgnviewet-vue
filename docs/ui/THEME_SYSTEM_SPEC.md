@@ -1,10 +1,12 @@
 # Theme System Specification
 
-| Field   | Value                                                       |
-| ------- | ----------------------------------------------------------- |
-| Version | 1.2.1                                                       |
-| Status  | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
-| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
+| Field                      | Value                                                                   |
+| -------------------------- | ----------------------------------------------------------------------- |
+| Version                    | 1.2.1                                                                   |
+| Status                     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                   |
+| Product baseline           | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                   |
+| Page-design gate           | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` (completed) |
+| Active implementation gate | `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`            |
 
 ## Purpose
 
@@ -91,6 +93,7 @@ Feature code must not create raw color values, parallel token registries, litera
   "version": "1.2.1",
   "status": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
   "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+  "active_implementation_gate": "PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION",
   "current_theme_modes": ["light", "dark", "system"],
   "current_storage": "localStorage:themeMode",
   "current_accent_selector": false,

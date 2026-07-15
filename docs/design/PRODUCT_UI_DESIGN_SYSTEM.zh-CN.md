@@ -1,13 +1,15 @@
 # 开赛了产品 UI 设计系统
 
-| 字段       | 值                                                        |
-| ---------- | --------------------------------------------------------- |
-| 设计方向   | 静稳棋室                                                  |
-| 文档状态   | ACTIVE_IMPLEMENTATION_AUTHORITY                           |
-| 产品状态   | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN       |
-| 页面门禁   | PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS |
-| Token 权威 | src/styles/tokens.css                                     |
-| 适用范围   | 全部产品页面、项目自有组件、棋盘、棋谱、分析与场外大屏    |
+| 字段         | 值                                                                  |
+| ------------ | ------------------------------------------------------------------- |
+| 设计方向     | 静稳棋室                                                            |
+| 文档状态     | ACTIVE_IMPLEMENTATION_AUTHORITY                                     |
+| 产品状态     | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN                 |
+| 产品基线     | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN                 |
+| 设计阶段门禁 | PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS（已完成） |
+| 当前实施门禁 | PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION          |
+| Token 权威   | src/styles/tokens.css                                               |
+| 适用范围     | 全部产品页面、项目自有组件、棋盘、棋谱、分析与场外大屏              |
 
 ## 1. 文档关系与使用顺序
 

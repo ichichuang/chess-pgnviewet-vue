@@ -2,17 +2,19 @@
 
 ## 1. 文档信息
 
-| 项目       | 内容                                                                                              |
-| ---------- | ------------------------------------------------------------------------------------------------- |
-| 名称       | 开赛了融合产品全量需求与中文设计蓝图                                                              |
-| 状态       | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                                             |
-| 版本       | 1.2.1                                                                                             |
-| 日期       | 2026-07-14                                                                                        |
-| 页面门禁   | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`                                       |
-| 适用项目   | `chess-pgnviewer-vue`                                                                             |
-| 目标读者   | 产品、设计、研发、教学、赛事运营、安全与验收人员                                                  |
-| 权威范围   | 产品定位、用户角色、产品模式、用户旅程、信息架构、产品级功能需求、页面职责、优先级与验收概念      |
-| 非目标范围 | API 字段与端点、认证协议、棋盘与 PGN 内核、AI Worker 实现、持久化安全细节、视觉逐页稿和运行时代码 |
+| 项目         | 内容                                                                                              |
+| ------------ | ------------------------------------------------------------------------------------------------- |
+| 名称         | 开赛了融合产品全量需求与中文设计蓝图                                                              |
+| 状态         | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                                             |
+| 版本         | 1.2.1                                                                                             |
+| 日期         | 2026-07-14                                                                                        |
+| 产品基线     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                                             |
+| 设计阶段门禁 | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS（已完成）`                             |
+| 当前实施门禁 | `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`                                      |
+| 适用项目     | `chess-pgnviewer-vue`                                                                             |
+| 目标读者     | 产品、设计、研发、教学、赛事运营、安全与验收人员                                                  |
+| 权威范围     | 产品定位、用户角色、产品模式、用户旅程、信息架构、产品级功能需求、页面职责、优先级与验收概念      |
+| 非目标范围   | API 字段与端点、认证协议、棋盘与 PGN 内核、AI Worker 实现、持久化安全细节、视觉逐页稿和运行时代码 |
 
 本文是产品设计主权威，但不覆盖已确认的 API、认证、持久化、棋盘、PGN、标注、AI Worker、Token 与架构边界。证据状态统一使用：**当前已实现**、**确认需求**、**合同阻断**、**待所有者确认**、**拒绝**。
 
@@ -466,7 +468,7 @@ flowchart TD
 
 逐页设计至少交付：页面责任与用户任务、当前/目标/合同阻断能力、信息层级、全部数据状态、桌面/平板/移动端/场外屏适配、滚动与焦点所有权、键盘和触控路径、减弱动效、持久化分类、真实 API 依赖、开放 OD 映射和窄浏览器验收路径。设计不得把概念角色写成已存在组件，也不得把推荐初值写成所有者已确认常量。
 
-当前门禁是 `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`。它允许逐页设计，不代表任何合同阻断能力或 `OD-01` 至 `OD-11` 已关闭。
+已完成的设计阶段门禁是 `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`。它代表逐页设计阶段已经完成，不代表任何合同阻断能力或 `OD-01` 至 `OD-11` 已关闭。当前活动实施门禁是 `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`。
 
 ## 42. 仍开放的所有者产品决策
 
@@ -595,4 +597,4 @@ flowchart TD
 
 视觉、交互和教学运行时以 `/Users/cc/Work/neobv/Chess/pgnViewer-new` 为主证据；`/Users/cc/Work/neobv/Chess/pgnViewer` 仅补充能力与历史 API/认证线索；当前产品、架构、安全和合同状态以本仓库权威文档与运行时为准；`chess-main-overseas` 仅作为 API/认证源权威，不复制实现或敏感数据。
 
-所有者原始需求稳定记录见 [产品所有者需求基线](./OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md)。全部需求、拒绝项、重复项、合同阻断和所有者决策见 [产品需求追踪矩阵](./PRODUCT_REQUIREMENT_TRACEABILITY.json)；模式能力见 [产品模式与能力矩阵](./PRODUCT_MODE_AND_CAPABILITY_MATRIX.json)；路由、区域和禁止重复表面见 [产品信息架构](./PRODUCT_INFORMATION_ARCHITECTURE.json)。任何后续实现必须从追踪项出发，先满足合同和验收概念，再进入页面级设计与运行时变更。当前页面设计门禁为 `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`。
+所有者原始需求稳定记录见 [产品所有者需求基线](./OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md)。全部需求、拒绝项、重复项、合同阻断和所有者决策见 [产品需求追踪矩阵](./PRODUCT_REQUIREMENT_TRACEABILITY.json)；模式能力见 [产品模式与能力矩阵](./PRODUCT_MODE_AND_CAPABILITY_MATRIX.json)；路由、区域和禁止重复表面见 [产品信息架构](./PRODUCT_INFORMATION_ARCHITECTURE.json)。任何后续实现必须从追踪项出发，先满足合同和验收概念，再进入页面级设计与运行时变更。已完成的设计阶段门禁为 `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`；当前活动实施门禁为 `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`。

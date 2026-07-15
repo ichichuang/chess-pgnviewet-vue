@@ -5,7 +5,9 @@
 | 产品         | 开赛了                                                                                 |
 | 设计方向     | `静稳棋室`                                                                             |
 | 产品状态     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                                  |
-| 页面门禁     | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS`                            |
+| 产品基线     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                                  |
+| 设计阶段门禁 | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS（已完成）`                  |
+| 当前实施门禁 | `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`                           |
 | 文档包状态   | `ACTIVE_IMPLEMENTATION_AUTHORITY`                                                      |
 | 最终门禁     | 仅当执行报告结论为 `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION` 时通过 |
 | 适用仓库基线 | `4f05f6dfff611420a66d799689a2d93e5dbf94e7`                                             |

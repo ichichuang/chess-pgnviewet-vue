@@ -1,13 +1,15 @@
 # 开赛了产品响应式规范
 
-| 字段       | 值                                                        |
-| ---------- | --------------------------------------------------------- |
-| 设计方向   | 静稳棋室                                                  |
-| 文档状态   | ACTIVE_IMPLEMENTATION_AUTHORITY                           |
-| 产品状态   | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN       |
-| 页面门禁   | PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS |
-| 响应式原则 | 棋盘与任务优先，区域重组而非复制页面                      |
-| 大屏原则   | 按可读性算法分页，不按像素密度塞满棋盘                    |
+| 字段         | 值                                                                  |
+| ------------ | ------------------------------------------------------------------- |
+| 设计方向     | 静稳棋室                                                            |
+| 文档状态     | ACTIVE_IMPLEMENTATION_AUTHORITY                                     |
+| 产品状态     | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN                 |
+| 产品基线     | COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN                 |
+| 设计阶段门禁 | PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS（已完成） |
+| 当前实施门禁 | PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION          |
+| 响应式原则   | 棋盘与任务优先，区域重组而非复制页面                                |
+| 大屏原则     | 按可读性算法分页，不按像素密度塞满棋盘                              |
 
 ## 1. 文档关系
 

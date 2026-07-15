@@ -1,13 +1,15 @@
 # 产品所有者需求基线
 
-| 项目     | 内容                                                        |
-| -------- | ----------------------------------------------------------- |
-| 权威标识 | `OWNER_REQUIREMENT_2026_07_14`                              |
-| 版本     | 1.2.1                                                       |
-| 状态     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
-| 页面门禁 | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
-| 日期     | 2026-07-14                                                  |
-| 作用     | 稳定记录形成产品蓝图的所有者原始需求与已解决的信息架构决定  |
+| 项目         | 内容                                                                  |
+| ------------ | --------------------------------------------------------------------- |
+| 权威标识     | `OWNER_REQUIREMENT_2026_07_14`                                        |
+| 版本         | 1.2.1                                                                 |
+| 状态         | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                 |
+| 产品基线     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                 |
+| 设计阶段门禁 | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS（已完成）` |
+| 当前实施门禁 | `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`          |
+| 日期         | 2026-07-14                                                            |
+| 作用         | 稳定记录形成产品蓝图的所有者原始需求与已解决的信息架构决定            |
 
 本文只保存可长期引用的产品需求，不保存临时会话、附件路径、账号、凭据或私有数据。产品定位、模式、旅程、页面职责和验收概念的主权威仍是 [《开赛了融合产品全量需求与中文设计蓝图》](./PRODUCT_DESIGN_BLUEPRINT.zh-CN.md)。
 

@@ -2,8 +2,9 @@
     "schemaVersion": 3,
     "status": "CURRENT",
     "effectiveDate": "2026-07-14",
-    "overall": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+    "overall": "PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION",
     "productDesignStatus": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
+    "pageDesignGate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
     "openOwnerDecisions": [
         "OD-01",
         "OD-02",

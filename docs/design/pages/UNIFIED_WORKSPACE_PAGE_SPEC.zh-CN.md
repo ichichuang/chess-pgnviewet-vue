@@ -1,16 +1,18 @@
 # 开赛了统一工作区页面规范
 
-| 字段        | 值                                                          |
-| ----------- | ----------------------------------------------------------- |
-| 页面责任    | 唯一棋盘中心的教学、讲解、回放与只读实时工作区              |
-| Router 路径 | `/`                                                         |
-| 部署 URL    | `/pgnViewer/`                                               |
-| 页面标题    | `统一工作区`                                                |
-| 浏览器标题  | `开赛了｜统一工作区`                                        |
-| 产品状态    | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
-| 页面门禁    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
-| 文档状态    | `ACTIVE_IMPLEMENTATION_AUTHORITY`                           |
-| 设计表面    | `WS-001` 至 `WS-012`、`RP-001`、`RP-002`                    |
+| 字段         | 值                                                                    |
+| ------------ | --------------------------------------------------------------------- |
+| 页面责任     | 唯一棋盘中心的教学、讲解、回放与只读实时工作区                        |
+| Router 路径  | `/`                                                                   |
+| 部署 URL     | `/pgnViewer/`                                                         |
+| 页面标题     | `统一工作区`                                                          |
+| 浏览器标题   | `开赛了｜统一工作区`                                                  |
+| 产品状态     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                 |
+| 产品基线     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                 |
+| 设计阶段门禁 | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS（已完成）` |
+| 当前实施门禁 | `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`          |
+| 文档状态     | `ACTIVE_IMPLEMENTATION_AUTHORITY`                                     |
+| 设计表面     | `WS-001` 至 `WS-012`、`RP-001`、`RP-002`                              |
 
 ## 1. 文档责任与权威关系
 

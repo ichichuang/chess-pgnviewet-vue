@@ -1,10 +1,12 @@
 # Responsive Screen Specification
 
-| Field   | Value                                                       |
-| ------- | ----------------------------------------------------------- |
-| Version | 1.2.1                                                       |
-| Status  | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`       |
-| Gate    | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` |
+| Field                      | Value                                                                   |
+| -------------------------- | ----------------------------------------------------------------------- |
+| Version                    | 1.2.1                                                                   |
+| Status                     | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                   |
+| Product baseline           | `COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN`                   |
+| Page-design gate           | `PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS` (completed) |
+| Active implementation gate | `PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION`            |
 
 ## Purpose
 
@@ -89,6 +91,7 @@ The current route renders public pairing information. Multi-board live positions
   "version": "1.2.1",
   "status": "COMPLETE_PRODUCT_DESIGN_FINAL_READY_FOR_PAGE_DESIGN",
   "page_design_gate": "PAGE_BY_PAGE_UI_DESIGN_READY_WITH_TRACKED_OWNER_DECISIONS",
+  "active_implementation_gate": "PRODUCT_PAGE_DESIGN_DOCUMENTATION_READY_FOR_IMPLEMENTATION",
   "contexts": ["mobile", "tablet", "laptop_desktop", "venue_display"],
   "board_sizing": "min_available_dimension_minus_required_gutters",
   "fixed_board_minimums_approved": false,
