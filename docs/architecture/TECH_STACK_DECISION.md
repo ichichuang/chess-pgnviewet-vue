@@ -65,6 +65,14 @@ The current ecosystem-compatible graph is recorded in `docs/migration/DEPENDENCY
 
 The current stable Vue tooling cannot consume the TypeScript compatibility shim. The toolchain therefore uses official `typescript 6.0.3` with `vue-tsc 3.3.7`. Do not resolve later TypeScript 7 adoption by patching package exports, editing `node_modules`, bypassing `vue-tsc`, or adding a custom compiler wrapper.
 
+## Dependency ownership admission gate
+
+Every direct dependency declared in `package.json` must have a corresponding entry in `docs/architecture/DEPENDENCY_OWNERSHIP_MATRIX.json` before it can be added or retained. An entry must declare the exact version, dependency class, approved responsibility, architecture owner, initialization/import owner, primary paths, why the existing platform/API cannot replace it, duplicate-capability assessment, security/privacy implications, validation command, upgrade trigger, removal condition, and status.
+
+The matrix is an active authority. A dependency is initialized only by its documented owner and accepted architecture contract. No package may be introduced solely because it is the newest stable release; it must also have an owner, a bounded responsibility, and an approved removal condition.
+
+Conditional or gated technologies (for example, `vue-i18n`, an MQTT/WebSocket/SSE client, a virtualization library, or a drag-and-drop library) are recorded in the matrix as absent and blocked. They may be added only after their prerequisite authority file exists and the ownership matrix is updated.
+
 ## Constraints
 
 - No React, React Router, TanStack Router, Zustand, XState, React Aria, Radix React, micro-frontends, iframes, or Web Component framework bridges.
@@ -72,7 +80,10 @@ The current stable Vue tooling cannot consume the TypeScript compatibility shim.
 - Naive UI is never the product token authority and is consumed only through project adapters.
 - No runtime mocks, product fixtures, fake APIs, sample tournaments, sample replay, fake live messages, fake AI output, or silent fallback success states.
 - A dependency is initialized only by an implemented owner and accepted architecture contract.
+- A dependency may not be added or retained without an entry in `docs/architecture/DEPENDENCY_OWNERSHIP_MATRIX.json` that includes an architecture owner, initialization/import owner, approved responsibility, and primary paths.
 
 ## Validation authority
 
 The minimum completion commands are `pnpm run typecheck` and `pnpm run build`, followed by one narrow real-browser runtime check for rendered changes. `pnpm test` must not exist and must not be run. Browser validation must inspect the intended route, nonblank DOM, no Vite error overlay, no console-breaking errors, and a real user interaction state change when the slice includes interaction.
+
+`pnpm run check:deps` enforces the dependency ownership matrix and conditional-package gate.

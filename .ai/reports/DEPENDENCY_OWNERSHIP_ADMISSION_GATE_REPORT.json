@@ -1,0 +1,157 @@
+{
+  "reportType": "DEPENDENCY_OWNERSHIP_ADMISSION_GATE",
+  "status": "PASS",
+  "finalVerdict": "DEPENDENCY_OWNERSHIP_ADMISSION_GATE_PASS",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "generatedAt": "2026-07-15T17:55:00+08:00",
+  "matrix": {
+    "path": "docs/architecture/DEPENDENCY_OWNERSHIP_MATRIX.json",
+    "schemaVersion": 1,
+    "totalPackages": 30,
+    "statusSummary": {
+      "ACTIVE_OWNED": 10,
+      "TOOLING_OWNED": 17,
+      "COMPATIBILITY_EXCEPTION": 1,
+      "DEPRECATION_CANDIDATE": 2,
+      "UNOWNED_BLOCKED": 0
+    },
+    "conditionalGatedCount": 4
+  },
+  "probes": {
+    "description": "Positive and negative dependency-policy probes executed in an OS temporary workspace",
+    "results": [
+      {
+        "name": "clean positive",
+        "expected": "dependency-policy: PASS",
+        "observed": "dependency-policy: PASS",
+        "status": "PASS"
+      },
+      {
+        "name": "unregistered package",
+        "fault": "added lodash to dependencies",
+        "expectedRule": "DEP_PACKAGE_NOT_IN_MATRIX",
+        "observed": "DEP_PACKAGE_NOT_IN_MATRIX emitted",
+        "status": "PASS"
+      },
+      {
+        "name": "version mismatch",
+        "fault": "set axios to 1.18.0 while matrix records 1.18.1",
+        "expectedRule": "DEP_MATRIX_VERSION_MISMATCH",
+        "observed": "DEP_MATRIX_VERSION_MISMATCH emitted",
+        "status": "PASS"
+      },
+      {
+        "name": "missing owner",
+        "fault": "blanked vue.architectureOwner in matrix",
+        "expectedRule": "DEP_MATRIX_ENTRY_MISSING_OWNER",
+        "observed": "DEP_MATRIX_ENTRY_MISSING_OWNER emitted",
+        "status": "PASS"
+      },
+      {
+        "name": "forbidden package",
+        "fault": "added react to dependencies",
+        "expectedRule": "DEP_FORBIDDEN_DIRECT_DEPENDENCY",
+        "observed": "DEP_FORBIDDEN_DIRECT_DEPENDENCY and DEP_FORBIDDEN_FRAMEWORK_DUPLICATE_CAPABILITY emitted",
+        "status": "PASS"
+      },
+      {
+        "name": "unauthorized conditional package",
+        "fault": "added vue-i18n to dependencies without prerequisite authority file",
+        "expectedRule": "DEP_CONDITIONAL_PACKAGE_UNAUTHORIZED",
+        "observed": "DEP_CONDITIONAL_PACKAGE_UNAUTHORIZED emitted",
+        "status": "PASS"
+      }
+    ],
+    "passed": 6,
+    "failed": 0
+  },
+  "validationResults": [
+    {
+      "command": "node scripts/governance/check-dependency-policy.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "Clean positive probe on the real repository"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "All project scanners passed"
+    },
+    {
+      "command": "pnpm run format:check",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "All matched files use Prettier code style"
+    },
+    {
+      "command": "pnpm run lint",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "ESLint passed with no warnings"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "Stylelint passed"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "Knip reported no unused files, exports, or dependencies"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "vue-tsc --noEmit passed"
+    },
+    {
+      "command": "pnpm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "Production build completed; chunk-size warnings are pre-existing and not admission-gate failures"
+    },
+    {
+      "command": "pnpm run audit:prod",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "No known production vulnerabilities found"
+    },
+    {
+      "command": "pnpm audit",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "Registry request retried after ECONNRESET; no known vulnerabilities found"
+    },
+    {
+      "command": "pnpm list --depth 0",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "30 top-level packages match package.json"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS",
+      "exitCode": 0,
+      "notes": "No whitespace errors"
+    }
+  ],
+  "changes": {
+    "created": [
+      "docs/architecture/DEPENDENCY_OWNERSHIP_MATRIX.json",
+      ".ai/reports/DEPENDENCY_OWNERSHIP_ADMISSION_GATE_REPORT.json"
+    ],
+    "modified": [
+      "docs/architecture/TECH_STACK_DECISION.md",
+      "docs/migration/DEPENDENCY_VERSION_BASELINE.json",
+      "scripts/governance/check-dependency-policy.mjs",
+      "scripts/governance/policy.mjs"
+    ],
+    "packageVersionsChanged": false,
+    "lockfileChanged": false
+  }
+}

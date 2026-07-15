@@ -343,3 +343,102 @@ export const userVisibleCopyPolicy = {
   ],
   approvedNormalProductCopy: [],
 }
+
+export const dependencyOwnershipMatrixPath = 'docs/architecture/DEPENDENCY_OWNERSHIP_MATRIX.json'
+
+export const dependencyOwnershipSchemaVersion = 1
+
+export const dependencyOwnershipRequiredFields = [
+  'package',
+  'version',
+  'dependencyClass',
+  'approvedResponsibility',
+  'architectureOwner',
+  'initializationImportOwner',
+  'primaryPaths',
+  'whyExistingPlatformCannotReplaceIt',
+  'duplicateCapabilityAssessment',
+  'securityPrivacyImplications',
+  'validationCommand',
+  'upgradeTrigger',
+  'removalCondition',
+  'status',
+]
+
+export const allowedOwnershipStatuses = [
+  'ACTIVE_OWNED',
+  'TOOLING_OWNED',
+  'COMPATIBILITY_EXCEPTION',
+  'DEPRECATION_CANDIDATE',
+  'UNOWNED_BLOCKED',
+]
+
+export const allowedDependencyClasses = [
+  'runtime',
+  'build',
+  'typecheck',
+  'lint',
+  'format',
+  'cssValidation',
+  'aggregate',
+  'types',
+]
+
+export const conditionalGatedPackages = [
+  {
+    name: 'vue-i18n',
+    prerequisiteAuthority: 'docs/product/I18N_AUTHORITY.md',
+    rationale: 'Internationalization is gated until product authority explicitly authorizes it.',
+  },
+  {
+    name: 'mqtt',
+    prerequisiteAuthority: 'docs/architecture/REALTIME_TRANSPORT_ADR.md',
+    rationale: 'MQTT client is gated until a real-time transport ADR is approved.',
+  },
+  {
+    name: 'socket.io-client',
+    prerequisiteAuthority: 'docs/architecture/REALTIME_TRANSPORT_ADR.md',
+    rationale: 'WebSocket client is gated until a real-time transport ADR is approved.',
+  },
+  {
+    name: 'eventsource',
+    prerequisiteAuthority: 'docs/architecture/REALTIME_TRANSPORT_ADR.md',
+    rationale: 'SSE client is gated until a real-time transport ADR is approved.',
+  },
+  {
+    name: '@tanstack/vue-virtual',
+    prerequisiteAuthority: 'docs/architecture/VIRTUALIZATION_ADR.md',
+    rationale:
+      'Virtualization library is gated until an approved ADR identifies a list rendering requirement that cannot be met by CSS or project-owned logic.',
+  },
+  {
+    name: 'vue-virtual-scroller',
+    prerequisiteAuthority: 'docs/architecture/VIRTUALIZATION_ADR.md',
+    rationale:
+      'Virtualization library is gated until an approved ADR identifies a list rendering requirement that cannot be met by CSS or project-owned logic.',
+  },
+  {
+    name: 'vuedraggable',
+    prerequisiteAuthority: 'docs/architecture/DRAG_DROP_ADR.md',
+    rationale:
+      'Drag-and-drop library is gated until an approved ADR identifies a requirement that cannot be met by native HTML5 drag events or Pointer Events.',
+  },
+  {
+    name: 'vue-draggable-next',
+    prerequisiteAuthority: 'docs/architecture/DRAG_DROP_ADR.md',
+    rationale:
+      'Drag-and-drop library is gated until an approved ADR identifies a requirement that cannot be met by native HTML5 drag events or Pointer Events.',
+  },
+]
+
+const duplicateCapabilityMap = {
+  vue: ['react', 'react-dom', 'preact', 'solid-js', 'svelte'],
+  'vue-router': ['react-router', '@tanstack/react-router', '@tanstack/vue-router'],
+  pinia: ['zustand', 'xstate', '@reduxjs/toolkit', 'redux'],
+  '@tanstack/vue-query': ['@tanstack/react-query', 'swr', 'react-query'],
+  axios: ['undici'],
+  'naive-ui': ['element-plus', 'ant-design-vue', 'quasar'],
+  'chess.js': ['chessground'],
+}
+
+export const duplicateCapabilityAlternatives = Object.values(duplicateCapabilityMap).flat()

@@ -1,7 +1,7 @@
 {
     "schemaVersion": 3,
     "status": "CURRENT_ECOSYSTEM_COMPATIBLE_GRAPH",
-    "effectiveDate": "2026-07-14",
+    "effectiveDate": "2026-07-15",
     "packageManager": "pnpm@11.11.0",
     "node": "26.5.0",
     "policy": "Use the newest stable complete ecosystem-compatible dependency graph. Independent package maxima do not override verified framework-tooling compatibility. Automated-test infrastructure is absent by owner policy; validation uses static governance, typecheck, production build, audits, and narrow real-browser evidence.",
@@ -58,10 +58,17 @@
         ],
         "runtimeArchitectureImpact": "The policy does not alter the selected Vue runtime architecture."
     },
+    "ownershipEvidence": {
+        "matrix": "docs/architecture/DEPENDENCY_OWNERSHIP_MATRIX.json",
+        "status": "OWNERSHIP_MATRIX_ACTIVE",
+        "coverage": "All 30 top-level dependencies and 4 conditional gated technologies are documented.",
+        "authority": "docs/architecture/TECH_STACK_DECISION.md"
+    },
     "authoritativeFiles": [
         "package.json",
         "pnpm-lock.yaml",
         ".mise.toml",
-        "docs/architecture/TECH_STACK_DECISION.md"
+        "docs/architecture/TECH_STACK_DECISION.md",
+        "docs/architecture/DEPENDENCY_OWNERSHIP_MATRIX.json"
     ]
 }
