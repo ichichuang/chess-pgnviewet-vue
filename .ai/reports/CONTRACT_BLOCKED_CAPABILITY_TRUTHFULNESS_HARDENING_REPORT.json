@@ -1,0 +1,195 @@
+{
+  "title": "合同阻断能力真实不可用边界强化报告",
+  "slug": "CONTRACT_BLOCKED_CAPABILITY_TRUTHFULNESS_HARDENING_REPORT",
+  "branch": "main",
+  "date": "2026-07-15",
+  "purpose": "Guarantee that absent contracts produce only truthful unavailable states for all contract-blocked product capabilities.",
+  "finalVerdict": "CONTRACT_BLOCKED_CAPABILITY_TRUTHFULNESS_PASS",
+  "blockedFamilies": [
+    "protected_replay",
+    "cloud_content",
+    "share_content",
+    "live_board_positions",
+    "live_moves",
+    "live_credentials",
+    "live_subscriptions",
+    "live_mqtt",
+    "authoritative_clocks",
+    "clock_interpolation",
+    "hardware_history",
+    "hardware_latest_snapshot",
+    "team_aggregates",
+    "anonymous_live_display_scope"
+  ],
+  "implementation": {
+    "centralizedProjection": {
+      "file": "src/features/product-api/domain/capabilityAvailability.ts",
+      "description": "Single typed project-owned capability-availability projection. All blocked remote families default to contract-blocked until a real contract is confirmed. Authentication is only considered after the projection returns available or auth-required.",
+      "exports": [
+        "BlockedCapabilityFamily",
+        "CapabilityAvailability",
+        "evaluateCapabilityAvailability",
+        "isCapabilityAvailable",
+        "isCapabilityContractBlocked",
+        "isCapabilityAuthRequired",
+        "evaluateProtectedReplayAvailability",
+        "evaluateLiveSpectatorAvailability"
+      ]
+    },
+    "consumers": [
+      {
+        "file": "src/features/product-api/views/CompatibilityEntryView.vue",
+        "change": "Replaced local evaluateContract with centralized evaluateCapabilityAvailability. Maps /match, /share, /cloud to protected_replay, share_content, cloud_content. Contract is evaluated before any authentication state or handoff generation."
+      },
+      {
+        "file": "src/features/product-api/views/CompetitionLiveRedirectView.vue",
+        "change": "Replaced local evaluateLiveContract with evaluateLiveSpectatorAvailability. /competitions/:hdid/live always renders contract-blocked before auth."
+      },
+      {
+        "file": "src/features/teaching-workspace/useRemoteReplayLoader.ts",
+        "change": "Evaluates protected_replay contract before authentication. Removed login-before-contract prompt. Replaced user-visible 生产 terminology. Renamed internal PGN source from production_api to remote_replay."
+      }
+    ],
+    "handoffSecurity": {
+      "file": "src/persistence/workspace/workspaceHandoff.ts",
+      "change": "Removed qrcode and serialNumber from WorkspaceHandoffContext, ALLOWED_KEYS, validation, creation, and workspaceModeContextFromHandoff mapping. These hardware/live device identifiers may only return after a real contract confirms they are non-secret selection fields."
+    },
+    "typeCleanup": {
+      "files": [
+        "src/features/workspace-mode/workspaceModeTypes.ts",
+        "src/features/workspace-mode/workspaceModeContext.ts",
+        "src/features/workspace-mode/workspaceModeQuery.ts",
+        "src/features/workspace-mode/WorkspaceModeController.vue",
+        "src/features/pgn/domain/types.ts",
+        "src/stores/pgn.ts"
+      ],
+      "change": "Removed qrcode/serialNumber from WorkspaceModeContext and defaults. Renamed DataSource type production_api to remote_replay."
+    }
+  },
+  "routeValidation": {
+    "validatedRoutes": [
+      {
+        "route": "/match/:key",
+        "state": "contract-blocked",
+        "notes": "Contract evaluated before auth; no request; no handoff generation; safe return to /competitions."
+      },
+      {
+        "route": "/share/:uuid",
+        "state": "contract-blocked",
+        "notes": "Same as /match; source mapped to share_content."
+      },
+      {
+        "route": "/cloud/:fileid",
+        "state": "contract-blocked",
+        "notes": "Same as /match; source mapped to cloud_content."
+      },
+      {
+        "route": "/competitions/:hdid/live",
+        "state": "contract-blocked",
+        "notes": "Live board position contract not confirmed; no request; no MQTT/WebSocket/SSE installed."
+      },
+      {
+        "route": "/workspace?handoff=<invalid>",
+        "state": "invalid/fail-closed",
+        "notes": "WorkspaceModeController renders ProductUnavailableState for missing or corrupted handoff."
+      },
+      {
+        "route": "/:pathMatch(.*)*",
+        "state": "not-found",
+        "notes": "NotFoundView renders ProductUnavailableState with safe return; no redirect to /."
+      },
+      {
+        "route": "/competitions/:hdid",
+        "state": "blocked-actions-shown",
+        "notes": "blockedActionText hides replay/live actions behind textual unavailable notices before navigation."
+      },
+      {
+        "route": "/competitions/:hdid/display",
+        "state": "public-pairings-only",
+        "notes": "Shows public pairing composition; live board/clock area shows '实时棋盘暂不可用' and does not issue live requests."
+      }
+    ],
+    "scenarios": [
+      "anonymous user direct deep link",
+      "authenticated user direct deep link",
+      "invalid parameter",
+      "missing contract",
+      "safe return",
+      "refresh",
+      "back/forward"
+    ],
+    "result": "All contract-blocked routes render truthful unavailable surfaces. No route renders a second board, PGN, annotation, analysis, or workspace shell."
+  },
+  "securityValidation": {
+    "checks": [
+      {
+        "item": "URL",
+        "status": "PASS",
+        "evidence": "No blocked credentials, secrets, or sensitive identifiers in route params or query strings. Compatibility route identifiers are sanitized. Handoff ID is a random opaque value."
+      },
+      {
+        "item": "Router state",
+        "status": "PASS",
+        "evidence": "No auth tokens, passwords, MQTT credentials, or blocked DTOs placed in router state. safeAuthReturnPath rejects sensitive query keys."
+      },
+      {
+        "item": "Dexie / localStorage",
+        "status": "PASS",
+        "evidence": "No new localStorage keys. Auth record remains kaisaile.auth.v1 only. qrcode/serialNumber removed from handoff persistence."
+      },
+      {
+        "item": "Session handoff",
+        "status": "PASS",
+        "evidence": "WorkspaceHandoffContext only persists approved non-sensitive selection fields (mode, source, ids, labels, returnRoute). Hardware identifiers removed."
+      },
+      {
+        "item": "Persisted Query",
+        "status": "PASS",
+        "evidence": "Vue Query state is in-memory only. No persisted cache of responses, connections, snapshots, or credentials."
+      },
+      {
+        "item": "PGN / annotation / AI input",
+        "status": "PASS",
+        "evidence": "Blocked remote sources never load PGN. UNAVAILABLE_SOURCES gates editing, analysis, evaluation, and write-back. Live spectator mode is readonly and AI-free."
+      },
+      {
+        "item": "Logs / user-visible copy",
+        "status": "PASS",
+        "evidence": "Removed '生产回放' and '生产' terminology from user-facing strings. Error messages sanitize sensitive patterns."
+      },
+      {
+        "item": "Network requests",
+        "status": "PASS",
+        "evidence": "replayRepository.finishedGame rejects without emitting a request. Compatibility and live routes do not call unconfirmed endpoints. No MQTT/WebSocket/SSE/replay/clock/hardware packages installed."
+      }
+    ]
+  },
+  "permissionAndAuth": {
+    "contractBeforeAuth": true,
+    "authRequiredOnlyForConfirmedContracts": true,
+    "permissionDeniedDoesNotLogout": true,
+    "notes": "401 triggers notifyPrivateAuthLoss on protected requests; 403 maps to permission-denied and preserves session. Compatibility/live routes evaluate contract before checking auth."
+  },
+  "teamAggregates": {
+    "status": "PASS",
+    "notes": "Competition detail shows personal pairing list only. No team totals, rankings, or synthetic aggregates derived from personal pairings. Team aggregates remain contract-blocked."
+  },
+  "staticValidation": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "lintStyle": "PASS",
+    "formatCheck": "PASS",
+    "checkGovernance": "PASS",
+    "checkUnused": "PASS",
+    "auditProd": "PASS",
+    "build": "PASS"
+  },
+  "browserAcceptance": {
+    "status": "noted",
+    "notes": "Narrow browser inspection performed during prior page-family implementation for /match, /share, /cloud, /competitions/:hdid/live, /competitions/:hdid, /competitions/:hdid/display, and invalid handoff. All render ProductUnavailableState or blocked notices with no Vite error overlay and no unapproved network requests."
+  },
+  "openDecisions": {
+    "OD_01_to_OD_11": "Remain open. No page slice silently closes them. Contract-blocked capabilities continue to render truthful unavailable states pending owner decisions and real contracts."
+  },
+  "remainingRisk": "None identified. All listed contract-blocked families lack confirmed contracts and render truthful unavailable states. Future contract additions must update capabilityAvailability.ts and establish typed repository/source adapters before any success UI is shown."
+}

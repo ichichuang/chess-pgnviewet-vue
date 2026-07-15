@@ -3,6 +3,11 @@ import { computed, onBeforeUnmount, ref, watch, type ComputedRef } from 'vue'
 import { apiErrorMessage } from '@/api/client'
 import { replayRepository } from '@/api/productApi'
 import { privateQueryMeta, productQueryKeys, queryClient } from '@/api/queryClient'
+import {
+  evaluateProtectedReplayAvailability,
+  isCapabilityAuthRequired,
+  isCapabilityAvailable,
+} from '@/features/product-api/domain/capabilityAvailability'
 import type { WorkspaceModeContext } from '@/features/workspace-mode/workspaceModeTypes'
 import { useAuthStore, usePgnStore } from '@/stores'
 
@@ -25,6 +30,12 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
     }
   }
 
+  function setUnavailable(text: string): void {
+    status.value = 'unavailable'
+    message.value = text
+    loadedKey = ''
+  }
+
   watch(
     () => [context.value, auth.isAuthenticated] as const,
     async ([value]) => {
@@ -35,16 +46,12 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
         value.mode === 'analysis' &&
         (value.source === 'backend_handoff_pgn' || value.source === 'cloud_pgn')
       ) {
-        status.value = 'unavailable'
-        message.value = '兼容入口已进入工作区，当前未返回可加载棋谱。'
-        loadedKey = ''
+        setUnavailable('兼容入口已进入工作区，当前未返回可加载棋谱。')
         return
       }
 
       if (value.mode === 'live_spectator') {
-        status.value = 'unavailable'
-        message.value = '实时内容暂不可用，当前工作区保持只读。'
-        loadedKey = ''
+        setUnavailable('实时内容暂不可用，当前工作区保持只读。')
         return
       }
 
@@ -56,17 +63,22 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
       }
 
       if (!value.gameId) {
-        status.value = 'unavailable'
-        message.value = '回放入口缺少对局标识。'
-        loadedKey = ''
+        setUnavailable('回放入口缺少对局标识。')
         return
       }
 
-      if (!auth.isAuthenticated) {
+      // 合同优先：只有已确认的回放合同才允许进入后续流程。
+      const availability = evaluateProtectedReplayAvailability()
+
+      if (!isCapabilityAvailable(availability) && !isCapabilityAuthRequired(availability)) {
+        setUnavailable('回放暂不可用，当前不会发起请求。')
+        return
+      }
+
+      // 即使合同确认后要求登录，也在合同判断之后处理；不会先提示登录再检查合同。
+      if (isCapabilityAuthRequired(availability) && !auth.isAuthenticated) {
         pgn.clearPrivateReplay()
-        status.value = 'unavailable'
-        message.value = '请先登录后打开回放。'
-        loadedKey = ''
+        setUnavailable('回放暂不可用，登录后若合同已确认可再次尝试。')
         return
       }
 
@@ -80,7 +92,7 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
       const queryKey = productQueryKeys.finishedReplay(key)
       activeQueryKey = queryKey
       status.value = 'loading'
-      message.value = '正在加载生产回放。'
+      message.value = '正在加载回放。'
 
       try {
         const replay = await queryClient.fetchQuery({
@@ -90,13 +102,13 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
         })
         if (activeQueryKey !== queryKey) return
         const ok = pgn.openText(replay.pgnText, {
-          type: 'production_api',
+          type: 'remote_replay',
           filename: `${replay.gameId}.pgn`,
         })
 
         if (!ok) {
           status.value = 'error'
-          message.value = pgn.lastError ?? '生产回放无法解析为 PGN。'
+          message.value = pgn.lastError ?? '回放无法解析为 PGN。'
           loadedKey = ''
           return
         }

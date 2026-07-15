@@ -14,8 +14,6 @@ function createDefaultLocalContext(): WorkspaceModeContext {
     groupId: '',
     roundId: '',
     boardId: '',
-    qrcode: '',
-    serialNumber: '',
     gameId: '',
     matchId: '',
     view: '',

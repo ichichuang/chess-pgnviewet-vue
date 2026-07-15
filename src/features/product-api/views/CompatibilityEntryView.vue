@@ -2,6 +2,13 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import {
+  evaluateCapabilityAvailability,
+  isCapabilityAuthRequired,
+  isCapabilityAvailable,
+  isCapabilityContractBlocked,
+  type BlockedCapabilityFamily,
+} from '@/features/product-api/domain/capabilityAvailability'
 import { ProductRouteShell, ProductUnavailableState } from '@/ui'
 import { isSafeWorkspaceIdentifier } from '@/persistence/workspace/workspaceHandoff'
 import { loginRouteFor } from '@/router'
@@ -19,6 +26,7 @@ interface EntryDefinition {
   resourceName: string
   mode: 'replay' | 'analysis'
   source: 'replay_only' | 'cloud_pgn' | 'backend_handoff_pgn'
+  family: BlockedCapabilityFamily
 }
 
 const route = useRoute()
@@ -36,6 +44,7 @@ const definition = computed<EntryDefinition>(() => {
       resourceName: '回放',
       mode: 'replay',
       source: 'replay_only',
+      family: 'protected_replay',
     }
   }
 
@@ -45,6 +54,7 @@ const definition = computed<EntryDefinition>(() => {
       resourceName: '分享内容',
       mode: 'analysis',
       source: 'backend_handoff_pgn',
+      family: 'share_content',
     }
   }
 
@@ -53,6 +63,7 @@ const definition = computed<EntryDefinition>(() => {
     resourceName: '云端棋谱',
     mode: 'analysis',
     source: 'cloud_pgn',
+    family: 'cloud_content',
   }
 })
 
@@ -94,38 +105,26 @@ onMounted(() => {
   identifier.value = typeof safeId === 'string' ? safeId.trim() : String(safeId).trim()
 
   // 合同优先：当前回放、分享、云端读取合同均未闭合，直接进入阻断状态。
-  // 未来合同确认后，在此处按 mode/source 校验会话与权限，再决定是否生成交接。
-  const contractStatus = evaluateContract(definition.value)
+  // 未来合同确认后，在此处按 family 校验会话与权限，再决定是否生成交接。
+  const availability = evaluateCapabilityAvailability(definition.value.family)
 
-  if (contractStatus.kind === 'contract-blocked') {
+  if (isCapabilityContractBlocked(availability)) {
     state.value = 'contract-blocked'
     return
   }
 
-  if (contractStatus.kind === 'proceed' && contractStatus.requiresAuth) {
+  if (isCapabilityAuthRequired(availability)) {
     state.value = 'auth-required'
+    return
+  }
+
+  if (isCapabilityAvailable(availability)) {
+    state.value = 'contract-blocked'
     return
   }
 
   state.value = 'contract-blocked'
 })
-
-interface ContractBlocked {
-  kind: 'contract-blocked'
-}
-
-interface ContractProceed {
-  kind: 'proceed'
-  requiresAuth: boolean
-}
-
-type ContractStatus = ContractBlocked | ContractProceed
-
-function evaluateContract(_entry: EntryDefinition): ContractStatus {
-  // 当前真实合同仅覆盖公开赛事列表/详情/登录；回放、分享、云端读取合同均未确认。
-  // 不发起试探请求，不诱导登录，不生成成功交接内容。
-  return { kind: 'contract-blocked' }
-}
 
 function handleLogin(): void {
   router.push(loginRouteFor(route.fullPath, 'required'))

@@ -231,7 +231,7 @@ export const usePgnStore = defineStore('pgn', {
 
   actions: {
     clearPrivateReplay(): void {
-      if (this.source.type !== 'production_api') return
+      if (this.source.type !== 'remote_replay') return
       this.$reset()
     },
     openText(text: string, source: DataSource = { type: 'FS' }): boolean {

@@ -19,8 +19,6 @@ export interface WorkspaceModeContext {
   groupId: string
   roundId: string
   boardId: string
-  qrcode: string
-  serialNumber: string
   gameId: string
   matchId: string
   view: string

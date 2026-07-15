@@ -14,8 +14,6 @@ function createDefaultWorkspaceModeContext(): WorkspaceModeContext {
     groupId: '',
     roundId: '',
     boardId: '',
-    qrcode: '',
-    serialNumber: '',
     gameId: '',
     matchId: '',
     view: '',

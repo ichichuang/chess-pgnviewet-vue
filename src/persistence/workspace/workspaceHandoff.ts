@@ -23,8 +23,6 @@ export interface WorkspaceHandoffContext {
   groupId: string
   roundId: string
   boardId: string
-  qrcode: string
-  serialNumber: string
   gameId: string
   matchId: string
   returnRoute?: string
@@ -62,8 +60,6 @@ const ALLOWED_KEYS = new Set([
   'groupId',
   'roundId',
   'boardId',
-  'qrcode',
-  'serialNumber',
   'gameId',
   'matchId',
   'returnRoute',
@@ -280,8 +276,6 @@ export function createWorkspaceHandoffContext(
     groupId: cleanText(input.groupId),
     roundId: cleanText(input.roundId),
     boardId: cleanText(input.boardId),
-    qrcode: cleanText(input.qrcode),
-    serialNumber: cleanText(input.serialNumber),
     gameId: cleanText(input.gameId),
     matchId: cleanText(input.matchId),
   }
@@ -324,8 +318,6 @@ function isValidWorkspaceHandoffContext(value: unknown): value is WorkspaceHando
     'groupId',
     'roundId',
     'boardId',
-    'qrcode',
-    'serialNumber',
     'gameId',
     'matchId',
   ] as const) {
@@ -461,8 +453,6 @@ export function workspaceModeContextFromHandoff(
     groupId: context.groupId,
     roundId: context.roundId,
     boardId: context.boardId,
-    qrcode: context.qrcode,
-    serialNumber: context.serialNumber,
     gameId: context.gameId,
     matchId: context.matchId,
     view: '',

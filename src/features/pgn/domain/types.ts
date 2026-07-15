@@ -1,6 +1,6 @@
 import type { BoardAnnotation } from '@/features/annotations/domain/annotationTypes'
 
-type DataSourceType = 'FS' | 'manual' | 'null' | 'production_api'
+type DataSourceType = 'FS' | 'manual' | 'null' | 'remote_replay'
 
 export interface DataSource {
   type: DataSourceType

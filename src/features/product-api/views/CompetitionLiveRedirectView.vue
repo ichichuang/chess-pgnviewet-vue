@@ -2,6 +2,12 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import {
+  evaluateLiveSpectatorAvailability,
+  isCapabilityAuthRequired,
+  isCapabilityAvailable,
+  isCapabilityContractBlocked,
+} from '@/features/product-api/domain/capabilityAvailability'
 import { ProductRouteShell, ProductUnavailableState } from '@/ui'
 import { isSafeWorkspaceIdentifier } from '@/persistence/workspace/workspaceHandoff'
 import { loginRouteFor } from '@/router'
@@ -62,36 +68,25 @@ onMounted(() => {
 
   // 合同优先：实时棋局的局面、订阅、时间和棋钟合同均未确认，直接进入阻断状态。
   // qrcode/sn 在真实合同确认其为非秘密选择字段前不读取、不保存。
-  const contractStatus = evaluateLiveContract()
+  const availability = evaluateLiveSpectatorAvailability()
 
-  if (contractStatus.kind === 'contract-blocked') {
+  if (isCapabilityContractBlocked(availability)) {
     state.value = 'contract-blocked'
     return
   }
 
-  if (contractStatus.kind === 'proceed' && contractStatus.requiresAuth) {
+  if (isCapabilityAuthRequired(availability)) {
     state.value = 'auth-required'
+    return
+  }
+
+  if (isCapabilityAvailable(availability)) {
+    state.value = 'contract-blocked'
     return
   }
 
   state.value = 'contract-blocked'
 })
-
-interface ContractBlocked {
-  kind: 'contract-blocked'
-}
-
-interface ContractProceed {
-  kind: 'proceed'
-  requiresAuth: boolean
-}
-
-type ContractStatus = ContractBlocked | ContractProceed
-
-function evaluateLiveContract(): ContractStatus {
-  // 当前真实合同未覆盖实时棋局；不发起试探请求，不诱导登录。
-  return { kind: 'contract-blocked' }
-}
 
 function handleLogin(): void {
   router.push(loginRouteFor(route.fullPath, 'required'))
