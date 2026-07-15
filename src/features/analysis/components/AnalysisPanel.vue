@@ -15,11 +15,11 @@ const statusText = computed(() => {
   }
 
   if (analysis.phase === 'initializing') {
-    return '初始化本地分析 Worker'
+    return '正在初始化本地分析'
   }
 
   if (analysis.phase === 'ready') {
-    return '分析 Worker 已就绪'
+    return '本地分析已就绪'
   }
 
   if (analysis.phase === 'analyzing') {
@@ -35,15 +35,15 @@ const statusText = computed(() => {
   }
 
   if (analysis.current) {
-    return `节点 ${analysis.current.nodeId} · ${analysis.current.positionId}`
+    return '当前局面分析完成'
   }
 
   return '等待当前节点'
 })
 
-const workerText = computed(() => {
+const runtimeText = computed(() => {
   if (analysis.workerMode === 'worker') {
-    return `Worker x ${analysis.workerCount}`
+    return `并行分析 × ${analysis.workerCount}`
   }
 
   if (analysis.workerMode === 'main-thread-fallback') {
@@ -183,12 +183,12 @@ onBeforeUnmount(() => {
     </header>
 
     <div class="analysis-meta" aria-label="分析运行时状态">
-      <span>{{ workerText }}</span>
+      <span>{{ runtimeText }}</span>
       <span
-        >请求 {{ analysis.current?.requestId ?? analysis.activeRequest?.requestId ?? '—' }}</span
+        >任务 {{ analysis.current?.requestId ?? analysis.activeRequest?.requestId ?? '—' }}</span
       >
       <span
-        >位置 {{ analysis.current?.positionId ?? analysis.activeRequest?.positionId ?? '—' }}</span
+        >节点 {{ analysis.current?.positionId ?? analysis.activeRequest?.positionId ?? '—' }}</span
       >
       <span>丢弃过期 {{ analysis.staleRejected }}</span>
     </div>
@@ -225,7 +225,7 @@ onBeforeUnmount(() => {
         <h3>主要变化</h3>
         <p v-if="analysis.current.pv">{{ analysis.current.pv }}</p>
         <p v-else>当前局面没有可显示变化。</p>
-        <small v-if="!analysis.current.pvLegal">PV 未通过当前局面合法性校验，已隐藏。</small>
+        <small v-if="!analysis.current.pvLegal">变化未通过当前局面合法性校验，已隐藏。</small>
       </section>
 
       <section class="analysis-section" aria-label="候选变化">

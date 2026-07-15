@@ -22,3 +22,4 @@ coverage/
 # pnpm-lock.yaml is generated and validated by pnpm plus lockfile governance, not Prettier.
 .ai/reports/
 pnpm-lock.yaml
+.playwright-cli/

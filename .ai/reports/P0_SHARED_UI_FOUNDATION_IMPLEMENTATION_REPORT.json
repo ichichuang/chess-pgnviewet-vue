@@ -1,0 +1,224 @@
+{
+  "reportType": "P0_SHARED_UI_FOUNDATION_IMPLEMENTATION_REPORT",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "baseCommit": "14517a29644bb6b08b90b2c79c515268bd635bf2",
+  "p0CorEntries": ["COR-011", "COR-012", "COR-013", "COR-015", "COR-020", "COR-021", "COR-025", "COR-027"],
+  "crossStageInspected": ["COR-028"],
+  "summary": {
+    "status": "CANDIDATE_EVIDENCE_RECORDED",
+    "note": "Static governance passes. Production build succeeds. Narrow browser validation completed for ProductRouteShell, login form controls, settings drawer, tab keyboard navigation, splitter keyboard control, confirmation dialog focus policy, and theme switching. No breaking console errors or Vite overlay observed. COR closure status remains owned by Direction 4; this report supplies candidate evidence only."
+  },
+  "corEvidence": {
+    "COR-011": {
+      "title": "Token 修复：缺失/无效语义 Token",
+      "files": ["src/styles/tokens.css"],
+      "changes": [
+        "Added --fs-md for medium heading scale.",
+        "Added --text-inverse mapped to --text-on-accent in both light and dark themes.",
+        "Added --focus-ring mapped to --border-focus.",
+        "Added --workspace-focus-ring-width and --workspace-focus-ring-offset.",
+        "Added route-shell geometry tokens: --route-header-min-h, --route-body-pad, --route-scroll-offset.",
+        "Removed invalid consumer --eval-advantage-line."
+      ],
+      "validation": [
+        "pnpm run check:tokens PASS",
+        "pnpm run lint:style PASS",
+        "Light/dark computed style inspected in browser: --focus-ring and --text-inverse resolve to concrete colors."
+      ]
+    },
+    "COR-012": {
+      "title": "共享 Token 整理与原始视觉值归一",
+      "files": ["src/styles/tokens.css", "src/ui/*.vue", "src/features/product-api/views/*.vue", "src/features/teaching-workspace/*.vue", "src/features/analysis/components/AnalysisPanel.vue"],
+      "changes": [
+        "All new project adapters consume tokens from src/styles/tokens.css only.",
+        "No new Token namespace introduced.",
+        "Replaced raw values in LoginView, route views, WorkspaceRightPanel, AnalysisPanel with token references where a stable semantic owner exists."
+      ],
+      "validation": [
+        "pnpm run check:tokens PASS",
+        "pnpm run check:static PASS"
+      ]
+    },
+    "COR-013": {
+      "title": "无障碍与键盘基础",
+      "files": ["src/ui/ProductTabs.vue", "src/ui/ProductButton.vue", "src/ui/ProductField.vue", "src/ui/ProductPasswordField.vue", "src/ui/ProductRouteShell.vue", "src/features/teaching-workspace/WorkspaceSplitter.vue", "src/features/teaching-workspace/useWorkspaceSplitter.ts", "src/features/product-api/views/LoginView.vue"],
+      "changes": [
+        "LoginView sets initial focus to account input on mount.",
+        "ProductTabs wraps NTabs in a focusable tablist and implements ArrowRight/ArrowDown, ArrowLeft/ArrowUp, Home, End navigation.",
+        "WorkspaceSplitter adds role=separator, aria-orientation, and keyboard support for ArrowUp/Down, Home, End, Escape with value restore.",
+        "ProductButton/ProductField/ProductPasswordField expose focus()/blur() for programmatic focus management.",
+        "ProductRouteShell adds skip link, route-title focus, and bounded scroll body."
+      ],
+      "validation": [
+        "Browser: login account field receives initial focus.",
+        "Browser: workspace tabs respond to ArrowRight/Left and Home/End.",
+        "Browser: splitter keyboard changes --workspace-right-pgn-h and Escape restores prior value.",
+        "Static: lint/style/typecheck PASS."
+      ]
+    },
+    "COR-015": {
+      "title": "RouteShell 滚动所有权",
+      "files": ["src/ui/ProductRouteShell.vue", "src/App.vue", "src/features/product-api/views/*.vue"],
+      "changes": [
+        "Implemented ProductRouteShell with dynamic viewport ownership, fixed header, flex-1 scroll body, skip target, and route-title focus.",
+        "Migrated CompetitionListView, CompetitionDetailView, CompetitionDisplayView, CompatibilityEntryView, CompetitionLiveRedirectView, and LoginView to ProductRouteShell.",
+        "App.vue keeps body as non-scrolling shell."
+      ],
+      "validation": [
+        "Browser: /pgnViewer/competitions renders inside ProductRouteShell; body scrollHeight == clientHeight (no body scroll).",
+        "Browser: product-route-body is overflow:auto and reaches scrollable state when zoom applied."
+      ]
+    },
+    "COR-020": {
+      "title": "破坏性确认对话框",
+      "files": ["src/ui/ProductConfirmDialog.vue", "src/ui/ProductDialog.vue", "src/ui/ProductButton.vue", "src/features/teaching-workspace/WorkspaceToolbar.vue"],
+      "changes": [
+        "Created ProductConfirmDialog with dangerous action not being initial focus; cancel button receives initial focus.",
+        "Implements Escape policy, busy protection, and return focus via Naive NModal trap-focus.",
+        "Integrated into WorkspaceToolbar for clear-annotation action."
+      ],
+      "validation": [
+        "Browser: dialog opened via component state; initial focus is cancel button, not dangerous clear button.",
+        "Browser: Escape closes dialog and returns focus to trigger.",
+        "Browser: confirm closes dialog and returns focus to trigger."
+      ]
+    },
+    "COR-021": {
+      "title": "产品术语清理",
+      "files": ["src/features/analysis/components/AnalysisPanel.vue", "src/features/teaching-workspace/WorkspaceRightPanel.vue"],
+      "changes": [
+        "Replaced Worker/requestId/positionId/internal hash terminology with product-facing terms: 初始化本地分析、本地分析已就绪、正在分析当前局面、并行分析、任务、节点、运行方式.",
+        "Removed Worker label from right-panel analysis tab."
+      ],
+      "validation": [
+        "Static: check:copy PASS.",
+        "Browser: workspace analysis panel displays product copy without Worker/request hash terms."
+      ]
+    },
+    "COR-025": {
+      "title": "组件边界整理",
+      "files": ["src/ui/*.vue", "src/features/product-api/views/*.vue", "src/features/teaching-workspace/*.vue"],
+      "changes": [
+        "Established project-owned adapters (Button, Field, PasswordField, Select, Tabs, Pagination, StateBanner, Dialog, ConfirmDialog, Drawer, Sheet, Popover, RouteShell) that accept typed props/emits and do not import stores/repositories/APIs.",
+        "Views and workspace shell consume adapters instead of Naive UI or raw HTML for shared controls.",
+        "No new duplicated PGN/board runtime introduced."
+      ],
+      "validation": [
+        "pnpm run check:architecture-boundaries PASS",
+        "pnpm run check:unused PASS",
+        "Import graph review: adapters do not import stores/api."
+      ]
+    },
+    "COR-027": {
+      "title": "Naive UI 项目适配层与主题 owner",
+      "files": ["src/app/providers/AppProviders.vue", "src/app/providers/naiveThemeOverrides.ts", "src/ui/*.vue"],
+      "changes": [
+        "Created full set of project UI adapters backed by Naive UI components.",
+        "Converted naiveThemeOverrides from static CSS-variable values to buildNaiveThemeOverrides() that resolves tokens from computed document style at runtime, rebuilding when theme changes.",
+        "Preserved single ConfigProvider/GlobalStyle owner."
+      ],
+      "validation": [
+        "Browser: light/dark/system theme toggled via settings drawer; Naive Input/Button/Select/Tabs render without color parse errors.",
+        "Static: typecheck/lint/style/format/knip PASS."
+      ]
+    }
+  },
+  "cor028Inspection": {
+    "title": "真实浏览器验收跨阶段门",
+    "status": "PARTIALLY_SATISFIED",
+    "evidence": [
+      "Executed narrow browser validation on /pgnViewer/competitions, /pgnViewer/login, and /pgnViewer/.",
+      "Verified non-empty DOM, no Vite error overlay, and only favicon 404 console error (non-breaking).",
+      "Verified keyboard Tab order reaches ProductRouteShell skip link, form controls, tabs, splitter, and dialog.",
+      "Verified a real state change (theme switch, tab switch, splitter resize, dialog open/close)."
+    ],
+    "remaining": [
+      "COR-028 formal closure requires each future page slice to record its own route-specific browser validation. This P0 report covers shared foundation routes only."
+    ]
+  },
+  "browserValidation": {
+    "routes": [
+      "/pgnViewer/competitions",
+      "/pgnViewer/login",
+      "/pgnViewer/"
+    ],
+    "checks": {
+      "ProductRouteShell": "Rendered on /competitions with skip link, header, and scroll body; no body scroll.",
+      "loginFormControls": "Account and password fields rendered via ProductField/ProductPasswordField; initial focus on account input; submit button via ProductButton.",
+      "settingsDrawer": "Opened from RouteHeader; focus trap moves to drawer; close returns focus to settings button; light/dark/system theme applied.",
+      "tabKeyboard": "Workspace right-panel ProductTabs reachable via Tab; ArrowRight/Left and Home/End switch active tab.",
+      "splitterKeyboard": "WorkspaceSplitter visible after enabling analysis; ArrowUp/Down, Home, End resize; Escape restores value.",
+      "confirmDialog": "Clear-annotation dialog initial focus on cancel; Escape/confirm close and return focus.",
+      "theme": "Light and dark themes applied; Naive UI components render without color parse errors.",
+      "zoom": "Zoom applied; body remains non-scrolling; product-route-body owns overflow.",
+      "viteOverlay": "None observed.",
+      "consoleErrors": "Only favicon.ico 404 (non-breaking); no breaking errors."
+    }
+  },
+  "staticValidation": {
+    "commands": [
+      "pnpm run check:governance PASS",
+      "pnpm run format:check PASS",
+      "pnpm run lint PASS",
+      "pnpm run lint:style PASS",
+      "pnpm run check:unused PASS",
+      "pnpm run check:static PASS",
+      "pnpm run typecheck PASS",
+      "pnpm run build PASS",
+      "pnpm run audit:prod PASS (No known vulnerabilities)",
+      "pnpm audit PASS (No known vulnerabilities)",
+      "git diff --check PASS"
+    ]
+  },
+  "filesChanged": {
+    "created": [
+      "src/ui/ProductButton.vue",
+      "src/ui/ProductConfirmDialog.vue",
+      "src/ui/ProductDialog.vue",
+      "src/ui/ProductDrawer.vue",
+      "src/ui/ProductField.vue",
+      "src/ui/ProductPagination.vue",
+      "src/ui/ProductPasswordField.vue",
+      "src/ui/ProductPopover.vue",
+      "src/ui/ProductRouteShell.vue",
+      "src/ui/ProductSelect.vue",
+      "src/ui/ProductSheet.vue",
+      "src/ui/ProductStateBanner.vue",
+      "src/ui/ProductTabs.vue",
+      ".ai/reports/P0_SHARED_UI_FOUNDATION_IMPLEMENTATION_REPORT.json"
+    ],
+    "deleted": [
+      "src/ui/ProductTabPane.vue"
+    ],
+    "modified": [
+      ".gitignore",
+      ".prettierignore",
+      "stylelint.config.mjs",
+      "knip.json",
+      "src/styles/tokens.css",
+      "src/ui/index.ts",
+      "src/app/providers/AppProviders.vue",
+      "src/app/providers/naiveThemeOverrides.ts",
+      "src/features/product-api/components/RouteHeader.vue",
+      "src/features/product-api/views/CompetitionListView.vue",
+      "src/features/product-api/views/CompetitionDetailView.vue",
+      "src/features/product-api/views/CompetitionDisplayView.vue",
+      "src/features/product-api/views/CompatibilityEntryView.vue",
+      "src/features/product-api/views/CompetitionLiveRedirectView.vue",
+      "src/features/product-api/views/LoginView.vue",
+      "src/features/teaching-workspace/TeachingWorkspace.vue",
+      "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+      "src/features/teaching-workspace/WorkspaceSplitter.vue",
+      "src/features/teaching-workspace/WorkspaceToolbar.vue",
+      "src/features/teaching-workspace/useWorkspaceSplitter.ts",
+      "src/features/analysis/components/AnalysisPanel.vue"
+    ]
+  },
+  "risksAndNextSteps": [
+    "ProductTabs keyboard handler is added to a wrapping div; future page-specific tab usage should verify roving focus expectations match design.",
+    "Naive UI dynamic theme overrides read computed style at render time; SSR-safe fallback is empty string, acceptable for this client-only app.",
+    "P1/P2 page slices still need to close their own COR items and record per-page browser evidence per COR-028.",
+    "Contract-blocked capabilities (live, replay, cloud, share, hardware, clock) remain blocked and display truthful unavailable states."
+  ]
+}

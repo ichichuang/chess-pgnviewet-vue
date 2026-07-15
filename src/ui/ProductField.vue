@@ -1,0 +1,98 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { NInput } from 'naive-ui'
+
+const props = defineProps<{
+  modelValue: string
+  label?: string
+  id?: string
+  type?: 'text' | 'password'
+  placeholder?: string
+  error?: string
+  disabled?: boolean
+  autocomplete?: string
+  inputMode?: string
+  enterkeyhint?: string
+  spellcheck?: boolean
+}>()
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string]
+  focus: []
+  blur: []
+}>()
+
+const inputRef = ref<InstanceType<typeof NInput> | null>(null)
+const inputId = computed(() => props.id ?? `pf-${Math.random().toString(36).slice(2, 9)}`)
+
+function nativeInput(): HTMLInputElement | null {
+  const el = inputRef.value?.$el
+  if (!(el instanceof HTMLElement)) return null
+  return el.querySelector('input') ?? null
+}
+
+function focus(): void {
+  nativeInput()?.focus()
+}
+
+function blur(): void {
+  nativeInput()?.blur()
+}
+
+defineExpose({ focus, blur })
+
+const inputProps = computed(() => {
+  const result: Record<string, unknown> = {
+    id: inputId.value,
+    value: props.modelValue,
+    type: props.type ?? 'text',
+    disabled: props.disabled ?? false,
+    'aria-invalid': props.error ? true : undefined,
+    'onUpdate:value': (value: string) => emit('update:modelValue', value),
+    onFocus: () => emit('focus'),
+    onBlur: () => emit('blur'),
+  }
+  if (props.placeholder !== undefined) result.placeholder = props.placeholder
+  if (props.autocomplete !== undefined) result.autocomplete = props.autocomplete
+  if (props.inputMode !== undefined) result.inputMode = props.inputMode
+  if (props.enterkeyhint !== undefined) result.enterkeyhint = props.enterkeyhint
+  if (props.spellcheck !== undefined) result.spellcheck = props.spellcheck
+  if (props.error) {
+    result.status = 'error'
+    result['aria-describedby'] = `${inputId.value}-error`
+  }
+  return result
+})
+</script>
+
+<template>
+  <div class="product-field">
+    <label v-if="label" class="field-label" :for="inputId">{{ label }}</label>
+    <NInput ref="inputRef" v-bind="inputProps">
+      <template v-if="$slots.suffix" #suffix>
+        <slot name="suffix" />
+      </template>
+    </NInput>
+    <p v-if="error" :id="`${inputId}-error`" class="field-error" role="alert">
+      {{ error }}
+    </p>
+  </div>
+</template>
+
+<style scoped>
+.product-field {
+  display: grid;
+  gap: var(--s-1);
+}
+
+.field-label {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.field-error {
+  margin: 0;
+  color: var(--danger);
+  font-size: var(--fs-sm);
+}
+</style>

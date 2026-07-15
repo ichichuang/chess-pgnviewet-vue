@@ -39,6 +39,7 @@ playwright-report/
 test-results/
 browser-profile/
 browser-data/
+.playwright-cli/
 
 # Local databases and secret-bearing key material
 *.sqlite

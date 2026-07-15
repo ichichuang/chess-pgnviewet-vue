@@ -20,6 +20,12 @@ export default {
       },
     ],
     'import-notation': 'string',
+    'selector-pseudo-class-no-unknown': [
+      true,
+      {
+        ignorePseudoClasses: ['deep', 'slotted', 'global'],
+      },
+    ],
   },
   overrides: [
     {

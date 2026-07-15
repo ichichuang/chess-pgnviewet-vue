@@ -2,6 +2,8 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useWorkspaceStore } from '@/stores'
 
+const KEYBOARD_STEP_PX = 20
+
 export function useWorkspaceSplitter() {
   const workspace = useWorkspaceStore()
   const rightStackEl = ref<HTMLElement | null>(null)
@@ -9,6 +11,7 @@ export function useWorkspaceSplitter() {
   let splitterPointerId: number | null = null
   let previousBodyCursor = ''
   let previousBodyUserSelect = ''
+  let splitterStartValue: number | null = null
 
   const rightStackStyle = computed<Record<string, string>>(() => {
     if (workspace.rightPgnHeightPx == null) {
@@ -63,6 +66,16 @@ export function useWorkspaceSplitter() {
     workspace.setRightPgnHeightPx(clampRightPgnHeight(clientY - rect.top))
   }
 
+  function beginSplitterInteraction(): void {
+    splitterStartValue = workspace.rightPgnHeightPx
+  }
+
+  function restoreSplitterValue(): void {
+    if (splitterStartValue != null) {
+      workspace.setRightPgnHeightPx(clampRightPgnHeight(splitterStartValue))
+    }
+  }
+
   function stopSplitterDrag(): void {
     if (!workspace.splitterDragging) {
       return
@@ -82,6 +95,12 @@ export function useWorkspaceSplitter() {
 
     splitterTarget = null
     splitterPointerId = null
+    splitterStartValue = null
+  }
+
+  function cancelSplitterInteraction(): void {
+    restoreSplitterValue()
+    stopSplitterDrag()
   }
 
   function onSplitterPointerMove(event: PointerEvent): void {
@@ -106,6 +125,7 @@ export function useWorkspaceSplitter() {
     splitterTarget = event.currentTarget instanceof HTMLElement ? event.currentTarget : null
     splitterPointerId = event.pointerId
     splitterTarget?.setPointerCapture?.(event.pointerId)
+    beginSplitterInteraction()
     workspace.setSplitterDragging(true)
     document.body.classList.add('workspace-split-dragging')
     previousBodyCursor = document.body.style.cursor
@@ -116,6 +136,76 @@ export function useWorkspaceSplitter() {
     window.addEventListener('pointermove', onSplitterPointerMove)
     window.addEventListener('pointerup', onSplitterPointerUp)
     window.addEventListener('pointercancel', onSplitterPointerUp)
+  }
+
+  function onSplitterKeyDown(event: KeyboardEvent): void {
+    if (!workspace.showAnalysisRegion) {
+      return
+    }
+
+    const current = workspace.rightPgnHeightPx ?? currentDefaultPgnHeight()
+    let next = current
+    let handled = false
+
+    switch (event.key) {
+      case 'ArrowUp':
+      case 'Up':
+        next = current + KEYBOARD_STEP_PX
+        handled = true
+        break
+      case 'ArrowDown':
+      case 'Down':
+        next = current - KEYBOARD_STEP_PX
+        handled = true
+        break
+      case 'Home':
+        next = minPgnHeight()
+        handled = true
+        break
+      case 'End':
+        next = maxPgnHeight()
+        handled = true
+        break
+      case 'Escape':
+        cancelSplitterInteraction()
+        handled = true
+        break
+    }
+
+    if (!handled) {
+      return
+    }
+
+    event.preventDefault()
+    event.stopPropagation()
+
+    if (event.key !== 'Escape') {
+      if (splitterStartValue == null) {
+        beginSplitterInteraction()
+      }
+      workspace.setRightPgnHeightPx(clampRightPgnHeight(next))
+    }
+  }
+
+  function currentDefaultPgnHeight(): number {
+    const stack = rightStackEl.value
+    if (!stack) return 0
+    return Math.round(stack.clientHeight * 0.58)
+  }
+
+  function minPgnHeight(): number {
+    const stack = rightStackEl.value
+    if (!stack) return 0
+    const available = Math.max(0, stack.clientHeight - splitHandleHeight())
+    return Math.min(rightPaneMinHeight(), Math.floor(available / 2))
+  }
+
+  function maxPgnHeight(): number {
+    const stack = rightStackEl.value
+    if (!stack) return 0
+    const available = Math.max(0, stack.clientHeight - splitHandleHeight())
+    const min = Math.min(rightPaneMinHeight(), Math.floor(available / 2))
+    return Math.max(min, available - min)
   }
 
   watch(
@@ -141,6 +231,8 @@ export function useWorkspaceSplitter() {
   })
 
   return {
+    cancelSplitterInteraction,
+    onSplitterKeyDown,
     onSplitterPointerDown,
     rightStackEl,
     rightStackStyle,

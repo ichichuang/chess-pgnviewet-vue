@@ -2,7 +2,10 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
+import {
+  ProductRouteShell,
+  ProductStateBanner,
+} from '@/ui'
 import {
   buildRootWorkspaceRouteFromHandoff,
   createWorkspaceHandoffContext,
@@ -42,24 +45,19 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="handoff-route">
-    <RouteHeader title="直播入口" subtitle="正在进入统一工作区" />
+  <ProductRouteShell title="直播入口" subtitle="正在进入统一工作区">
     <section class="handoff-state" aria-live="polite">
-      <strong v-if="failed">直播入口参数无效</strong>
-      <strong v-else>正在进入工作区</strong>
+      <ProductStateBanner v-if="failed" status="error" title="直播入口参数无效">
+        链接缺少必要信息，无法安全进入实时观战。
+      </ProductStateBanner>
+      <ProductStateBanner v-else status="info" title="正在进入工作区">
+        正在准备实时观战上下文，请稍候。
+      </ProductStateBanner>
     </section>
-  </main>
+  </ProductRouteShell>
 </template>
 
 <style scoped>
-.handoff-route {
-  display: flex;
-  flex-direction: column;
-  min-height: var(--workspace-viewport-h);
-  background: var(--bg);
-  color: var(--text);
-}
-
 .handoff-state {
   padding: var(--s-5);
 }

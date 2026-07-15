@@ -12,6 +12,7 @@ withDefaults(
 
 const emit = defineEmits<{
   pointerDown: [event: PointerEvent]
+  keyDown: [event: KeyboardEvent]
 }>()
 </script>
 
@@ -22,7 +23,12 @@ const emit = defineEmits<{
     :class="{ dragging }"
     :disabled="disabled"
     :aria-label="label"
+    role="separator"
+    aria-orientation="horizontal"
+    aria-valuemin="0"
+    aria-valuemax="100"
     @pointerdown="emit('pointerDown', $event)"
+    @keydown="emit('keyDown', $event)"
   >
     <span aria-hidden="true" />
   </button>
@@ -64,9 +70,15 @@ const emit = defineEmits<{
 }
 
 .workspace-splitter:hover span,
-.workspace-splitter.dragging span {
+.workspace-splitter.dragging span,
+.workspace-splitter:focus-visible span {
   width: var(--workspace-splitter-grip-w-active);
   background: var(--accent);
+}
+
+.workspace-splitter:focus-visible {
+  outline: var(--workspace-focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--workspace-focus-ring-offset);
 }
 
 .workspace-splitter:disabled {

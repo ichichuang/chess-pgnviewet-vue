@@ -28,6 +28,7 @@
   --fs-lg: clamp(15px, 0.67vw + 6.9px, 24px);
   --fs-xl: clamp(18px, 0.84vw + 8.5px, 30px);
   --fs-2xl: clamp(22px, 1.15vw + 10px, 38px);
+  --fs-md: clamp(14px, 0.55vw + 7.6px, 22px);
 
   /* Radius */
   --r-xs: 6px;
@@ -42,6 +43,16 @@
   --control-h-sm: clamp(30px, 0.6vw + 22px, 42px);
   --toolbar-h: 0px;
   --brand-h: clamp(60px, 1.8vh + 48px, 92px);
+
+  /* Route shell shared geometry */
+  --route-header-min-h: var(--brand-h);
+  --route-body-pad: var(--s-4);
+  --route-scroll-offset: var(--s-4);
+
+  /* Focus ring */
+  --focus-ring: var(--border-focus);
+  --workspace-focus-ring-width: 2px;
+  --workspace-focus-ring-offset: 2px;
 
   /*
     P1A canonical workspace shell geometry.
@@ -242,7 +253,6 @@
   /* Evaluation roles */
   --eval-black: linear-gradient(180deg, #0c0e12, #191c23);
   --eval-white: linear-gradient(180deg, #fbfcfd, #d9dde3);
-  --eval-advantage-line: var(--accent-strong, var(--accent)) with 0 0 6px 1px var(--accent);
   --eval-neutral: var(--text-2);
   --analysis-rail-dark-fill: var(--eval-black);
   --analysis-rail-light-fill: var(--eval-white);
@@ -268,6 +278,7 @@
   --text-muted: #5d6760;
   --text-faint: #8a938c;
   --text-on-accent: #ffffff;
+  --text-inverse: var(--text-on-accent);
 
   /* Brand and accent roles */
   --accent: #1f9d57;
@@ -326,6 +337,7 @@
   --text-muted: #8a96a0;
   --text-faint: #6a7680;
   --text-on-accent: #0c130e;
+  --text-inverse: var(--text-on-accent);
 
   /* Brand and accent roles */
   --accent: #36c177;

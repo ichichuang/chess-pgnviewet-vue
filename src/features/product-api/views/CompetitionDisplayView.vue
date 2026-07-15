@@ -5,9 +5,10 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { competitionDisplayRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
+import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import { resourceError } from '@/features/product-api/domain/resourceError'
-import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
+import { ProductRouteShell, ProductSelect } from '@/ui'
 
 const route = useRoute()
 const router = useRouter()
@@ -30,6 +31,9 @@ const groupsQuery = useQuery({
 })
 
 const groups = computed(() => groupsQuery.data.value ?? [])
+const groupOptions = computed(() =>
+  groups.value.map((group) => ({ label: group.name, value: group.ticketId }))
+)
 const roundsQuery = useQuery({
   queryKey: computed(() => productQueryKeys.displayRounds(hdid.value, selectedGroupId.value)),
   meta: publicQueryMeta,
@@ -38,6 +42,9 @@ const roundsQuery = useQuery({
   enabled: computed(() => Boolean(hdid.value && selectedGroupId.value)),
 })
 const rounds = computed(() => roundsQuery.data.value ?? [])
+const roundOptions = computed(() =>
+  rounds.value.map((round) => ({ label: round.name, value: round.id }))
+)
 
 const pairingsQuery = useQuery({
   queryKey: computed(() =>
@@ -133,10 +140,17 @@ function routeText(value: unknown): string {
 </script>
 
 <template>
-  <main class="display-route">
-    <RouteHeader :title="`${title} 大屏`" subtitle="生产对阵数据只读展示" />
+  <ProductRouteShell :title="`${title} 大屏`" subtitle="生产对阵数据只读展示">
+    <template #header>
+      <RouteHeader :title="`${title} 大屏`" subtitle="生产对阵数据只读展示" />
+    </template>
 
-    <section class="display-body" aria-label="大屏对阵">
+    <section class="display-content" aria-label="大屏对阵">
+      <div class="display-controls">
+        <ProductSelect v-model="selectedGroupId" label="组别" :options="groupOptions" />
+        <ProductSelect v-model="selectedRoundId" label="轮次" :options="roundOptions" />
+      </div>
+
       <ResourceState
         :pending="pairingsPending"
         :error-text="errorState?.text ?? ''"
@@ -156,24 +170,21 @@ function routeText(value: unknown): string {
         </article>
       </div>
     </section>
-  </main>
+  </ProductRouteShell>
 </template>
 
 <style scoped>
-.display-route {
-  display: flex;
-  flex-direction: column;
-  min-height: var(--workspace-viewport-h);
-  background: var(--bg);
-  color: var(--text);
-}
-
-.display-body {
+.display-content {
   display: grid;
   gap: var(--s-4);
   min-height: 0;
-  padding: var(--s-5);
-  overflow: auto;
+}
+
+.display-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: end;
 }
 
 .display-grid {

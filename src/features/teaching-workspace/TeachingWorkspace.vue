@@ -48,7 +48,7 @@ const remoteReplayVisible = remoteReplay.visible
 const remoteReplayMessage = remoteReplay.message
 const remoteReplayDetail = remoteReplay.detail
 const remoteReplayStatus = remoteReplay.status
-const { onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
+const { onSplitterKeyDown, onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
 const boardEditorActive = ref(false)
 const radialWidth = ref<0.08 | 0.16 | 0.28>(0.16)
 const {
@@ -317,6 +317,7 @@ onBeforeUnmount(() => {
           :dragging="workspace.splitterDragging"
           label="调整棋谱与分析区域高度"
           @pointer-down="onSplitterPointerDown"
+          @key-down="onSplitterKeyDown"
         />
 
         <Transition :css="false" @enter="onPanelEnter" @leave="onPanelLeave">

@@ -6,14 +6,15 @@ import { useRoute, useRouter } from 'vue-router'
 import { tournamentRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
 import type { CompetitionPairing } from '@/api/productTypes'
+import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import { resourceError } from '@/features/product-api/domain/resourceError'
-import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import {
   buildRootWorkspaceRouteFromHandoff,
   createWorkspaceHandoffContext,
   saveWorkspaceHandoffContext,
 } from '@/persistence/workspace/workspaceHandoff'
+import { ProductButton, ProductField, ProductRouteShell, ProductSelect } from '@/ui'
 
 const route = useRoute()
 const router = useRouter()
@@ -38,6 +39,9 @@ const groupsQuery = useQuery({
 })
 
 const groups = computed(() => groupsQuery.data.value ?? [])
+const groupOptions = computed(() =>
+  groups.value.map((group) => ({ label: group.name, value: group.ticketId }))
+)
 const selectedGroup = computed(
   () =>
     groups.value.find(
@@ -46,16 +50,16 @@ const selectedGroup = computed(
 )
 
 const roundsQuery = useQuery({
-  queryKey: computed(() =>
-    productQueryKeys.competitionRounds(hdid.value, selectedGroupId.value)
-  ),
+  queryKey: computed(() => productQueryKeys.competitionRounds(hdid.value, selectedGroupId.value)),
   meta: publicQueryMeta,
-  queryFn: ({ signal }) =>
-    tournamentRepository.rounds(hdid.value, selectedGroupId.value, signal),
+  queryFn: ({ signal }) => tournamentRepository.rounds(hdid.value, selectedGroupId.value, signal),
   enabled: computed(() => Boolean(hdid.value && selectedGroupId.value)),
 })
 
 const rounds = computed(() => roundsQuery.data.value ?? [])
+const roundOptions = computed(() =>
+  rounds.value.map((round) => ({ label: round.name, value: round.id }))
+)
 const pairingsQuery = useQuery({
   queryKey: computed(() =>
     productQueryKeys.competitionPairings(
@@ -112,10 +116,7 @@ watch(
 watch(
   [selectedGroupId, selectedRoundId],
   ([groupId, roundId]) => {
-    if (
-      routeText(route.query.group) === groupId &&
-      routeText(route.query.round) === roundId
-    ) {
+    if (routeText(route.query.group) === groupId && routeText(route.query.round) === roundId) {
       return
     }
 
@@ -198,10 +199,12 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
 </script>
 
 <template>
-  <main class="product-route">
-    <RouteHeader :title="title" subtitle="组别、轮次、对阵和已完成对局回放" />
+  <ProductRouteShell :title="title" subtitle="组别、轮次、对阵和已完成对局回放">
+    <template #header>
+      <RouteHeader :title="title" subtitle="组别、轮次、对阵和已完成对局回放" />
+    </template>
 
-    <section class="route-body" aria-labelledby="competition-detail-title">
+    <section class="detail-content" aria-labelledby="competition-detail-title">
       <div class="detail-toolbar">
         <div>
           <h2 id="competition-detail-title">{{ title }}</h2>
@@ -210,7 +213,7 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
             <span v-if="detailStartTime"> / {{ detailStartTime }}</span>
           </p>
         </div>
-        <RouterLink :to="displayRoute()">大屏</RouterLink>
+        <RouterLink class="action-link" :to="displayRoute()">大屏</RouterLink>
       </div>
 
       <ResourceState
@@ -222,27 +225,10 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
       />
 
       <section class="controls" aria-label="赛事筛选">
-        <label>
-          <span>组别</span>
-          <select v-model="selectedGroupId">
-            <option v-for="group in groups" :key="group.id" :value="group.ticketId">
-              {{ group.name }}
-            </option>
-          </select>
-        </label>
-        <label>
-          <span>轮次</span>
-          <select v-model="selectedRoundId">
-            <option v-for="round in rounds" :key="round.id" :value="round.id">
-              {{ round.name }}
-            </option>
-          </select>
-        </label>
-        <label>
-          <span>棋手</span>
-          <input v-model.trim="pairingSearch" />
-        </label>
-        <button type="button" @click="refreshPairings">查询对阵</button>
+        <ProductSelect v-model="selectedGroupId" label="组别" :options="groupOptions" />
+        <ProductSelect v-model="selectedRoundId" label="轮次" :options="roundOptions" />
+        <ProductField v-model="pairingSearch" label="棋手" />
+        <ProductButton variant="primary" @click="refreshPairings">查询对阵</ProductButton>
       </section>
 
       <ResourceState
@@ -270,28 +256,18 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
             <strong>{{ pairing.blackName }}</strong>
             <span>{{ pairing.blackRating || '黑方' }}</span>
           </div>
-          <button type="button" @click="openReplay(pairing)">打开回放</button>
+          <ProductButton variant="secondary" @click="openReplay(pairing)">打开回放</ProductButton>
         </article>
       </section>
     </section>
-  </main>
+  </ProductRouteShell>
 </template>
 
 <style scoped>
-.product-route {
-  display: flex;
-  flex-direction: column;
-  min-height: var(--workspace-viewport-h);
-  background: var(--bg);
-  color: var(--text);
-}
-
-.route-body {
+.detail-content {
   display: grid;
   gap: var(--s-4);
   min-height: 0;
-  padding: var(--s-5);
-  overflow: auto;
 }
 
 .detail-toolbar,
@@ -316,18 +292,16 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
 }
 
 .detail-toolbar p,
-.controls span,
 .players span,
 .board-no span {
   color: var(--text-muted);
   font-size: var(--fs-sm);
 }
 
-.detail-toolbar a,
-.controls button,
-.pairing-row button,
-.controls input,
-.controls select {
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: var(--control-h-sm);
   padding: 0 var(--s-3);
   border: var(--workspace-border-w) solid var(--border-strong);
@@ -335,26 +309,14 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
   background: var(--surface-2);
   color: var(--text);
   font: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 @media (pointer: coarse), (width <= 1024px) {
-  .detail-toolbar a,
-  .controls button,
-  .pairing-row button,
-  .controls input,
-  .controls select {
+  .action-link {
     min-height: var(--board-touch-target-min);
   }
-}
-
-.detail-toolbar a,
-.controls button,
-.pairing-row button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .controls {
@@ -363,11 +325,6 @@ async function openReplay(pairing: CompetitionPairing): Promise<void> {
   border: var(--workspace-border-w) solid var(--border);
   border-radius: var(--r-sm);
   background: var(--surface);
-}
-
-.controls label {
-  display: grid;
-  gap: var(--s-1);
 }
 
 .pairing-list {

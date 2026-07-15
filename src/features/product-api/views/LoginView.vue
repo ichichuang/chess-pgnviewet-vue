@@ -5,27 +5,38 @@ Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 - Scroll owner: login surface
 -->
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router'
 
 import { safeAuthReturnPath } from '@/router'
 import { useAuthStore } from '@/stores'
+import {
+  ProductButton,
+  ProductField,
+  ProductPasswordField,
+} from '@/ui'
+import type { ComponentPublicInstance } from 'vue'
 
 const route = useRoute()
 const router = useRouter()
 const auth = useAuthStore()
 const account = ref('')
 const password = ref('')
-const passwordVisible = ref(false)
 const validationError = ref('')
-const accountInput = ref<HTMLInputElement | null>(null)
-const passwordInput = ref<HTMLInputElement | null>(null)
+const accountInput = ref<ComponentPublicInstance<{ focus: () => void }> | null>(null)
+const passwordInput = ref<ComponentPublicInstance<{ focus: () => void }> | null>(null)
 
 const errorMessage = computed(() => validationError.value || auth.lastError || '')
 const returnPath = computed(() => safeAuthReturnPath(route.query.return))
 const returnLocation = computed<RouteLocationRaw>(() =>
   returnPath.value ? returnPath.value : { name: 'competitions' }
 )
+
+onMounted(() => {
+  void nextTick(() => {
+    accountInput.value?.focus()
+  })
+})
 
 async function submit(): Promise<void> {
   if (auth.isSubmitting) return
@@ -68,50 +79,38 @@ async function submit(): Promise<void> {
         <RouterLink class="return-link" :to="returnLocation">返回</RouterLink>
         <h1 id="login-title">登录</h1>
 
-        <label class="field-label" for="login-account">账号</label>
-        <input
+        <ProductField
           id="login-account"
           ref="accountInput"
           v-model="account"
-          name="username"
-          type="text"
+          label="账号"
           autocomplete="username"
           autocapitalize="none"
           enterkeyhint="next"
-          spellcheck="false"
+          :spellcheck="false"
           :disabled="auth.isSubmitting"
         />
 
-        <label class="field-label" for="login-password">密码</label>
-        <div class="password-field">
-          <input
-            id="login-password"
-            ref="passwordInput"
-            v-model="password"
-            name="password"
-            :type="passwordVisible ? 'text' : 'password'"
-            autocomplete="current-password"
-            enterkeyhint="go"
-            :disabled="auth.isSubmitting"
-          />
-          <button
-            class="visibility-button"
-            type="button"
-            aria-controls="login-password"
-            :aria-label="passwordVisible ? '隐藏密码' : '显示密码'"
-            :aria-pressed="passwordVisible"
-            :disabled="auth.isSubmitting"
-            @click="passwordVisible = !passwordVisible"
-          >
-            {{ passwordVisible ? '隐藏' : '显示' }}
-          </button>
-        </div>
+        <ProductPasswordField
+          id="login-password"
+          ref="passwordInput"
+          v-model="password"
+          label="密码"
+          autocomplete="current-password"
+          enterkeyhint="go"
+          :disabled="auth.isSubmitting"
+        />
 
         <p v-if="errorMessage" class="login-error" role="alert">{{ errorMessage }}</p>
 
-        <button class="submit-button" type="submit" :disabled="auth.isSubmitting">
+        <ProductButton
+          class="submit-button"
+          native-type="submit"
+          variant="primary"
+          :busy="auth.isSubmitting"
+        >
           {{ auth.isSubmitting ? '正在登录…' : '登录' }}
-        </button>
+        </ProductButton>
       </form>
     </section>
   </main>
@@ -154,66 +153,29 @@ async function submit(): Promise<void> {
   font-size: var(--fs-xl);
 }
 
-.field-label {
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-}
-
-.login-card input,
-.login-card button,
 .return-link {
-  min-height: var(--control-h);
-  border: var(--workspace-border-w) solid var(--border-strong);
-  border-radius: var(--r-sm);
-  font: inherit;
-}
-
-.login-card input {
-  width: 100%;
-  min-width: 0;
-  padding: 0 var(--s-3);
-  background: var(--surface-2);
-  color: var(--text);
-}
-
-.password-field {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--s-2);
-}
-
-.visibility-button,
-.submit-button,
-.return-link {
+  justify-self: start;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: var(--control-h-sm);
   padding: 0 var(--s-3);
-  cursor: pointer;
-}
-
-.visibility-button,
-.return-link {
+  border: var(--workspace-border-w) solid var(--border-strong);
+  border-radius: var(--r-sm);
   background: var(--surface-2);
   color: var(--text);
-}
-
-.return-link {
-  justify-self: start;
-  color: var(--text);
+  font: inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .submit-button {
   margin-top: var(--s-2);
-  background: var(--accent);
-  color: var(--text-inverse);
 }
 
-.login-card button:disabled,
-.login-card input:disabled {
-  cursor: default;
-  opacity: var(--workspace-disabled-opacity);
+.return-link:focus-visible {
+  outline: var(--workspace-focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--workspace-focus-ring-offset);
 }
 
 .login-error {
@@ -221,16 +183,7 @@ async function submit(): Promise<void> {
   font-size: var(--fs-sm);
 }
 
-.login-card input:focus-visible,
-.login-card button:focus-visible,
-.return-link:focus-visible {
-  outline: var(--workspace-focus-ring-width) solid var(--focus-ring);
-  outline-offset: var(--workspace-focus-ring-offset);
-}
-
 @media (pointer: coarse), (width <= 760px) {
-  .login-card input,
-  .login-card button,
   .return-link {
     min-height: var(--board-touch-target-min);
   }

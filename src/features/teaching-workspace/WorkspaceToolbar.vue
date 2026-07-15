@@ -8,6 +8,7 @@ import {
 import { BOARD_ORIENTATION_BLACK } from '@/features/board/domain/boardTypes'
 import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
 import { useAuthStore, usePgnStore, useWorkspaceStore } from '@/stores'
+import { ProductConfirmDialog } from '@/ui'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 
@@ -20,6 +21,7 @@ const emit = defineEmits<{
 const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
 const auth = useAuthStore()
+const showClearConfirm = ref(false)
 
 const annotationTools: readonly { key: AnnotationShapeKind; label: string }[] = [
   { key: 'arrow', label: '箭头' },
@@ -35,6 +37,16 @@ const alignments: readonly { key: 'center' | 'left' | 'right'; label: string }[]
 
 function setAnnotationColor(color: AnnotationColorId): void {
   workspace.setAnnotationColor(color)
+}
+
+function confirmClearDrawing(): void {
+  if (!pgn.hasCurrentDrawing) return
+  showClearConfirm.value = true
+}
+
+function onClearDrawingConfirmed(): void {
+  pgn.clearDrawing()
+  showClearConfirm.value = false
 }
 
 const rootEl = ref<HTMLElement | null>(null)
@@ -261,11 +273,20 @@ onBeforeUnmount(() => {
             class="toolbar-button compact"
             type="button"
             :disabled="!pgn.hasCurrentDrawing"
-            @click="pgn.clearDrawing()"
+            @click="confirmClearDrawing()"
           >
             清除
           </button>
         </section>
+
+        <ProductConfirmDialog
+          v-model:show="showClearConfirm"
+          title="清除标注"
+          body="确定要清除当前节点的所有标注吗？此操作无法撤销。"
+          dangerous
+          confirm-text="清除"
+          @confirm="onClearDrawingConfirmed"
+        />
 
         <section class="toolbar-group" aria-label="面板控制">
           <button

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
-import { useAuthStore } from '@/stores'
+import { useAuthStore, useThemeStore } from '@/stores'
+import { ProductButton, ProductDrawer } from '@/ui'
 
 defineProps<{
   title: string
@@ -9,10 +10,16 @@ defineProps<{
 }>()
 
 const auth = useAuthStore()
+const theme = useThemeStore()
 const sessionLabel = computed(() => auth.accountLabel)
+const settingsOpen = ref(false)
 
 function logout(): void {
   auth.logout()
+}
+
+function setTheme(preference: 'light' | 'dark' | 'system'): void {
+  theme.setPreference(preference)
 }
 </script>
 
@@ -30,8 +37,38 @@ function logout(): void {
       <RouterLink :to="{ name: 'competitions' }">赛事</RouterLink>
       <RouterLink v-if="!auth.isAuthenticated" :to="{ name: 'login' }">登录</RouterLink>
       <button v-else type="button" @click="logout">退出</button>
+      <ProductButton variant="text" size="small" @click="settingsOpen = true">设置</ProductButton>
       <span>{{ sessionLabel }}</span>
     </nav>
+
+    <ProductDrawer v-model:show="settingsOpen" title="设置" placement="right" width="320px">
+      <section class="settings-section" aria-label="主题">
+        <h2>主题</h2>
+        <div class="theme-options">
+          <ProductButton
+            :variant="theme.preference === 'light' ? 'primary' : 'secondary'"
+            size="small"
+            @click="setTheme('light')"
+          >
+            浅色
+          </ProductButton>
+          <ProductButton
+            :variant="theme.preference === 'dark' ? 'primary' : 'secondary'"
+            size="small"
+            @click="setTheme('dark')"
+          >
+            深色
+          </ProductButton>
+          <ProductButton
+            :variant="theme.preference === 'system' ? 'primary' : 'secondary'"
+            size="small"
+            @click="setTheme('system')"
+          >
+            跟随系统
+          </ProductButton>
+        </div>
+      </section>
+    </ProductDrawer>
   </header>
 </template>
 
@@ -98,6 +135,17 @@ function logout(): void {
 .route-actions span {
   color: var(--text-muted);
   font-size: var(--fs-sm);
+}
+
+.settings-section h2 {
+  margin: 0 0 var(--s-3);
+  font-size: var(--fs-md);
+}
+
+.theme-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
 }
 
 @media (width <= 760px) {
