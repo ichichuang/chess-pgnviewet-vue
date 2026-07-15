@@ -1,64 +1,151 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import {
-  ProductRouteShell,
-  ProductStateBanner,
-} from '@/ui'
-import {
-  buildRootWorkspaceRouteFromHandoff,
-  createWorkspaceHandoffContext,
-  saveWorkspaceHandoffContext,
-} from '@/persistence/workspace/workspaceHandoff'
+import { ProductRouteShell, ProductUnavailableState } from '@/ui'
+import { isSafeWorkspaceIdentifier } from '@/persistence/workspace/workspaceHandoff'
+import { loginRouteFor } from '@/router'
+
+type LiveEntryState =
+  | 'evaluating'
+  | 'invalid'
+  | 'contract-blocked'
+  | 'auth-required'
+  | 'auth-denied'
+  | 'retryable'
 
 const route = useRoute()
 const router = useRouter()
-const failed = ref(false)
 
-function routeText(value: unknown): string {
-  if (Array.isArray(value)) return value[0]?.trim() ?? ''
-  return typeof value === 'string' ? value.trim() : ''
-}
+const state = ref<LiveEntryState>('evaluating')
+const competitionId = ref('')
 
-onMounted(async () => {
-  const context = createWorkspaceHandoffContext({
-    mode: 'live_spectator',
-    source: 'electronic_board_live',
-    readonly: true,
-    competitionId: routeText(route.params.hdid),
-    groupId: routeText(route.query.group),
-    roundId: routeText(route.query.round),
-    boardId: routeText(route.query.board),
-    qrcode: routeText(route.query.qrcode),
-    serialNumber: routeText(route.query.sn),
-    returnRoute: route.fullPath,
-  })
+const title = '实时棋局'
 
-  if (!saveWorkspaceHandoffContext(context)) {
-    failed.value = true
+const safeReturn = computed(() => {
+  if (competitionId.value) {
+    return { name: 'competition-detail', params: { hdid: competitionId.value } }
+  }
+  return { name: 'competitions' }
+})
+
+const explanation = computed(() => {
+  if (state.value === 'invalid') {
+    return '这个入口缺少有效信息，或已经失效。你可以返回可用页面重新选择。'
+  }
+
+  if (state.value === 'auth-required') {
+    return '登录后才能继续此操作。当前公开内容和本地教学内容不会被清除。'
+  }
+
+  if (state.value === 'auth-denied') {
+    return '你的账号无权查看此内容。现有公开内容和本地教学内容保持不变。'
+  }
+
+  if (state.value === 'retryable') {
+    return '当前内容暂时无法加载。你可以重试，当前选择不会改变。'
+  }
+
+  return '这项能力尚未具备已确认的读取合同，当前不会发起请求。'
+})
+
+onMounted(() => {
+  const rawHdid = route.params.hdid ?? ''
+  const safeId = Array.isArray(rawHdid) ? rawHdid[0] : rawHdid
+
+  if (!isSafeWorkspaceIdentifier(safeId)) {
+    state.value = 'invalid'
     return
   }
 
-  await router.replace(buildRootWorkspaceRouteFromHandoff(context))
+  competitionId.value = typeof safeId === 'string' ? safeId.trim() : String(safeId).trim()
+
+  // 合同优先：实时棋局的局面、订阅、时间和棋钟合同均未确认，直接进入阻断状态。
+  // qrcode/sn 在真实合同确认其为非秘密选择字段前不读取、不保存。
+  const contractStatus = evaluateLiveContract()
+
+  if (contractStatus.kind === 'contract-blocked') {
+    state.value = 'contract-blocked'
+    return
+  }
+
+  if (contractStatus.kind === 'proceed' && contractStatus.requiresAuth) {
+    state.value = 'auth-required'
+    return
+  }
+
+  state.value = 'contract-blocked'
 })
+
+interface ContractBlocked {
+  kind: 'contract-blocked'
+}
+
+interface ContractProceed {
+  kind: 'proceed'
+  requiresAuth: boolean
+}
+
+type ContractStatus = ContractBlocked | ContractProceed
+
+function evaluateLiveContract(): ContractStatus {
+  // 当前真实合同未覆盖实时棋局；不发起试探请求，不诱导登录。
+  return { kind: 'contract-blocked' }
+}
+
+function handleLogin(): void {
+  router.push(loginRouteFor(route.fullPath, 'required'))
+}
+
+function handleReturn(): void {
+  router.push(safeReturn.value)
+}
+
+function handleRetry(): void {
+  state.value = 'evaluating'
+  globalThis.setTimeout(() => {
+    state.value = 'contract-blocked'
+  }, 0)
+}
+
+function stateKind(): Exclude<LiveEntryState, 'evaluating'> {
+  if (state.value === 'evaluating') return 'contract-blocked'
+  return state.value
+}
+
+function stateTitle(): string {
+  if (state.value === 'invalid') return '无法打开此内容'
+  if (state.value === 'auth-required') return '需要登录'
+  if (state.value === 'auth-denied') return '没有访问权限'
+  if (state.value === 'retryable') return '内容暂时无法打开'
+  return title
+}
 </script>
 
 <template>
-  <ProductRouteShell title="直播入口" subtitle="正在进入统一工作区">
-    <section class="handoff-state" aria-live="polite">
-      <ProductStateBanner v-if="failed" status="error" title="直播入口参数无效">
-        链接缺少必要信息，无法安全进入实时观战。
-      </ProductStateBanner>
-      <ProductStateBanner v-else status="info" title="正在进入工作区">
-        正在准备实时观战上下文，请稍候。
-      </ProductStateBanner>
-    </section>
+  <ProductRouteShell :title="stateTitle()">
+    <div class="live-entry-state-surface">
+      <ProductUnavailableState
+        v-if="state !== 'evaluating'"
+        :kind="stateKind()"
+        :title="stateTitle()"
+        :explanation="explanation"
+        :safe-return="safeReturn"
+        :retryable="state === 'retryable'"
+        @login="handleLogin"
+        @return="handleReturn"
+        @retry="handleRetry"
+      />
+    </div>
   </ProductRouteShell>
 </template>
 
 <style scoped>
-.handoff-state {
-  padding: var(--s-5);
+.live-entry-state-surface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
 }
 </style>

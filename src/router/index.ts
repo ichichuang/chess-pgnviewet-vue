@@ -13,7 +13,6 @@ export const router = createRouter({
     {
       path: '/match/:key',
       name: 'match',
-      meta: { requiresAuth: true },
       component: () => import('@/features/product-api/views/CompatibilityEntryView.vue')
     },
     {
@@ -24,7 +23,6 @@ export const router = createRouter({
     {
       path: '/cloud/:fileid',
       name: 'cloud',
-      meta: { requiresAuth: true },
       component: () => import('@/features/product-api/views/CompatibilityEntryView.vue')
     },
     {
@@ -40,7 +38,6 @@ export const router = createRouter({
     {
       path: '/competitions/:hdid/live',
       name: 'competition-live',
-      meta: { requiresAuth: true },
       component: () => import('@/features/product-api/views/CompetitionLiveRedirectView.vue')
     },
     {

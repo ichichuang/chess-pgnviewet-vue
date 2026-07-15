@@ -154,6 +154,12 @@ function isMalformedText(text: string): boolean {
   )
 }
 
+export function isSafeWorkspaceIdentifier(value: unknown): boolean {
+  const text = typeof value === 'number' ? String(value) : typeof value === 'string' ? value : ''
+  const trimmed = text.trim()
+  return Boolean(trimmed && trimmed.length <= TEXT_FIELD_LIMIT && !isMalformedText(trimmed))
+}
+
 function cleanText(value: unknown, limit = TEXT_FIELD_LIMIT): string {
   if (typeof value !== 'string' && typeof value !== 'number') return ''
   const text = String(value).trim()

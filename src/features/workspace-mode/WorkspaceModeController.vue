@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
+import { ProductRouteShell, ProductUnavailableState } from '@/ui'
 import TeachingWorkspace from '@/features/teaching-workspace/TeachingWorkspace.vue'
 import {
   readWorkspaceHandoffContext,
@@ -13,7 +14,9 @@ import { resolveWorkspaceModeRouteContext } from './workspaceModeQuery'
 import type { WorkspaceModeContext } from './workspaceModeTypes'
 
 const route = useRoute()
-const workspaceModeContext = computed(() => {
+const router = useRouter()
+
+const workspaceModeContext = computed<WorkspaceModeContext>(() => {
   const handoffId = queryText(route.query.handoff)
 
   if (handoffId) {
@@ -28,6 +31,13 @@ const workspaceModeContext = computed(() => {
     name: route.name,
     query: route.query,
   })
+})
+
+const handoffInvalid = computed<boolean>(() => {
+  const handoffId = queryText(route.query.handoff)
+  if (!handoffId) return false
+  const handoff = readWorkspaceHandoffContext(handoffId)
+  return !handoff
 })
 
 function blockedContext(): WorkspaceModeContext {
@@ -56,8 +66,33 @@ function queryText(value: unknown): string {
   if (Array.isArray(value)) return value.find((item) => typeof item === 'string')?.trim() ?? ''
   return typeof value === 'string' ? value.trim() : ''
 }
+
+function handleReturn(): void {
+  router.push({ name: 'competitions' })
+}
 </script>
 
 <template>
-  <TeachingWorkspace />
+  <ProductRouteShell v-if="handoffInvalid" title="无法打开此内容">
+    <div class="handoff-invalid-surface">
+      <ProductUnavailableState
+        kind="invalid"
+        title="无法打开此内容"
+        explanation="这个入口缺少有效信息，或已经失效。你可以返回可用页面重新选择。"
+        :safe-return="{ name: 'competitions' }"
+        @return="handleReturn"
+      />
+    </div>
+  </ProductRouteShell>
+  <TeachingWorkspace v-else />
 </template>
+
+<style scoped>
+.handoff-invalid-surface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+</style>
