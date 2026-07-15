@@ -15,7 +15,7 @@ const props = withDefaults(
   }>(),
   {
     placement: 'right',
-    width: '320px',
+    width: 'var(--drawer-w)',
     closable: true,
     autoFocus: true,
   }

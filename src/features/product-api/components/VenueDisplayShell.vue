@@ -162,6 +162,7 @@ defineExpose({ focusTitle })
   font-size: var(--fs-sm);
 }
 
+/* Synchronized with --route-bp-narrow in tokens.css. */
 @media (width <= 760px) {
   .venue-display-header {
     flex-direction: column;

@@ -39,15 +39,15 @@ The product targets **WCAG 2.1 Level AA** for all canonical surfaces. Big-screen
 
 ### Global shortcuts
 
-| Shortcut                   | Action                                                    |
-| -------------------------- | --------------------------------------------------------- |
-| `Tab` / `Shift+Tab`        | Move focus between focusable chrome elements              |
-| `ArrowLeft` / `ArrowRight` | Previous/next move when move list or board is focused     |
-| `ArrowUp` / `ArrowDown`    | Navigate lists, menus, and tree items                     |
-| `Enter` / `Space`          | Activate focused control                                  |
-| `Escape`                   | Close dialogs, popovers, drawers, and cancel inline edits |
-| `Ctrl+Z`                   | Undo last drawing annotation or move (in analysis mode)   |
-| `?`                        | Open keyboard shortcut help                               |
+| Shortcut                   | Action                                                                                                         |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `Tab` / `Shift+Tab`        | Move focus between focusable chrome elements                                                                   |
+| `ArrowLeft` / `ArrowRight` | Previous/next move when the move list is focused; move the focused square left/right when the board is focused |
+| `ArrowUp` / `ArrowDown`    | Navigate lists, menus, and tree items                                                                          |
+| `Enter` / `Space`          | Activate focused control                                                                                       |
+| `Escape`                   | Close dialogs, popovers, drawers, and cancel inline edits                                                      |
+| `Ctrl+Z`                   | Undo last drawing annotation or move (in analysis mode)                                                        |
+| `?`                        | Disabled until a keyboard-shortcut help surface has an owner (no owner yet)                                    |
 
 ### Board keyboard operation
 

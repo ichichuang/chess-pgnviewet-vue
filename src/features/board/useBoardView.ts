@@ -964,7 +964,6 @@ export function useBoardView(props: BoardViewRuntimeProps, handlers: BoardViewHa
 
   function onKeydown(event: KeyboardEvent): void {
     if (
-      !interactive.value ||
       !capabilities.value.interaction.keyboard ||
       editorActive.value ||
       radial.active.value ||
@@ -997,6 +996,11 @@ export function useBoardView(props: BoardViewRuntimeProps, handlers: BoardViewHa
           ? String.fromCharCode(97 + nextCol) + (BOARD_SIDE - nextRow)
           : String.fromCharCode(97 + (BOARD_SIDE - 1 - nextCol)) + (nextRow + 1)
       capabilities.value.accessibility.announce?.(squareAriaLabel(focusedSquare.value))
+      return
+    }
+
+    // Move submission is only allowed on interactive (playable) boards.
+    if (!interactive.value) {
       return
     }
 

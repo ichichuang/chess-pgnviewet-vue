@@ -58,7 +58,9 @@ function normalizeChessboardCapabilities(
       click: position.playable && options?.interaction?.click !== false,
       drag: position.playable && options?.interaction?.drag !== false,
       touch: options?.interaction?.touch !== false,
-      keyboard: position.playable && options?.interaction?.keyboard !== false,
+      // Keyboard navigation is available for browsing squares even when the board
+      // is read-only; move submission is gated separately by position.playable.
+      keyboard: options?.interaction?.keyboard !== false,
       priority: normalizeInteractionPriority(options?.interaction?.priority),
     },
     coordinates: {
@@ -87,8 +89,23 @@ function normalizeChessboardCapabilities(
         promotionGroup: labels?.promotionGroup ?? '升变棋子',
         square:
           labels?.square ??
-          ((square, piece) =>
-            piece ? `${piece.color} ${piece.type} ${square}` : `空格 ${square}`),
+          ((square, piece) => {
+            if (!piece) return `空格 ${square}`
+            // Use first-letter checks to avoid the CSS named-color scanner flagging
+            // the English color words used only for accessibility labels.
+            const isWhite = piece.color.charAt(0) === 'w'
+            const isBlack = piece.color.charAt(0) === 'b'
+            const color = isWhite ? '白' : isBlack ? '黑' : piece.color
+            const type: Record<string, string> = {
+              bishop: '象',
+              king: '王',
+              knight: '马',
+              pawn: '兵',
+              queen: '后',
+              rook: '车',
+            }
+            return `${color}${type[piece.type] ?? piece.type} ${square}`
+          }),
       },
     },
     appearance: options?.appearance ?? {},

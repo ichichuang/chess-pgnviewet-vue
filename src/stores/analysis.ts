@@ -294,17 +294,10 @@ export const useAnalysisStore = defineStore('analysis', {
         this.phase = 'ready'
         this.phase = 'analyzing'
 
-        const currentPromise = activeEngine.evalFen(request.fen, {
+        const currentEval = await activeEngine.evalFen(request.fen, {
           depth: DEFAULT_DEPTH,
           maxthinktimes: DEFAULT_THINK_MS,
         })
-        const parentPromise = request.parentFen
-          ? activeEngine.evalFen(request.parentFen, {
-              depth: DEFAULT_DEPTH,
-              maxthinktimes: DEFAULT_THINK_MS,
-            })
-          : Promise.resolve<EngineEval | null>(null)
-        const [currentEval, parentEval] = await Promise.all([currentPromise, parentPromise])
 
         if (!this.accepts(request)) {
           this.staleRejected += 1
@@ -327,7 +320,8 @@ export const useAnalysisStore = defineStore('analysis', {
           analyzedAt: new Date().toISOString(),
         }
 
-        this.writeMoveAssessment(request, currentEval, parentEval)
+        // Analysis results are displayed in the analysis panel; explicit user action is
+        // required before any assessment is written into PGN annotations (COR-001).
         this.phase = 'available'
         this.completedRequests += 1
         this.activeRequest = null

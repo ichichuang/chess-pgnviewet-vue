@@ -49,6 +49,18 @@
   --route-body-pad: var(--s-4);
   --route-scroll-offset: var(--s-4);
 
+  /* Card, dialog and drawer geometry */
+  --card-max-w: 420px;
+  --dialog-max-w: 560px;
+  --drawer-w: 320px;
+  --drawer-w-collapsed: 280px;
+
+  /*
+    Narrow route breakpoint. CSS media queries cannot reference custom properties,
+    so component styles use the literal 760px and keep it synchronized with this token.
+  */
+  --route-bp-narrow: 760px;
+
   /* Focus ring */
   --focus-ring: var(--border-focus);
   --workspace-focus-ring-width: 2px;

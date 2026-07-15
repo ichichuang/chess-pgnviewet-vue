@@ -63,7 +63,7 @@ const titleId = computed(() => `pd-title-${props.title.replace(/\W+/g, '-').toLo
 .product-dialog-card {
   display: grid;
   gap: var(--s-4);
-  width: min(calc(100vw - var(--s-8)), 560px);
+  width: min(calc(100vw - var(--s-8)), var(--dialog-max-w));
   max-height: calc(100dvh - var(--s-8));
   padding: var(--s-5);
   overflow: auto;

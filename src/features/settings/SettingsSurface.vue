@@ -238,7 +238,7 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
     title="设置"
     :closable="false"
     :auto-focus="false"
-    width="320px"
+    width="var(--drawer-w)"
     height="80vh"
     @update:show="emit('update:show', $event)"
   >

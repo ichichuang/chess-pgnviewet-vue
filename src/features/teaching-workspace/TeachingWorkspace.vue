@@ -410,7 +410,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
       v-model:show="sourceDrawerOpen"
       title="来源"
       placement="left"
-      :width="workspace.showLeftSidebar ? '320px' : '280px'"
+      :width="workspace.showLeftSidebar ? 'var(--drawer-w)' : 'var(--drawer-w-collapsed)'"
     >
       <WorkspaceSourcePanel
         :mode-label="permissions.modeLabel"

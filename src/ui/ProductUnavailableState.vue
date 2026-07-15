@@ -122,6 +122,7 @@ function secondaryLabel(): string {
   text-decoration: none;
 }
 
+/* Synchronized with --workspace-bp-mobile in tokens.css. */
 @media (width <= 560px) {
   .unavailable-actions {
     flex-direction: column;

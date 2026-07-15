@@ -184,7 +184,7 @@ function navigateReturn(): void {
 .login-card {
   display: grid;
   gap: var(--s-3);
-  width: min(100%, 420px);
+  width: min(100%, var(--card-max-w));
   padding: var(--s-6);
   border: var(--workspace-border-w) solid var(--border);
   border-radius: var(--r-lg);
@@ -228,6 +228,7 @@ function navigateReturn(): void {
   font-size: var(--fs-sm);
 }
 
+/* Synchronized with --route-bp-narrow in tokens.css. */
 @media (pointer: coarse), (width <= 760px) {
   .login-surface {
     padding: var(--s-4);

@@ -127,6 +127,7 @@ defineExpose({ focusTitle })
   outline: none;
 }
 
+/* Synchronized with --route-bp-narrow in tokens.css. */
 @media (width <= 760px) {
   .product-route-header {
     flex-direction: column;

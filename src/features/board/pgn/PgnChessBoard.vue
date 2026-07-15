@@ -7,6 +7,7 @@ import {
   type AnnotationDrawPayload,
   type BoardAnnotation,
 } from '@/features/annotations/domain/annotationTypes'
+import ProductStateBanner from '@/ui/ProductStateBanner.vue'
 
 import CanonicalChessBoard from '../CanonicalChessBoard.vue'
 import type {
@@ -25,6 +26,7 @@ import type {
 } from '../domain/boardTypes'
 import { STANDARD_START_FEN } from '../domain/boardTypes'
 import type {
+  PgnChessBoardError,
   PgnChessBoardEvents,
   PgnChessBoardExposed,
   PgnChessBoardProps,
@@ -37,8 +39,13 @@ const props = withDefaults(defineProps<PgnChessBoardProps>(), {
 const emit = defineEmits<PgnChessBoardEvents>()
 const board = ref<ChessboardExposed | null>(null)
 const positionAnnotations = ref(cloneAnnotation(props.annotations ?? emptyAnnotation()))
+const retainedError = ref<PgnChessBoardError | null>(null)
 const pendingInitialEmits: (() => void)[] = []
 let mounted = false
+
+function setRetainedError(error: PgnChessBoardError | null): void {
+  retainedError.value = error
+}
 
 function emitAfterMount(callback: () => void): void {
   if (mounted) callback()
@@ -51,12 +58,19 @@ const pgn = usePgnChessBoard({
   preserveOnInvalid: () => props.preserveOnInvalid,
   onBeforeMove: (payload) => props.capabilities?.position?.onMoveRequest?.(payload),
   onMoveExecuted: (move) => emitAfterMount(() => emit('move-executed', move)),
-  onPgnChange: (event) => emitAfterMount(() => emit('pgn-change', event)),
+  onPgnChange: (event) => {
+    setRetainedError(null)
+    emitAfterMount(() => emit('pgn-change', event))
+  },
   onPgnRemove: () => {
+    setRetainedError(null)
     positionAnnotations.value = cloneAnnotation(props.annotations ?? emptyAnnotation())
     emitAfterMount(() => emit('pgn-remove'))
   },
-  onPgnError: (error) => emitAfterMount(() => emit('pgn-error', error)),
+  onPgnError: (error) => {
+    if (props.preserveOnInvalid) setRetainedError(error)
+    emitAfterMount(() => emit('pgn-error', error))
+  },
   onGameChange: (game) => emitAfterMount(() => emit('game-change', game)),
   onCurrentNodeChange: (node) => emitAfterMount(() => emit('current-node-change', node)),
   onNavigation: (event) => emitAfterMount(() => emit('navigation', event)),
@@ -256,26 +270,47 @@ defineExpose(exposed)
 </script>
 
 <template>
-  <CanonicalChessBoard
-    ref="board"
-    class="pgn-chessboard"
-    :position="boardPosition"
-    :last-move="boardLastMove"
-    :annotations="boardAnnotations"
-    :capabilities="boardCapabilities"
-    data-p1b4-pgn-board
-    @move-request="onMoveRequest"
-    @move-executed="onMoveExecuted"
-    @promotion-request="onPromotionRequest"
-    @position-change="onPositionChange"
-    @annotation-draw="onAnnotationDraw"
-    @update:annotations="onAnnotationsUpdate"
-    @radial-command="onRadialCommand"
-    @editor-update="onEditorUpdate"
-    @editor-commit="onEditorCommit"
-    @editor-error="onEditorError"
-    @editor-cancel="emit('editor-cancel')"
-    @wheel-navigation="onWheelNavigation"
-    @interaction-active="emit('interaction-active', $event)"
-  />
+  <div class="pgn-chessboard-wrap">
+    <ProductStateBanner
+      v-if="retainedError"
+      status="warning"
+      title="仍显示上一次有效棋谱"
+      class="pgn-retained-banner"
+    >
+      {{ retainedError.message }}
+    </ProductStateBanner>
+    <CanonicalChessBoard
+      ref="board"
+      class="pgn-chessboard"
+      :position="boardPosition"
+      :last-move="boardLastMove"
+      :annotations="boardAnnotations"
+      :capabilities="boardCapabilities"
+      data-p1b4-pgn-board
+      @move-request="onMoveRequest"
+      @move-executed="onMoveExecuted"
+      @promotion-request="onPromotionRequest"
+      @position-change="onPositionChange"
+      @annotation-draw="onAnnotationDraw"
+      @update:annotations="onAnnotationsUpdate"
+      @radial-command="onRadialCommand"
+      @editor-update="onEditorUpdate"
+      @editor-commit="onEditorCommit"
+      @editor-error="onEditorError"
+      @editor-cancel="emit('editor-cancel')"
+      @wheel-navigation="onWheelNavigation"
+      @interaction-active="emit('interaction-active', $event)"
+    />
+  </div>
 </template>
+
+<style scoped>
+.pgn-chessboard-wrap {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.pgn-retained-banner {
+  margin: 0 var(--s-2);
+}
+</style>

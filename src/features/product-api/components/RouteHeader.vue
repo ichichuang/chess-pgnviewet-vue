@@ -117,6 +117,7 @@ function logout(): void {
   font-size: var(--fs-sm);
 }
 
+/* Synchronized with --route-bp-narrow in tokens.css. */
 @media (width <= 760px) {
   .route-header {
     align-items: flex-start;

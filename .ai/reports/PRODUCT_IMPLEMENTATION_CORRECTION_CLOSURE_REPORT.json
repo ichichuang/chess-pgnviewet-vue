@@ -1,0 +1,523 @@
+{
+  "reportType": "PRODUCT_IMPLEMENTATION_CORRECTION_CLOSURE_REPORT",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "auditDate": "2026-07-15T06:31:27.436Z",
+  "auditor": "Direction 4 independent formal closure audit",
+  "summary": {
+    "total": 28,
+    "closed": 19,
+    "openImplementationGap": 5,
+    "openContractBlocked": 3,
+    "openOwnerDecision": 1,
+    "note": "Audit independently verified every COR against current code, page reports, browser behavior, design, architecture, security and persistence authorities. No candidate closure claim was accepted without reproduction."
+  },
+  "statusDistribution": {
+    "CLOSED": [
+      "COR-001",
+      "COR-002",
+      "COR-003",
+      "COR-006",
+      "COR-007",
+      "COR-008",
+      "COR-009",
+      "COR-011",
+      "COR-012",
+      "COR-013",
+      "COR-014",
+      "COR-015",
+      "COR-016",
+      "COR-018",
+      "COR-021",
+      "COR-022",
+      "COR-026",
+      "COR-027",
+      "COR-028"
+    ],
+    "OPEN_IMPLEMENTATION_GAP": ["COR-004", "COR-005", "COR-017", "COR-020", "COR-025"],
+    "OPEN_CONTRACT_BLOCKED": ["COR-010", "COR-023", "COR-024"],
+    "OPEN_OWNER_DECISION": ["COR-019"]
+  },
+  "severityDistribution": {
+    "S1": {
+      "CLOSED": 9,
+      "OPEN_IMPLEMENTATION_GAP": 2,
+      "OPEN_CONTRACT_BLOCKED": 3,
+      "OPEN_OWNER_DECISION": 0
+    },
+    "S2": {
+      "CLOSED": 8,
+      "OPEN_IMPLEMENTATION_GAP": 3,
+      "OPEN_CONTRACT_BLOCKED": 0,
+      "OPEN_OWNER_DECISION": 1
+    },
+    "S3": {
+      "CLOSED": 2,
+      "OPEN_IMPLEMENTATION_GAP": 0,
+      "OPEN_CONTRACT_BLOCKED": 0,
+      "OPEN_OWNER_DECISION": 0
+    }
+  },
+  "records": [
+    {
+      "id": "COR-001",
+      "severity": "S1",
+      "status": "CLOSED",
+      "closureCommit": "docs(governance): 闭合产品实现纠正项状态与验收证据",
+      "affectedPage": "统一工作区",
+      "browserPath": "/pgnViewer/",
+      "evidence": [
+        "Removed automatic writeMoveAssessment call from src/stores/analysis.ts.",
+        "Analysis results are now displayed only in the analysis panel; explicit user action is required before writing to PGN annotations.",
+        "Static governance, typecheck, production build and browser validation pass."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "AI automatically writes annotations on completion or runs on unauthorized sources."
+    },
+    {
+      "id": "COR-002",
+      "severity": "S1",
+      "status": "CLOSED",
+      "closureCommit": "feat(workspace): 完成统一工作区逐页设计实现",
+      "affectedPage": "统一工作区",
+      "browserPath": "/pgnViewer/",
+      "evidence": [
+        "WorkspaceStartSurface rendered when no source is loaded.",
+        "EvalBar, analysis region and AI controls gated by WorkspacePermissionAdapter and hasBoardContent.",
+        "No default fake board rendered on entry."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Fake initial board or AI/evaluation controls appear without source or on live/readonly sources."
+    },
+    {
+      "id": "COR-003",
+      "severity": "S1",
+      "status": "CLOSED",
+      "closureCommit": "feat(workspace): 完成统一工作区逐页设计实现",
+      "affectedPage": "统一工作区",
+      "browserPath": "/pgnViewer/",
+      "evidence": [
+        "WorkspacePermissionAdapter gates all write capabilities through isLocalEditable.",
+        "Toolbar, board capabilities and annotation tools respect canEditBoard/canEditAnnotations/canEnterBoardEditor.",
+        "Local import creates a new editable source instead of mutating readonly source."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Any write action reachable in readonly/live context or source PGN modified without explicit local copy."
+    },
+    {
+      "id": "COR-004",
+      "severity": "S1",
+      "status": "OPEN_IMPLEMENTATION_GAP",
+      "closureCommit": "n/a",
+      "affectedPage": "场外大屏",
+      "browserPath": "/pgnViewer/competitions/:hdid/display",
+      "evidence": [
+        "VenueDisplayShell with fixed header, controls, stage and status bar implemented.",
+        "Public pairing composition renders as cards with pagination, pause/focus and truthful unavailable banner.",
+        "Single/quad/paginated multi-board modes using CanonicalChessBoard are not yet implemented."
+      ],
+      "remainingDependency": "Implementation of 1/4/N board modes; OD-05/06 for final density constants.",
+      "reopenTrigger": "Claim that single-board, quad-board or paginated multi-board modes are implemented."
+    },
+    {
+      "id": "COR-005",
+      "severity": "S1",
+      "status": "OPEN_IMPLEMENTATION_GAP",
+      "closureCommit": "n/a",
+      "affectedPage": "赛事详情、场外大屏",
+      "browserPath": "/pgnViewer/competitions/:hdid,/pgnViewer/competitions/:hdid/display",
+      "evidence": [
+        "Explicit URL round priority implemented in both detail and display.",
+        "Fallback still uses sourceCurrentRoundId with first/last round fallback; commentary and display do not yet have two distinct approved default-order policies.",
+        "Mapper discards content.roundfinish because its schema/semantics are not confirmed."
+      ],
+      "remainingDependency": "Confirmed schema and semantics of content.roundfinish; implementation of two approved default policies.",
+      "reopenTrigger": "Inferring round lifecycle from unconfirmed roundfinish structure or claiming two distinct policies are complete."
+    },
+    {
+      "id": "COR-006",
+      "severity": "S1",
+      "status": "CLOSED",
+      "closureCommit": "feat(competition): 完成赛事详情页逐页设计实现",
+      "affectedPage": "赛事详情、统一工作区 replay、兼容入口",
+      "browserPath": "/pgnViewer/competitions/:hdid",
+      "evidence": [
+        "Pairing action text lifecycle-gated: finished shows '回放暂不可用', ongoing shows '实时暂不可用', not-started shows no replay/live entry.",
+        "useRemoteReplayLoader rejects non-replay modes and missing gameId; fetchFinishedGameReplay stub returns service-unavailable.",
+        "No fallback PGN or fake replay handoff."
+      ],
+      "remainingDependency": "Real finished-game replay API contract.",
+      "reopenTrigger": "UI fabricates replay success, creates replay handoff for ongoing/not-started pairings, or mixes commentary/replay labels."
+    },
+    {
+      "id": "COR-007",
+      "severity": "S1",
+      "status": "CLOSED",
+      "closureCommit": "feat(routes): 完成兼容入口与不可用表面实现",
+      "affectedPage": "统一工作区、兼容入口、赛场展示、赛事详情",
+      "browserPath": "/pgnViewer/match/:key,/pgnViewer/share/:uuid,/pgnViewer/cloud/:fileid,/pgnViewer/competitions/:hdid/live",
+      "evidence": [
+        "Endpoint allowlist contains only confirmed production endpoints.",
+        "Cloud/share/live/clock/hardware/replay success paths are absent; surfaces show truthful contract-blocked unavailable state.",
+        "No generic /CALL, dynamic proxy, mock or fallback success data."
+      ],
+      "remainingDependency": "Real backend contracts for cloud/share import, live board/snapshot, MQTT/subscription, authoritative clock, hardware history/latest and protected replay.",
+      "reopenTrigger": "Unapproved endpoint added, invented repository/DTO/provider/clock, or mock/fallback success data returned."
+    },
+    {
+      "id": "COR-008",
+      "severity": "S1",
+      "status": "CLOSED",
+      "closureCommit": "feat(routes): 完成兼容入口与不可用表面实现",
+      "affectedPage": "兼容与不可用表面",
+      "browserPath": "/pgnViewer/?handoff=invalid-id,/pgnViewer/unknown-route",
+      "evidence": [
+        "Invalid/unreadable handoff renders ProductUnavailableState with mode='unknown'; no fallback to successful local workspace.",
+        "workspaceModeQuery ignores direct ?mode/?source/?readonly/?qrcode/?sn injection.",
+        "Catch-all route renders NotFoundView instead of redirecting to /."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Invalid handoff silently falls back to working workspace, direct query parameters override readonly/source, or unknown paths redirect to /."
+    },
+    {
+      "id": "COR-009",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "feat(login): 完成登录页逐页设计实现",
+      "affectedPage": "登录页",
+      "browserPath": "/pgnViewer/login,/pgnViewer/login?reason=expired",
+      "evidence": [
+        "LoginView distinguishes validation, invalid credentials, session expired and service unavailable states.",
+        "Safe return path sanitization prevents open redirect.",
+        "match/cloud/live routes do not require auth before contract evaluation."
+      ],
+      "remainingDependency": "Future protected replay/cloud/live API contract to enable requiresAuth route meta.",
+      "reopenTrigger": "Login UI collapses distinct error kinds into a single alert, or unclosed entry points gain requiresAuth."
+    },
+    {
+      "id": "COR-010",
+      "severity": "S3",
+      "status": "OPEN_CONTRACT_BLOCKED",
+      "closureCommit": "n/a",
+      "affectedPage": "赛事列表/详情/display、remote replay、未来 live",
+      "browserPath": "Rapid hdid/group/round switching",
+      "evidence": [
+        "AbortSignal passes through tournament Query->repository->Axios.",
+        "placeholderData: keepPreviousData prevents old results overwriting current selection.",
+        "Replay stub receives signal but synchronously rejects; real cancellation cannot be verified until replay/live contract exists."
+      ],
+      "remainingDependency": "Confirmed replay/live backend contract and real repository implementation.",
+      "reopenTrigger": "New replay/live adapter implemented without signal forwarding, cancellation surfaced as error, or late results not discarded."
+    },
+    {
+      "id": "COR-011",
+      "severity": "S1",
+      "status": "CLOSED",
+      "closureCommit": "docs(governance): 闭合产品实现纠正项状态与验收证据",
+      "affectedPage": "登录、统一工作区分析/右面板",
+      "browserPath": "/pgnViewer/login,/pgnViewer/",
+      "evidence": [
+        "src/styles/tokens.css defines --fs-md, --text-inverse, --focus-ring, --workspace-focus-ring-width/offset.",
+        "--eval-advantage-line removed.",
+        "check:tokens PASS; light/dark computed style resolves tokens."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Token authority removes these tokens or components introduce local palette fallbacks."
+    },
+    {
+      "id": "COR-012",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "docs(governance): 闭合产品实现纠正项状态与验收证据",
+      "affectedPage": "全产品",
+      "browserPath": "/pgnViewer/login,/pgnViewer/competitions,/pgnViewer/",
+      "evidence": [
+        "New tokens --card-max-w, --dialog-max-w, --drawer-w, --drawer-w-collapsed, --route-bp-narrow added to tokens.css.",
+        "Raw values in LoginView, ProductDialog, ProductDrawer, ProductRouteShell, RouteHeader, VenueDisplayShell, TeachingWorkspace, SettingsSurface replaced or synchronized.",
+        "check:raw-visual-values PASS."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "New raw governed visual values added outside tokens.css or new Token namespace introduced."
+    },
+    {
+      "id": "COR-013",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "docs(governance): 闭合产品实现纠正项状态与验收证据",
+      "affectedPage": "登录、统一工作区、赛事浏览、公共 overlays",
+      "browserPath": "/pgnViewer/login,/pgnViewer/competitions,/pgnViewer/",
+      "evidence": [
+        "LoginView sets initial focus to account input.",
+        "ProductTabs implements ArrowRight/Down/Left/Up/Home/End navigation.",
+        "WorkspaceSplitter supports keyboard resizing and Escape restore.",
+        "ProductButton adds project :focus-visible outline using --focus-ring.",
+        "ACCESSIBILITY_SPEC.md corrected: arrow keys move board squares or move-list; '?' shortcut marked disabled until owner exists."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "New interactive control lacks project focus-visible style, or accessibility doc reverts to dual arrow-key assignment."
+    },
+    {
+      "id": "COR-014",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "docs(governance): 闭合产品实现纠正项状态与验收证据",
+      "affectedPage": "live/replay/display 中的 CanonicalChessBoard",
+      "browserPath": "/pgnViewer/ (readonly source)",
+      "evidence": [
+        "useBoardCapabilityOptions decouples interaction.keyboard from position.playable.",
+        "useBoardView allows square navigation on readonly boards but gates move submission on interactive.",
+        "Default square labels use Chinese piece names (白兵, 黑马, etc.)."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Readonly board cannot receive Tab focus, cannot navigate squares, or square labels contain English color/type terms."
+    },
+    {
+      "id": "COR-015",
+      "severity": "S1",
+      "status": "CLOSED",
+      "closureCommit": "feat(ui): 建立逐页实现所需共享界面基础",
+      "affectedPage": "赛事列表、详情、display、兼容页；全局 shell",
+      "browserPath": "/pgnViewer/competitions,/pgnViewer/competitions/:hdid,/pgnViewer/competitions/:hdid/display,/pgnViewer/login",
+      "evidence": [
+        "App.vue sets height to --workspace-viewport-h and overflow:hidden.",
+        "ProductRouteShell has fixed header, flex-1 scroll body and bounded content region.",
+        "All route views use ProductRouteShell; body scrollHeight equals clientHeight."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Route rendered outside ProductRouteShell or App.vue reintroduces body scroll."
+    },
+    {
+      "id": "COR-016",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "feat(workspace): 完成统一工作区逐页设计实现",
+      "affectedPage": "统一工作区平板/窄屏",
+      "browserPath": "/pgnViewer/ (narrow viewport)",
+      "evidence": [
+        "isNarrow breakpoint (<=900px) renders ProductDrawer for sources and ProductSheet for context.",
+        "Desktop .area-list hidden at narrow widths; board-stage remains visible.",
+        "Editor dock adapts at narrow/short viewports."
+      ],
+      "remainingDependency": "OD-09 for full narrow-screen editing capability.",
+      "reopenTrigger": "Tablet/narrow viewport loses source navigation, board collapses, or editor becomes unusable."
+    },
+    {
+      "id": "COR-017",
+      "severity": "S2",
+      "status": "OPEN_IMPLEMENTATION_GAP",
+      "closureCommit": "n/a",
+      "affectedPage": "统一工作区 PGN 导入",
+      "browserPath": "/pgnViewer/",
+      "evidence": [
+        "usePgnWorkspaceRuntime merges files and calls pgn.openText/insertText with a single merged string.",
+        "parseStrictCollection throws on any parseError, failing the entire import.",
+        "No per-file progress, cancellation, partial-success summary or structured failure reasons."
+      ],
+      "remainingDependency": "Design and implementation of file-level progress and partial-failure summary.",
+      "reopenTrigger": "Claim that local PGN import supports partial failure while it remains all-or-nothing."
+    },
+    {
+      "id": "COR-018",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "docs(governance): 闭合产品实现纠正项状态与验收证据",
+      "affectedPage": "任何采用 PgnChessBoard 的页面",
+      "browserPath": "Component not yet adopted by current pages; static/typecheck/build pass.",
+      "evidence": [
+        "PgnChessBoard tracks retainedError when preserveOnInvalid is true and replacePgn fails.",
+        "ProductStateBanner rendered with title '仍显示上一次有效棋谱' and error message.",
+        "Error cleared on successful PGN change or removal."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "PgnChessBoard adopted without visible retained-state label bound to failed source identity and recovery action."
+    },
+    {
+      "id": "COR-019",
+      "severity": "S2",
+      "status": "OPEN_OWNER_DECISION",
+      "closureCommit": "n/a",
+      "affectedPage": "统一工作区 comments/annotations/game note",
+      "browserPath": "/pgnViewer/",
+      "evidence": [
+        "WorkspaceRightPanel shows comments/annotations tabs read-only.",
+        "PGN Store has drawing actions but no typed node-comment or game-note editing.",
+        "Remote sources remain read-only."
+      ],
+      "remainingDependency": "OD-01 (teaching collection structure / local copy persistence), OD-02 (lesson/class notes write-back).",
+      "reopenTrigger": "Node annotation or game-note editing claimed shipped without OD-01/02 closure."
+    },
+    {
+      "id": "COR-020",
+      "severity": "S2",
+      "status": "OPEN_IMPLEMENTATION_GAP",
+      "closureCommit": "n/a",
+      "affectedPage": "统一工作区；公共 overlays",
+      "browserPath": "/pgnViewer/",
+      "evidence": [
+        "ProductConfirmDialog adapter exists with cancel-as-initial-focus, Escape/busy/return-focus policy.",
+        "Only '清除标注' action currently uses it.",
+        "No route leave guard for dirty board/annotation state; board editor cancel/finish does not prompt before discarding."
+      ],
+      "remainingDependency": "Dirty-state tracker for board editor and annotation changes; onBeforeRouteLeave and beforeunload hooks.",
+      "reopenTrigger": "User can lose edited board position or annotation set by leaving route or closing editor without confirmation."
+    },
+    {
+      "id": "COR-021",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "feat(ui): 建立逐页实现所需共享界面基础",
+      "affectedPage": "统一工作区、赛事页、兼容页",
+      "browserPath": "/pgnViewer/,/pgnViewer/competitions",
+      "evidence": [
+        "AnalysisPanel uses product-facing terms: 'AI 分析', '正在分析当前局面', '主要变化', '候选变化'.",
+        "WorkspaceRightPanel tabs use '棋谱', '批注', '标注', '分析'.",
+        "check:user-visible-copy PASS."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "User-facing text reintroduces Worker/request/hash/internal lifecycle terms."
+    },
+    {
+      "id": "COR-022",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "feat(competition): 完成赛事列表页逐页设计实现",
+      "affectedPage": "赛事列表",
+      "browserPath": "/pgnViewer/competitions?type=1&status=&date=2026-07",
+      "evidence": [
+        "Applied filters and page derived from route.query.",
+        "Allowlists for status/type/date reject unknown values and show correction banner.",
+        "Back/forward restores form draft and query key; placeholderData keeps old results during refresh."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Filter/type values sent to API without allowlist validation, invalid values silently succeed, or applied filters stop being URL-owned."
+    },
+    {
+      "id": "COR-023",
+      "severity": "S2",
+      "status": "OPEN_CONTRACT_BLOCKED",
+      "closureCommit": "n/a",
+      "affectedPage": "赛事详情",
+      "browserPath": "/pgnViewer/competitions/:hdid",
+      "evidence": [
+        "Detail/groups/rounds/pairings split into independent queries and regional states.",
+        "Individual pairings render correctly; team aggregate rows and per-board team scoring absent.",
+        "No fake aggregate synthesized from individual pairings."
+      ],
+      "remainingDependency": "Team tournament DTO contract exposing group/round/pairing aggregate data.",
+      "reopenTrigger": "Team success states claimed before confirmed team DTO contract or team totals synthesized from individual pairings."
+    },
+    {
+      "id": "COR-024",
+      "severity": "S1",
+      "status": "OPEN_CONTRACT_BLOCKED",
+      "closureCommit": "n/a",
+      "affectedPage": "赛场展示；未来 live spectator",
+      "browserPath": "/pgnViewer/competitions/:hdid/display",
+      "evidence": [
+        "Status bar shows last update time and retained-refresh indicator.",
+        "Partial-failure banner shown when data exists alongside an error.",
+        "Fixed 30s polling does not stop on completion; no stale/reconnecting/disconnected/completed lifecycle states."
+      ],
+      "remainingDependency": "Real-time FEN/move/clock/subscription contracts, OD-07 (stale threshold/clock interpolation), OD-08 (anonymous live display scope).",
+      "reopenTrigger": "Real-time contract closure; any claim that lifecycle surfaces exist before contract implementation."
+    },
+    {
+      "id": "COR-025",
+      "severity": "S2",
+      "status": "OPEN_IMPLEMENTATION_GAP",
+      "closureCommit": "n/a",
+      "affectedPage": "统一工作区、公共 UI API",
+      "browserPath": "/pgnViewer/",
+      "evidence": [
+        "Project adapters in src/ui/*.vue do not import stores/api.",
+        "PgnGameList and PgnNotationPanel still import usePgnStore.",
+        "PgnChessBoard maintains its own PGN runtime parallel to workspace runtime."
+      ],
+      "remainingDependency": "PGN owner decision on canonical runtime and typed projection injection.",
+      "reopenTrigger": "New page slice adds another store-coupled panel or a third PGN runtime."
+    },
+    {
+      "id": "COR-026",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "feat(settings): 完成全局设置表面实现",
+      "affectedPage": "设置表面",
+      "browserPath": "/pgnViewer/,/pgnViewer/competitions",
+      "evidence": [
+        "SettingsSurface is a global overlay: desktop Drawer, narrow Sheet.",
+        "Only theme (light/dark/system) and existing workspace-layout settings exposed.",
+        "No fake controls for language/sound/AI; storage-failure warning with retry."
+      ],
+      "remainingDependency": "OD-03/04/11 for remaining preferences.",
+      "reopenTrigger": "Addition of locale/sound/AI/board-appearance controls without OD closure, or creation of a /settings route."
+    },
+    {
+      "id": "COR-027",
+      "severity": "S2",
+      "status": "CLOSED",
+      "closureCommit": "feat(ui): 建立逐页实现所需共享界面基础",
+      "affectedPage": "全部页面",
+      "browserPath": "/pgnViewer/login,/pgnViewer/competitions,/pgnViewer/",
+      "evidence": [
+        "AppProviders is the single ConfigProvider/GlobalStyle owner.",
+        "naiveThemeOverrides dynamically resolves tokens from computed document style.",
+        "src/ui/*.vue adapters wrap Naive UI; architecturePolicy.naiveUiAllowlist enforced.",
+        "check:architecture-boundaries PASS."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Naive UI imported directly outside adapters/providers, or a second theme override owner appears."
+    },
+    {
+      "id": "COR-028",
+      "severity": "S3",
+      "status": "CLOSED",
+      "closureCommit": "全部页面实现报告",
+      "affectedPage": "全产品实现期",
+      "browserPath": "全部七页窄浏览器验证",
+      "evidence": [
+        "No automated test files or infrastructure (glob for *.{test,spec}.* returned empty).",
+        "All seven page reports record route-specific narrow browser validation.",
+        "Static governance, format, lint, stylelint, Knip, static, typecheck, build and audits pass.",
+        "Independent Chrome-headless DOM checks confirm non-empty DOM and no Vite error overlay on all approved routes."
+      ],
+      "remainingDependency": "none",
+      "reopenTrigger": "Page slice claimed 'implemented' without route-specific narrow browser record, automated test files introduced, or governance/lint/typecheck/build allowed to fail."
+    }
+  ],
+  "staticValidation": {
+    "commands": [
+      "pnpm run check:governance PASS",
+      "pnpm run format:check PASS",
+      "pnpm run lint PASS",
+      "pnpm run lint:style PASS",
+      "pnpm run check:unused PASS",
+      "pnpm run check:static PASS",
+      "pnpm run typecheck PASS",
+      "pnpm run build PASS",
+      "pnpm run audit:prod PASS (No known vulnerabilities)",
+      "pnpm audit PASS (No known vulnerabilities)",
+      "git diff --check PASS"
+    ]
+  },
+  "browserValidationSummary": {
+    "method": "Chrome headless (new) DOM checks against local dev server and production build dumps.",
+    "routes": [
+      "/pgnViewer/login",
+      "/pgnViewer/competitions",
+      "/pgnViewer/competitions/:hdid",
+      "/pgnViewer/competitions/:hdid/display",
+      "/pgnViewer/",
+      "/pgnViewer/match/:key",
+      "/pgnViewer/share/:uuid",
+      "/pgnViewer/cloud/:fileid",
+      "/pgnViewer/competitions/:hdid/live",
+      "/pgnViewer/unknown-route"
+    ],
+    "checks": [
+      "Non-empty DOM",
+      "No Vite error overlay or vue-error-overlay",
+      "No breaking console errors",
+      "Contract-blocked routes render truthful unavailable surface"
+    ]
+  }
+}

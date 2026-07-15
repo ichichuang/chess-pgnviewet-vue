@@ -49,6 +49,7 @@ const isGhost = computed(() => props.variant === 'ghost')
 <template>
   <NButton
     ref="buttonRef"
+    class="product-button"
     :type="naiveType"
     :size="size"
     :secondary="isSecondary"
@@ -64,3 +65,10 @@ const isGhost = computed(() => props.variant === 'ghost')
     <slot />
   </NButton>
 </template>
+
+<style scoped>
+.product-button :deep(.n-button:focus-visible) {
+  outline: var(--workspace-focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--workspace-focus-ring-offset);
+}
+</style>
