@@ -1,0 +1,174 @@
+{
+  "reportType": "PAGE_SETTINGS_SURFACE_IMPLEMENTATION_REPORT",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "baseCommit": "c87941c167ae5f4b359bcc7f10cecf1ab85622dd",
+  "pageFamily": "settings-surface",
+  "pageRoute": "global overlay (no /settings route)",
+  "affectedCorEntries": ["COR-012", "COR-013", "COR-021", "COR-026", "COR-027", "COR-028"],
+  "summary": {
+    "status": "PAGE_IMPLEMENTATION_PASS",
+    "note": "Settings surface implemented as a global overlay: desktop right-side Drawer and narrow bottom Sheet. Triggered from RouteHeader and WorkspaceToolbar. Exposes only implemented owners: theme preference and workspace layout. Static governance, typecheck, production build, dependency audits, and narrow real-browser validation all pass."
+  },
+  "capabilityClassification": {
+    "CURRENT_IMPLEMENTED": [
+      "Global settings overlay triggered from product header and workspace toolbar",
+      "Desktop Drawer and narrow Sheet variants",
+      "Theme preference: light / dark / system",
+      "Workspace layout preferences that already have an owner",
+      "Immediate apply",
+      "Storage-failure warning with retry",
+      "Focus trap, initial focus on close button, return focus to trigger",
+      "Cross-tab storage update announcement"
+    ],
+    "APPROVED_TARGET": [],
+    "CONTRACT_BLOCKED": [],
+    "OPEN_OWNER_DECISION": [
+      "Language/locale (OD-11)",
+      "Sound (OD-11)",
+      "AI default policy (OD-03/04)",
+      "Board appearance beyond existing layout/orientation"
+    ],
+    "PROHIBITED": [
+      "Dedicated /settings route",
+      "Fake controls for preferences without an owner",
+      "Second theme system or second settings state",
+      "Sensitive data in settings storage"
+    ]
+  },
+  "corEvidence": {
+    "COR-012": {
+      "title": "共享 Token 整理与原始视觉值归一",
+      "files": ["src/features/settings/SettingsSurface.vue", "src/ui/ProductSwitch.vue"],
+      "changes": [
+        "All spacing, colors, borders, radii and typography use src/styles/tokens.css."
+      ],
+      "validation": [
+        "pnpm run check:raw-visual-values PASS",
+        "pnpm run lint:style PASS"
+      ]
+    },
+    "COR-013": {
+      "title": "无障碍与键盘基础",
+      "files": ["src/features/settings/SettingsSurface.vue", "src/ui/ProductDrawer.vue", "src/ui/ProductSheet.vue"],
+      "changes": [
+        "SettingsSurface focuses the close button on open and returns focus to trigger on close.",
+        "ProductDrawer/ProductSheet trap focus and close on Escape.",
+        "Live region announces setting changes and cross-tab theme updates."
+      ],
+      "validation": [
+        "Browser: settings button opens overlay; Tab cycles inside; Escape closes; focus returns to settings button."
+      ]
+    },
+    "COR-021": {
+      "title": "产品术语清理",
+      "files": ["src/features/settings/SettingsSurface.vue"],
+      "changes": [
+        "User-facing copy uses '设置', '主题', '工作区布局', '显示来源导航', '显示分析区域', '收起工作区工具栏', '棋盘位置', '棋盘朝向', '当前右侧内容', '恢复棋谱与分析自动分区'."
+      ],
+      "validation": [
+        "pnpm run check:user-visible-copy PASS"
+      ]
+    },
+    "COR-026": {
+      "title": "统一设置 Drawer/Sheet",
+      "files": ["src/features/settings/SettingsSurface.vue", "src/features/product-api/components/RouteHeader.vue", "src/features/teaching-workspace/WorkspaceToolbar.vue"],
+      "changes": [
+        "Created SettingsSurface as the single settings container.",
+        "RouteHeader and WorkspaceToolbar both open the same SettingsSurface.",
+        "No /settings route created."
+      ],
+      "validation": [
+        "Browser: settings opens from / and /competitions.",
+        "Static: no /settings route added."
+      ]
+    },
+    "COR-027": {
+      "title": "Naive UI 项目适配层复用",
+      "files": ["src/ui/ProductDrawer.vue", "src/ui/ProductSheet.vue", "src/ui/ProductButton.vue", "src/ui/ProductSelect.vue", "src/ui/ProductSwitch.vue", "src/ui/ProductStateBanner.vue"],
+      "changes": [
+        "SettingsSurface uses existing project adapters.",
+        "Added ProductSwitch adapter over NSwitch."
+      ],
+      "validation": [
+        "pnpm run check:architecture-boundaries PASS",
+        "Browser: controls render consistently."
+      ]
+    },
+    "COR-028": {
+      "title": "真实浏览器验收跨阶段门",
+      "files": ["src/features/settings/SettingsSurface.vue"],
+      "changes": [
+        "Performed route-specific narrow browser validation on settings overlay from workspace and route header."
+      ],
+      "validation": [
+        "Desktop Drawer opens, focus inside, theme switch, close returns focus.",
+        "Narrow Sheet opens from bottom, focus inside, close returns focus.",
+        "No Vite overlay; no breaking console errors."
+      ]
+    }
+  },
+  "browserValidation": {
+    "routes": [
+      "/pgnViewer/",
+      "/pgnViewer/competitions"
+    ],
+    "viewportProfiles": [
+      { "name": "desktop", "width": 1280, "height": 720 },
+      { "name": "narrow", "width": 375, "height": 667 }
+    ],
+    "checks": {
+      "workspaceTrigger": "Clicking '设置' on workspace toolbar opens settings overlay.",
+      "routeHeaderTrigger": "Clicking '设置' on RouteHeader opens settings overlay.",
+      "drawer": "Desktop renders right-side Drawer with title '设置' and description.",
+      "sheet": "Narrow renders bottom Sheet with same content.",
+      "focus": "Initial focus is on close button; closing returns focus to trigger button.",
+      "themeSwitch": "Theme select switches light/dark/system without error.",
+      "storageFailure": "Simulated failure path shows warning banner and retry button (code path verified).",
+      "viteOverlay": "None observed.",
+      "consoleErrors": "None breaking."
+    },
+    "screenshots": [
+      ".ai/reports/PAGE_SETTINGS_DESKTOP_EVIDENCE.png",
+      ".ai/reports/PAGE_SETTINGS_NARROW_EVIDENCE.png"
+    ]
+  },
+  "staticValidation": {
+    "commands": [
+      "pnpm run check:governance PASS",
+      "pnpm run format:check PASS",
+      "pnpm run lint PASS",
+      "pnpm run lint:style PASS",
+      "pnpm run check:unused PASS",
+      "pnpm run check:static PASS",
+      "pnpm run typecheck PASS",
+      "pnpm run build PASS",
+      "pnpm run audit:prod PASS (No known vulnerabilities)",
+      "pnpm audit PASS (No known vulnerabilities)",
+      "git diff --check PASS"
+    ]
+  },
+  "filesChanged": {
+    "created": [
+      "src/features/settings/SettingsSurface.vue",
+      "src/features/settings/index.ts",
+      "src/ui/ProductSwitch.vue",
+      ".ai/reports/PAGE_SETTINGS_SURFACE_IMPLEMENTATION_REPORT.json",
+      ".ai/reports/PAGE_SETTINGS_DESKTOP_EVIDENCE.png",
+      ".ai/reports/PAGE_SETTINGS_NARROW_EVIDENCE.png"
+    ],
+    "modified": [
+      "src/features/product-api/components/RouteHeader.vue",
+      "src/features/teaching-workspace/WorkspaceToolbar.vue",
+      "src/ui/ProductDrawer.vue",
+      "src/ui/ProductSheet.vue",
+      "src/ui/index.ts",
+      "src/stores/workspace.ts",
+      "src/persistence/workspace/workspaceLayoutPersistence.ts"
+    ]
+  },
+  "risksAndNextSteps": [
+    "Language, sound, AI defaults and board appearance remain absent until their owner decisions are closed.",
+    "Next slice: PAGE 7 — Venue display."
+  ]
+}

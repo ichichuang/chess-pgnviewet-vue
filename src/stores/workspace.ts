@@ -31,6 +31,8 @@ interface WorkspaceState {
   annotationColor: AnnotationColorId
   rightPgnHeightPx: number | null
   splitterDragging: boolean
+  layoutWriteInProgress: boolean
+  lastLayoutWriteSucceeded: boolean | null
 }
 
 export const useWorkspaceStore = defineStore('workspace', {
@@ -45,6 +47,8 @@ export const useWorkspaceStore = defineStore('workspace', {
     annotationColor: DEFAULT_ANNOTATION_COLOR,
     rightPgnHeightPx: null,
     splitterDragging: false,
+    layoutWriteInProgress: false,
+    lastLayoutWriteSucceeded: null,
   }),
 
   actions: {
@@ -69,48 +73,80 @@ export const useWorkspaceStore = defineStore('workspace', {
       this.rightPgnHeightPx = layout.rightPgnHeightPx
       this.splitterDragging = false
     },
-    persistLayout(): void {
-      void saveWorkspaceLayout(this.persistedLayout())
+    async persistLayout(): Promise<boolean> {
+      this.layoutWriteInProgress = true
+      const succeeded = await saveWorkspaceLayout(this.persistedLayout())
+      this.lastLayoutWriteSucceeded = succeeded
+      this.layoutWriteInProgress = false
+      return succeeded
     },
-    toggleLeftSidebar(): void {
+    async toggleLeftSidebar(): Promise<boolean> {
       this.showLeftSidebar = !this.showLeftSidebar
-      this.persistLayout()
+      return this.persistLayout()
     },
-    toggleAnalysisRegion(): void {
+    async setShowLeftSidebar(value: boolean): Promise<boolean> {
+      this.showLeftSidebar = value
+      return this.persistLayout()
+    },
+    async toggleAnalysisRegion(): Promise<boolean> {
       this.showAnalysisRegion = !this.showAnalysisRegion
       this.activeRightTab = this.showAnalysisRegion ? 'analysis' : 'notation'
       if (!this.showAnalysisRegion) {
         this.rightPgnHeightPx = null
       }
-      this.persistLayout()
+      return this.persistLayout()
     },
-    toggleToolbar(): void {
+    async setShowAnalysisRegion(value: boolean): Promise<boolean> {
+      this.showAnalysisRegion = value
+      this.activeRightTab = value ? 'analysis' : 'notation'
+      if (!value) {
+        this.rightPgnHeightPx = null
+      }
+      return this.persistLayout()
+    },
+    async toggleToolbar(): Promise<boolean> {
       this.toolbarCollapsed = !this.toolbarCollapsed
-      this.persistLayout()
+      return this.persistLayout()
     },
-    setBoardAlignment(alignment: WorkspaceBoardAlignment): void {
+    async setToolbarCollapsed(value: boolean): Promise<boolean> {
+      this.toolbarCollapsed = value
+      return this.persistLayout()
+    },
+    async setBoardAlignment(alignment: WorkspaceBoardAlignment): Promise<boolean> {
       if (alignment === 'left' || alignment === 'center' || alignment === 'right') {
         this.boardAlignment = alignment
-        this.persistLayout()
+        return this.persistLayout()
       }
+      return false
+    },
+    async setBoardOrientation(orientation: BoardOrientation): Promise<boolean> {
+      if (orientation === BOARD_ORIENTATION_WHITE || orientation === BOARD_ORIENTATION_BLACK) {
+        this.boardOrientation = orientation
+        return this.persistLayout()
+      }
+      return false
     },
     flipBoardOrientation(): void {
       this.boardOrientation =
         this.boardOrientation === BOARD_ORIENTATION_WHITE
           ? BOARD_ORIENTATION_BLACK
           : BOARD_ORIENTATION_WHITE
-      this.persistLayout()
+      void this.persistLayout()
     },
-    setActiveRightTab(tab: WorkspacePanelTab): void {
+    async setActiveRightTab(tab: WorkspacePanelTab): Promise<boolean> {
       if (tab !== 'notation' && tab !== 'comments' && tab !== 'annotations' && tab !== 'analysis') {
-        return
+        return false
       }
 
       this.activeRightTab = tab
       if (tab === 'analysis') {
         this.showAnalysisRegion = true
       }
-      this.persistLayout()
+      return this.persistLayout()
+    },
+    async resetRightPgnHeightPx(): Promise<boolean> {
+      this.rightPgnHeightPx = null
+      return this.persistLayout()
     },
     setAnnotationTool(tool: WorkspaceAnnotationTool): void {
       if (tool !== 'arrow' && tool !== 'square' && tool !== 'highlight' && tool !== null) {
@@ -130,7 +166,7 @@ export const useWorkspaceStore = defineStore('workspace', {
     setSplitterDragging(dragging: boolean): void {
       const finished = this.splitterDragging && !dragging
       this.splitterDragging = dragging
-      if (finished) this.persistLayout()
+      if (finished) void this.persistLayout()
     },
   },
 })

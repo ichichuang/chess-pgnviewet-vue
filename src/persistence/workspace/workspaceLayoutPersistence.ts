@@ -71,9 +71,9 @@ export async function readWorkspaceLayout(): Promise<PersistedWorkspaceLayout | 
   }
 }
 
-export async function saveWorkspaceLayout(layout: PersistedWorkspaceLayout): Promise<void> {
+export async function saveWorkspaceLayout(layout: PersistedWorkspaceLayout): Promise<boolean> {
   const parsed = WorkspaceLayoutSchema.safeParse(layout)
-  if (!parsed.success) return
+  if (!parsed.success) return false
 
   try {
     await workspaceDatabase().workspaceSession.put({
@@ -82,7 +82,9 @@ export async function saveWorkspaceLayout(layout: PersistedWorkspaceLayout): Pro
       updatedAt: Date.now(),
       layout: parsed.data,
     })
+    return true
   } catch {
     // Layout persistence is recoverable and must not block workspace use.
+    return false
   }
 }

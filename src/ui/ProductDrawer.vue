@@ -11,11 +11,13 @@ const props = withDefaults(
     placement?: DrawerPlacement
     width?: string | number
     closable?: boolean
+    autoFocus?: boolean
   }>(),
   {
     placement: 'right',
     width: '320px',
     closable: true,
+    autoFocus: true,
   }
 )
 
@@ -32,13 +34,19 @@ const drawerWidth = computed(() => props.width)
     :placement="placement"
     :width="drawerWidth"
     :trap-focus="true"
-    :auto-focus="true"
+    :auto-focus="autoFocus"
     :mask-closable="true"
     :close-on-esc="true"
     @update:show="emit('update:show', $event)"
   >
     <NDrawerContent :title="title" :closable="closable">
+      <template v-if="$slots.header" #header>
+        <slot name="header" />
+      </template>
       <slot />
+      <template v-if="$slots.footer" #footer>
+        <slot name="footer" />
+      </template>
     </NDrawerContent>
   </NDrawer>
 </template>

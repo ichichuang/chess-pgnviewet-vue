@@ -7,6 +7,7 @@ import {
 } from '@/features/annotations/domain/annotationTypes'
 import { BOARD_ORIENTATION_BLACK } from '@/features/board/domain/boardTypes'
 import { useAuthStore, usePgnStore, useWorkspaceStore } from '@/stores'
+import SettingsSurface from '@/features/settings'
 import { ProductButton, ProductConfirmDialog } from '@/ui'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
@@ -30,6 +31,8 @@ const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
 const auth = useAuthStore()
 const showClearConfirm = ref(false)
+const settingsOpen = ref(false)
+const settingsButtonRef = ref<InstanceType<typeof ProductButton> | null>(null)
 
 const annotationTools: readonly { key: AnnotationShapeKind; label: string }[] = [
   { key: 'arrow', label: '箭头' },
@@ -305,9 +308,17 @@ onBeforeUnmount(() => {
           <ProductButton class="context-toggle" size="small" @click="emit('toggleContext')">
             上下文
           </ProductButton>
+          <ProductButton ref="settingsButtonRef" size="small" @click="settingsOpen = true">
+            设置
+          </ProductButton>
         </section>
       </div>
     </Transition>
+
+    <SettingsSurface
+      v-model:show="settingsOpen"
+      :on-return-focus="() => settingsButtonRef?.focus()"
+    />
   </header>
 </template>
 
