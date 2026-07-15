@@ -1,0 +1,90 @@
+{
+  "reportType": "CHINESE_MIRROR_SYNC_REPORT",
+  "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+  "branch": "main",
+  "sourceCommit": "ed1e8d8",
+  "syncDate": "2026-07-15T06:31:27.436Z",
+  "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
+  "summary": {
+    "regeneratedDocuments": 2,
+    "unchangedDocuments": 22,
+    "supportFilesUpdated": 2,
+    "totalTrackedMirrorFiles": 31,
+    "linksScanned": 375,
+    "linksRewritten": 364,
+    "unresolvedRelativeLinks": 0,
+    "invalidFragments": 0
+  },
+  "regenerated": [
+    {
+      "sourcePath": "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+      "targetPath": "docs/zh-cn/设计/实现修正待办清单.md",
+      "sourceTitle": "产品实现纠正清单",
+      "sourceSha256": "e766162f7bdc5c67b964e1bf97a9b0e702155e2cf3571b7cfe1b864029d20ee0",
+      "targetSha256": "de3f526d710dbbc9a7b82056ee1865f4940ef4cb588082365f7f2af562aa118d",
+      "linksScanned": 17,
+      "linksRewritten": 17,
+      "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+    },
+    {
+      "sourcePath": "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+      "targetPath": "docs/zh-cn/设计/UI实现交接.md",
+      "sourceTitle": "产品 UI 实施交接",
+      "sourceSha256": "3f8a493267d97bb972b095d0602c1a70746ec865cebc4e1c4ea7202f85ed53a0",
+      "targetSha256": "d8b0b9408db71b2a6f0beae3187790bc1e0b01bdb1b4c184684ac69a4458c79b",
+      "linksScanned": 17,
+      "linksRewritten": 17,
+      "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
+    }
+  ],
+  "supportFilesUpdated": [
+    {
+      "path": "docs/zh-cn/中文文档映射.json",
+      "change": "Updated source/target SHA-256, link counts, sourceCommit and generatedAt for the two regenerated documents."
+    },
+    {
+      "path": "docs/zh-cn/中文文档总索引.md",
+      "change": "Updated source baseline hash, per-document source/target hashes, link counts and aggregate link totals."
+    },
+    {
+      "path": "docs/zh-cn/说明.md",
+      "change": "Updated final source baseline to ed1e8d8."
+    }
+  ],
+  "linkValidation": {
+    "method": "All relative Markdown links in regenerated mirrors were rewritten to mirror-relative paths and verified to point to existing files under docs/zh-cn.",
+    "verifiedPaths": [
+      "docs/zh-cn/设计/UI设计索引.md",
+      "docs/zh-cn/设计/组件职责规范.md",
+      "docs/zh-cn/设计/Naive UI映射.md",
+      "docs/zh-cn/设计/全局布局规范.md",
+      "docs/zh-cn/设计/全局交互规范.md",
+      "docs/zh-cn/设计/全局状态规范.md",
+      "docs/zh-cn/设计/响应式规范.md",
+      "docs/zh-cn/设计/通用浮层与对话框规范.md",
+      "docs/zh-cn/设计/UI实现交接.md",
+      "docs/zh-cn/设计/实现修正待办清单.md",
+      "docs/zh-cn/设计/页面/统一工作区页规范.md",
+      "docs/zh-cn/设计/页面/赛场展示页规范.md",
+      "docs/zh-cn/设计/页面/兼容性与不可用界面规范.md",
+      "docs/zh-cn/设计/页面/登录页规范.md",
+      "docs/zh-cn/设计/页面/比赛列表页规范.md",
+      "docs/zh-cn/设计/页面/比赛详情页规范.md",
+      "docs/zh-cn/设计/页面/设置界面规范.md"
+    ],
+    "unresolved": [],
+    "externalPreserved": []
+  },
+  "historicalMirrorReportsPreserved": [
+    ".ai/reports/PAGE_LOGIN_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/PAGE_COMPETITION_LIST_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/PAGE_COMPETITION_DETAIL_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/PAGE_UNIFIED_WORKSPACE_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/PAGE_COMPATIBILITY_UNAVAILABLE_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/PAGE_SETTINGS_SURFACE_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/PAGE_VENUE_DISPLAY_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/SEVEN_PAGE_FAMILY_IMPLEMENTATION_AGGREGATE_REPORT.json",
+    ".ai/reports/P0_SHARED_UI_FOUNDATION_IMPLEMENTATION_REPORT.json"
+  ],
+  "note": "JSON mirrors are byte-identical copies of canonical JSON and were not modified. Only Markdown mirrors of changed canonical Chinese documents were regenerated."
+}

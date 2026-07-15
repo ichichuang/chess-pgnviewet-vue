@@ -1,8 +1,4 @@
-> **中文文件名便捷阅读副本**
->
-> 本文件仅用于人工浏览，不是活动权威。活动权威始终是：[原始文档](../../design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md)。
->
-> 镜像源基线：`bcd39d8`
+<!-- 非权威性阅读镜像：本文件由 docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md 自动生成，仅供中文文件名浏览。活动权威始终是原始文档。 -->
 
 # 产品 UI 实施交接
 
@@ -64,6 +60,8 @@ flowchart LR
 | 跨阶段门      | `COR-007/010/028`                     | 固定 endpoint/仓储边界、请求取消、防串页和每页实施验收记录                       | 以静态通过替代页面实施验收               |
 
 `CONTRACT_BLOCKED` 的成功态不属于上述阶段的默认交付。真实合同到位后，应建立独立变更，先更新产品/API/安全权威，再接入 typed repository/source adapter。
+
+Direction 4 已对上述全部 28 项 `COR-*` 执行独立正式闭合审计。审计结果、状态统计、代码路径、验证命令和浏览器路径记录在 `docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md` 第 5 节。当前状态：`CLOSED` 19 项，`OPEN_IMPLEMENTATION_GAP` 5 项，`OPEN_CONTRACT_BLOCKED` 3 项，`OPEN_OWNER_DECISION` 1 项。开放项继续保持真实不可用或等待所有者决策/合同闭合，不得伪造成功数据。
 
 ## 4. 共享组件依赖顺序
 

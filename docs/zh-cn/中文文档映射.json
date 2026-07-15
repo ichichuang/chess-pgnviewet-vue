@@ -74,12 +74,12 @@
             "sourceFilename": "PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
             "sourcePath": "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
             "sourceRoot": "docs/design",
-            "sourceSha256": "4ea7202f85ed53a0b270843470faa8bb72b095d0602c1a70746ec865cebc4e1c",
+            "sourceSha256": "3f8a493267d97bb9d3a4b681c69a12d404541a0c756155d095ec3cb48e17856e",
             "sourceTitle": "产品 UI 实施交接",
             "targetCategory": "设计",
             "targetFilename": "UI实现交接.md",
             "targetPath": "docs/zh-cn/设计/UI实现交接.md",
-            "targetSha256": "bbda6f0beae3187790bc1e0b01bdb1b4c184684ac69a4458c79b37bbb9f4382b",
+            "targetSha256": "d8b0b9408db71b2ad4877f70e69ac0664d14d8f57b14242f9dd0c723e3996570",
             "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
         },
         {
@@ -214,12 +214,12 @@
             "sourceFilename": "PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
             "sourcePath": "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
             "sourceRoot": "docs/design",
-            "sourceSha256": "fbe6cbe2ed6e8053b964e1bf97a9b0e702155e2cf3571b7cfe1b864029d20ee0",
+            "sourceSha256": "e766162f7bdc5c678eebcc9768ee431fc427a31fa723de72df55b001930a2321",
             "sourceTitle": "产品实现纠正清单",
             "targetCategory": "设计",
             "targetFilename": "实现修正待办清单.md",
             "targetPath": "docs/zh-cn/设计/实现修正待办清单.md",
-            "targetSha256": "5f7f2af562aa118de65524e2921ccba41bce9e55976f14c82578ed13d6aec431",
+            "targetSha256": "de3f526d710dbbc9e6062725952a2041e7397197a4bcf4076ec1fbeb27de6ba6",
             "transformation": "NOTICE_PREPENDED_AND_LINKS_REWRITTEN"
         },
         {
@@ -776,7 +776,7 @@
     },
     "firstCorrectionCommit": "97080beb437db65b1dfd83371d3dba9a6db5eec9",
     "firstMirrorCommit": "a35c54646e0e912d56d12d12c4c98dfceef722d4",
-    "generatedAt": "2026-07-15T00:50:37.322Z",
+    "generatedAt": "2026-07-15T07:42:58.293Z",
     "linkValidation": {
         "canonicalLinksRewritten": 364,
         "externalLinksPreserved": 0,
@@ -795,7 +795,7 @@
     "mirrorAuthority": "NON_AUTHORITATIVE_READING_COPY",
     "repository": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
     "schemaVersion": "1.1.0",
-    "sourceCommit": "bcd39d8",
+    "sourceCommit": "ed1e8d8",
     "supportFiles": [
         {
             "path": "docs/zh-cn/说明.md",
