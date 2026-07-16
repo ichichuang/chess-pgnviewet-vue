@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue'
-
 import ProductButton from './ProductButton.vue'
 import ProductDialog from './ProductDialog.vue'
 
@@ -28,8 +26,6 @@ const emit = defineEmits<{
   cancel: []
 }>()
 
-const cancelRef = ref<HTMLElement | null>(null)
-
 function close(): void {
   emit('update:show', false)
 }
@@ -44,33 +40,36 @@ function onConfirm(): void {
   if (props.busy) return
   emit('confirm')
 }
-
-watch(
-  () => props.show,
-  async (visible) => {
-    if (visible) {
-      await nextTick()
-      cancelRef.value?.focus()
-    }
-  }
-)
 </script>
 
 <template>
   <ProductDialog
     :show="show"
     :title="title"
+    :description="body"
+    :role="dangerous ? 'alertdialog' : 'dialog'"
     :closable="!busy"
     :mask-closable="!busy"
     :close-on-esc="!busy"
+    initial-focus="safe-action"
     @update:show="emit('update:show', $event)"
   >
-    <p>{{ body }}</p>
     <template #footer>
-      <ProductButton ref="cancelRef" variant="secondary" :busy="busy" @click="onCancel">
+      <ProductButton
+        variant="secondary"
+        :busy="busy"
+        data-product-overlay-safe
+        data-product-overlay-initial
+        @click="onCancel"
+      >
         {{ cancelText }}
       </ProductButton>
-      <ProductButton :variant="dangerous ? 'danger' : 'primary'" :busy="busy" @click="onConfirm">
+      <ProductButton
+        :variant="dangerous ? 'danger' : 'primary'"
+        :busy="busy"
+        :data-product-overlay-danger="dangerous ? 'true' : undefined"
+        @click="onConfirm"
+      >
         {{ confirmText }}
       </ProductButton>
     </template>

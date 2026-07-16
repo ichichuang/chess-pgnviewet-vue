@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref, watch, computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 import {
   BOARD_ORIENTATION_BLACK,
@@ -35,9 +35,6 @@ const emit = defineEmits<{
 const theme = useThemeStore()
 const workspace = useWorkspaceStore()
 
-type ProductButtonInstance = InstanceType<typeof ProductButton>
-
-const closeButtonRef = ref<ProductButtonInstance | null>(null)
 const isNarrow = ref(false)
 const failureMessage = ref<string | null>(null)
 const retryAction = ref<(() => void) | null>(null)
@@ -69,27 +66,6 @@ onUnmounted(() => {
     window.removeEventListener('storage', storageListener)
   }
 })
-
-watch(
-  () => props.show,
-  async (visible) => {
-    if (visible) {
-      failureMessage.value = null
-      retryAction.value = null
-      await nextTick()
-      closeButtonRef.value?.focus()
-    } else {
-      await nextTick()
-      returnFocusToTrigger()
-    }
-  }
-)
-
-function returnFocusToTrigger(): void {
-  if (props.onReturnFocus) {
-    props.onReturnFocus()
-  }
-}
 
 function close(): void {
   emit('update:show', false)
@@ -238,6 +214,8 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
     title="设置"
     :closable="false"
     :auto-focus="false"
+    initial-focus="safe-action"
+    :return-focus="onReturnFocus"
     width="var(--drawer-w)"
     height="80vh"
     @update:show="emit('update:show', $event)"
@@ -251,10 +229,11 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
           </p>
         </div>
         <ProductButton
-          ref="closeButtonRef"
           variant="secondary"
           size="small"
           title="关闭设置"
+          data-product-overlay-safe
+          data-product-overlay-initial
           @click="close"
         >
           关闭设置

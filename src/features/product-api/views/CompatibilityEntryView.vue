@@ -9,9 +9,9 @@ import {
   isCapabilityContractBlocked,
   type BlockedCapabilityFamily,
 } from '@/features/product-api/domain/capabilityAvailability'
+import { useProductFeedback } from '@/app/providers/productFeedback'
 import { ProductRouteShell, ProductUnavailableState } from '@/ui'
 import { isSafeWorkspaceIdentifier } from '@/persistence/workspace/workspaceHandoff'
-import { loginRouteFor } from '@/router'
 
 type EntryState =
   | 'evaluating'
@@ -31,6 +31,7 @@ interface EntryDefinition {
 
 const route = useRoute()
 const router = useRouter()
+const productFeedback = useProductFeedback()
 
 const state = ref<EntryState>('evaluating')
 const identifier = ref('')
@@ -127,7 +128,7 @@ onMounted(() => {
 })
 
 function handleLogin(): void {
-  router.push(loginRouteFor(route.fullPath, 'required'))
+  productFeedback.showLoginRequired({ returnPath: route.fullPath })
 }
 
 function handleReturn(): void {

@@ -22,6 +22,13 @@ const emit = defineEmits<{
 }>()
 
 const bannerStatus = computed(() => computedStatus(props.kind))
+const safeReturnTarget = computed<RouteLocationRaw>(() => props.safeReturn ?? { name: 'workspace' })
+const primaryUsesNavigation = computed(
+  () => props.kind !== 'auth-required' && props.kind !== 'retryable' && Boolean(props.safeReturn)
+)
+const secondaryUsesNavigation = computed(
+  () => props.kind === 'retryable' && Boolean(props.safeReturn)
+)
 
 function computedStatus(kind: UnavailableKind): 'warning' | 'error' | 'info' {
   if (kind === 'auth-required') return 'info'
@@ -65,6 +72,11 @@ function secondaryLabel(): string {
   if (props.kind === 'retryable') return '返回可用内容'
   return ''
 }
+
+function handleReturnNavigation(navigate: (event?: MouseEvent) => unknown, event: MouseEvent): void {
+  emit('return')
+  void navigate(event)
+}
 </script>
 
 <template>
@@ -72,22 +84,45 @@ function secondaryLabel(): string {
     <ProductStateBanner :status="bannerStatus" :title="title">
       <p class="unavailable-explanation">{{ explanation }}</p>
       <nav class="unavailable-actions" aria-label="可用操作">
-        <ProductButton variant="primary" :title="primaryLabel()" @click="handlePrimary">
+        <RouterLink
+          v-if="primaryUsesNavigation"
+          v-slot="{ navigate }"
+          custom
+          :to="safeReturnTarget"
+        >
+          <ProductButton
+            variant="primary"
+            :title="primaryLabel()"
+            @click="handleReturnNavigation(navigate, $event)"
+          >
+            {{ primaryLabel() }}
+          </ProductButton>
+        </RouterLink>
+        <ProductButton v-else variant="primary" :title="primaryLabel()" @click="handlePrimary">
           {{ primaryLabel() }}
         </ProductButton>
+        <RouterLink
+          v-if="secondaryUsesNavigation"
+          v-slot="{ navigate }"
+          custom
+          :to="safeReturnTarget"
+        >
+          <ProductButton
+            variant="secondary"
+            :title="secondaryLabel()"
+            @click="handleReturnNavigation(navigate, $event)"
+          >
+            {{ secondaryLabel() }}
+          </ProductButton>
+        </RouterLink>
         <ProductButton
-          v-if="secondaryLabel()"
+          v-else-if="secondaryLabel()"
           variant="secondary"
           :title="secondaryLabel()"
           @click="handleSecondary"
         >
           {{ secondaryLabel() }}
         </ProductButton>
-        <RouterLink v-else-if="safeReturn" :to="safeReturn" class="unavailable-return-link">
-          <ProductButton variant="secondary" :title="primaryLabel()">
-            {{ primaryLabel() }}
-          </ProductButton>
-        </RouterLink>
       </nav>
     </ProductStateBanner>
   </section>
@@ -117,11 +152,6 @@ function secondaryLabel(): string {
   align-items: center;
 }
 
-.unavailable-return-link {
-  display: inline-flex;
-  text-decoration: none;
-}
-
 /* Synchronized with --workspace-bp-mobile in tokens.css. */
 @media (width <= 560px) {
   .unavailable-actions {
@@ -130,8 +160,7 @@ function secondaryLabel(): string {
     width: 100%;
   }
 
-  .unavailable-actions > *,
-  .unavailable-return-link {
+  .unavailable-actions > * {
     width: 100%;
   }
 }

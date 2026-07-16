@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { NConfigProvider, NGlobalStyle } from 'naive-ui'
+import { NConfigProvider, NGlobalStyle, NMessageProvider } from 'naive-ui'
 
 import { useThemeStore } from '@/stores'
 
 import { resolveNaiveTheme } from './naiveTheme'
 import { buildNaiveThemeOverrides } from './naiveThemeOverrides'
+import ProductFeedbackProvider from './ProductFeedbackProvider.vue'
 
 const themeStore = useThemeStore()
 
@@ -19,7 +20,11 @@ const naiveThemeOverrides = computed(() => {
 
 <template>
   <NConfigProvider abstract :theme="naiveTheme" :theme-overrides="naiveThemeOverrides">
-    <NGlobalStyle />
-    <slot />
+    <NMessageProvider>
+      <ProductFeedbackProvider>
+        <NGlobalStyle />
+        <slot />
+      </ProductFeedbackProvider>
+    </NMessageProvider>
   </NConfigProvider>
 </template>

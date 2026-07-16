@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ProductOverlayInitialFocus, ProductOverlayReturnFocus } from './productOverlayFocus'
 import ProductDrawer from './ProductDrawer.vue'
 
 withDefaults(
@@ -8,11 +9,19 @@ withDefaults(
     height?: string | number
     closable?: boolean
     autoFocus?: boolean
+    maskClosable?: boolean
+    closeOnEsc?: boolean
+    initialFocus?: ProductOverlayInitialFocus
+    returnFocus?: ProductOverlayReturnFocus | undefined
   }>(),
   {
     height: 'auto',
     closable: true,
     autoFocus: true,
+    maskClosable: true,
+    closeOnEsc: true,
+    initialFocus: 'safe-action',
+    returnFocus: undefined,
   }
 )
 
@@ -26,9 +35,13 @@ const emit = defineEmits<{
     :show="show"
     :title="title"
     placement="bottom"
-    :width="height ?? 'auto'"
+    :height="height ?? 'auto'"
     :closable="closable ?? true"
     :auto-focus="autoFocus ?? true"
+    :mask-closable="maskClosable ?? true"
+    :close-on-esc="closeOnEsc ?? true"
+    :initial-focus="initialFocus ?? 'safe-action'"
+    :return-focus="returnFocus"
     @update:show="emit('update:show', $event)"
   >
     <template v-if="$slots.header" #header>

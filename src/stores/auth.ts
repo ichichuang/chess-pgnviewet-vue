@@ -3,8 +3,10 @@ import { defineStore } from 'pinia'
 import { apiErrorMessage, ApiClientError, type ApiClientErrorKind } from '@/api/client'
 import { authRepository } from '@/api/authRepository'
 import {
+  notifyPrivateAuthUiLoss,
   registerPrivateAuthLossHandler,
   registerPrivateAuthTokenProvider,
+  type PrivateAuthUiLossReason,
 } from '@/api/privateAuthLifecycle'
 import { clearPrivateProductQueries } from '@/api/queryClient'
 import {
@@ -74,7 +76,7 @@ export const useAuthStore = defineStore('auth', {
       clearExpiryTimer()
       const remaining = Math.max(0, expiresAt - Date.now())
       expiryTimer = globalThis.setTimeout(() => {
-        this.handleAuthLoss('登录状态已过期，请重新登录。')
+        this.handleAuthLoss('登录状态已过期，请重新登录。', 'expired')
       }, remaining)
     },
     initialize(): void {
@@ -85,7 +87,7 @@ export const useAuthStore = defineStore('auth', {
 
       if (this.initialized) {
         if (this.session && this.session.expiresAt <= Date.now()) {
-          this.handleAuthLoss('登录状态已过期，请重新登录。')
+          this.handleAuthLoss('登录状态已过期，请重新登录。', 'expired')
         }
         return
       }
@@ -130,7 +132,11 @@ export const useAuthStore = defineStore('auth', {
         return false
       }
     },
-    handleAuthLoss(message = '登录状态已失效，请重新登录。'): void {
+    handleAuthLoss(
+      message = '登录状态已失效，请重新登录。',
+      reason: PrivateAuthUiLossReason = 'invalidated'
+    ): void {
+      const hadPrivateSession = this.session !== null || this.status === 'authenticated'
       clearPersistedAuthSession()
       clearExpiryTimer()
       clearPrivateProductState()
@@ -139,6 +145,9 @@ export const useAuthStore = defineStore('auth', {
       this.lastError = message
       this.lastErrorKind = null
       this.initialized = true
+      if (hadPrivateSession) {
+        notifyPrivateAuthUiLoss({ reason, occurredAt: Date.now() })
+      }
     },
     logout(): void {
       clearPersistedAuthSession()

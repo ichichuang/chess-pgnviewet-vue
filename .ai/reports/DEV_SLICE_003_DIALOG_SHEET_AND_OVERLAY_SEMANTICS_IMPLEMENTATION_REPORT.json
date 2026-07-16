@@ -1,0 +1,226 @@
+{
+  "slice": "DEV-SLICE-003",
+  "title": "Dialog, sheet, and overlay semantics",
+  "verified_baseline": {
+    "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "b85610ce35b0a7e2828b32171cafecaefddeb258",
+    "local_head": "b85610ce35b0a7e2828b32171cafecaefddeb258",
+    "origin_main": "b85610ce35b0a7e2828b32171cafecaefddeb258",
+    "live_remote_main": "b85610ce35b0a7e2828b32171cafecaefddeb258",
+    "ahead_behind": "0/0",
+    "worktree_before_edit": "clean"
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/pages/LOGIN_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/SETTINGS_SURFACE_SPEC.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPATIBILITY_AND_UNAVAILABLE_PAGE_SPEC.zh-CN.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "src/api/privateAuthLifecycle.ts",
+    "src/stores/auth.ts",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+  ],
+  "callers_inspected": [
+    "src/views/NotFoundView.vue",
+    "src/features/workspace-mode/WorkspaceModeController.vue",
+    "src/features/product-api/views/CompatibilityEntryView.vue",
+    "src/features/product-api/views/CompetitionLiveRedirectView.vue",
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/features/settings/SettingsSurface.vue",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/features/analysis/components/AnalysisPanel.vue",
+    "src/app/providers/AppProviders.vue",
+    "src/ui/ProductDrawer.vue",
+    "src/ui/ProductSheet.vue",
+    "src/ui/ProductDialog.vue",
+    "src/ui/ProductConfirmDialog.vue",
+    "src/ui/ProductUnavailableState.vue",
+    "src/ui/ProductButton.vue",
+    "src/ui/index.ts"
+  ],
+  "defects_reproduced": [
+    {
+      "id": "MISSING-UI-024",
+      "evidence": "No reusable provider-owned login-required overlay existed under AppProviders."
+    },
+    {
+      "id": "MISSING-UI-025",
+      "evidence": "Auth loss cleared private state but had no UI-safe session-expired overlay event."
+    },
+    {
+      "id": "MISSING-UI-026",
+      "evidence": "No single project-owned recoverable message/overlay provider existed."
+    },
+    {
+      "id": "MISSING-UI-028",
+      "evidence": "Bottom sheets reused ProductDrawer without a correct block-axis size contract."
+    },
+    {
+      "id": "NONCONF-UI-006",
+      "evidence": "ProductSheet forwarded height to ProductDrawer width."
+    },
+    {
+      "id": "NONCONF-UI-007",
+      "evidence": "ProductDialog generated title IDs from title copy."
+    },
+    {
+      "id": "NONCONF-UI-008",
+      "evidence": "ProductDialog and ProductConfirmDialog had separate local focus behavior and no shared restore stack."
+    },
+    {
+      "id": "NONCONF-UI-009",
+      "evidence": "ProductUnavailableState rendered RouterLink wrapping ProductButton for safe returns."
+    }
+  ],
+  "implementation_decisions": [
+    "Kept changes inside authorized UI adapters, app providers, auth lifecycle projection, settings surface, and auth-required route callers.",
+    "Used Naive UI providers only under the existing AppProviders tree.",
+    "Kept contract-blocked capability evaluation ahead of auth-required overlays.",
+    "Added an in-memory auth-loss UI event at the existing private auth lifecycle boundary; no persistence or auth protocol changes were made.",
+    "Preserved page-local retained error states and did not convert failures into success messages."
+  ],
+  "new_or_changed_typed_apis": [
+    "src/ui/productOverlayFocus.ts: ProductOverlayInitialFocus, ProductOverlayReturnFocus, captureProductOverlayFocus, restoreProductOverlayFocus, focusProductOverlayTarget.",
+    "src/ui/ProductDialog.vue: description, role, initialFocus, returnFocus, stable generated title/description/body/action IDs.",
+    "src/ui/ProductDrawer.vue: height, maskClosable, closeOnEsc, initialFocus, returnFocus, placement-aware width/height binding.",
+    "src/ui/ProductSheet.vue: forwards height to ProductDrawer height and forwards focus/dismissal props.",
+    "src/app/providers/productFeedback.ts: useProductFeedback/provideProductFeedback with recoverable message, login-required, session-expired, and future confirmation methods.",
+    "src/api/privateAuthLifecycle.ts: subscribePrivateAuthUiLoss and notifyPrivateAuthUiLoss."
+  ],
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    "src/api/privateAuthLifecycle.ts",
+    "src/app/providers/AppProviders.vue",
+    "src/app/providers/ProductFeedbackProvider.vue",
+    "src/app/providers/productFeedback.ts",
+    "src/features/product-api/views/CompatibilityEntryView.vue",
+    "src/features/product-api/views/CompetitionLiveRedirectView.vue",
+    "src/features/settings/SettingsSurface.vue",
+    "src/stores/auth.ts",
+    "src/ui/ProductConfirmDialog.vue",
+    "src/ui/ProductDialog.vue",
+    "src/ui/ProductDrawer.vue",
+    "src/ui/ProductSheet.vue",
+    "src/ui/ProductUnavailableState.vue",
+    "src/ui/productOverlayFocus.ts"
+  ],
+  "drawer_and_sheet_size_contract": {
+    "before": "ProductDrawer always passed width to NDrawer. ProductSheet passed height as width.",
+    "after": "ProductDrawer passes width only for left/right placements and height only for top/bottom placements. ProductSheet bottom placement forwards its height to NDrawer height.",
+    "browser_evidence": {
+      "desktop_settings_drawer": "Viewport 1081x780, right drawer width 320px, height 780px, body overflow-y auto.",
+      "narrow_settings_sheet": "Viewport 390x760, bottom sheet width 390px, height 608px matching 80vh, header/footer visible, body overflow-y auto."
+    }
+  },
+  "dialog_id_contract": {
+    "before": "Title IDs were derived from title text and could collide for duplicate Chinese titles.",
+    "after": "Each mounted ProductDialog instance generates a stable per-instance UUID-backed base ID independent of title copy. Title, description, body, and action IDs are derived from that base.",
+    "browser_evidence": {
+      "normal_dialog": "aria-labelledby product-dialog-2be1a15c-8a32-4c3f-8b39-cd8cd8edcc57-title existed; aria-describedby target existed.",
+      "destructive_dialog": "aria-labelledby product-dialog-44ab32cf-e405-4c66-b67b-b47c667435b5-title existed; aria-describedby target existed.",
+      "same_title_dialogs": [
+        "product-dialog-914bbe50-0f78-4379-99e1-528f5b9c6a35-title",
+        "product-dialog-90406212-9840-4771-a37a-707d6edcb663-title"
+      ]
+    }
+  },
+  "modal_focus_stack_contract": {
+    "implementation": "ProductDialog and ProductDrawer use one shared focus stack. Opening captures the active trigger, moves focus to an explicit initial target or safe enabled action, and closing restores to the top stack parent, the original connected trigger, or an explicit fallback callback.",
+    "escape_policy": "Adapters expose closeOnEsc. Busy confirmations disable Escape through ProductConfirmDialog. Login-required and session-expired overlays allow Escape as the safe secondary outcome.",
+    "browser_evidence": [
+      "Settings drawer initial focus: 关闭设置; Tab and Shift+Tab stayed inside; Escape returned focus to 设置.",
+      "Settings sheet initial focus: 关闭设置; Tab stayed inside; Escape returned focus to 设置.",
+      "Normal dialog initial focus: 取消; Tab and Shift+Tab stayed inside; Escape returned focus to dev-normal-trigger.",
+      "Danger confirmation initial focus: 取消; destructive 清除 was not focused; Escape returned focus to dev-danger-trigger; confirm fired once and returned focus after transition.",
+      "Session expired initial focus: 继续使用公开内容; Escape returned focus to the prior 设置 button.",
+      "Login required initial focus: 暂不登录; Escape returned focus to the login shell trigger."
+    ]
+  },
+  "unavailable_action_semantics": {
+    "before": "Safe-return states rendered a ProductButton inside RouterLink and could duplicate the primary return action.",
+    "after": "Safe-return navigation uses RouterLink custom mode with one ProductButton control per action and no nested interactive elements.",
+    "browser_evidence": "Invalid route exposed one enabled 返回可用内容 button, no nested a button or button a, Enter and pointer click both navigated to /pgnViewer/competitions."
+  },
+  "provider_ownership": {
+    "owner": "src/app/providers/ProductFeedbackProvider.vue under AppProviders.vue",
+    "naive_usage": "NMessageProvider is installed once under NConfigProvider. Feature code receives typed project API from useProductFeedback and does not import Naive message/dialog APIs.",
+    "recoverable_copy": "Recoverable messages map enum events to approved product-facing copy and do not accept raw transport strings."
+  },
+  "login_required_activation_restrictions": {
+    "implementation": "Compatibility and live redirect auth-required handlers call showLoginRequired only after capabilityAvailability returns auth-required. Current contract-blocked capability evaluation still returns before auth handling.",
+    "browser_evidence": "Temporary provider shell showed 需要登录 overlay without route auth activation. /match/dev-slice-003-blocked remained contract-blocked, showed no login dialog/action, and made no product API request."
+  },
+  "session_expired_integration_behavior": {
+    "implementation": "Auth store emits notifyPrivateAuthUiLoss only when an existing private session is lost. The provider opens 登录已过期, preserves public/local route content, and never renders internal transport detail.",
+    "browser_evidence": "Session-expired overlay opened from auth.handleAuthLoss('expired'), private auth state was cleared, approved copy rendered, and no internal credential text appeared."
+  },
+  "static_validation": {
+    "completed_before_report": [
+      "pnpm run typecheck",
+      "git diff --check",
+      "pnpm run lint",
+      "pnpm run lint:style",
+      "pnpm run check:unused"
+    ],
+    "pending_final_gate_after_report_creation": [
+      "JSON parse of this report",
+      "pnpm run format:check",
+      "pnpm run check:governance",
+      "pnpm run check:static",
+      "temporary-output production build"
+    ]
+  },
+  "browser_validation": {
+    "dev_server": "http://127.0.0.1:5174/pgnViewer/",
+    "routes": [
+      "/pgnViewer/",
+      "/pgnViewer/competitions",
+      "/pgnViewer/not-a-real-route-for-dev-slice-003",
+      "/pgnViewer/match/dev-slice-003-blocked"
+    ],
+    "viewports": [
+      "1081x780 desktop drawer path",
+      "390x760 narrow sheet path",
+      "1280x800 dialog and route paths"
+    ],
+    "console": "Only existing non-breaking /favicon.ico 404 observed; no Vite error overlay and no page runtime errors.",
+    "theme_modes": "Dark and light preferences both rendered non-empty DOM; validation restored preference to system."
+  },
+  "cor_impact": {
+    "COR-012": "Improved overlay focus capture, trap handoff, Escape, and return focus. Remaining broader route/tab focus audits stay open.",
+    "COR-013": "No ProductTabs or splitter behavior changed; remains open.",
+    "COR-016": "Improved responsive drawer/sheet focus and size behavior for existing workspace/settings paths. Broader responsive shell risks remain tracked by authority.",
+    "COR-020": "ProductConfirmDialog now has shared safe initial focus and role/ARIA semantics. Broader dirty-state, board-editor, and route-leave confirmation ownership remains open.",
+    "COR-027": "Added global feedback/overlay owner and auth overlays. Broader product state coverage remains open for later slices."
+  },
+  "limitations": [
+    "Browser validation used transient in-browser mounts for destructive and same-title dialog cases because current live workspace state starts with destructive actions disabled.",
+    "Browser validation did not create retained test files, screenshots, or snapshots; Playwright MCP-generated snapshot files were removed before final validation.",
+    "The provider confirmation API is available for future ownership but current feature callers still use ProductConfirmDialog to avoid broad behavior migration in this slice.",
+    "The only observed console error was the pre-existing favicon 404."
+  ]
+}
