@@ -1,0 +1,260 @@
+{
+  "report_id": "DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT",
+  "created_at_utc": "2026-07-16T08:01:08Z",
+  "slice": "DEV-SLICE-002",
+  "verdict": "DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_PASS",
+  "repository": {
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "baseline_head": "f6adb1ed1cf9fd48114806bc91182fbd40d38127"
+  },
+  "baseline_gate": {
+    "commands": [
+      "git fetch origin",
+      "pwd",
+      "git remote get-url origin",
+      "git branch --show-current",
+      "git status --short --untracked-files=all",
+      "git rev-list --left-right --count HEAD...origin/main",
+      "git rev-parse HEAD",
+      "git rev-parse origin/main",
+      "git ls-remote origin refs/heads/main"
+    ],
+    "expected_head": "f6adb1ed1cf9fd48114806bc91182fbd40d38127",
+    "status": "PASS",
+    "observed": {
+      "worktree_clean_before_edits": true,
+      "ahead_behind_before_edits": "0/0",
+      "head_matches_origin_main": true,
+      "origin_main_matches_live_remote": true
+    }
+  },
+  "scope": {
+    "target_file": "src/ui/ProductTabs.vue",
+    "nonconformances_repaired": [
+      "NONCONF-UI-004: removed the extra focusable wrapper tab interaction layer; the wrapper is no longer role=tablist or tabindex=0.",
+      "NONCONF-UI-005: added semantic tabs, roving tabindex, keyboard navigation, and tabpanel linkage."
+    ],
+    "explicitly_unchanged": [
+      "No route topology changes.",
+      "No store or business-domain changes.",
+      "No dependency, package manager, or lockfile changes.",
+      "No automated test files or test infrastructure added."
+    ]
+  },
+  "authority_and_evidence": {
+    "authorities_read": [
+      "CLAUDE.md",
+      ".ai/skills/project-ui/SKILL.md",
+      "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+      "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+      "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+      "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+      "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+      "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+      "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+      "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+      "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+      "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+      "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+      "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+      "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+      "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+      "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+      "docs/migration/SOURCE_PROVENANCE.md"
+    ],
+    "implementation_evidence_read": [
+      "src/ui/ProductTabs.vue",
+      "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+      "src/ui/index.ts",
+      "node_modules/naive-ui/es/tabs/src/Tabs.mjs",
+      "node_modules/naive-ui/es/tabs/src/Tab.mjs",
+      "node_modules/naive-ui/es/tabs/src/TabPane.mjs",
+      "node_modules/naive-ui/es/tabs/src/interface.d.ts",
+      "node_modules/naive-ui/es/tabs/src/Tabs.d.ts",
+      "node_modules/naive-ui/es/tabs/src/Tab.d.ts",
+      "node_modules/naive-ui/es/tabs/src/TabPane.d.ts"
+    ],
+    "external_read_only_planning_evidence": [
+      "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+      "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+    ]
+  },
+  "implementation": {
+    "changed_files": [
+      {
+        "path": "src/ui/ProductTabs.vue",
+        "summary": [
+          "Replaced NTabPane rendering with direct NTab rendering so real rendered tab nodes own role, id, aria-selected, aria-controls, aria-disabled, and tabindex.",
+          "Rendered project-owned role=tabpanel sections with stable ids, aria-labelledby, hidden state, and aria-hidden for inactive panels.",
+          "Moved role=tablist to the Naive tabs container and removed role/tabindex from the outer ProductTabs wrapper.",
+          "Implemented horizontal roving focus for ArrowRight, ArrowLeft, Home, and End with wrapping and disabled-pane skipping.",
+          "Added focus preservation so keyboard and mouse tab interactions focus the selected tab, while outside model changes do not steal focus.",
+          "Added fallback selection when the model value is missing, disabled, or removed and at least one enabled pane exists.",
+          "Kept focus styling on the actual tab nodes using existing design tokens."
+        ],
+        "line_anchors_after_change": {
+          "id_generation": "src/ui/ProductTabs.vue:28",
+          "enabled_and_active_state": "src/ui/ProductTabs.vue:32",
+          "focus_and_selection": "src/ui/ProductTabs.vue:93",
+          "keyboard_handling": "src/ui/ProductTabs.vue:155",
+          "fallback_watchers": "src/ui/ProductTabs.vue:194",
+          "semantic_tablist_and_tabs": "src/ui/ProductTabs.vue:221",
+          "tabpanel_rendering": "src/ui/ProductTabs.vue:249",
+          "focus_styles": "src/ui/ProductTabs.vue:292"
+        }
+      }
+    ],
+    "disabled_tab_handling": {
+      "status": "IMPLEMENTED_STATICALLY",
+      "evidence": [
+        "enabledPaneEntries filters disabled panes before navigation.",
+        "selectPane returns without emitting for missing or disabled panes.",
+        "fallback model repair selects the nearest enabled pane.",
+        "Current /pgnViewer/ ProductTabs composition has no disabled panes, so disabled behavior was not browser-exercised without adding test-only code."
+      ]
+    }
+  },
+  "browser_validation": {
+    "route": "http://127.0.0.1:5174/pgnViewer/",
+    "runners": [
+      "Codex in-app Browser for manual failing-state reproduction and patched interaction checks.",
+      "System Chrome via Playwright executable /Applications/Google Chrome.app/Contents/MacOS/Google Chrome for final light/dark validation."
+    ],
+    "final_chrome_contexts": [
+      {
+        "color_scheme": "light",
+        "resolved_theme": "light",
+        "states_checked": [
+          "initial",
+          "ArrowRight",
+          "End",
+          "Home",
+          "ArrowLeft wrapping from first to last",
+          "mouse click to comments",
+          "outside Analysis toolbar button model change"
+        ],
+        "result": {
+          "nonblank_body": true,
+          "vite_overlay_count": 0,
+          "wrapper_role": null,
+          "wrapper_tabindex": null,
+          "tablist_count": 1,
+          "tab_count": 4,
+          "tabpanel_count": 4,
+          "zero_tabindex_tabs": 1,
+          "duplicate_id_count": 0,
+          "tab_panel_links_valid": true,
+          "hidden_inactive_panels": 3,
+          "inactive_panels_aria_hidden": 3,
+          "keyboard_focus_tracks_selected_tab": true,
+          "mouse_focus_tracks_selected_tab": true,
+          "outside_model_change_did_not_steal_focus": true,
+          "page_errors": [],
+          "non_breaking_console_note": "favicon.ico returned 404 in the light context only."
+        }
+      },
+      {
+        "color_scheme": "dark",
+        "resolved_theme": "dark",
+        "states_checked": [
+          "initial",
+          "ArrowRight",
+          "End",
+          "Home",
+          "ArrowLeft wrapping from first to last",
+          "mouse click to comments",
+          "outside Analysis toolbar button model change"
+        ],
+        "result": {
+          "nonblank_body": true,
+          "vite_overlay_count": 0,
+          "wrapper_role": null,
+          "wrapper_tabindex": null,
+          "tablist_count": 1,
+          "tab_count": 4,
+          "tabpanel_count": 4,
+          "zero_tabindex_tabs": 1,
+          "duplicate_id_count": 0,
+          "tab_panel_links_valid": true,
+          "hidden_inactive_panels": 3,
+          "inactive_panels_aria_hidden": 3,
+          "keyboard_focus_tracks_selected_tab": true,
+          "mouse_focus_tracks_selected_tab": true,
+          "outside_model_change_did_not_steal_focus": true,
+          "page_errors": [],
+          "console_messages": []
+        }
+      }
+    ],
+    "pre_patch_reproduction": {
+      "wrapper_had_role_tablist_and_tabindex_0": true,
+      "semantic_tab_count": 0,
+      "semantic_tabpanel_count": 0,
+      "arrow_right_changed_model_but_left_focus_on_wrapper": true
+    }
+  },
+  "validation": [
+    {
+      "command": "pnpm exec eslint src/ui/ProductTabs.vue src/features/teaching-workspace/WorkspaceRightPanel.vue --max-warnings=0",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm exec prettier src/ui/ProductTabs.vue src/features/teaching-workspace/WorkspaceRightPanel.vue --check",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm exec vue-tsc --noEmit",
+      "status": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm run format:check",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm run lint",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "status": "PASS",
+      "note": "An intermediate selector-class-pattern failure for local BEM-style helper classes was fixed by renaming them to kebab-case."
+    },
+    {
+      "command": "pnpm run check:unused",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm run check:static",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "status": "PASS"
+    },
+    {
+      "command": "pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-dev-slice-002-build --emptyOutDir",
+      "status": "PASS",
+      "note": "Vite reported an existing non-fatal large chunk warning for the production bundle."
+    },
+    {
+      "command": "System Chrome browser validation for /pgnViewer/ in light and dark color-scheme contexts",
+      "status": "PASS"
+    }
+  ],
+  "residual_notes": [
+    "No current /pgnViewer/ ProductTabs composition exposes disabled tabs, so disabled skipping was validated by static implementation and not by a test-only browser fixture.",
+    "The settings drawer theme select appeared to open an empty virtualized option menu in the Codex in-app Browser wrapper; final light/dark validation used isolated System Chrome contexts with colorScheme emulation instead.",
+    "No real PGN file was imported because the ProductTabs semantic and interaction contract is exposed on the default /pgnViewer/ workspace state.",
+    "The light System Chrome context logged a favicon.ico 404. No page errors, Vite overlay, or ProductTabs console-breaking errors were observed."
+  ]
+}
