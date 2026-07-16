@@ -17,7 +17,7 @@ import {
 } from '@/features/pgn/domain/mutations'
 import {
   mainlineMoves,
-  parsePgnCollection,
+  parseStrictPgnCollection,
   STANDARD_START_FEN,
 } from '@/features/pgn/domain/parsePgn'
 import {
@@ -148,20 +148,6 @@ function defaultPgnState(): PgnState {
     teachingDraft: null,
     nextTeachingDraftId: 0,
   }
-}
-
-function parseStrictCollection(text: string): PgnItem[] {
-  const items = parsePgnCollection(text)
-
-  if (items.length === 0) {
-    throw new Error('PGN 中未找到棋谱')
-  }
-
-  if (items.some((item) => item.parseError)) {
-    throw new Error('PGN 包含非法走法，未加载')
-  }
-
-  return items
 }
 
 function pgnTextFromFen(fen: string): string {
@@ -401,7 +387,7 @@ export const usePgnStore = defineStore('pgn', {
     },
     validateText(text: string): boolean {
       try {
-        parseStrictCollection(text)
+        parseStrictPgnCollection(text)
         this.lastError = null
         return true
       } catch (error) {
@@ -728,24 +714,41 @@ export const usePgnStore = defineStore('pgn', {
     },
     openText(text: string, source: DataSource): boolean {
       try {
-        const items = parseStrictCollection(text)
-        assignItemSources(items, source)
-        this.items = items
-        this.source = { ...source }
-        this.page = 0
-        this.searchKey = ''
-        this.pendingPromotion = null
-        this.pendingBranch = null
-        this.drawUndo = []
-        this.drawRedo = []
-        this.selectItem(0)
-        this.establishCleanSourceSession()
-        this.lastError = null
-        return true
+        return this.openParsedCollection(parseStrictPgnCollection(text), source)
       } catch (error) {
         this.lastError = error instanceof Error ? error.message : 'PGN 解析失败'
         return false
       }
+    },
+    openParsedCollection(items: PgnItem[], source: DataSource): boolean {
+      if (items.length === 0 || items.some((item) => item.parseError)) {
+        this.lastError = '没有可应用的有效 PGN 棋谱。'
+        return false
+      }
+
+      assignItemSources(items, source)
+      const nextGameIds = items.map((_, index) => this.nextGameId + index + 1)
+
+      this.items = items
+      this.source = { ...source }
+      this.selectedIndex = 0
+      this.selectedNodeId = items[0]?.tree?.root.id ?? null
+      this.page = 0
+      this.searchKey = ''
+      this.pendingPromotion = null
+      this.pendingBranch = null
+      this.drawUndo = []
+      this.drawRedo = []
+      this.sourceSession += 1
+      this.sourceRevision = 0
+      this.cleanSourceRevision = 0
+      this.manualDraft = null
+      this.teachingDraft = null
+      this.gameTeachingNotes = {}
+      this.gameIds = nextGameIds
+      this.nextGameId += items.length
+      this.lastError = null
+      return true
     },
     insertText(text: string): boolean {
       if (!this.canMutateCurrentSource) {
@@ -754,26 +757,50 @@ export const usePgnStore = defineStore('pgn', {
       }
 
       try {
-        const items = parseStrictCollection(text)
-        assignItemSources(items, this.source)
-        this.items.push(...items)
-        this.gameIds.push(...items.map(() => this.allocateGameId()))
-
-        if (this.selectedIndex === -1) {
-          this.selectItem(0)
-        }
-
-        this.pendingPromotion = null
-        this.pendingBranch = null
-        this.drawUndo = []
-        this.drawRedo = []
-        this.markCurrentSourceChanged()
-        this.lastError = null
-        return true
+        return this.insertParsedCollection(parseStrictPgnCollection(text), {
+          sourceSession: this.sourceSession,
+          sourceId: this.source.id,
+          sourceRevision: this.sourceRevision,
+        })
       } catch (error) {
         this.lastError = error instanceof Error ? error.message : 'PGN 解析失败'
         return false
       }
+    },
+    insertParsedCollection(
+      items: PgnItem[],
+      expected: Pick<WorkspaceEditIdentity, 'sourceSession' | 'sourceId' | 'sourceRevision'>
+    ): boolean {
+      if (
+        !this.canMutateCurrentSource ||
+        this.sourceSession !== expected.sourceSession ||
+        this.source.id !== expected.sourceId ||
+        this.sourceRevision !== expected.sourceRevision
+      ) {
+        this.lastError = '操作目标已变化，请重新选择当前来源。'
+        return false
+      }
+
+      if (items.length === 0 || items.some((item) => item.parseError)) {
+        this.lastError = '没有可应用的有效 PGN 棋谱。'
+        return false
+      }
+
+      assignItemSources(items, this.source)
+      const addedGameIds = items.map((_, index) => this.nextGameId + index + 1)
+      const nextItems = [...this.items, ...items]
+      const nextGameIds = [...this.gameIds, ...addedGameIds]
+
+      this.items = nextItems
+      this.gameIds = nextGameIds
+      this.nextGameId += items.length
+      this.pendingPromotion = null
+      this.pendingBranch = null
+      this.drawUndo = []
+      this.drawRedo = []
+      this.sourceRevision = expected.sourceRevision + 1
+      this.lastError = null
+      return true
     },
     createEditableLocalCopy(mode: WorkspaceMode): boolean {
       if (
@@ -819,7 +846,7 @@ export const usePgnStore = defineStore('pgn', {
 
       try {
         const createsManualSource = !this.hasGame
-        const [item] = parseStrictCollection(pgnTextFromFen(normalizedFen))
+        const [item] = parseStrictPgnCollection(pgnTextFromFen(normalizedFen))
 
         if (!item) {
           this.lastError = 'PGN 中未找到棋谱'

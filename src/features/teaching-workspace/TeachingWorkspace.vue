@@ -27,7 +27,8 @@ import type {
   ChessboardExposed,
 } from '@/features/board/domain/boardCapabilities'
 import { STANDARD_START_FEN } from '@/features/board/domain/boardTypes'
-import type { DataSource } from '@/features/pgn/domain/types'
+import PgnImportSessionDialog from '@/features/pgn/components/PgnImportSessionDialog.vue'
+import type { DataSource, PgnItem } from '@/features/pgn/domain/types'
 import { findNode } from '@/features/pgn/domain/pgnStorage'
 import type { TeachingDraftScope } from '@/features/pgn/domain/teachingDraft'
 import type { PgnNavigationIntent } from '@/features/pgn/pgnWorkspaceTypes'
@@ -87,15 +88,21 @@ watch(
 const {
   boardInteractive,
   boardPosition,
+  cancelImportForNavigation,
   dragActive,
   fileInput,
   handlePgnAction,
+  importSession,
+  onFilePickerCancel,
   onFiles,
+  retryImport,
 } = usePgnWorkspaceRuntime(() => permissions, {
   replaceSource: replaceWorkspaceSource,
   workspaceFocusTarget: () => workspaceMainEl.value,
   onSourceReplaced: closeBoardEditorAfterSourceReplacement,
 })
+const pgnImportSession = importSession.session
+const pgnImportReturnFocus = importSession.returnFocus
 const remoteReplay = useRemoteReplayLoader(workspaceModeContext)
 const remoteReplayVisible = remoteReplay.visible
 const remoteReplayMessage = remoteReplay.message
@@ -335,6 +342,8 @@ async function guardWorkspaceNavigation(
   intent: 'route-handoff' | 'route-leave',
   discardWorkspace: boolean
 ): Promise<boolean> {
+  cancelImportForNavigation()
+  await nextTick()
   const returnFocus = workspaceReturnFocus(currentWorkspaceInvoker === null)
   const activeNavigation = pendingNavigation
 
@@ -451,15 +460,16 @@ function handleWorkspaceAction(name: WorkspaceToolbarAction): void {
 async function replaceWorkspaceSource(request: {
   expectedIdentity: WorkspaceEditIdentity
   source: DataSource
-  text: string
+  items: PgnItem[]
   returnFocus: () => HTMLElement | null | void
+  isCurrent: () => boolean
 }): Promise<boolean> {
   return destructiveActions.run({
     intent: 'source-replacement',
     expectedIdentity: request.expectedIdentity,
     confirm: pgn.hasUnsavedWorkspaceChanges,
     returnFocus: request.returnFocus,
-    execute: () => pgn.openText(request.text, request.source),
+    execute: () => request.isCurrent() && pgn.openParsedCollection(request.items, request.source),
   })
 }
 
@@ -939,7 +949,24 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
       </aside>
     </main>
 
-    <input ref="fileInput" type="file" accept=".pgn" multiple hidden @change="onFiles" />
+    <input
+      ref="fileInput"
+      type="file"
+      accept=".pgn,.txt"
+      multiple
+      hidden
+      @change="onFiles"
+      @cancel="onFilePickerCancel"
+    />
+
+    <PgnImportSessionDialog
+      :session="pgnImportSession"
+      :return-focus="pgnImportReturnFocus"
+      @cancel="importSession.requestCancel"
+      @close="importSession.dismiss"
+      @confirm-partial="importSession.confirmPartial"
+      @retry="retryImport"
+    />
 
     <ProductDrawer
       v-if="isNarrow"

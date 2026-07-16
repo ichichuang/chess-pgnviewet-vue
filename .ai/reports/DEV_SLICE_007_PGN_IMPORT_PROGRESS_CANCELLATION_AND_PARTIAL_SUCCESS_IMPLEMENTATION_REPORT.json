@@ -1,0 +1,345 @@
+{
+  "slice": "DEV-SLICE-007",
+  "title": "PGN import progress, cancellation, and partial-success implementation",
+  "status": "PASS",
+  "verified_baseline": {
+    "repository_path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "a20a7fefb34e762b995c34d6ac5a2a548295af7a",
+    "local_head": "a20a7fefb34e762b995c34d6ac5a2a548295af7a",
+    "origin_main": "a20a7fefb34e762b995c34d6ac5a2a548295af7a",
+    "live_remote_main": "a20a7fefb34e762b995c34d6ac5a2a548295af7a",
+    "ahead_behind": "0/0",
+    "worktree_and_index": "clean before implementation; no untracked files"
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_005_DIRTY_STATE_AND_DESTRUCTIVE_NAVIGATION_SAFETY_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_006_NODE_COMMENT_AND_GAME_TEACHING_NOTE_EDITING_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+  ],
+  "callers_inspected": [
+    "src/features/pgn/usePgnWorkspaceRuntime.ts",
+    "src/features/pgn/domain/parsePgn.ts",
+    "src/features/pgn/domain/types.ts",
+    "src/features/pgn/domain/mutations.ts",
+    "src/features/pgn/domain/pgnStorage.ts",
+    "src/features/pgn/domain/sourceOwnership.ts",
+    "src/stores/pgn.ts",
+    "src/features/pgn/components/PgnGameList.vue",
+    "src/features/pgn/components/PgnNotationPanel.vue",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+    "src/features/teaching-workspace/WorkspaceStartSurface.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/features/teaching-workspace/useWorkspaceDestructiveActionCoordinator.ts",
+    "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+    "src/ui/ProductDialog.vue",
+    "src/ui/ProductButton.vue",
+    "src/ui/ProductStateBanner.vue",
+    "src/ui/ProductField.vue",
+    "src/app/providers/productFeedback.ts"
+  ],
+  "defects_reproduced": {
+    "MISSING-UI-001": "The existing file-input path used Promise.all(file.text()), concatenated every file, and parsed the merged text once, so one invalid file invalidated the entire selection and no per-file result existed.",
+    "MISSING-UI-002": "No import-session phase, real filename/index progress, browser-native abort path, cancellation summary, or route/teardown cleanup existed.",
+    "MISSING-UI-003": "Mixed success had no ordered result summary or explicit partial-success confirmation, while all-failed and retry behavior collapsed into Store error text.",
+    "COR-017": "The unified workspace lacked the approved transient multi-file import progress, cancellation, and partial-failure closure."
+  },
+  "before_and_after_pipeline": {
+    "before": "file input -> Promise.all file.text -> concatenate all text -> one validation -> one openText or insertText mutation",
+    "after": "typed intent -> one transient import session -> ordered FileReader read/progress -> canonical parse per file -> memory staging -> optional explicit partial confirmation -> one guarded atomic open or insert application"
+  },
+  "implementation": {
+    "surface": "WS-003 and REQ-002 unified workspace local PGN open/insert flow",
+    "classification": "APPROVED_TARGET",
+    "scope": "MISSING-UI-001, MISSING-UI-002, MISSING-UI-003, and the contract-independent COR-017 slice only",
+    "controller_count": 1,
+    "controller_owner": "the mounted unified workspace PGN runtime",
+    "persistence": "none",
+    "transport": "none",
+    "dependencies_added": "none",
+    "existing_contracts_reused": [
+      "canonical PGN parser and typed game tree",
+      "PGN Store source identity and revision owner",
+      "DEV-SLICE-004 permission projection",
+      "DEV-SLICE-005 destructive action coordinator",
+      "DEV-SLICE-006 comments and teaching-note state",
+      "ProductDialog focus stack and ProductButton"
+    ]
+  },
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_007_PGN_IMPORT_PROGRESS_CANCELLATION_AND_PARTIAL_SUCCESS_IMPLEMENTATION_REPORT.json",
+    "src/features/pgn/domain/parsePgn.ts",
+    "src/features/pgn/pgnImportTypes.ts",
+    "src/features/pgn/usePgnImportSession.ts",
+    "src/features/pgn/usePgnWorkspaceRuntime.ts",
+    "src/features/pgn/components/PgnImportSessionDialog.vue",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/stores/pgn.ts"
+  ],
+  "import_session_state_model": {
+    "phases": [
+      "idle",
+      "reading",
+      "parsing",
+      "cancelling",
+      "awaiting-partial-confirmation",
+      "applying",
+      "completed",
+      "cancelled",
+      "failed"
+    ],
+    "observable_counts": [
+      "current filename",
+      "current selection-order index",
+      "total file count",
+      "completed count",
+      "success count",
+      "failure count",
+      "staged game count",
+      "applied game count",
+      "current loaded bytes",
+      "current total bytes"
+    ],
+    "single_active_session": "a repeated open, insert, or drop focuses the current result heading/action instead of creating a second session",
+    "lifetime": "memory-only for the current mounted workspace runtime; dismissed, cancelled, route-left, or unmounted sessions release staged games, reader ownership, and target ownership"
+  },
+  "per_file_result_schema": {
+    "stable_identity": "session UUID plus zero-based selection index; duplicate filenames remain distinct",
+    "fields": [
+      "selection index",
+      "safe filename",
+      "pending/reading/parsing/success/failure/cancelled status",
+      "stable product failure reason",
+      "parsed game count"
+    ],
+    "failure_reasons": {
+      "unreadable": "无法读取文件",
+      "empty": "文件内容为空",
+      "invalid-pgn": "PGN 格式或走法无效",
+      "unsupported-content": "文件内容不是受支持的 PGN",
+      "cancelled-read": "读取已取消",
+      "stale-target": "导入目标已变化"
+    },
+    "privacy": "no absolute path, parser exception, stack, Store name, source ID, hash, worker, endpoint, or browser-internal text is rendered"
+  },
+  "progress_contract": {
+    "source": "completed file count plus the current FileReader loaded/total byte fraction when length is computable",
+    "synthetic_time_progress": false,
+    "progressbar": "native determinate progress with aria-valuemin=0, aria-valuemax=total files, and aria-valuenow matching the real computed value",
+    "live_status": "polite current phase and current safe filename/index",
+    "security_copy": "the accessible description states the total/completed count, local-only parsing, and that files are not uploaded"
+  },
+  "cancellation_contract": {
+    "reading": "FileReader.abort() rejects the active read as cancelled-read and prevents later files from starting",
+    "parsing": "synchronous canonical parsing is not interruptible mid-call; copy truthfully states that cancellation takes effect after the current parse and before the next file",
+    "between_files": "a MessageChannel task boundary yields after each parse so Escape or Stop can discard staging before the next unit",
+    "before_application": "cancellation discards all staged canonical games and preserves the exact pre-import Store snapshot",
+    "route_and_teardown": "active readers are aborted, the run token is invalidated, staged items and target references are cleared, and stale callbacks cannot apply",
+    "dirty_confirmation_race": "an isCurrent closure is evaluated inside the destructive coordinator immediately before source replacement, preventing a route-cancelled import from mutating after a nested confirmation resolves"
+  },
+  "atomic_application_contract": {
+    "staging": "successful parsed games remain outside the active Store until the complete batch is accepted",
+    "open": "one openParsedCollection action establishes the complete accepted batch as one fresh clean local source session",
+    "insert": "one insertParsedCollection action validates source session, source ID, revision, mutability, and nonempty canonical items before assigning one complete next-items/next-game-ID pair",
+    "revision": "successful insertion changes sourceRevision from the captured value to captured value plus one exactly once",
+    "failure": "rejected or throwing application reaches a recoverable failed summary, clears staging, and leaves the original source untouched",
+    "stale_guard": "the run/session/cancellation/permission identity is checked before apply, inside dirty source replacement immediately before mutation, and synchronously before insert mutation"
+  },
+  "open_and_insert_behavior": {
+    "typed_intents": [
+      "open-as-new-source",
+      "insert-into-current-source"
+    ],
+    "no_source": "open is enabled and insert is disabled",
+    "open": "valid files replace only after parsing and any required destructive confirmation; the resulting source receives a new local ID and starts at revision 0/clean revision 0",
+    "insert": "valid files append to the same local source and source session in selection/file/game order; selection, notes, drafts, and existing games remain intact",
+    "picker_reset": "the native input value is cleared before and after each selection, including cancel/retry, so the same file can be selected again"
+  },
+  "partial_success_behavior": {
+    "mixed": "every selected file remains listed in original order; Store state is unchanged until the explicit 导入成功文件 action",
+    "confirmed": "only successful files are applied in file/game order; failed files create no placeholder games and the complete result summary remains visible until close",
+    "cancelled": "closing or cancelling before confirmation discards the staged successful files and preserves the pre-import snapshot",
+    "all_success": "application proceeds once and reports imported file and game counts",
+    "all_failed": "nothing is applied; the ordered correction summary offers 重新选择 and 取消 without success copy"
+  },
+  "dirty_and_source_identity_integration": {
+    "clean_replacement": "a repeated valid local selection created a different local source ID and clean source session",
+    "dirty_replacement_cancel": "继续编辑 preserved source ID, source session, revision, dirty flag, ordered games, game IDs, and selection",
+    "dirty_replacement_accept": "放弃更改并继续 applied the accepted batch once as a fresh local source at revision 0/clean revision 0",
+    "insert": "duplicate-filename two-file insertion retained the same source ID/session and changed revision 0 to 1 once",
+    "mixed_insert": "one confirmed successful file changed revision 1 to 2 once while retaining all prior games and IDs",
+    "stale_route": "a route attempt cancelled the import while its destructive confirmation was active; accepting the old confirmation afterward performed no source mutation"
+  },
+  "accessibility_and_focus": {
+    "dialog": "ProductDialog supplies modal semantics, accessible title/description, focus trap, Escape routing, mask policy, and exact trigger restoration",
+    "initial_focus": "active progress focuses the sole safe Stop action",
+    "outcome_focus": "partial, completed, cancelled, and failed phases focus the result heading; repeated actions refocus the same outcome",
+    "result_scroll": "the bounded result list is the internal long-result scroll region, has tabindex=0, an accessible label, and a token-governed focus-visible ring",
+    "terminal_actions": "partial exposes 取消 and 导入成功文件; failure exposes 取消 and 重新选择; terminal close restores the captured invoking control",
+    "browser_keyboard": "Tab and Shift+Tab remained trapped, Escape cancelled or closed according to phase, and focus returned to the exact Open or Insert trigger"
+  },
+  "readonly_and_contract_blocked_behavior": {
+    "readonly": "a real completed-replay-shaped readonly source projected all Open actions enabled and all Insert actions disabled; a blocked Insert click created no session or mutation",
+    "readonly_open_copy": "opening a local file from the readonly source established a separate fresh clean local source without mutating the readonly source",
+    "contract_blocked": "/match/browser-validation rendered the truthful unavailable replay surface with no Open/Insert mutation actions, no Vite overlay, and the preexisting PGN Store snapshot unchanged",
+    "permission_owner": "DEV-SLICE-004 permission projection remains the only broad availability owner; import code independently rechecks Store mutability and captured identity"
+  },
+  "memory_and_transport_boundary": {
+    "import_session_persistence": "none",
+    "file_handle_persistence": "none",
+    "result_persistence": "none",
+    "api_or_query_calls": "none",
+    "browser_network_validation": "no non-static request occurred during import validation",
+    "browser_storage_validation": "no import-specific localStorage or sessionStorage key was created",
+    "explicitly_not_added": [
+      "Dexie schema or record",
+      "autosave or recovery duration",
+      "API contract or upload",
+      "lesson/session/collection entity",
+      "AI or engine work",
+      "candidate insertion",
+      "venue display changes"
+    ]
+  },
+  "static_validation": [
+    {
+      "command": "node JSON.parse report",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run audit:prod",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "pass"
+    },
+    {
+      "command": "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-dev-slice-007-build --emptyOutDir",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm test",
+      "result": "not run by repository policy"
+    }
+  ],
+  "browser_validation": {
+    "server": "http://127.0.0.1:5174/pgnViewer/",
+    "inputs": "temporary external empty, invalid, unsupported, two valid multi-game, duplicate-name, repeated-name, and 877 KB read-cancellation PGN inputs; temporary browser-sandbox copies were deleted after validation",
+    "no_source_open": "Open enabled, Insert disabled, and two valid files opened three games in original file/game order as a fresh clean local source",
+    "same_file_reselection": "the previously selected valid-a.pgn was selected again; the input value was empty afterward, a new source ID was allocated, and focus returned to Open",
+    "duplicate_filenames": "two same.pgn files from different paths retained separate ordered result rows and inserted Duplicate A then Duplicate B with distinct game IDs",
+    "mixed_success": "one valid plus invalid/empty/unsupported retained the exact Store snapshot before confirmation; confirmation inserted only the valid game and retained all four result rows",
+    "all_success": "two valid multi-game files reported two files/three games and applied once",
+    "all_failure": "empty/invalid/unsupported reported their approved reasons, retained exact source identity/revision/games/selection, and offered 重新选择/取消",
+    "read_cancellation": "the large-file path exercised FileReader.abort and rendered 读取已取消 while preserving the exact pre-import Store snapshot",
+    "between_file_cancellation": "a 50-unit ordered selection was cancelled after four successful parses; four successes and 46 cancelled rows remained visible, staging was discarded, and source identity/revision/games remained byte-for-byte equivalent at the captured field boundary",
+    "dirty_replacement": "both cancellation and acceptance were exercised; cancellation preserved the dirty collection, while acceptance established a fresh clean two-game source",
+    "route_leave_and_stale_confirmation": "a router leave attempt during the nested dirty replacement confirmation cancelled the import and was safely blocked; accepting the old confirmation afterward did not mutate the Store and all overlays cleaned up",
+    "application_failure": "an ephemeral browser-only throwing insert boundary produced 应用棋谱失败，原工作区保持不变, no unhandled error, and an identical before/after Store snapshot",
+    "duplicate_actions": "repeated Open/Insert activation during partial confirmation retained one dialog, one file input, one result set, and refocused the existing outcome",
+    "readonly": "completed replay source projected Open enabled/Insert disabled, rejected mutation, then allowed a separate fresh local open",
+    "contract_blocked": "/match/browser-validation remained request-free and mutation-free with truthful unavailable copy",
+    "responsive_and_themes": "1440x900 light desktop and 390x844 dark narrow layouts rendered nonblank without horizontal document overflow; the dialog stayed inside the viewport and the result list retained keyboard scrolling",
+    "focus_and_keyboard": "pointer and keyboard actions, Tab/Shift+Tab trap, Escape cancellation/close, result heading focus, scroll-region focusability, and exact Open/Insert trigger restoration passed",
+    "progress_and_live_regions": "real progress values 2/2, 4/4, and an observed 4/50 in-flight state matched aria bounds/current value; phase/current-file copy was present in polite live regions",
+    "runtime_health": "nonblank DOM, no Vite error overlay, no page/application error, and no new breaking console error; the only resource message was the existing non-breaking favicon.ico 404",
+    "transport_and_persistence": "no non-static network request, no sessionStorage entry, and no import-specific localStorage key occurred",
+    "artifacts": "all temporary browser snapshots, console files, PGN copies, and the temporary browser directory were deleted; no browser artifact remains in the repository"
+  },
+  "cor_impact": {
+    "MISSING-UI-001": "implemented with ordered independent per-file canonical parsing and stable results",
+    "MISSING-UI-002": "implemented with real progress, native read cancellation, truthful synchronous-parse limitation, route cleanup, and focus-safe progress UI",
+    "MISSING-UI-003": "implemented with explicit partial confirmation, retained ordered results, all-success feedback, and all-failed retry/cancel",
+    "COR-017": "the approved local PGN multi-file progress/cancellation/partial-failure slice is implemented; authority-wide COR closure is not claimed"
+  },
+  "od_boundaries": {
+    "OD-01_to_OD-11": "remain open and unchanged; no provisional product value was promoted to authority"
+  },
+  "limitations": [
+    "Canonical PGN parsing is synchronous and cannot be interrupted mid-call; cancellation is truthful and takes effect after that call, before the next file or application.",
+    "FileReader progress event frequency is browser-controlled; the UI never fabricates intermediate values when the browser reports only completion.",
+    "The existing development server still requests a missing favicon.ico; this baseline resource 404 is non-breaking and unrelated to the slice."
+  ],
+  "deferred_work": [
+    "persistence, autosave, reload recovery, and lesson/session/collection ownership",
+    "cloud, share, protected replay, live credential/subscription, hardware, and clock contracts",
+    "AI, engine evaluation, candidate insertion, venue display, and PGN presentation refactors",
+    "safe-area, scanner, and authority synchronization work"
+  ],
+  "review": {
+    "result": "issues found, fixed, and independently re-reviewed clear",
+    "addressed": [
+      "caught rejected application promises and converted them to a recoverable failed state",
+      "propagated an active-run guard into the dirty destructive confirmation execute boundary",
+      "added local-only/no-upload accessible progress copy",
+      "made the result list the bounded keyboard-accessible internal scroll region",
+      "removed the duplicate progress close control and used the single 停止导入 action",
+      "removed every untracked browser artifact before final validation"
+    ]
+  },
+  "commit_subject": "feat(pgn): 完成多文件导入进度取消与部分失败闭环",
+  "verdict": "DEV_SLICE_007_PGN_IMPORT_PROGRESS_CANCELLATION_AND_PARTIAL_SUCCESS_PASS"
+}

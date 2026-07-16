@@ -5,6 +5,24 @@ import { parseAnnotationComments } from '@/features/annotations/domain/ycdw'
 
 import type { GameTree, MoveNode, PgnItem } from './types'
 
+export type StrictPgnParseFailure = 'empty' | 'invalid-pgn' | 'unsupported-content'
+
+const STRICT_PGN_PARSE_MESSAGES: Record<StrictPgnParseFailure, string> = {
+  empty: 'PGN 中未找到棋谱',
+  'invalid-pgn': 'PGN 包含无效格式或走法，未加载',
+  'unsupported-content': '文件内容不是受支持的 PGN',
+}
+
+export class StrictPgnParseError extends Error {
+  readonly reason: StrictPgnParseFailure
+
+  constructor(reason: StrictPgnParseFailure) {
+    super(STRICT_PGN_PARSE_MESSAGES[reason])
+    this.name = 'StrictPgnParseError'
+    this.reason = reason
+  }
+}
+
 export const STANDARD_START_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
 const RESULT_RE = /^(1-0|0-1|1\/2-1\/2|\*)$/
@@ -421,4 +439,34 @@ export function parsePgnCollection(text: string): PgnItem[] {
   resetNodeIds()
 
   return splitGames(text).map((game) => parseGame(game.headerLines, game.movetext))
+}
+
+export function parseStrictPgnCollection(text: string): PgnItem[] {
+  const normalized = text.trim()
+
+  if (normalized === '') {
+    throw new StrictPgnParseError('empty')
+  }
+
+  const hasPgnStructure =
+    /\[\s*[A-Za-z0-9_]+\s+"/u.test(normalized) ||
+    /(?:^|\s)\d+\.(?:\.\.)?\s*\S/u.test(normalized) ||
+    /(?:^|\s)(?:1-0|0-1|1\/2-1\/2|\*)(?:\s|$)/u.test(normalized)
+
+  try {
+    const items = parsePgnCollection(normalized)
+
+    if (items.length === 0) {
+      throw new StrictPgnParseError('empty')
+    }
+
+    if (items.some((item) => item.parseError)) {
+      throw new StrictPgnParseError(hasPgnStructure ? 'invalid-pgn' : 'unsupported-content')
+    }
+
+    return items
+  } catch (error) {
+    if (error instanceof StrictPgnParseError) throw error
+    throw new StrictPgnParseError(hasPgnStructure ? 'invalid-pgn' : 'unsupported-content')
+  }
 }
