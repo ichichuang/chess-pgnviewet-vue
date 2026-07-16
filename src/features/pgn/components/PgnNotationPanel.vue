@@ -56,7 +56,7 @@ watch(
 
     active?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
   },
-  { flush: 'post' }
+  { flush: 'post', immediate: true }
 )
 
 function rowStyle(row = { indentLevel: 0 }) {

@@ -5,20 +5,30 @@ import { serializeAnnotation } from '@/features/annotations/domain/ycdw'
 import { computeEvalResult, normalizeEngineScore } from '@/features/analysis/domain/classifyMove'
 import type { EngineEval } from '@/features/analysis/domain/engine'
 import {
+  candidateInsertionPresentation,
+  createAnalysisPresentation,
+  type AnalysisExecutionPhase,
+  type AnalysisPresentation,
+  type AnalysisProductOutcome,
+  type AnalysisScope,
+  type CandidateInsertionPresentation,
+  type CandidateInsertionProductKind,
+  type CandidateInsertionProductOutcome,
+} from '@/features/analysis/domain/analysisPresentation'
+import {
   AnalysisStoppedError,
   createSearchEngine,
   type SearchEngine,
 } from '@/features/analysis/domain/searchEngine'
 import { effectiveDepth } from '@/features/analysis/domain/search'
 import { mainlineMoves } from '@/features/pgn/domain/parsePgn'
+import { findNode } from '@/features/pgn/domain/pgnStorage'
 import type { MoveNode } from '@/features/pgn/domain/types'
 
 import { usePgnStore } from './pgn'
 
-export type AnalysisScope = 'current' | 'full'
+export type { AnalysisScope } from '@/features/analysis/domain/analysisPresentation'
 
-type AnalysisPhase =
-  'idle' | 'initializing' | 'ready' | 'analyzing' | 'available' | 'unavailable' | 'error'
 type WorkerMode = 'worker' | 'main-thread-fallback' | 'unavailable'
 
 interface AnalysisPositionSnapshot {
@@ -48,9 +58,12 @@ interface AnalysisScore {
   whiteValue: number
 }
 
-interface AnalysisLine {
+export interface AnalysisLine {
+  id: string
   move: string
+  san: string
   pv: string
+  pvLegal: boolean
   score: AnalysisScore
 }
 
@@ -72,9 +85,23 @@ export interface AnalysisPositionResult {
   pv: string
   pvLegal: boolean
   bestMove: string
+  bestMoveSan: string
   lines: AnalysisLine[]
   analyzedAt: string
 }
+
+export interface AnalysisCandidateSelection {
+  requestId: number
+  scope: AnalysisScope
+  nodeKey: string
+  candidateId: string
+  candidateMove: string
+  candidatePv: string
+}
+
+export type AnalysisCandidateInsertionOutcome =
+  | { kind: 'inserted'; terminalNodeId: number; createdCount: number }
+  | { kind: 'existing' | 'illegal' | 'readonly' | 'busy' | 'stale' }
 
 export interface FullGameAnalysis {
   requestId: number
@@ -101,7 +128,7 @@ interface FullGameProgress {
 }
 
 interface AnalysisState {
-  phase: AnalysisPhase
+  phase: AnalysisExecutionPhase
   workerMode: WorkerMode
   workerCount: number
   firstUseAccepted: boolean
@@ -117,6 +144,10 @@ interface AnalysisState {
   completedRequests: number
   cancelledRequests: number
   retryCount: number
+  outcome: AnalysisProductOutcome | null
+  outcomeSequence: number
+  candidateOutcome: CandidateInsertionProductOutcome | null
+  candidateOutcomeSequence: number
 }
 
 const MATE_SCORE = 9000
@@ -214,7 +245,13 @@ function captureTaskSnapshot(scope: AnalysisScope): Omit<AnalysisTaskSnapshot, '
   const item = pgn.selectedItem
   const gameId = pgn.currentGameId
 
-  if (!pgn.hasGame || !pgn.canMutateCurrentSource || gameId === null || !item?.tree) {
+  if (
+    !pgn.hasGame ||
+    !pgn.canMutateCurrentSource ||
+    pgn.manualDraft ||
+    gameId === null ||
+    !item?.tree
+  ) {
     return null
   }
 
@@ -302,18 +339,59 @@ function validatePv(fen: string, pv: string): boolean {
   }
 }
 
+function candidateLineIdentity(move: string, pv: string): string {
+  return hashString(`${move}\u0000${pv}`)
+}
+
+function candidateLineDetails(
+  fen: string,
+  move: string,
+  pv: string
+): { san: string; legal: boolean } {
+  const sanMoves = pv.trim().split(/\s+/u).filter(Boolean)
+  const firstSan = sanMoves[0] ?? ''
+
+  if (!firstSan) {
+    return { san: '', legal: false }
+  }
+
+  try {
+    const chess = new Chess(fen)
+    let firstMoveIdentity = ''
+
+    for (const [index, san] of sanMoves.entries()) {
+      const applied = chess.move(san, { strict: true })
+
+      if (index === 0) {
+        firstMoveIdentity = `${applied.from}${applied.to}${applied.promotion ?? ''}`
+      }
+    }
+
+    return { san: firstSan, legal: firstMoveIdentity === move }
+  } catch {
+    return { san: firstSan, legal: false }
+  }
+}
+
 function sortedLines(fen: string, evalResult: EngineEval): AnalysisLine[] {
   return Object.entries(evalResult.candidates ?? {})
-    .map(([move, candidate]) => ({
-      move,
-      pv: candidate.pv,
-      score: scoreFromEval(fen, {
-        fen,
-        score: candidate.score,
+    .map(([move, candidate]) => {
+      const details = candidateLineDetails(fen, move, candidate.pv)
+
+      return {
+        id: candidateLineIdentity(move, candidate.pv),
+        move,
+        san: details.san,
         pv: candidate.pv,
-        bestMove: move,
-      }),
-    }))
+        pvLegal: details.legal,
+        score: scoreFromEval(fen, {
+          fen,
+          score: candidate.score,
+          pv: candidate.pv,
+          bestMove: move,
+        }),
+      }
+    })
     .sort((left, right) => right.score.value - left.score.value)
     .slice(0, 5)
 }
@@ -371,6 +449,32 @@ function resultMatchesCurrentPosition(result: AnalysisPositionResult): boolean {
   )
 }
 
+function fullGameMatchesCurrentTree(result: FullGameAnalysis): boolean {
+  const pgn = usePgnStore()
+  const gameIndex = pgn.gameIds.indexOf(result.gameId)
+  const tree = gameIndex >= 0 ? pgn.items[gameIndex]?.tree : undefined
+
+  if (!resultMatchesBase(result) || !tree || result.total !== result.results.length) {
+    return false
+  }
+
+  return result.results.every((position) => {
+    const node = findNode(tree, position.nodeId)
+
+    return (
+      position.scope === 'full' &&
+      position.requestId === result.requestId &&
+      position.sourceSession === result.sourceSession &&
+      position.sourceId === result.sourceId &&
+      position.sourceRevision === result.sourceRevision &&
+      position.gameId === result.gameId &&
+      position.positionId === hashString(position.fen) &&
+      position.nodeKey === nodeKeyFor(position.gameId, position.nodeId, position.positionId) &&
+      node?.fen === position.fen
+    )
+  })
+}
+
 function sameCapturedTask(
   active: AnalysisTaskSnapshot,
   captured: Omit<AnalysisTaskSnapshot, 'requestId'>
@@ -396,6 +500,10 @@ function resultFromEval(
   evalResult: EngineEval
 ): AnalysisPositionResult {
   const pvLegal = validatePv(position.fen, evalResult.pv)
+  const lines = sortedLines(position.fen, evalResult)
+  const matchingBestLine = lines.find((line) => line.move === evalResult.bestMove && line.pvLegal)
+  const fallbackBestLine = candidateLineDetails(position.fen, evalResult.bestMove, evalResult.pv)
+  const bestMoveSan = matchingBestLine?.san ?? (fallbackBestLine.legal ? fallbackBestLine.san : '')
 
   return Object.freeze({
     requestId: task.requestId,
@@ -415,7 +523,8 @@ function resultFromEval(
     pv: pvLegal ? evalResult.pv : '',
     pvLegal,
     bestMove: evalResult.bestMove,
-    lines: sortedLines(position.fen, evalResult),
+    bestMoveSan,
+    lines,
     analyzedAt: new Date().toISOString(),
   })
 }
@@ -442,6 +551,10 @@ function defaultAnalysisState(): AnalysisState {
     completedRequests: 0,
     cancelledRequests: 0,
     retryCount: 0,
+    outcome: null,
+    outcomeSequence: 0,
+    candidateOutcome: null,
+    candidateOutcomeSequence: 0,
   }
 }
 
@@ -459,7 +572,7 @@ export const useAnalysisStore = defineStore('analysis', {
       return state.current && resultMatchesCurrentPosition(state.current) ? state.current : null
     },
     matchingFullGame(state): FullGameAnalysis | null {
-      return state.fullGame && resultMatchesBase(state.fullGame) ? state.fullGame : null
+      return state.fullGame && fullGameMatchesCurrentTree(state.fullGame) ? state.fullGame : null
     },
     completedScope(): AnalysisScope | null {
       if (this.lastCompletedScope === 'full' && this.matchingFullGame) return 'full'
@@ -467,6 +580,55 @@ export const useAnalysisStore = defineStore('analysis', {
       if (this.matchingFullGame) return 'full'
       if (this.matchingCurrent) return 'current'
       return null
+    },
+    presentation(): AnalysisPresentation {
+      return createAnalysisPresentation({
+        phase: this.phase,
+        activeScope: this.runningScope,
+        completedScope: this.completedScope,
+        lastRequestedScope: this.lastRequestedScope,
+        hasResult: this.hasResult,
+        outcome: this.outcome,
+      })
+    },
+    candidatePresentation(): CandidateInsertionPresentation | null {
+      return candidateInsertionPresentation(this.candidateOutcome)
+    },
+    selectedPositionResult(): AnalysisPositionResult | null {
+      const fullGame = this.matchingFullGame
+      const pgn = usePgnStore()
+      const node = pgn.currentNode
+      const fullPosition =
+        fullGame && node
+          ? (fullGame.results.find(
+              (result) =>
+                result.nodeId === node.id &&
+                result.fen === node.fen &&
+                result.positionId === hashString(node.fen)
+            ) ?? null)
+          : null
+
+      if (this.completedScope === 'full') {
+        return fullPosition ?? this.matchingCurrent
+      }
+
+      if (this.completedScope === 'current') {
+        return this.matchingCurrent ?? fullPosition
+      }
+
+      return null
+    },
+    resultFreshness(): 'current' | 'retained' | null {
+      const result = this.selectedPositionResult
+      if (!result) return null
+
+      return this.running ||
+        this.outcome ||
+        this.phase === 'error' ||
+        this.phase === 'unavailable' ||
+        result.scope !== this.completedScope
+        ? 'retained'
+        : 'current'
     },
     canRetry(state): boolean {
       return Boolean(
@@ -484,6 +646,48 @@ export const useAnalysisStore = defineStore('analysis', {
       this.firstUseAccepted = true
     },
 
+    clearProductFeedback(): void {
+      this.outcome = null
+      this.candidateOutcome = null
+    },
+
+    recordProductOutcome(
+      kind: AnalysisProductOutcome['kind'],
+      scope: AnalysisScope,
+      origin: AnalysisProductOutcome['origin']
+    ): void {
+      this.outcomeSequence += 1
+      this.outcome = {
+        sequence: this.outcomeSequence,
+        kind,
+        origin,
+        scope,
+      }
+      this.candidateOutcome = null
+    },
+
+    recordCandidateOutcome(kind: CandidateInsertionProductKind): void {
+      this.candidateOutcomeSequence += 1
+      this.candidateOutcome = {
+        sequence: this.candidateOutcomeSequence,
+        kind,
+      }
+      this.outcome = null
+    },
+
+    cancelActive(): boolean {
+      const scope = this.activeRequest?.scope
+
+      if (!scope) {
+        return false
+      }
+
+      this.cancelledRequests += 1
+      this.stop()
+      this.recordProductOutcome('cancelled', scope, 'task')
+      return true
+    },
+
     analyzeCurrent(force = false): Promise<boolean> {
       return this.runTask('current', force)
     },
@@ -496,6 +700,8 @@ export const useAnalysisStore = defineStore('analysis', {
       if (!this.firstUseAccepted) {
         return false
       }
+
+      this.clearProductFeedback()
 
       const captured = captureTaskSnapshot(scope)
 
@@ -595,7 +801,8 @@ export const useAnalysisStore = defineStore('analysis', {
           }
 
           if (currentEval.fen !== position.fen) {
-            throw new Error('分析结果与任务局面不匹配')
+            this.rejectStaleRequest(request)
+            return false
           }
 
           this.current = resultFromEval(request, position, currentEval)
@@ -631,7 +838,8 @@ export const useAnalysisStore = defineStore('analysis', {
             }
 
             if (currentEval.fen !== position.fen) {
-              throw new Error('分析结果与任务局面不匹配')
+              this.rejectStaleRequest(request)
+              return false
             }
 
             results.push(resultFromEval(request, position, currentEval))
@@ -700,10 +908,6 @@ export const useAnalysisStore = defineStore('analysis', {
     },
 
     stop(): void {
-      if (this.activeRequest) {
-        this.cancelledRequests += 1
-      }
-
       this.activeRequest = null
       this.progress = null
       engine?.stop()
@@ -722,6 +926,7 @@ export const useAnalysisStore = defineStore('analysis', {
     },
 
     reconcileContext(canRunAnalysis: boolean): void {
+      this.candidateOutcome = null
       const request = this.activeRequest
 
       if (!request) return
@@ -749,6 +954,109 @@ export const useAnalysisStore = defineStore('analysis', {
       engine?.stop()
       this.workerCount = 0
       this.phase = this.hasResult ? 'available' : 'idle'
+      this.recordProductOutcome('stale', request.scope, 'task')
+    },
+
+    insertCandidate(selection: AnalysisCandidateSelection): AnalysisCandidateInsertionOutcome {
+      if (this.running) {
+        this.recordCandidateOutcome('busy')
+        return { kind: 'busy' }
+      }
+
+      const result =
+        selection.scope === 'current'
+          ? this.current
+          : (this.fullGame?.results.find(
+              (entry) =>
+                entry.requestId === selection.requestId && entry.nodeKey === selection.nodeKey
+            ) ?? null)
+      const resultIsCurrent =
+        result !== null &&
+        result.requestId === selection.requestId &&
+        result.scope === selection.scope &&
+        result.nodeKey === selection.nodeKey &&
+        result.nodeKey === nodeKeyFor(result.gameId, result.nodeId, result.positionId) &&
+        result.positionId === hashString(result.fen) &&
+        (result.scope === 'current'
+          ? result === this.current && resultMatchesCurrentPosition(result)
+          : this.fullGame?.requestId === result.requestId &&
+            fullGameMatchesCurrentTree(this.fullGame))
+
+      if (!resultIsCurrent || !result) {
+        this.recordProductOutcome('stale', selection.scope, 'candidate')
+        return { kind: 'stale' }
+      }
+
+      const candidate = result.lines.find(
+        (line) =>
+          line.id === selection.candidateId &&
+          line.move === selection.candidateMove &&
+          line.pv === selection.candidatePv &&
+          line.id === candidateLineIdentity(line.move, line.pv)
+      )
+
+      if (!candidate) {
+        this.recordProductOutcome('stale', selection.scope, 'candidate')
+        return { kind: 'stale' }
+      }
+
+      if (!candidate.pvLegal) {
+        this.recordCandidateOutcome('illegal')
+        return { kind: 'illegal' }
+      }
+
+      const pgn = usePgnStore()
+      const mutation = pgn.insertVariationContinuation({
+        expected: {
+          sourceSession: result.sourceSession,
+          sourceId: result.sourceId,
+          sourceRevision: result.sourceRevision,
+          gameId: result.gameId,
+          nodeId: result.nodeId,
+          fen: result.fen,
+        },
+        candidateMove: candidate.move,
+        pv: candidate.pv,
+      })
+
+      if (mutation.status === 'inserted') {
+        this.phase = 'idle'
+        this.recordCandidateOutcome('inserted')
+        return {
+          kind: 'inserted',
+          terminalNodeId: mutation.terminalNodeId,
+          createdCount: mutation.createdCount,
+        }
+      }
+
+      if (mutation.status === 'existing') {
+        this.recordCandidateOutcome('existing')
+        return { kind: 'existing' }
+      }
+
+      if (mutation.status !== 'rejected') {
+        this.recordCandidateOutcome('illegal')
+        return { kind: 'illegal' }
+      }
+
+      if (mutation.reason === 'readonly') {
+        this.recordCandidateOutcome('readonly')
+        return { kind: 'readonly' }
+      }
+
+      if (mutation.reason === 'busy') {
+        this.recordCandidateOutcome('busy')
+        return { kind: 'busy' }
+      }
+
+      if (mutation.reason === 'stale') {
+        this.phase = this.hasResult ? 'available' : 'idle'
+        this.recordProductOutcome('stale', selection.scope, 'candidate')
+        return { kind: 'stale' }
+      }
+
+      this.recordCandidateOutcome('illegal')
+      return { kind: 'illegal' }
     },
 
     writeMoveAssessment(

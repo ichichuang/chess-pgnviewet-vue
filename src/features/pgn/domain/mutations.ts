@@ -47,6 +47,25 @@ export interface AppliedMove {
   promotion?: PromotionPiece | undefined
 }
 
+function appliedMoveFromResult(
+  move: ReturnType<Chess['move']>,
+  moveNumber: number,
+  color: 'w' | 'b'
+): AppliedMove {
+  const promotion = move.promotion as PromotionPiece | undefined
+
+  return {
+    san: move.san,
+    from: move.from,
+    to: move.to,
+    before: move.before,
+    after: move.after,
+    color,
+    moveNumber,
+    ...(promotion ? { promotion } : {}),
+  }
+}
+
 export function applyMove(
   fen: string,
   from: string,
@@ -60,16 +79,31 @@ export function applyMove(
     const request = promotion ? { from, to, promotion } : { from, to }
     const move = chess.move(request, { strict: false })
 
-    return {
-      san: move.san,
-      from: move.from,
-      to: move.to,
-      before: move.before,
-      after: move.after,
-      color,
-      moveNumber,
-      ...(promotion ? { promotion } : {}),
+    return appliedMoveFromResult(move, moveNumber, color)
+  } catch {
+    return null
+  }
+}
+
+export function applySanContinuation(fen: string, pv: string): AppliedMove[] | null {
+  const sanMoves = pv.trim().split(/\s+/u).filter(Boolean)
+
+  if (sanMoves.length === 0) {
+    return null
+  }
+
+  try {
+    const chess = new Chess(fen)
+    const applied: AppliedMove[] = []
+
+    for (const san of sanMoves) {
+      const moveNumber = chess.moveNumber()
+      const color = chess.turn()
+      const move = chess.move(san, { strict: true })
+      applied.push(appliedMoveFromResult(move, moveNumber, color))
     }
+
+    return applied
   } catch {
     return null
   }

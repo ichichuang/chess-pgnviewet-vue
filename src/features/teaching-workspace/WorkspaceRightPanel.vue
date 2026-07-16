@@ -75,7 +75,8 @@ const annotationSummary = computed(() => ({
   arrows: pgn.currentAnnotation?.arrows.length ?? 0,
   squares: pgn.currentAnnotation?.squares.length ?? 0,
 }))
-const currentAnalysis = computed(() => analysis.matchingCurrent)
+const currentAnalysis = computed(() => analysis.selectedPositionResult)
+const analysisPresentation = computed(() => analysis.presentation)
 const analysisScore = computed(() => {
   const score = currentAnalysis.value?.score
 
@@ -299,11 +300,15 @@ function cancelTeachingDraft(): void {
           <h2>分析面板</h2>
           <dl class="panel-list">
             <dt>状态</dt>
-            <dd>{{ analysis.phase }}</dd>
+            <dd>{{ analysisPresentation.statusText }}</dd>
+            <template v-if="analysis.resultFreshness === 'retained'">
+              <dt>结果</dt>
+              <dd>此前完成结果</dd>
+            </template>
             <dt>评估</dt>
             <dd>{{ analysisScore }}</dd>
             <dt>最佳着法</dt>
-            <dd>{{ currentAnalysis?.bestMove || '—' }}</dd>
+            <dd>{{ currentAnalysis?.bestMoveSan || '—' }}</dd>
           </dl>
         </section>
       </template>

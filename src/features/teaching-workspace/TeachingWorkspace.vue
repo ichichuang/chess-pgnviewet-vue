@@ -112,6 +112,7 @@ const { onSplitterKeyDown, onSplitterPointerDown, rightStackEl, rightStackStyle 
 const radialWidth = ref<0.08 | 0.16 | 0.28>(0.16)
 const sourceDrawerOpen = ref(false)
 const contextPanelOpen = ref(false)
+const insertedVariationFocusNodeId = ref<number | null>(null)
 const isNarrow = ref(typeof window !== 'undefined' ? window.innerWidth <= 900 : false)
 const settingsContext = computed(() =>
   createWorkspaceSettingsContext(workspaceModeContext.value, permissions, pgn.source)
@@ -243,14 +244,6 @@ const boardJustifyContent = computed(() => {
 })
 
 watch(
-  [() => workspaceModeContext.value, () => pgn.source.id],
-  () => {
-    analysis.stop()
-  },
-  { flush: 'sync' }
-)
-
-watch(
   [
     () => permissions.canRunAnalysis,
     () => pgn.sourceSession,
@@ -274,6 +267,10 @@ interface PendingWorkspaceNavigation {
   returnFocus: ProductOverlayReturnFocus
   confirmation: Promise<boolean> | null
 }
+
+watch(contextPanelOpen, (open) => {
+  if (!open) insertedVariationFocusNodeId.value = null
+})
 
 let pendingNavigation: PendingWorkspaceNavigation | null = null
 let currentWorkspaceInvoker: HTMLElement | null = null
@@ -458,7 +455,6 @@ function handleWorkspaceAction(name: WorkspaceToolbarAction): void {
   }
 
   if (name === 'openLocal' || name === 'insertLocal') {
-    analysis.stop()
     handlePgnAction(name, workspaceReturnFocus())
     return
   }
@@ -491,7 +487,6 @@ async function replaceWorkspaceSource(request: {
 
 async function createEditableLocalCopy(): Promise<void> {
   if (!permissions.canCreateEditableLocalCopy) return
-  analysis.stop()
   const expectedIdentity = pgn.captureWorkspaceEditIdentity()
   const replaced = await destructiveActions.run({
     intent: 'local-copy-replacement',
@@ -531,7 +526,7 @@ async function enterBoardEditor(): Promise<void> {
     if (!discarded) return
   }
 
-  analysis.stop()
+  analysis.cancelActive()
   workspace.setAnnotationTool(null)
   const draftId = pgn.beginManualEditorDraft()
   if (draftId === null) return
@@ -552,7 +547,6 @@ function finishBoardEditor(snapshot: BoardEditorDraftSnapshot): void {
   const draftId = manualDraftId.value
   if (draftId === null || !pgn.updateManualEditorDraft(draftId, snapshot.fen)) return
   const draftChanged = pgn.hasUnsavedManualDraft
-  analysis.stop()
   const ok = pgn.insertPgnFromFen(snapshot.fen, draftChanged)
 
   if (!ok) {
@@ -769,6 +763,36 @@ async function navigatePgn(intent: PgnNavigationIntent): Promise<void> {
   })
 }
 
+async function focusInsertedVariation(nodeId: number): Promise<void> {
+  insertedVariationFocusNodeId.value = isNarrow.value ? nodeId : null
+  contextPanelOpen.value = true
+  await workspace.setActiveRightTab('notation')
+
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    await nextTick()
+    await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()))
+
+    const focusRoot = isNarrow.value
+      ? document.querySelector<HTMLElement>('[data-workspace-context-sheet]')
+      : rootEl.value
+    const moveItems = Array.from(
+      focusRoot?.querySelectorAll<HTMLElement>(`[data-pgn-node-id="${nodeId}"]`) ?? []
+    )
+    const target = moveItems.find(
+      (item) =>
+        item.isConnected &&
+        item.getClientRects().length > 0 &&
+        !item.closest('[hidden], [aria-hidden="true"], [inert]')
+    )
+
+    if (!target) continue
+
+    target.focus({ preventScroll: true })
+    target.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+    return
+  }
+}
+
 function queryText(value: unknown): string {
   if (Array.isArray(value)) {
     return value.find((item) => typeof item === 'string')?.trim() ?? ''
@@ -958,7 +982,10 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
             aria-labelledby="workspace-analysis-title"
           >
             <div class="panel-scroll">
-              <AnalysisPanel :permissions="permissions" />
+              <AnalysisPanel
+                :permissions="permissions"
+                @candidate-inserted="focusInsertedVariation"
+              />
             </div>
           </section>
         </Transition>
@@ -1009,8 +1036,16 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
       />
     </ProductDrawer>
 
-    <ProductSheet v-if="isNarrow" v-model:show="contextPanelOpen" title="上下文" height="80vh">
+    <ProductSheet
+      v-if="isNarrow"
+      v-model:show="contextPanelOpen"
+      title="上下文"
+      height="80vh"
+      :auto-focus="insertedVariationFocusNodeId === null"
+      :initial-focus="insertedVariationFocusNodeId === null ? 'safe-action' : 'none'"
+    >
       <WorkspaceRightPanel
+        data-workspace-context-sheet
         :permissions="permissions"
         @action="handleWorkspaceAction"
         @navigate="navigatePgn"

@@ -4,12 +4,17 @@ import { gsap } from 'gsap'
 
 import { formatMoverScore, formatWhiteScore } from '@/features/analysis/domain/formatAnalysis'
 import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
-import { ProductButton, ProductConfirmDialog } from '@/ui'
+import { ProductButton, ProductConfirmDialog, ProductStateBanner } from '@/ui'
 import { useAnalysisStore, usePgnStore } from '@/stores'
+import type { AnalysisLine, AnalysisPositionResult } from '@/stores/analysis'
 import type { WorkspacePermissions } from '@/features/workspace-mode/useWorkspacePermissionAdapter'
 
 const props = defineProps<{
   permissions: WorkspacePermissions
+}>()
+
+const emit = defineEmits<{
+  candidateInserted: [nodeId: number]
 }>()
 
 const analysis = useAnalysisStore()
@@ -21,50 +26,38 @@ const showFirstUseNotice = ref(false)
 const currentResult = computed(() => analysis.matchingCurrent)
 const fullGameResult = computed(() => analysis.matchingFullGame)
 const completedScope = computed(() => analysis.completedScope)
+const presentation = computed(() => analysis.presentation)
+const candidateFeedback = computed(() => analysis.candidatePresentation)
+const analysisStartPauseReason = computed(() =>
+  pgn.manualDraft ? '请先应用或取消局面编辑，再开始分析。' : ''
+)
 const canStartFullGame = computed(
   () =>
     props.permissions.canRunAnalysis &&
     pgn.canMutateCurrentSource &&
+    !analysisStartPauseReason.value &&
     pgn.currentGameId !== null &&
     Boolean(pgn.selectedItem?.tree)
 )
 
 const lifecycleState = computed(() => {
-  if (!props.permissions.canRunAnalysis) return 'blocked'
+  if (!props.permissions.canRunAnalysis) return 'source-limited'
   if (showFirstUseNotice.value) return 'first-use'
-  if (analysis.running) return 'running'
-  if (analysis.phase === 'error' || analysis.phase === 'unavailable') return 'failed'
-  if (analysis.hasResult) return 'completed'
-  return 'off'
+  return presentation.value.kind
 })
 
 const statusText = computed(() => {
-  if (lifecycleState.value === 'blocked') {
+  if (lifecycleState.value === 'source-limited') {
     return '当前来源不支持 AI 分析'
   }
 
-  if (lifecycleState.value === 'off') {
-    return 'AI 分析未开启'
-  }
-
-  if (lifecycleState.value === 'running') {
-    return analysis.runningScope === 'full' ? '正在分析整局' : '正在分析当前局面'
-  }
-
-  if (lifecycleState.value === 'failed') {
-    return analysis.phase === 'unavailable'
-      ? (analysis.unavailableReason ?? '本地分析不可用')
-      : (analysis.error ?? 'AI 分析失败')
-  }
-
-  if (lifecycleState.value === 'completed') {
-    return completedScope.value === 'full' ? '整局分析完成' : '当前局面分析完成'
-  }
-
-  return ''
+  return presentation.value.statusText
 })
 
 const candidates = computed(() => currentResult.value?.lines ?? [])
+const resultRetained = computed(
+  () => analysis.hasResult && lifecycleState.value !== 'completed'
+)
 const fullGameProgressText = computed(() => {
   const progress = analysis.progress
 
@@ -285,6 +278,7 @@ function onStart(scope: 'current' | 'full'): void {
     !props.permissions.canRunAnalysis ||
     !pgn.canMutateCurrentSource ||
     !pgn.hasGame ||
+    analysisStartPauseReason.value ||
     (scope === 'full' && !canStartFullGame.value)
   ) {
     return
@@ -348,7 +342,7 @@ function onFirstUseVisibilityChange(show: boolean): void {
 }
 
 function onCancelAnalysis(): void {
-  analysis.stop()
+  analysis.cancelActive()
 }
 
 function onCancelFocus(): void {
@@ -362,11 +356,76 @@ function onCancelBlur(event: FocusEvent): void {
 }
 
 function onRetryAnalysis(): void {
-  if (!props.permissions.canRunAnalysis || !pgn.hasGame) return
+  if (!props.permissions.canRunAnalysis || !pgn.hasGame || analysisStartPauseReason.value) return
   analysisOwnsFocus = true
   void analysis.retry()
   void nextTick(() => focusAnalysisAction('cancel'))
 }
+
+function onReanalyzeOutcome(): void {
+  onStart(presentation.value.scope === 'full' ? 'full' : 'current')
+}
+
+function candidateDisabledReason(line: AnalysisLine): string {
+  if (analysis.running) {
+    return '请先完成或取消当前分析任务，再插入候选变化。'
+  }
+
+  if (!props.permissions.canRunAnalysis || !pgn.canMutateCurrentSource) {
+    return '当前来源不可编辑，无法插入候选变化。'
+  }
+
+  if (!line.pvLegal || !line.pv.trim()) {
+    return '这条候选变化未通过完整合法性校验，无法插入。'
+  }
+
+  if (pgn.pendingBranch || pgn.pendingPromotion || pgn.manualDraft || pgn.teachingDraft) {
+    return '请先完成当前走法或教学编辑，再插入候选变化。'
+  }
+
+  return ''
+}
+
+function onInsertCandidate(
+  result: AnalysisPositionResult,
+  line: AnalysisLine,
+  event: MouseEvent
+): void {
+  const trigger = event.currentTarget instanceof HTMLElement ? event.currentTarget : null
+  const outcome = analysis.insertCandidate({
+    requestId: result.requestId,
+    scope: result.scope,
+    nodeKey: result.nodeKey,
+    candidateId: line.id,
+    candidateMove: line.move,
+    candidatePv: line.pv,
+  })
+
+  if (outcome.kind === 'inserted') {
+    emit('candidateInserted', outcome.terminalNodeId)
+    return
+  }
+
+  void nextTick(() => {
+    if (trigger?.isConnected) trigger.focus({ preventScroll: true })
+  })
+}
+
+watch(
+  () => analysis.outcome?.sequence,
+  async () => {
+    const outcome = analysis.outcome
+
+    if (!outcome || (outcome.kind === 'stale' && outcome.origin === 'candidate')) {
+      return
+    }
+
+    await nextTick()
+    analysisOwnsFocus = false
+    focusAnalysisAction('reanalyze')
+  },
+  { flush: 'post' }
+)
 </script>
 
 <template>
@@ -374,9 +433,31 @@ function onRetryAnalysis(): void {
     <header class="analysis-header">
       <div>
         <h2 id="workspace-analysis-title">AI 分析</h2>
-        <p role="status">{{ statusText }}</p>
+        <p
+          :role="
+            candidateFeedback ||
+            lifecycleState === 'failed' ||
+            lifecycleState === 'cancelled' ||
+            lifecycleState === 'stale'
+              ? undefined
+              : 'status'
+          "
+        >
+          {{ statusText }}
+        </p>
       </div>
     </header>
+
+    <div
+      v-if="candidateFeedback"
+      class="analysis-feedback"
+      :role="candidateFeedback.role"
+      :aria-live="candidateFeedback.role === 'alert' ? 'assertive' : 'polite'"
+    >
+      <ProductStateBanner :status="candidateFeedback.tone" :show-icon="false">
+        {{ candidateFeedback.message }}
+      </ProductStateBanner>
+    </div>
 
     <section v-if="lifecycleState === 'off' || lifecycleState === 'first-use'" class="analysis-off">
       <p>分析默认关闭，不会占用额外计算资源。</p>
@@ -385,7 +466,8 @@ function onRetryAnalysis(): void {
           data-analysis-action="start-current"
           size="small"
           variant="primary"
-          :disabled="!pgn.hasGame"
+          :disabled="!pgn.hasGame || Boolean(analysisStartPauseReason)"
+          :title="analysisStartPauseReason"
           @click="onStart('current')"
         >
           分析当前局面
@@ -394,18 +476,30 @@ function onRetryAnalysis(): void {
           data-analysis-action="start-full"
           size="small"
           :disabled="!canStartFullGame"
+          :title="analysisStartPauseReason"
           @click="onStart('full')"
         >
           分析整局
         </ProductButton>
       </div>
+      <p v-if="analysisStartPauseReason" class="analysis-start-reason">
+        {{ analysisStartPauseReason }}
+      </p>
     </section>
 
-    <section v-else-if="lifecycleState === 'running'" class="analysis-running">
+    <section v-else-if="lifecycleState === 'source-limited'" class="analysis-state">
+      <ProductStateBanner status="info" title="当前来源不支持 AI 分析">
+        只读实时内容不提供 AI、引擎评估或候选变化写入。
+      </ProductStateBanner>
+    </section>
+
+    <section
+      v-else-if="lifecycleState === 'preparing' || lifecycleState === 'running'"
+      class="analysis-running"
+    >
       <div
         v-if="analysis.runningScope === 'full' && analysis.progress"
         class="analysis-progress-block"
-        :data-analysis-request-id="analysis.progress.requestId"
       >
         <p class="analysis-progress-copy" aria-live="polite">
           {{ fullGameProgressText }}
@@ -443,26 +537,58 @@ function onRetryAnalysis(): void {
       </div>
     </section>
 
-    <section v-else-if="lifecycleState === 'failed'" class="analysis-failed">
-      <p role="alert">{{ statusText }}</p>
+    <section v-else-if="lifecycleState === 'failed'" class="analysis-state" role="alert">
+      <ProductStateBanner status="error" :title="presentation.title">
+        {{ presentation.description }}
+      </ProductStateBanner>
       <div class="analysis-actions">
         <ProductButton
           data-analysis-action="retry"
           size="small"
           variant="primary"
+          :disabled="Boolean(analysisStartPauseReason)"
+          :title="analysisStartPauseReason"
           @click="onRetryAnalysis"
         >
           重试分析
         </ProductButton>
       </div>
+      <p v-if="analysisStartPauseReason" class="analysis-start-reason">
+        {{ analysisStartPauseReason }}
+      </p>
     </section>
 
-    <div
-      v-else-if="lifecycleState === 'completed'"
-      ref="resultEl"
-      class="analysis-result"
-      :data-analysis-request-id="resultAnimationKey ?? undefined"
+    <section
+      v-else-if="lifecycleState === 'cancelled' || lifecycleState === 'stale'"
+      class="analysis-state"
+      :role="presentation.role"
+      aria-live="polite"
     >
+      <ProductStateBanner status="info" :title="presentation.title">
+        {{ presentation.description }}
+      </ProductStateBanner>
+      <div class="analysis-actions">
+        <ProductButton
+          data-analysis-action="reanalyze"
+          size="small"
+          variant="primary"
+          :disabled="Boolean(analysisStartPauseReason)"
+          :title="analysisStartPauseReason"
+          @click="onReanalyzeOutcome"
+        >
+          {{ presentation.actionLabel }}
+        </ProductButton>
+      </div>
+      <p v-if="analysisStartPauseReason" class="analysis-start-reason">
+        {{ analysisStartPauseReason }}
+      </p>
+    </section>
+
+    <div v-if="analysis.hasResult" ref="resultEl" class="analysis-result">
+      <p v-if="resultRetained" class="analysis-retained" role="status">
+        此前完成结果仍与当前来源、对局和局面一致，已保留供参考。
+      </p>
+
       <template v-if="completedScope === 'full' && fullGameResult">
         <section class="analysis-summary" aria-label="整局分析摘要">
           <div>
@@ -482,14 +608,37 @@ function onRetryAnalysis(): void {
         <section class="analysis-section" aria-label="整局主线局面结果">
           <h3>主线局面结果</h3>
           <ol class="full-game-list">
-            <li
-              v-for="result in fullGameResult.results"
-              :key="result.nodeKey"
-              :data-analysis-node-key="result.nodeKey"
-            >
-              <strong>{{ result.label }}</strong>
-              <span>{{ formatWhiteScore(result.score) }}</span>
-              <span>{{ result.bestMove || '—' }}</span>
+            <li v-for="result in fullGameResult.results" :key="result.nodeKey">
+              <div class="full-game-position">
+                <strong>{{ result.label }}</strong>
+                <span>{{ formatWhiteScore(result.score) }}</span>
+                <span>最佳着法：{{ result.bestMoveSan || '—' }}</span>
+              </div>
+
+              <details v-if="result.lines.length > 0" class="candidate-details">
+                <summary :aria-label="`${result.label}的候选变化`">查看候选变化</summary>
+                <ol class="candidate-list">
+                  <li v-for="line in result.lines" :key="line.id">
+                    <div class="candidate-copy">
+                      <strong>{{ line.san || '不可用' }}</strong>
+                      <span>{{ formatMoverScore(line.score) }}</span>
+                      <span>{{ line.pv || '无可用变化' }}</span>
+                    </div>
+                    <ProductButton
+                      size="small"
+                      :disabled="Boolean(candidateDisabledReason(line))"
+                      :title="candidateDisabledReason(line)"
+                      :aria-label="`将 ${line.san || '当前'} 候选变化插入 ${result.label}`"
+                      @click="onInsertCandidate(result, line, $event)"
+                    >
+                      插入变化
+                    </ProductButton>
+                    <small v-if="candidateDisabledReason(line)" class="candidate-reason">
+                      {{ candidateDisabledReason(line) }}
+                    </small>
+                  </li>
+                </ol>
+              </details>
             </li>
           </ol>
         </section>
@@ -507,7 +656,7 @@ function onRetryAnalysis(): void {
           </div>
           <div>
             <span>最佳着法</span>
-            <strong>{{ currentResult.bestMove || '—' }}</strong>
+            <strong>{{ currentResult.bestMoveSan || '—' }}</strong>
           </div>
         </section>
 
@@ -521,26 +670,45 @@ function onRetryAnalysis(): void {
         <section class="analysis-section" aria-label="候选变化">
           <h3>候选变化</h3>
           <ol v-if="candidates.length > 0" class="candidate-list">
-            <li v-for="line in candidates" :key="line.move">
-              <strong>{{ line.move }}</strong>
-              <span>{{ formatMoverScore(line.score) }}</span>
-              <span>{{ line.pv || '—' }}</span>
+            <li v-for="line in candidates" :key="line.id">
+              <div class="candidate-copy">
+                <strong>{{ line.san || '不可用' }}</strong>
+                <span>{{ formatMoverScore(line.score) }}</span>
+                <span>{{ line.pv || '无可用变化' }}</span>
+              </div>
+              <ProductButton
+                size="small"
+                :disabled="Boolean(candidateDisabledReason(line))"
+                :title="candidateDisabledReason(line)"
+                :aria-label="`将 ${line.san || '当前'} 候选变化插入本地棋谱`"
+                @click="onInsertCandidate(currentResult, line, $event)"
+              >
+                插入变化
+              </ProductButton>
+              <small v-if="candidateDisabledReason(line)" class="candidate-reason">
+                {{ candidateDisabledReason(line) }}
+              </small>
             </li>
           </ol>
           <p v-else>当前局面没有候选变化。</p>
         </section>
       </template>
 
-      <div class="analysis-actions">
+      <div v-if="lifecycleState === 'completed'" class="analysis-actions">
         <ProductButton
           data-analysis-action="reanalyze"
           size="small"
           variant="primary"
+          :disabled="Boolean(analysisStartPauseReason)"
+          :title="analysisStartPauseReason"
           @click="onStart(completedScope === 'full' ? 'full' : 'current')"
         >
-          {{ completedScope === 'full' ? '重新分析整局' : '重新分析' }}
+          {{ completedScope === 'full' ? '重新分析整局' : '重新分析当前局面' }}
         </ProductButton>
       </div>
+      <p v-if="analysisStartPauseReason" class="analysis-start-reason">
+        {{ analysisStartPauseReason }}
+      </p>
     </div>
 
     <ProductConfirmDialog
@@ -584,7 +752,6 @@ function onRetryAnalysis(): void {
 .analysis-section p,
 .analysis-off p,
 .analysis-running p,
-.analysis-failed p,
 .analysis-empty p,
 .analysis-error {
   margin: 0;
@@ -597,7 +764,6 @@ function onRetryAnalysis(): void {
 .analysis-header p,
 .analysis-off p,
 .analysis-running p,
-.analysis-failed p,
 .analysis-section small,
 .analysis-empty {
   color: var(--text-muted);
@@ -609,6 +775,24 @@ function onRetryAnalysis(): void {
   flex: 0 0 auto;
   flex-wrap: wrap;
   gap: var(--s-2);
+}
+
+.analysis-state,
+.analysis-feedback {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.analysis-retained {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.analysis-start-reason {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
 }
 
 .analysis-progress-block {
@@ -737,28 +921,76 @@ function onRetryAnalysis(): void {
   list-style: none;
 }
 
-.candidate-list li,
-.full-game-list li {
+.candidate-list li {
   display: grid;
-  grid-template-columns: minmax(var(--board-touch-target-min), max-content) minmax(var(--board-touch-target-min), max-content) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) max-content;
   gap: var(--s-2);
-  align-items: baseline;
+  align-items: center;
   min-width: 0;
   padding: var(--s-2);
   border-radius: var(--r-xs);
   background: var(--surface-2);
 }
 
-.candidate-list li span:last-child,
-.full-game-list li span:last-child {
+.candidate-copy,
+.full-game-position {
+  display: grid;
+  grid-template-columns: minmax(var(--board-touch-target-min), max-content) minmax(var(--board-touch-target-min), max-content) minmax(0, 1fr);
+  gap: var(--s-2);
+  align-items: baseline;
+  min-width: 0;
+}
+
+.candidate-copy span:last-child,
+.full-game-position span:last-child {
   min-width: 0;
   overflow-wrap: anywhere;
   color: var(--text);
 }
 
-.full-game-list strong {
+.candidate-copy strong,
+.full-game-position strong {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.candidate-reason {
+  grid-column: 1 / -1;
+}
+
+.full-game-list > li {
+  display: grid;
+  gap: var(--s-2);
+  min-width: 0;
+  padding: var(--s-2);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+}
+
+.candidate-details {
+  min-width: 0;
+}
+
+.candidate-details summary {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--board-touch-target-min);
+  color: var(--accent-strong);
+  cursor: pointer;
+  font-size: var(--fs-xs);
+}
+
+.candidate-list :deep(button) {
+  min-block-size: var(--board-touch-target-min);
+}
+
+.candidate-details .candidate-list {
+  margin-top: var(--s-2);
+}
+
+.candidate-details .candidate-list li {
+  border: var(--workspace-border-w) solid var(--border);
+  background: var(--surface);
 }
 
 .analysis-empty {
@@ -777,6 +1009,16 @@ function onRetryAnalysis(): void {
 
   .analysis-header {
     display: grid;
+  }
+
+  .candidate-list li,
+  .candidate-copy,
+  .full-game-position {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-list li :deep(button) {
+    justify-self: stretch;
   }
 }
 </style>

@@ -10,7 +10,10 @@ const analysis = useAnalysisStore()
 const workspace = useWorkspaceStore()
 
 const MAX_CP = 800
-const currentResult = computed(() => analysis.matchingCurrent)
+const currentResult = computed(() => analysis.selectedPositionResult)
+const evaluationLabel = computed(() =>
+  analysis.resultFreshness === 'retained' ? '此前完成分析评估栏' : '当前分析评估栏'
+)
 
 const whiteScore = computed(() => {
   const score = currentResult.value?.score
@@ -158,7 +161,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <aside ref="rootEl" class="eval-bar" :class="`lead-${leader}`" aria-label="当前分析评估栏">
+  <aside ref="rootEl" class="eval-bar" :class="`lead-${leader}`" :aria-label="evaluationLabel">
     <span class="eval-end" :class="{ lead: leader === topSide }">{{ topLabel }}</span>
     <div class="eval-track">
       <div ref="lightEl" class="eval-light-side" />

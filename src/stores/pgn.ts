@@ -9,10 +9,12 @@ import {
 import { serializeAnnotation } from '@/features/annotations/domain/ycdw'
 import {
   applyMove,
+  applySanContinuation,
   computeDests,
   createNode,
   findChildBySan,
   needsPromotion,
+  type AppliedMove,
   type PromotionPiece,
 } from '@/features/pgn/domain/mutations'
 import {
@@ -62,6 +64,38 @@ interface PendingBranch {
   promotion?: PromotionPiece | undefined
   san: string
 }
+
+export interface VariationContinuationCommand {
+  expected: {
+    sourceSession: number
+    sourceId: string
+    sourceRevision: number
+    gameId: number
+    nodeId: number
+    fen: string
+  }
+  candidateMove: string
+  pv: string
+}
+
+export type VariationContinuationResult =
+  | {
+      status: 'inserted' | 'existing'
+      terminalNodeId: number
+      createdCount: number
+      sourceRevision: number
+    }
+  | {
+      status: 'rejected'
+      reason:
+        | 'readonly'
+        | 'stale'
+        | 'busy'
+        | 'empty-continuation'
+        | 'illegal-continuation'
+        | 'candidate-mismatch'
+        | 'conflicting-tree'
+    }
 
 interface DrawSnapshot {
   arrows: BoardAnnotation['arrows']
@@ -933,6 +967,126 @@ export const usePgnStore = defineStore('pgn', {
         this.selectedNodeId = node.parent.id
       }
     },
+    insertVariationContinuation(
+      command: VariationContinuationCommand
+    ): VariationContinuationResult {
+      if (!this.canMutateCurrentSource) {
+        return { status: 'rejected', reason: 'readonly' }
+      }
+
+      const { expected } = command
+
+      if (
+        this.sourceSession !== expected.sourceSession ||
+        this.source.id !== expected.sourceId ||
+        this.sourceRevision !== expected.sourceRevision ||
+        this.currentGameId !== expected.gameId
+      ) {
+        return { status: 'rejected', reason: 'stale' }
+      }
+
+      if (this.pendingPromotion || this.pendingBranch || this.manualDraft || this.teachingDraft) {
+        return { status: 'rejected', reason: 'busy' }
+      }
+
+      if (command.pv.trim() === '') {
+        return { status: 'rejected', reason: 'empty-continuation' }
+      }
+
+      const gameIndex = this.gameIds.indexOf(expected.gameId)
+      const tree = gameIndex >= 0 ? this.items[gameIndex]?.tree : undefined
+      const target = tree ? findNode(tree, expected.nodeId) : null
+
+      if (!target || target.fen !== expected.fen) {
+        return { status: 'rejected', reason: 'stale' }
+      }
+
+      const continuation = applySanContinuation(expected.fen, command.pv)
+
+      if (!continuation) {
+        return { status: 'rejected', reason: 'illegal-continuation' }
+      }
+
+      const firstMove = continuation[0]
+
+      if (!firstMove || moveIdentity(firstMove) !== command.candidateMove) {
+        return { status: 'rejected', reason: 'candidate-mismatch' }
+      }
+
+      let parent = target
+      let continuationIndex = 0
+
+      for (; continuationIndex < continuation.length; continuationIndex += 1) {
+        const move = continuation[continuationIndex]
+
+        if (!move) {
+          return { status: 'rejected', reason: 'illegal-continuation' }
+        }
+
+        const existing = findChildBySan(parent, move.san)
+
+        if (!existing) {
+          break
+        }
+
+        if (!nodeMatchesAppliedMove(existing, move)) {
+          return { status: 'rejected', reason: 'conflicting-tree' }
+        }
+
+        parent = existing
+      }
+
+      if (continuationIndex === continuation.length) {
+        return {
+          status: 'existing',
+          terminalNodeId: parent.id,
+          createdCount: 0,
+          sourceRevision: this.sourceRevision,
+        }
+      }
+
+      const attachmentParent = parent
+      let firstCreated: MoveNode | null = null
+      let createdCount = 0
+
+      for (; continuationIndex < continuation.length; continuationIndex += 1) {
+        const move = continuation[continuationIndex]
+
+        if (!move) {
+          if (firstCreated) removeAttachedContinuation(attachmentParent, firstCreated)
+          return { status: 'rejected', reason: 'illegal-continuation' }
+        }
+
+        const child = createNode(parent, move)
+        parent.children.push(child)
+        firstCreated ??= child
+        parent = child
+        createdCount += 1
+      }
+
+      if (
+        !firstCreated ||
+        !this.markCurrentSourceChanged(
+          expected.sourceId,
+          expected.sourceSession,
+          expected.sourceRevision
+        )
+      ) {
+        if (firstCreated) removeAttachedContinuation(attachmentParent, firstCreated)
+        return { status: 'rejected', reason: 'stale' }
+      }
+
+      this.selectedIndex = gameIndex
+      this.selectedNodeId = parent.id
+      this.lastError = null
+
+      return {
+        status: 'inserted',
+        terminalNodeId: parent.id,
+        createdCount,
+        sourceRevision: this.sourceRevision,
+      }
+    },
     tryMove(payload: {
       from: string
       to: string
@@ -1246,6 +1400,31 @@ export const usePgnStore = defineStore('pgn', {
 
 function normalizeFen(fen: string): string {
   return fen.trim().replace(/\s+/gu, ' ')
+}
+
+function moveIdentity(move: AppliedMove): string {
+  return `${move.from}${move.to}${move.promotion ?? ''}`
+}
+
+function nodeMatchesAppliedMove(node: MoveNode, move: AppliedMove): boolean {
+  return (
+    node.san === move.san &&
+    node.from === move.from &&
+    node.to === move.to &&
+    node.promotion === move.promotion &&
+    node.prevFen === move.before &&
+    node.fen === move.after &&
+    node.color === move.color &&
+    node.moveNumber === move.moveNumber
+  )
+}
+
+function removeAttachedContinuation(parent: MoveNode, child: MoveNode): void {
+  const index = parent.children.indexOf(child)
+
+  if (index >= 0) {
+    parent.children.splice(index, 1)
+  }
 }
 
 function setTeachingDraftFeedback(

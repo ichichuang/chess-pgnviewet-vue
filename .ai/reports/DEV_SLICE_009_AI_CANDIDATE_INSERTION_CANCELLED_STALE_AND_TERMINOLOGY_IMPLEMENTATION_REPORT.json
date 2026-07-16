@@ -1,0 +1,281 @@
+{
+  "slice": "DEV-SLICE-009",
+  "title": "AI candidate insertion, cancelled and stale lifecycle, and product terminology implementation",
+  "status": "PASS",
+  "verified_baseline": {
+    "repository_path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "cc34ce46c292f87623d171fab65446d8f930ba14",
+    "local_head": "cc34ce46c292f87623d171fab65446d8f930ba14",
+    "origin_main": "cc34ce46c292f87623d171fab65446d8f930ba14",
+    "live_remote_main": "cc34ce46c292f87623d171fab65446d8f930ba14",
+    "ahead_behind": "0/0",
+    "worktree_and_index": "clean before implementation; no untracked files"
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_005_DIRTY_STATE_AND_DESTRUCTIVE_NAVIGATION_SAFETY_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_006_NODE_COMMENT_AND_GAME_TEACHING_NOTE_EDITING_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_007_PGN_IMPORT_PROGRESS_CANCELLATION_AND_PARTIAL_SUCCESS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_008_AI_FIRST_USE_AND_FULL_GAME_ANALYSIS_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+  ],
+  "implementation_surfaces_inspected": [
+    "src/features/analysis/components/AnalysisPanel.vue",
+    "src/features/analysis/components/EvalBar.vue",
+    "src/features/analysis/domain/analysisPresentation.ts",
+    "src/features/analysis/domain/analysisResult.ts",
+    "src/features/analysis/domain/search.ts",
+    "src/features/analysis/domain/search.worker.ts",
+    "src/features/analysis/domain/searchEngine.ts",
+    "src/features/pgn/components/PgnNotationPanel.vue",
+    "src/features/pgn/domain/mutations.ts",
+    "src/features/pgn/domain/parsePgn.ts",
+    "src/features/pgn/domain/pgnStorage.ts",
+    "src/features/pgn/domain/sourceOwnership.ts",
+    "src/features/pgn/domain/types.ts",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+    "src/stores/analysis.ts",
+    "src/stores/pgn.ts"
+  ],
+  "defects_reproduced": {
+    "MISSING-UI-011": "Current-position and full-game candidates were read-only output with no explicit insertion action or canonical write boundary.",
+    "MISSING-UI-012": "Stopping a real active request incremented an internal counter and collapsed the visible lifecycle to idle/available; no stable cancelled product state, recovery action, or focus target existed.",
+    "MISSING-UI-013": "Invalidated or late requests were rejected internally and counted, but no stable stale-result state distinguished rejection from ordinary reconciliation.",
+    "NONCONF-UI-018": "Analysis phase values were rendered directly in the analysis/right-panel UI, exposing values such as idle and available instead of centralized product language.",
+    "COR-001_subset": "Candidates had no explicit user-controlled canonical variation mutation boundary and cancelled/stale execution outcomes were not product states.",
+    "COR-021_subset": "Analysis lifecycle and candidate feedback used implementation terminology rather than one typed product-language projection."
+  },
+  "root_cause_investigation": {
+    "lifecycle": "The Analysis Store already owned execution identity, counters, engine stop, and result acceptance, but cancellation and stale rejection were represented only as counter increments followed by internal phase fallback. Components independently interpreted phase values, so a real terminal outcome had no stable typed product representation.",
+    "candidate_write_boundary": "Search output flowed from engine coordinate best-move/PV data into display-only AnalysisLine values. No action captured the complete result/candidate identity and no PGN Store command accepted a validated complete SAN continuation, so there was no safe explicit bridge from analysis output to the canonical tree.",
+    "source_switching": "TeachingWorkspace stopped analysis before some source-changing actions, erasing the evidence needed to distinguish a user cancellation from an actually invalidated request. Context reconciliation therefore could not publish truthful stale rejection.",
+    "hypothesis": "Keep execution and product outcomes in the existing Analysis Store, preserve the task snapshot through the actual context change, and introduce one PGN Store continuation command that revalidates the immutable result identity and complete SAN PV immediately before mutation. This produces truthful stable outcomes without a second lifecycle or PGN runtime."
+  },
+  "candidate_format_findings": {
+    "engine_move": "AnalysisLine.move and the engine bestMove are UCI coordinate notation, including the optional promotion suffix; they are retained only as internal candidate identity and mutation cross-check data.",
+    "display_move": "AnalysisLine.san and bestMoveSan are derived from the analyzed FEN and are the only move labels shown to users.",
+    "principal_variation": "AnalysisLine.pv is a space-separated complete SAN continuation produced by strict replay from the recorded result FEN; pvLegal is true only when every move is legal and the first replayed move matches the engine coordinate move.",
+    "identity": "A candidate ID is deterministically derived from the exact coordinate move plus exact complete SAN PV; insertion rechecks the ID, coordinate move, PV, and deterministic identity together."
+  },
+  "implementation": {
+    "surface": "WS-001/WS-003 unified local editable workspace analysis and notation regions",
+    "classification": "APPROVED_TARGET",
+    "scope": "MISSING-UI-011, MISSING-UI-012, MISSING-UI-013, NONCONF-UI-018, and only the named COR-001/COR-021 subsets",
+    "analysis_store_count": 1,
+    "pgn_store_count": 1,
+    "search_engine_owner_count": 1,
+    "dependencies_added": "none",
+    "persistence_added": "none",
+    "router_api_auth_settings_changes": "none",
+    "automatic_writes": "none",
+    "writeMoveAssessment_reused": false
+  },
+  "candidate_format_and_mutation_contract": {
+    "canonical_api": "Pgn Store insertVariationContinuation, backed by the existing chess.js move application and canonical createNode/findChildBySan helpers; applySanContinuation extends the existing mutation domain with complete strict SAN replay.",
+    "captured_selection": [
+      "request ID",
+      "analysis scope",
+      "result node key",
+      "candidate deterministic ID",
+      "candidate UCI move",
+      "complete candidate SAN PV"
+    ],
+    "immediate_revalidation": [
+      "analysis is not running",
+      "same result request and scope",
+      "same source session and source ID",
+      "same source revision",
+      "same stable game ID",
+      "same canonical node ID, node key, FEN, and FEN hash",
+      "full-game result still matches every recorded canonical node/FEN identity",
+      "current source is local and editable",
+      "no pending promotion, pending branch, manual-position draft, or teaching draft",
+      "exact candidate ID, UCI move, and complete SAN PV still match",
+      "every SAN move is legal from the recorded FEN and the first move matches UCI identity"
+    ],
+    "deduplication": "The command follows an existing same-SAN child only after validating its complete canonical move metadata and FEN; an identical complete continuation returns existing with no revision or selection change. Missing suffix nodes alone are created.",
+    "mutation": "A successful command appends the complete missing legal continuation beneath the recorded analyzed node, calls the existing canonical source-change marker exactly once, then selects and focuses only the terminal inserted notation item.",
+    "rollback": "Any illegal, empty, mismatched, conflicting, busy, readonly, or stale condition returns before mutation; unexpected suffix failure removes only nodes created by that command and publishes no source revision.",
+    "full_game_target": "The target is result.nodeId in the recorded stable game, never the currently viewed node. Ordinary navigation is allowed only while all source/game/revision/tree identities remain exact.",
+    "outcomes": "inserted, existing, illegal, readonly, busy, and stale are distinct typed results with truthful centralized Chinese feedback."
+  },
+  "cancelled_and_stale_state_contract": {
+    "owner": "the existing Analysis Store remains the sole execution and product-outcome owner",
+    "cancelled_entry": "cancelActive publishes cancelled only when an active request exists and is actually stopped; opening consent, calling stop without a request, ordinary idle, completed replacement, and context reconciliation do not create it",
+    "cancelled_copy": "分析已取消；当前局面或整局的未完成结果不会保存，当前棋局和批注保持不变。",
+    "stale_entry": "stale is published only when an active invalidated request/late engine result is rejected or an explicit candidate insertion fails exact result identity checks",
+    "stale_copy": "已忽略过期分析结果；这份当前局面或整局结果不属于当前棋局、节点或任务身份，未写入当前内容。",
+    "retained_result": "A prior result is retained and explicitly labeled only when its complete source/game/revision/node/task identity still matches; mismatched output is never projected as current.",
+    "engine_and_late_results": "real cancellation or invalidation clears the active request, stops and terminates the engine, and prevents late Worker completion from publishing or writing.",
+    "recovery_and_focus": "cancelled and task-stale surfaces expose one stable scope-correct reanalysis action and move focus deterministically to it; candidate stale/no-op keeps focus on the initiating action.",
+    "announcements": "the outcome surface owns one status announcement; failures use alert only when immediate user correction is required, avoiding duplicate live-region copy."
+  },
+  "terminology_mapping": {
+    "idle": "AI 分析未开启",
+    "initializing_or_ready": "正在准备当前局面分析 / 正在准备整局分析",
+    "analyzing": "正在分析当前局面 / 正在分析整局",
+    "available_with_result": "当前局面分析完成 / 整局分析完成",
+    "unavailable": "本地分析暂不可用",
+    "error": "AI 分析失败",
+    "cancelled": "分析已取消",
+    "stale": "已忽略过期分析结果",
+    "projection_owner": "src/features/analysis/domain/analysisPresentation.ts",
+    "consumers": "AnalysisPanel, WorkspaceRightPanel, and EvalBar consume typed Store projections; default UI exposes no phase, Worker, request, hash, node-key, or counter values."
+  },
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_009_AI_CANDIDATE_INSERTION_CANCELLED_STALE_AND_TERMINOLOGY_IMPLEMENTATION_REPORT.json",
+    "src/features/analysis/components/AnalysisPanel.vue",
+    "src/features/analysis/components/EvalBar.vue",
+    "src/features/analysis/domain/analysisPresentation.ts",
+    "src/features/pgn/components/PgnNotationPanel.vue",
+    "src/features/pgn/domain/mutations.ts",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/stores/analysis.ts",
+    "src/stores/pgn.ts"
+  ],
+  "source_integrity_evidence": {
+    "external_file": "/Users/cc/Downloads/lichess_pgn_2024.06.11_Pushko374_vs_a054545641.SDAp2GH0.pgn",
+    "external_file_size": 10132,
+    "external_file_sha256": "33cbed8cdd6503e8f4002dfb35429baa5b97fc70113ce1d103e798f59c9343db",
+    "characteristics": "one real legal Lichess game with a 109-ply mainline and source variations; no source content was copied into the repository",
+    "current_insertion": "A current-position Nc3 Nc6 Nf3 insertion created exactly three suffix nodes and advanced revision once; all 549 pre-existing nodes retained IDs, SAN, FEN, parent/child ordering, comments, NAGs, and annotations.",
+    "deduplication": "Repeating the exact Nc3 continuation after fresh matching analysis returned existing, created zero nodes, changed revision by zero, and retained trigger focus.",
+    "full_game_insertion": "While viewing a different variation node, inserting d4 Nc6 Nc3 from the recorded initial-position result created exactly three nodes under node 0, advanced revision from 2 to 3 exactly once, and focused terminal node 557.",
+    "rejections": "Source, game, revision, node-key, FEN, and candidate-PV mismatch probes all returned stale with node count 555 and revision 2 unchanged; readonly returned readonly with revision and selection unchanged.",
+    "preserved_data": "No unrelated mainline, source variation, comment, annotation, teaching note, header, tag, source identity, or completed analysis result was mutated by analysis execution or rejected/no-op insertion."
+  },
+  "static_validation": [
+    {
+      "command": "jq empty .ai/reports/DEV_SLICE_009_AI_CANDIDATE_INSERTION_CANCELLED_STALE_AND_TERMINOLOGY_IMPLEMENTATION_REPORT.json",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run audit:prod",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "pass"
+    },
+    {
+      "command": "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-dev-slice-009-build --emptyOutDir",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm test",
+      "result": "not run by repository policy"
+    }
+  ],
+  "browser_validation": {
+    "server": "http://127.0.0.1:5174/pgnViewer/",
+    "real_source": "the external 10,132-byte PGN parsed as one game, 549 original nodes, and 110 root-plus-mainline analysis positions",
+    "current_candidates": "five legal SAN candidates rendered with explicit insertion actions; engine coordinate values and internal lifecycle terms were absent",
+    "current_insertion": "explicit Nc3 Nc6 Nf3 insertion created a complete three-node local variation, advanced revision once, selected the terminal node, and moved focus to its notation item",
+    "deduplication": "fresh reanalysis followed by the same Nc3 action returned existing, added no node, changed revision by zero, retained the viewed root and trigger focus, and announced the no-op truthfully",
+    "full_game": "110/110 stable results rendered as 110 disclosures with SAN best moves and candidate actions; no UCI move leaked to default UI",
+    "full_game_elsewhere": "with node 554 selected outside the analyzed mainline, the recorded node-0 d4 Nc6 Nc3 candidate inserted beneath node 0, advanced revision exactly once, selected/focused node 557, and left the former viewed node unrelated to the target",
+    "identity_rejection": "independent source-session, stable-game, source-revision, node-key, target-FEN, and candidate-PV mismatches each returned stale; all six probes preserved revision 2 and node count 555",
+    "readonly_and_blocked": "a real readonly source projection exposed zero enabled/total candidate actions; the canonical command returned readonly with revision and selection unchanged; pre-existing contract-blocked/read-only product routes retain no AnalysisPanel action",
+    "cancellation": "a real active task stopped into the stable 分析已取消 surface, retained only an identity-valid earlier result with an explicit retained label, focused the unique scope-correct reanalysis action, and published no late result after a wait",
+    "stale_and_recovery": "real node and source-revision invalidations stopped active work into 已忽略过期分析结果, exposed no mismatched candidate actions, focused one reanalysis action, and recovered under a fresh request identity",
+    "source_game_fen_recovery": "exact mismatch probes performed no write and a restored valid identity remained usable for the subsequent successful full-game insertion",
+    "focus": "failed/no-op candidate activation retained trigger focus; successful wide and narrow insertion focused the exact terminal notation item, including the teleported narrow sheet",
+    "announcements": "cancelled, stale, inserted, existing, and denial feedback each had one appropriate status/alert owner without duplicate live copy",
+    "responsive_theme_motion": "wide light and 390x844 narrow dark compositions passed; prefers-reduced-motion was active in the narrow run and candidate targets retained a 44px minimum height",
+    "runtime_health": "final DOM was nonblank, Vite overlay count was zero, raw internal terminology was absent, and the console had zero warnings/errors; the established cold-launch favicon miss was non-breaking and absent from warning/error output",
+    "artifacts": "no screenshots, browser scripts, fixtures, mocks, sample PGNs, test files, or browser artifacts were created in the repository"
+  },
+  "cor_and_od_impact": {
+    "MISSING-UI-011": "implemented with explicit matching current/full candidate insertion, complete SAN legality, canonical mutation, deduplication, and focus transfer",
+    "MISSING-UI-012": "implemented with a truthful stable cancelled outcome only for a real stopped task",
+    "MISSING-UI-013": "implemented with truthful stable stale rejection only for an actual invalidated task/result or candidate identity",
+    "NONCONF-UI-018": "implemented with one typed Chinese lifecycle and candidate-feedback projection",
+    "COR-001": "only the candidate-insertion and cancelled/stale execution subset is implemented; authority-wide closure is not claimed",
+    "COR-021": "only analysis lifecycle/candidate terminology projection is implemented; authority-wide terminology closure is not claimed",
+    "OD-03": "remains open and unchanged; no engine resource default changed",
+    "OD-04": "remains open and unchanged; no consent persistence or result-retention contract changed",
+    "OD-01_to_OD-11": "all remain open; no provisional value was promoted to authority"
+  },
+  "remaining_cor_work": [
+    "COR-001 remains open outside this named candidate/cancelled/stale subset and still depends on later approved product slices and owner decisions.",
+    "COR-021 remains open for terminology surfaces outside analysis lifecycle and candidate feedback.",
+    "Any future readonly-copy analysis requires a confirmed canonical completed-snapshot contract and an explicit new local source/session transition."
+  ],
+  "limitations": [
+    "Candidate insertion is intentionally available only for a matching local editable source; live, replay, commentary, unavailable, and contract-blocked content remains non-actionable.",
+    "A completed full-game result becomes nonmatching immediately after any successful canonical tree mutation because source revision changes; a fresh explicit analysis is required for another write.",
+    "Full-game execution retains the DEV-SLICE-008 sequential depth/time behavior and can take several minutes for a long game.",
+    "No automated tests exist or were added because repository policy forbids automated test infrastructure; validation uses governance/type/build checks and narrow real-browser evidence.",
+    "The development server may emit the established non-breaking missing favicon resource on first cold launch; the final warning/error console query was clean."
+  ],
+  "review": {
+    "result": "multiple independent read-only diff reviews were completed; all actionable lifecycle, identity, focus, copy, and validation findings were corrected before final validation",
+    "addressed": "running insertion race, false cancellation during source actions, exact cancellation/stale wording, FEN and full-tree validation, exact move/PV collision checks, candidate-feedback context clearing, editor-task invalidation, duplicate announcements, latest-scope projection, per-node labels, 44px targets, and teleported narrow-sheet notation focus"
+  },
+  "commit_subject": "feat(analysis): 完成候选变化插入与取消陈旧状态闭环",
+  "verdict": "DEV_SLICE_009_AI_CANDIDATE_INSERTION_CANCELLED_STALE_AND_TERMINOLOGY_PASS"
+}
