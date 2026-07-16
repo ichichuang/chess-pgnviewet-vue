@@ -15,6 +15,7 @@ import { gsap } from 'gsap'
 
 import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
 import type { WorkspacePermissions } from '@/features/workspace-mode/useWorkspacePermissionAdapter'
+import type { PgnNavigationIntent } from '@/features/pgn/pgnWorkspaceTypes'
 
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
@@ -25,6 +26,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   action: [name: WorkspaceToolbarAction]
+  navigate: [intent: PgnNavigationIntent]
   openSource: []
   toggleContext: []
 }>()
@@ -215,16 +217,32 @@ onBeforeUnmount(() => {
         </section>
 
         <section class="toolbar-group" aria-label="棋谱导航">
-          <ProductButton size="small" :disabled="!pgn.canGoStart" @click="pgn.goToStart()">
+          <ProductButton
+            size="small"
+            :disabled="!pgn.canGoStart"
+            @click="emit('navigate', { kind: 'start' })"
+          >
             起始
           </ProductButton>
-          <ProductButton size="small" :disabled="!pgn.canStepBack" @click="pgn.stepBack()">
+          <ProductButton
+            size="small"
+            :disabled="!pgn.canStepBack"
+            @click="emit('navigate', { kind: 'previous' })"
+          >
             上一步
           </ProductButton>
-          <ProductButton size="small" :disabled="!pgn.canStepForward" @click="pgn.stepForward()">
+          <ProductButton
+            size="small"
+            :disabled="!pgn.canStepForward"
+            @click="emit('navigate', { kind: 'next' })"
+          >
             下一步
           </ProductButton>
-          <ProductButton size="small" :disabled="!pgn.canGoEnd" @click="pgn.goToEnd()">
+          <ProductButton
+            size="small"
+            :disabled="!pgn.canGoEnd"
+            @click="emit('navigate', { kind: 'end' })"
+          >
             末尾
           </ProductButton>
         </section>

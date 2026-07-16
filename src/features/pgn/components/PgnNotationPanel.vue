@@ -2,11 +2,15 @@
 import { computed, nextTick, ref, watch } from 'vue'
 
 import { buildMoveRows } from '@/features/pgn/domain/moveRows'
-import type { PgnWorkspaceAction } from '@/features/pgn/pgnWorkspaceTypes'
+import type {
+  PgnNavigationIntent,
+  PgnWorkspaceAction,
+} from '@/features/pgn/pgnWorkspaceTypes'
 import { usePgnStore } from '@/stores'
 
 const emit = defineEmits<{
   action: [name: Extract<PgnWorkspaceAction, 'openLocal'>]
+  navigate: [intent: PgnNavigationIntent]
 }>()
 
 const props = defineProps<{
@@ -142,7 +146,7 @@ function openLocal() {
         class="pgn-control"
         type="button"
         :disabled="!store.canGoStart"
-        @click="store.goToStart()"
+        @click="emit('navigate', { kind: 'start' })"
       >
         起始
       </button>
@@ -150,7 +154,7 @@ function openLocal() {
         class="pgn-control"
         type="button"
         :disabled="!store.canStepBack"
-        @click="store.stepBack()"
+        @click="emit('navigate', { kind: 'previous' })"
       >
         上一步
       </button>
@@ -158,7 +162,7 @@ function openLocal() {
         class="pgn-control"
         type="button"
         :disabled="!store.canStepForward"
-        @click="store.stepForward()"
+        @click="emit('navigate', { kind: 'next' })"
       >
         下一步
       </button>
@@ -166,7 +170,7 @@ function openLocal() {
         class="pgn-control"
         type="button"
         :disabled="!store.canGoEnd"
-        @click="store.goToEnd()"
+        @click="emit('navigate', { kind: 'end' })"
       >
         末尾
       </button>
@@ -205,7 +209,7 @@ function openLocal() {
           :class="{ active: currentNodeId === rootId }"
           :data-pgn-node-id="rootId"
           :data-pgn-node-fen="item.tree?.root.fen"
-          @click="store.goToStart()"
+          @click="emit('navigate', { kind: 'start' })"
         >
           初始局面
         </button>
@@ -227,7 +231,7 @@ function openLocal() {
               :class="{ active: currentNodeId === row.whiteChip.node.id }"
               :data-pgn-node-id="row.whiteChip.node.id"
               :data-pgn-node-fen="row.whiteChip.node.fen"
-              @click="store.selectNode(row.whiteChip.node.id)"
+              @click="emit('navigate', { kind: 'node', nodeId: row.whiteChip.node.id })"
             >
               <span>{{ row.whiteChip.san }}</span>
               <span v-for="nag in row.whiteChip.node.nags" :key="nag" class="pgn-chip-nag">
@@ -262,7 +266,7 @@ function openLocal() {
               :class="{ active: currentNodeId === row.blackChip.node.id }"
               :data-pgn-node-id="row.blackChip.node.id"
               :data-pgn-node-fen="row.blackChip.node.fen"
-              @click="store.selectNode(row.blackChip.node.id)"
+              @click="emit('navigate', { kind: 'node', nodeId: row.blackChip.node.id })"
             >
               <span>{{ row.blackChip.san }}</span>
               <span v-for="nag in row.blackChip.node.nags" :key="nag" class="pgn-chip-nag">

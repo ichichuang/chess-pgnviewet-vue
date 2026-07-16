@@ -1,0 +1,368 @@
+{
+  "slice": "DEV-SLICE-006",
+  "title": "Node comment and game teaching note editing implementation",
+  "status": "PASS",
+  "verified_baseline": {
+    "repository_path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "b191b5327ba668e46330b5394cef52a01bac08cb",
+    "local_head": "b191b5327ba668e46330b5394cef52a01bac08cb",
+    "origin_main": "b191b5327ba668e46330b5394cef52a01bac08cb",
+    "live_remote_main": "b191b5327ba668e46330b5394cef52a01bac08cb",
+    "ahead_behind": "0/0",
+    "worktree_and_index": "clean before implementation; no untracked files"
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_005_DIRTY_STATE_AND_DESTRUCTIVE_NAVIGATION_SAFETY_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+  ],
+  "callers_inspected": [
+    "src/stores/pgn.ts",
+    "src/features/pgn/domain/types.ts",
+    "src/features/pgn/domain/parsePgn.ts",
+    "src/features/pgn/domain/pgnStorage.ts",
+    "src/features/pgn/domain/mutations.ts",
+    "src/features/annotations/domain/ycdw.ts",
+    "src/features/pgn/usePgnWorkspaceRuntime.ts",
+    "src/features/pgn/components/PgnGameList.vue",
+    "src/features/pgn/components/PgnNotationPanel.vue",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/features/teaching-workspace/useWorkspaceDestructiveActionCoordinator.ts",
+    "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+    "src/ui/ProductField.vue",
+    "src/ui/ProductButton.vue",
+    "src/ui/ProductStateBanner.vue",
+    "src/ui/ProductDialog.vue"
+  ],
+  "defects_reproduced": {
+    "MISSING-UI-005": "WorkspaceRightPanel exposed current-node comments as read-only text with no deterministic edit, save, cancel, or node-switch lifecycle.",
+    "MISSING-UI-006": "No game-level teaching-note identity, memory owner, isolation rule, or editor existed.",
+    "MISSING-UI-007": "No typed teaching save owner retained failed/stale content with recoverable status and truthful retry eligibility."
+  },
+  "implementation": {
+    "surface": "WS-005 unified workspace right-panel comments tab",
+    "scope": "contract-independent local memory editing only",
+    "draft_owner": "one typed teaching draft inside the existing PGN Store",
+    "canonical_dirty_owner": "DEV-SLICE-005 sourceRevision/cleanSourceRevision",
+    "navigation_owner": "existing DEV-SLICE-005 destructive action coordinator",
+    "presentation": "project-owned ProductField, ProductButton, ProductStateBanner, tabs, and confirmation overlay"
+  },
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_006_NODE_COMMENT_AND_GAME_TEACHING_NOTE_EDITING_IMPLEMENTATION_REPORT.json",
+    "src/features/pgn/domain/teachingDraft.ts",
+    "src/features/pgn/components/PgnGameList.vue",
+    "src/features/pgn/components/PgnNotationPanel.vue",
+    "src/features/pgn/pgnWorkspaceTypes.ts",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/features/teaching-workspace/useWorkspaceDestructiveActionCoordinator.ts",
+    "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+    "src/stores/pgn.ts",
+    "src/ui/ProductField.vue"
+  ],
+  "node_comment_contract": {
+    "identity": "active source session + source ID + canonical game ID + selected node ID",
+    "baseline": "existing BoardAnnotation.plainComments joined as paragraphs",
+    "draft_mutation": "text changes affect only the teaching draft",
+    "save_mutation": "clone the existing annotation, replace only plainComments, then serialize through the existing annotation serializer",
+    "preserved": [
+      "system text",
+      "user text",
+      "unknown annotation fields",
+      "arrows and squares",
+      "NAGs",
+      "variations",
+      "move and node identity",
+      "headers",
+      "unrelated nodes and games"
+    ],
+    "dirty_transition": "changed successful save increments the existing local source revision once; unchanged save does not"
+  },
+  "game_teaching_note_contract": {
+    "identity": "active source session + allocated canonical game ID",
+    "separation": "not a node comment, annotation, PGN header, lesson, session, or collection",
+    "draft_mutation": "text changes affect only the teaching draft",
+    "save_mutation": "updates only the in-memory note map entry for the active game",
+    "isolation": "switching games resolves a different game identity; each game retains only its own session note",
+    "dirty_transition": "changed successful save increments the existing local source revision once"
+  },
+  "memory_only_boundary": {
+    "storage": "none",
+    "transport": "none",
+    "export": "none",
+    "lifetime": "current workspace source session only",
+    "cleared_on": [
+      "source-session replacement",
+      "confirmed route/workspace teardown"
+    ],
+    "explicitly_not_added": [
+      "Dexie or IndexedDB tables",
+      "localStorage keys",
+      "repositories or API calls",
+      "autosave or recovery duration",
+      "cloud synchronization",
+      "lesson/session/collection entities",
+      "new PGN export fields"
+    ]
+  },
+  "teaching_draft_owner": {
+    "owner": "src/stores/pgn.ts",
+    "model": "src/features/pgn/domain/teachingDraft.ts",
+    "single_draft": true,
+    "fields": [
+      "draft ID",
+      "scope",
+      "source session",
+      "source ID",
+      "game ID",
+      "optional node ID",
+      "canonical revision",
+      "stale-context identity",
+      "baseline text",
+      "current text",
+      "draft revision",
+      "feedback status/message",
+      "truthful retry eligibility"
+    ],
+    "workspace_identity_extension": [
+      "selected game ID",
+      "selected node ID",
+      "teaching draft identity/revision/text/context"
+    ]
+  },
+  "draft_and_canonical_dirty_transitions": [
+    {
+      "event": "open editor",
+      "draft_dirty": false,
+      "canonical_dirty_change": false
+    },
+    {
+      "event": "edit text",
+      "draft_dirty": true,
+      "canonical_dirty_change": false
+    },
+    {
+      "event": "save unchanged",
+      "draft_dirty": false,
+      "canonical_dirty_change": false
+    },
+    {
+      "event": "save changed node comment",
+      "draft_dirty": false,
+      "canonical_dirty_change": "source revision increments once"
+    },
+    {
+      "event": "save changed game note",
+      "draft_dirty": false,
+      "canonical_dirty_change": "source revision increments once"
+    },
+    {
+      "event": "stale, readonly, unavailable, or rejected save",
+      "draft_dirty": true,
+      "canonical_dirty_change": false
+    },
+    {
+      "event": "cancel clean",
+      "draft_dirty": "draft closes",
+      "canonical_dirty_change": false
+    },
+    {
+      "event": "cancel dirty and reject confirmation",
+      "draft_dirty": true,
+      "canonical_dirty_change": false
+    },
+    {
+      "event": "cancel dirty and confirm discard",
+      "draft_dirty": "draft is discarded",
+      "canonical_dirty_change": false
+    }
+  ],
+  "node_game_source_switching": {
+    "clean_draft": "target node or game is selected immediately after the clean draft closes",
+    "dirty_draft_cancel": "original draft, source, game, node, canonical content, dirty state, and invoking-action focus remain intact",
+    "dirty_draft_confirm": "an immutable validated game/node target is checked before synchronous draft discard and exact selection",
+    "stale_confirmation": "workspace identity includes source, revisions, selected game/node, and draft identity so changed context cannot reuse a confirmed action",
+    "source_replacement": "existing source/local-copy replacement coordinator includes the teaching draft in unsaved workspace state",
+    "route_and_teardown": "route leave and workspace teardown discard teaching drafts only after existing safe-first confirmation succeeds"
+  },
+  "save_cancel_and_failure_behavior": {
+    "save": "explicit only; successful or unchanged save announces approved Chinese status and returns focus to the editor field",
+    "cancel": "clean closes immediately; dirty uses the existing coordinator and returns focus to the exact edit trigger after discard",
+    "retryable": "only a newer source revision with unchanged canonical target content offers 重试保存; retry refreshes the canonical revision once before mutation",
+    "nonretryable": "different context or changed canonical target retains full draft, shows approved Chinese reopen guidance, and does not offer a futile retry",
+    "readonly": "retains draft if mutability is revoked before save and performs no mutation",
+    "exceptions": "no raw exception, Store name, internal ID/hash, worker term, HTTP text, or transport detail is surfaced"
+  },
+  "readonly_and_contract_blocked_behavior": {
+    "readonly_existing_comments": "comment display is allowed when a real source exists",
+    "readonly_editing": "edit controls, save actions, game-note creation, draft creation, and dirty transitions are absent",
+    "local_copy": "edit controls appear only after an approved real local editable source identity exists",
+    "contract_blocked": "truthful unavailable state remains request-free and exposes no comments editor or synthetic content"
+  },
+  "destructive_coordinator_integration": {
+    "coordinator_count": 1,
+    "new_intents": [
+      "teaching-draft-close",
+      "teaching-draft-switch"
+    ],
+    "guards": [
+      "cancel/close",
+      "node switch",
+      "game switch",
+      "source replacement",
+      "local-copy replacement",
+      "route leave and history traversal",
+      "workspace teardown"
+    ],
+    "reentrancy": "existing in-flight lock prevents stacked confirmations and duplicate execution",
+    "exact_target": "captured game/node target is validated before discard and applied once"
+  },
+  "accessibility_and_focus": {
+    "labels": "node and whole-game scope headings, explicit field labels, and descriptions do not depend on placeholders",
+    "keyboard": "project overlays preserve focus trap, safe initial action, Escape cancellation, and invoking-action restoration",
+    "editor_open": "focus moves into the relevant multiline field",
+    "save": "focus returns to the current editor field while status is announced",
+    "cancel": "focus returns to the exact edit trigger",
+    "status": "errors are associated with the field and exposed as alerts; success uses a polite live region",
+    "scroll": "the existing right-tab panel remains the single scroll owner"
+  },
+  "static_validation": [
+    {
+      "command": "jq empty .ai/reports/DEV_SLICE_006_NODE_COMMENT_AND_GAME_TEACHING_NOTE_EDITING_IMPLEMENTATION_REPORT.json",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run audit:prod",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm exec vite build --outDir <temporary-directory> --emptyOutDir",
+      "result": "pass"
+    }
+  ],
+  "browser_validation": {
+    "server": "http://127.0.0.1:5174/pgnViewer/",
+    "input": "temporary two-game PGN with existing comments, NAG, variation, arrow, system/user text, and unknown annotation field",
+    "node_display": "existing node comments and NAG/variation indicators rendered; switching to an annotated node showed the intended canonical comment",
+    "node_save": "changed plain comment updated only the intended node, marked the local source dirty, and preserved system/user text, graphical annotation count, variation, NAG, headers, and other games",
+    "unchanged_save": "reported no change, did not mark the source dirty, and returned focus to the textarea",
+    "node_cancel_and_switch": "dirty next-node cancellation preserved exact draft and selection; confirmation discarded only the draft and selected the captured target once",
+    "game_notes": "saved note remained isolated to game 1, game 2 initially had no note, returning to game 1 restored its memory note, and dirty game-switch cancellation/confirmation preserved/discarded as specified",
+    "stale_save": "a real local insert changed the source revision while a game-note draft was dirty; first save retained the complete draft and offered retry, retry succeeded because canonical note text was unchanged",
+    "source_replacement": "dirty teaching draft produced one source-replacement confirmation; cancellation retained source and exact draft",
+    "route_leave": "dirty route leave produced one safe-first confirmation; Escape retained URL and draft and restored exact link focus",
+    "history": "real SPA history Back established a forward entry; a dirty draft then blocked real history Forward with one alertdialog, and Escape restored the workspace URL and complete draft",
+    "beforeunload": "a dirty draft registered the native beforeunload protection and a direct browser history leave surfaced the native warning path",
+    "focus_trap": "initial safe action, Tab/Shift+Tab containment, Escape, exact invoking-action return, editor-open field focus, save field focus, and cancel trigger focus passed",
+    "duplicate_attempts": "one alertdialog existed while guarded; the existing coordinator in-flight lock prevented duplicate actions",
+    "readonly": "permission projection statically permits existing comment display but removes editor/save/draft capability for real readonly sources; no fake remote source was introduced to force a browser state",
+    "contract_blocked": "/match/dev-slice-006 rendered the truthful unavailable state with no editor and no API request",
+    "responsive": "desktop composition and 800x700 narrow sheet composition rendered one visible teaching textarea and preserved the existing single scroll owner",
+    "themes": "light and dark settings were exercised; dark narrow editing retained one visible focused field",
+    "runtime_health": "nonblank workspace DOM, no Vite error overlay, and no breaking application console error; only the existing non-breaking favicon.ico 404 appeared in one browser session",
+    "artifacts": "all temporary PGN, browser snapshots, console files, and build outputs were deleted; no browser artifact remains in the repository"
+  },
+  "cor_impact": {
+    "MISSING-UI-005": "implemented for local editable canonical PGN nodes",
+    "MISSING-UI-006": "implemented as source-session memory-only game teaching notes",
+    "MISSING-UI-007": "implemented for local unchanged, stale, readonly, retryable, nonretryable, cancel, and retained-draft lifecycles",
+    "COR-019": "only the contract-independent memory-editing portion is implemented; authority-wide closure is not claimed"
+  },
+  "od_boundaries": {
+    "OD-01": "no lesson, teaching session, collection hierarchy, cross-source ownership, or persistence owner was selected",
+    "OD-02": "no autosave, reload recovery, retention duration, local database, export, or synchronization contract was selected",
+    "OD-03_to_OD-11": "remain open and unchanged; no provisional value was promoted to authority"
+  },
+  "limitations": [
+    "No confirmed remote contract was fabricated to create an editable readonly-copy browser scenario; readonly comment visibility/edit suppression is covered by the real permission projection and contract-blocked browser route.",
+    "The browser-native beforeunload prompt copy and button rendering remain browser-controlled; the warning path was observed without asserting browser-owned text.",
+    "A stale retry was exercised through a real local source revision change where canonical note text remained unchanged; nonretryable canonical-content conflict behavior was validated through the typed mutation branch and review rather than an artificial competing writer."
+  ],
+  "deferred_persistence_and_lesson_work": [
+    "lesson/session/collection entity ownership",
+    "versioned teaching persistence and reload recovery",
+    "autosave and retention duration",
+    "cloud/API synchronization and transport failures",
+    "teaching-note export format and cross-source migration"
+  ],
+  "review": {
+    "result": "with fixes, then addressed",
+    "addressed": [
+      "confirmation identity now includes selected game/node and exact target navigation is validated before discard",
+      "retry appears only for a revision-only stale state whose canonical target still matches the baseline",
+      "successful and unchanged save explicitly return focus to the editing field",
+      "browser artifacts removed before aggregate validation"
+    ]
+  },
+  "commit_subject": "feat(teaching): 完成本地节点批注与对局教学笔记编辑",
+  "verdict": "DEV_SLICE_006_NODE_COMMENT_AND_GAME_TEACHING_NOTE_EDITING_PASS"
+}

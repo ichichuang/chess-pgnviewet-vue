@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import type { PgnWorkspaceAction } from '@/features/pgn/pgnWorkspaceTypes'
+import type {
+  PgnNavigationIntent,
+  PgnWorkspaceAction,
+} from '@/features/pgn/pgnWorkspaceTypes'
 
 import { usePgnStore } from '@/stores'
 
 const emit = defineEmits<{
   action: [name: PgnWorkspaceAction]
+  navigate: [intent: PgnNavigationIntent]
 }>()
 
 const props = defineProps<{
@@ -58,7 +62,10 @@ function insertLocal() {
         class="pgn-list-item"
         :class="{ active: store.items.indexOf(item) === store.selectedIndex }"
       >
-        <button type="button" @click="store.selectItem(store.items.indexOf(item))">
+        <button
+          type="button"
+          @click="emit('navigate', { kind: 'game', gameIndex: store.items.indexOf(item) })"
+        >
           <span class="pgn-list-title">{{ store.titleFor(item, store.items.indexOf(item)) }}</span>
           <span class="pgn-list-players"> {{ item.White || '?' }} vs {{ item.Black || '?' }} </span>
           <span class="pgn-list-meta">

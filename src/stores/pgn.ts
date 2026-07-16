@@ -35,6 +35,17 @@ import {
   pathToNode,
   pgnTitle,
 } from '@/features/pgn/domain/pgnStorage'
+import {
+  gameTeachingNoteKey,
+  nodeCommentsFromText,
+  nodeCommentText,
+  teachingDraftContextIdentity,
+  teachingDraftIsDirty,
+  type TeachingDraft,
+  type TeachingDraftEditIdentity,
+  type TeachingDraftSaveResult,
+  type TeachingDraftScope,
+} from '@/features/pgn/domain/teachingDraft'
 import type { DataSource, GameTree, MoveNode, PgnItem } from '@/features/pgn/domain/types'
 import type { WorkspaceMode } from '@/features/workspace-mode/workspaceModeTypes'
 
@@ -76,9 +87,15 @@ export interface WorkspaceEditIdentity {
   sourceSession: number
   sourceId: string
   sourceRevision: number
+  selectedGameId: number | null
+  selectedNodeId: number | null
   manualDraftId: number | null
   manualDraftRevision: number
   manualDraftFen: string | null
+  teachingDraftId: number | null
+  teachingDraftRevision: number
+  teachingDraftText: string | null
+  teachingDraftContext: string | null
 }
 
 interface PgnState {
@@ -99,6 +116,11 @@ interface PgnState {
   cleanSourceRevision: number
   manualDraft: ManualPositionDraftRevision | null
   nextManualDraftId: number
+  gameIds: number[]
+  nextGameId: number
+  gameTeachingNotes: Record<string, string>
+  teachingDraft: TeachingDraft | null
+  nextTeachingDraftId: number
 }
 
 function defaultPgnState(): PgnState {
@@ -120,6 +142,11 @@ function defaultPgnState(): PgnState {
     cleanSourceRevision: 0,
     manualDraft: null,
     nextManualDraftId: 0,
+    gameIds: [],
+    nextGameId: 0,
+    gameTeachingNotes: {},
+    teachingDraft: null,
+    nextTeachingDraftId: 0,
   }
 }
 
@@ -177,8 +204,13 @@ export const usePgnStore = defineStore('pgn', {
       const draft = state.manualDraft
       return draft !== null && draft.baselineFen !== null && draft.currentFen !== draft.baselineFen
     },
+    hasUnsavedTeachingDraft(state): boolean {
+      return teachingDraftIsDirty(state.teachingDraft)
+    },
     hasUnsavedWorkspaceChanges(): boolean {
-      return this.hasUnsavedSourceChanges || this.hasUnsavedManualDraft
+      return (
+        this.hasUnsavedSourceChanges || this.hasUnsavedManualDraft || this.hasUnsavedTeachingDraft
+      )
     },
     filtered(state): PgnItem[] {
       return filterItems(state.items, state.searchKey)
@@ -194,6 +226,16 @@ export const usePgnStore = defineStore('pgn', {
     },
     selectedItem(state): PgnItem | null {
       return state.items[state.selectedIndex] ?? null
+    },
+    currentGameId(state): number | null {
+      return state.gameIds[state.selectedIndex] ?? null
+    },
+    currentGameTeachingNote(): string {
+      const gameId = this.currentGameId
+
+      return gameId === null
+        ? ''
+        : (this.gameTeachingNotes[gameTeachingNoteKey(this.sourceSession, gameId)] ?? '')
     },
     mainline(): MoveNode[] {
       const item = this.selectedItem
@@ -293,13 +335,21 @@ export const usePgnStore = defineStore('pgn', {
       this.discardWorkspaceSession(this.captureWorkspaceEditIdentity())
     },
     captureWorkspaceEditIdentity(): WorkspaceEditIdentity {
+      const teachingDraft = this.teachingDraft
+
       return {
         sourceSession: this.sourceSession,
         sourceId: this.source.id,
         sourceRevision: this.sourceRevision,
+        selectedGameId: this.currentGameId,
+        selectedNodeId: this.currentNode?.id ?? null,
         manualDraftId: this.manualDraft?.id ?? null,
         manualDraftRevision: this.manualDraft?.revision ?? 0,
         manualDraftFen: this.manualDraft?.currentFen ?? null,
+        teachingDraftId: teachingDraft?.id ?? null,
+        teachingDraftRevision: teachingDraft?.revision ?? 0,
+        teachingDraftText: teachingDraft?.currentText ?? null,
+        teachingDraftContext: teachingDraft?.staleContextIdentity ?? null,
       }
     },
     matchesWorkspaceEditIdentity(expected: WorkspaceEditIdentity): boolean {
@@ -309,9 +359,44 @@ export const usePgnStore = defineStore('pgn', {
         current.sourceSession === expected.sourceSession &&
         current.sourceId === expected.sourceId &&
         current.sourceRevision === expected.sourceRevision &&
+        current.selectedGameId === expected.selectedGameId &&
+        current.selectedNodeId === expected.selectedNodeId &&
         current.manualDraftId === expected.manualDraftId &&
         current.manualDraftRevision === expected.manualDraftRevision &&
-        current.manualDraftFen === expected.manualDraftFen
+        current.manualDraftFen === expected.manualDraftFen &&
+        current.teachingDraftId === expected.teachingDraftId &&
+        current.teachingDraftRevision === expected.teachingDraftRevision &&
+        current.teachingDraftText === expected.teachingDraftText &&
+        current.teachingDraftContext === expected.teachingDraftContext
+      )
+    },
+    captureTeachingDraftIdentity(): TeachingDraftEditIdentity | null {
+      const draft = this.teachingDraft
+
+      if (!draft) return null
+
+      return {
+        draftId: draft.id,
+        draftRevision: draft.revision,
+        currentText: draft.currentText,
+        staleContextIdentity: draft.staleContextIdentity,
+        ...draft.context,
+      }
+    },
+    matchesTeachingDraftIdentity(expected: TeachingDraftEditIdentity): boolean {
+      const current = this.captureTeachingDraftIdentity()
+
+      return (
+        current !== null &&
+        current.draftId === expected.draftId &&
+        current.draftRevision === expected.draftRevision &&
+        current.currentText === expected.currentText &&
+        current.staleContextIdentity === expected.staleContextIdentity &&
+        current.sourceSession === expected.sourceSession &&
+        current.sourceId === expected.sourceId &&
+        current.gameId === expected.gameId &&
+        current.nodeId === expected.nodeId &&
+        current.canonicalRevision === expected.canonicalRevision
       )
     },
     validateText(text: string): boolean {
@@ -376,6 +461,234 @@ export const usePgnStore = defineStore('pgn', {
       this.manualDraft = null
       return true
     },
+    openTeachingDraft(scope: TeachingDraftScope): boolean {
+      if (
+        !this.canMutateCurrentSource ||
+        this.teachingDraft ||
+        this.pendingBranch ||
+        this.pendingPromotion
+      ) {
+        return false
+      }
+
+      const gameId = this.currentGameId
+      const node = this.currentNode
+
+      if (gameId === null || !node) return false
+
+      const context = {
+        sourceSession: this.sourceSession,
+        sourceId: this.source.id,
+        gameId,
+        nodeId: scope === 'node-comment' ? node.id : null,
+        canonicalRevision: this.sourceRevision,
+      }
+      const baselineText =
+        scope === 'node-comment'
+          ? nodeCommentText(node.annotation.plainComments)
+          : this.currentGameTeachingNote
+
+      this.nextTeachingDraftId += 1
+      this.teachingDraft = {
+        id: this.nextTeachingDraftId,
+        scope,
+        context,
+        staleContextIdentity: teachingDraftContextIdentity(context),
+        baselineText,
+        currentText: baselineText,
+        revision: 0,
+        feedbackStatus: 'idle',
+        feedbackMessage: null,
+        canRetry: false,
+      }
+      return true
+    },
+    updateTeachingDraft(id: number, text: string): boolean {
+      const draft = this.teachingDraft
+
+      if (!draft || draft.id !== id) return false
+      if (draft.currentText === text) return true
+
+      draft.currentText = text
+      draft.revision += 1
+      draft.feedbackStatus = 'idle'
+      draft.feedbackMessage = null
+      draft.canRetry = false
+      return true
+    },
+    saveTeachingDraft(
+      expected: TeachingDraftEditIdentity,
+      allowRevisionRefresh = false
+    ): TeachingDraftSaveResult {
+      const draft = this.teachingDraft
+
+      if (!draft || !this.matchesTeachingDraftIdentity(expected)) return 'missing'
+      if (!this.canMutateCurrentSource) {
+        setTeachingDraftFeedback(
+          draft,
+          'error',
+          '当前来源不可编辑，草稿内容仍保留。请取消编辑或先创建本地可编辑副本。',
+          false
+        )
+        return 'readonly'
+      }
+
+      const node = this.currentNode
+      const gameId = this.currentGameId
+      const contextMatches =
+        this.sourceSession === draft.context.sourceSession &&
+        this.source.id === draft.context.sourceId &&
+        gameId === draft.context.gameId &&
+        (draft.scope === 'game-note' || node?.id === draft.context.nodeId)
+
+      if (!contextMatches || gameId === null || !node) {
+        setTeachingDraftFeedback(
+          draft,
+          'error',
+          '编辑上下文已发生变化，草稿内容仍保留。请取消后回到原位置重新打开编辑器。',
+          false
+        )
+        return 'stale'
+      }
+
+      if (draft.currentText === draft.baselineText) {
+        setTeachingDraftFeedback(draft, 'success', '内容未改变，无需保存。', false)
+        return 'unchanged'
+      }
+
+      const noteKey = gameTeachingNoteKey(this.sourceSession, gameId)
+      const canonicalText =
+        draft.scope === 'node-comment'
+          ? nodeCommentText(node.annotation.plainComments)
+          : (this.gameTeachingNotes[noteKey] ?? '')
+
+      if (this.sourceRevision !== draft.context.canonicalRevision) {
+        if (allowRevisionRefresh && canonicalText === draft.baselineText) {
+          draft.context.canonicalRevision = this.sourceRevision
+          draft.staleContextIdentity = teachingDraftContextIdentity(draft.context)
+        } else {
+          setTeachingDraftFeedback(
+            draft,
+            'error',
+            canonicalText === draft.baselineText
+              ? '棋谱内容在编辑期间发生了变化，草稿内容仍保留。请重试保存或取消编辑。'
+              : draft.scope === 'node-comment'
+                ? '当前节点批注在编辑期间发生了变化，草稿内容仍保留。请取消后重新打开编辑器以避免覆盖。'
+                : '当前对局教学笔记在编辑期间发生了变化，草稿内容仍保留。请取消后重新打开编辑器以避免覆盖。',
+            canonicalText === draft.baselineText
+          )
+          return 'stale'
+        }
+      }
+
+      const expectedDraftRevision = draft.revision
+      const expectedText = draft.currentText
+      const expectedSourceRevision = draft.context.canonicalRevision
+      const readyToMutate =
+        this.teachingDraft === draft &&
+        draft.revision === expectedDraftRevision &&
+        draft.currentText === expectedText &&
+        this.sourceSession === draft.context.sourceSession &&
+        this.source.id === draft.context.sourceId &&
+        this.currentGameId === draft.context.gameId &&
+        this.sourceRevision === expectedSourceRevision &&
+        (draft.scope === 'game-note' || this.currentNode?.id === draft.context.nodeId)
+
+      if (!readyToMutate) {
+        setTeachingDraftFeedback(
+          draft,
+          'error',
+          '编辑上下文已发生变化，草稿内容仍保留。请取消后回到原位置重新打开编辑器。',
+          false
+        )
+        return 'stale'
+      }
+
+      let savedText = expectedText
+
+      if (draft.scope === 'node-comment') {
+        const beforeAnnotation = node.annotation
+        const beforeRawComments = node.rawComments
+        const comments = nodeCommentsFromText(expectedText)
+        const afterAnnotation = { ...cloneAnnotation(beforeAnnotation), plainComments: comments }
+
+        node.annotation = afterAnnotation
+        node.rawComments = serializeAnnotation(afterAnnotation)
+        if (
+          !this.markCurrentSourceChanged(
+            draft.context.sourceId,
+            draft.context.sourceSession,
+            expectedSourceRevision
+          )
+        ) {
+          node.annotation = beforeAnnotation
+          node.rawComments = beforeRawComments
+          setTeachingDraftFeedback(
+            draft,
+            'error',
+            '保存前棋谱上下文发生了变化，草稿内容仍保留。请取消后重新打开编辑器。',
+            false
+          )
+          return 'stale'
+        }
+        savedText = nodeCommentText(comments)
+      } else {
+        const hadPreviousNote = Object.hasOwn(this.gameTeachingNotes, noteKey)
+        const previousNote = this.gameTeachingNotes[noteKey]
+
+        if (expectedText === '') delete this.gameTeachingNotes[noteKey]
+        else this.gameTeachingNotes[noteKey] = expectedText
+
+        if (
+          !this.markCurrentSourceChanged(
+            draft.context.sourceId,
+            draft.context.sourceSession,
+            expectedSourceRevision
+          )
+        ) {
+          if (hadPreviousNote && previousNote !== undefined) {
+            this.gameTeachingNotes[noteKey] = previousNote
+          } else {
+            delete this.gameTeachingNotes[noteKey]
+          }
+          setTeachingDraftFeedback(
+            draft,
+            'error',
+            '保存前棋谱上下文发生了变化，草稿内容仍保留。请取消后重新打开编辑器。',
+            false
+          )
+          return 'stale'
+        }
+      }
+
+      draft.baselineText = savedText
+      draft.currentText = savedText
+      draft.context.canonicalRevision = this.sourceRevision
+      draft.staleContextIdentity = teachingDraftContextIdentity(draft.context)
+      setTeachingDraftFeedback(
+        draft,
+        'success',
+        draft.scope === 'node-comment'
+          ? '节点批注已更新到当前本地棋谱；尚未写入外部文件。'
+          : '对局教学笔记已在本次工作区会话中更新；不会写入文件或云端。',
+        false
+      )
+      return 'saved'
+    },
+    discardTeachingDraft(expected?: TeachingDraftEditIdentity): boolean {
+      if (!this.teachingDraft) return false
+      if (expected && !this.matchesTeachingDraftIdentity(expected)) return false
+
+      this.teachingDraft = null
+      return true
+    },
+    discardWorkspaceDrafts(expected: WorkspaceEditIdentity): boolean {
+      if (!this.matchesWorkspaceEditIdentity(expected)) return false
+
+      this.manualDraft = null
+      this.teachingDraft = null
+      return true
+    },
     markCurrentSourceChanged(
       expectedSourceId?: string,
       expectedSourceSession?: number,
@@ -404,9 +717,13 @@ export const usePgnStore = defineStore('pgn', {
 
       const nextSession = this.sourceSession + 1
       const nextManualDraftId = this.nextManualDraftId
+      const nextGameId = this.nextGameId
+      const nextTeachingDraftId = this.nextTeachingDraftId
       Object.assign(this, defaultPgnState())
       this.sourceSession = nextSession
       this.nextManualDraftId = nextManualDraftId
+      this.nextGameId = nextGameId
+      this.nextTeachingDraftId = nextTeachingDraftId
       return true
     },
     openText(text: string, source: DataSource): boolean {
@@ -440,6 +757,7 @@ export const usePgnStore = defineStore('pgn', {
         const items = parseStrictCollection(text)
         assignItemSources(items, this.source)
         this.items.push(...items)
+        this.gameIds.push(...items.map(() => this.allocateGameId()))
 
         if (this.selectedIndex === -1) {
           this.selectItem(0)
@@ -515,6 +833,9 @@ export const usePgnStore = defineStore('pgn', {
         const insertIndex = hasSelectedItem ? this.selectedIndex + 1 : this.items.length
         this.items.splice(insertIndex, 0, item)
         this.source = { ...activeSource }
+        if (!createsManualSource) {
+          this.gameIds.splice(insertIndex, 0, this.allocateGameId())
+        }
         this.selectItem(insertIndex)
         this.pendingPromotion = null
         this.pendingBranch = null
@@ -880,17 +1201,35 @@ export const usePgnStore = defineStore('pgn', {
     setPage(page: number): void {
       this.page = Math.max(0, Math.min(page, this.pageTotal - 1))
     },
+    allocateGameId(): number {
+      this.nextGameId += 1
+      return this.nextGameId
+    },
     establishCleanSourceSession(): void {
       this.sourceSession += 1
       this.sourceRevision = 0
       this.cleanSourceRevision = 0
       this.manualDraft = null
+      this.teachingDraft = null
+      this.gameTeachingNotes = {}
+      this.gameIds = this.items.map(() => this.allocateGameId())
     },
   },
 })
 
 function normalizeFen(fen: string): string {
   return fen.trim().replace(/\s+/gu, ' ')
+}
+
+function setTeachingDraftFeedback(
+  draft: TeachingDraft,
+  status: TeachingDraft['feedbackStatus'],
+  message: string,
+  canRetry: boolean
+): void {
+  draft.feedbackStatus = status
+  draft.feedbackMessage = message
+  draft.canRetry = canRetry
 }
 
 function snapDrawings(node: MoveNode): DrawSnapshot {

@@ -28,6 +28,9 @@ import type {
 } from '@/features/board/domain/boardCapabilities'
 import { STANDARD_START_FEN } from '@/features/board/domain/boardTypes'
 import type { DataSource } from '@/features/pgn/domain/types'
+import { findNode } from '@/features/pgn/domain/pgnStorage'
+import type { TeachingDraftScope } from '@/features/pgn/domain/teachingDraft'
+import type { PgnNavigationIntent } from '@/features/pgn/pgnWorkspaceTypes'
 import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
 import { ProductDrawer, ProductSheet } from '@/ui'
 import type { ProductOverlayReturnFocus } from '@/ui/productOverlayFocus'
@@ -146,15 +149,11 @@ const radialColorIndex = computed(() =>
 
 const hasBoardContent = computed(() => pgn.hasGame)
 const localChangeDescription = computed(() => {
-  if (pgn.hasUnsavedSourceChanges && pgn.hasUnsavedManualDraft) {
-    return '当前有尚未保存的本地更改，局面更改尚未应用。'
-  }
-
-  if (pgn.hasUnsavedManualDraft) {
-    return '当前局面更改尚未应用。'
-  }
-
-  return pgn.hasUnsavedSourceChanges ? '当前有尚未保存的本地更改。' : ''
+  const changes = []
+  if (pgn.hasUnsavedSourceChanges) changes.push('当前有尚未保存的本地更改')
+  if (pgn.hasUnsavedManualDraft) changes.push('局面更改尚未应用')
+  if (pgn.hasUnsavedTeachingDraft) changes.push('教学草稿尚未保存')
+  return changes.length > 0 ? `${changes.join('，')}。` : ''
 })
 const showEvalRail = computed(() => permissions.canShowEvalBar && hasBoardContent.value)
 const showAnalysisRegion = computed(() => permissions.canShowAnalysisPanel && workspace.showAnalysisRegion)
@@ -162,8 +161,16 @@ const showAnalysisRegion = computed(() => permissions.canShowAnalysisPanel && wo
 const boardCapabilities = computed<ChessboardCapabilities>(() => ({
   position: {
     visible: true,
-    playable: boardInteractive.value && permissions.canEditBoard && !boardEditorActive.value,
-    readOnly: !boardInteractive.value || !permissions.canEditBoard || boardEditorActive.value,
+    playable:
+      boardInteractive.value &&
+      permissions.canEditBoard &&
+      !boardEditorActive.value &&
+      !pgn.teachingDraft,
+    readOnly:
+      !boardInteractive.value ||
+      !permissions.canEditBoard ||
+      boardEditorActive.value ||
+      Boolean(pgn.teachingDraft),
     controlled: true,
     onMoveRequest: (payload) => pgn.tryMove(payload),
   },
@@ -308,8 +315,8 @@ const removeRouteAfterEach = router.afterEach((to, _from, failure) => {
 
   if (pending.discardWorkspace) {
     pgn.discardWorkspaceSession(pending.identity)
-  } else if (pending.identity.manualDraftId !== null) {
-    pgn.discardManualEditorDraft(pending.identity.manualDraftId)
+  } else {
+    pgn.discardWorkspaceDrafts(pending.identity)
   }
   closeBoardEditorAfterSourceReplacement()
 })
@@ -342,7 +349,13 @@ async function guardWorkspaceNavigation(
 
   const expectedIdentity = pgn.captureWorkspaceEditIdentity()
   if (!pgn.hasUnsavedWorkspaceChanges) {
-    if (intent === 'route-leave' && expectedIdentity.manualDraftId === null) return true
+    if (
+      intent === 'route-leave' &&
+      expectedIdentity.manualDraftId === null &&
+      expectedIdentity.teachingDraftId === null
+    ) {
+      return true
+    }
 
     pendingNavigation = {
       target: to,
@@ -399,8 +412,8 @@ onBeforeUnmount(() => {
   if (pendingNavigation?.accepted && pendingNavigation.target.fullPath === route.fullPath) {
     if (pendingNavigation.discardWorkspace) {
       pgn.discardWorkspaceSession(pendingNavigation.identity)
-    } else if (pendingNavigation.identity.manualDraftId !== null) {
-      pgn.discardManualEditorDraft(pendingNavigation.identity.manualDraftId)
+    } else {
+      pgn.discardWorkspaceDrafts(pendingNavigation.identity)
     }
     pendingNavigation = null
   }
@@ -479,6 +492,19 @@ async function clearCurrentAnnotations(): Promise<void> {
 
 async function enterBoardEditor(): Promise<void> {
   if (!permissions.canEnterBoardEditor || boardEditorActive.value) return
+  const teachingDraftIdentity = pgn.captureTeachingDraftIdentity()
+  if (teachingDraftIdentity) {
+    const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+    const discarded = await destructiveActions.run({
+      intent: 'teaching-draft-switch',
+      expectedIdentity,
+      confirm: pgn.hasUnsavedTeachingDraft,
+      returnFocus: workspaceReturnFocus(),
+      execute: () => pgn.discardTeachingDraft(teachingDraftIdentity),
+    })
+    if (!discarded) return
+  }
+
   analysis.stop()
   workspace.setAnnotationTool(null)
   const draftId = pgn.beginManualEditorDraft()
@@ -580,6 +606,143 @@ function closeBoardEditorAfterSourceReplacement(): void {
   manualDraftId.value = null
 }
 
+async function openTeachingDraft(
+  scope: TeachingDraftScope,
+  focusEditor: () => void
+): Promise<void> {
+  if (!permissions.canEditComments) return
+
+  const currentDraft = pgn.teachingDraft
+  if (currentDraft?.scope === scope) {
+    await nextTick()
+    focusEditor()
+    return
+  }
+
+  let opened: boolean
+  if (!currentDraft) {
+    opened = pgn.openTeachingDraft(scope)
+  } else {
+    const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+    opened = await destructiveActions.run({
+      intent: 'teaching-draft-switch',
+      expectedIdentity,
+      confirm: pgn.hasUnsavedTeachingDraft,
+      returnFocus: workspaceReturnFocus(),
+      execute: () => {
+        const draftIdentity = pgn.captureTeachingDraftIdentity()
+        if (!draftIdentity || !pgn.discardTeachingDraft(draftIdentity)) return false
+        return pgn.openTeachingDraft(scope)
+      },
+    })
+  }
+
+  if (opened) {
+    await nextTick()
+    focusEditor()
+  }
+}
+
+async function saveTeachingDraft(focusEditor: () => void): Promise<void> {
+  const expected = pgn.captureTeachingDraftIdentity()
+  if (!expected) return
+
+  const retry = Boolean(pgn.teachingDraft?.canRetry)
+  const result = pgn.saveTeachingDraft(expected, retry)
+  if (result !== 'missing') {
+    await nextTick()
+    focusEditor()
+  }
+}
+
+async function cancelTeachingDraft(focusTrigger: () => void): Promise<void> {
+  const draftIdentity = pgn.captureTeachingDraftIdentity()
+  if (!draftIdentity) return
+
+  const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+  const discarded = await destructiveActions.run({
+    intent: 'teaching-draft-close',
+    expectedIdentity,
+    confirm: pgn.hasUnsavedTeachingDraft,
+    returnFocus: workspaceReturnFocus(),
+    execute: () => pgn.discardTeachingDraft(draftIdentity),
+  })
+
+  if (discarded) {
+    await nextTick()
+    focusTrigger()
+  }
+}
+
+function pgnNavigationTarget(
+  intent: PgnNavigationIntent
+): { gameIndex: number; nodeId: number } | null {
+  if (intent.kind === 'game') {
+    const root = pgn.items[intent.gameIndex]?.tree?.root
+    return root ? { gameIndex: intent.gameIndex, nodeId: root.id } : null
+  }
+
+  if (intent.kind === 'node') {
+    return { gameIndex: pgn.selectedIndex, nodeId: intent.nodeId }
+  }
+
+  if (intent.kind === 'start') {
+    const root = pgn.selectedItem?.tree?.root
+    return root ? { gameIndex: pgn.selectedIndex, nodeId: root.id } : null
+  }
+
+  if (intent.kind === 'end') {
+    const node = pgn.mainline[pgn.mainline.length - 1] ?? pgn.selectedItem?.tree?.root
+    return node ? { gameIndex: pgn.selectedIndex, nodeId: node.id } : null
+  }
+
+  const node = intent.kind === 'previous' ? pgn.currentNode?.parent : pgn.currentNode?.children[0]
+  return node ? { gameIndex: pgn.selectedIndex, nodeId: node.id } : null
+}
+
+function applyPgnNavigationTarget(target: { gameIndex: number; nodeId: number }): boolean {
+  const tree = pgn.items[target.gameIndex]?.tree
+  if (!tree || !findNode(tree, target.nodeId)) return false
+
+  if (pgn.selectedIndex !== target.gameIndex) pgn.selectItem(target.gameIndex)
+  pgn.selectNode(target.nodeId)
+
+  return pgn.selectedIndex === target.gameIndex && pgn.currentNode?.id === target.nodeId
+}
+
+async function navigatePgn(intent: PgnNavigationIntent): Promise<void> {
+  const target = pgnNavigationTarget(intent)
+  if (!target) return
+  if (pgn.selectedIndex === target.gameIndex && pgn.currentNode?.id === target.nodeId) return
+
+  const draftIdentity = pgn.captureTeachingDraftIdentity()
+  if (!draftIdentity) {
+    applyPgnNavigationTarget(target)
+    return
+  }
+
+  if (!pgn.hasUnsavedTeachingDraft) {
+    const tree = pgn.items[target.gameIndex]?.tree
+    if (!tree || !findNode(tree, target.nodeId)) return
+    if (pgn.discardTeachingDraft(draftIdentity)) applyPgnNavigationTarget(target)
+    return
+  }
+
+  const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+  await destructiveActions.run({
+    intent: 'teaching-draft-switch',
+    expectedIdentity,
+    confirm: true,
+    returnFocus: workspaceReturnFocus(),
+    execute: () => {
+      const tree = pgn.items[target.gameIndex]?.tree
+      if (!tree || !findNode(tree, target.nodeId)) return false
+      if (!pgn.discardTeachingDraft(draftIdentity)) return false
+      return applyPgnNavigationTarget(target)
+    },
+  })
+}
+
 function queryText(value: unknown): string {
   if (Array.isArray(value)) {
     return value.find((item) => typeof item === 'string')?.trim() ?? ''
@@ -610,12 +773,7 @@ function onBoardRadialCommand(command: BoardRadialCommand): void {
 }
 
 function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void {
-  if (direction === 'next') {
-    pgn.stepForward()
-    return
-  }
-
-  pgn.stepBack()
+  void navigatePgn({ kind: direction })
 }
 </script>
 
@@ -627,6 +785,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
       :permissions="permissions"
       :settings-context="settingsContext"
       @action="handleWorkspaceAction"
+      @navigate="navigatePgn"
       @open-source="sourceDrawerOpen = true"
       @toggle-context="contextPanelOpen = !contextPanelOpen"
     />
@@ -665,6 +824,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
             :can-create-editable-local-copy="permissions.canCreateEditableLocalCopy"
             :can-enter-board-editor="permissions.canEnterBoardEditor"
             @action="handleWorkspaceAction"
+            @navigate="navigatePgn"
           />
         </div>
         <button
@@ -747,7 +907,14 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
 
         <section class="panel-pgn" aria-labelledby="workspace-toolbar-title">
           <h2 id="workspace-toolbar-title" class="sr-only">工作区右侧面板</h2>
-          <WorkspaceRightPanel :permissions="permissions" @action="handleWorkspaceAction" />
+          <WorkspaceRightPanel
+            :permissions="permissions"
+            @action="handleWorkspaceAction"
+            @navigate="navigatePgn"
+            @open-teaching-draft="openTeachingDraft"
+            @save-teaching-draft="saveTeachingDraft"
+            @cancel-teaching-draft="cancelTeachingDraft"
+          />
         </section>
 
         <WorkspaceSplitter
@@ -795,11 +962,19 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
         :can-create-editable-local-copy="permissions.canCreateEditableLocalCopy"
         :can-enter-board-editor="permissions.canEnterBoardEditor"
         @action="handleWorkspaceAction"
+        @navigate="navigatePgn"
       />
     </ProductDrawer>
 
     <ProductSheet v-if="isNarrow" v-model:show="contextPanelOpen" title="上下文" height="80vh">
-      <WorkspaceRightPanel :permissions="permissions" @action="handleWorkspaceAction" />
+      <WorkspaceRightPanel
+        :permissions="permissions"
+        @action="handleWorkspaceAction"
+        @navigate="navigatePgn"
+        @open-teaching-draft="openTeachingDraft"
+        @save-teaching-draft="saveTeachingDraft"
+        @cancel-teaching-draft="cancelTeachingDraft"
+      />
     </ProductSheet>
 
     <Transition :css="false" @enter="onOverlayEnter" @leave="onOverlayLeave">

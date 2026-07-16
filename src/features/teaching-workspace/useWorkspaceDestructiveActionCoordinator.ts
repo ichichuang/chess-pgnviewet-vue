@@ -14,6 +14,8 @@ type WorkspaceDestructiveIntent =
   | 'route-handoff'
   | 'route-leave'
   | 'source-replacement'
+  | 'teaching-draft-close'
+  | 'teaching-draft-switch'
 
 interface WorkspaceDestructiveAction<T> {
   intent: WorkspaceDestructiveIntent
@@ -77,6 +79,18 @@ const confirmationCopy: Record<WorkspaceDestructiveIntent, ConfirmationCopy> = {
     title: '放弃尚未保存的更改？',
     description: '打开新的棋谱后，当前本地更改将不会保留。',
     confirmText: '放弃更改并继续',
+    cancelText: '继续编辑',
+  },
+  'teaching-draft-close': {
+    title: '放弃未保存的教学草稿？',
+    description: '当前教学草稿尚未保存。放弃后，已输入的内容将不会保留。',
+    confirmText: '放弃草稿',
+    cancelText: '继续编辑',
+  },
+  'teaching-draft-switch': {
+    title: '放弃未保存的教学草稿？',
+    description: '切换节点、棋局或编辑范围前，需要先处理当前教学草稿。',
+    confirmText: '放弃草稿并继续',
     cancelText: '继续编辑',
   },
 }

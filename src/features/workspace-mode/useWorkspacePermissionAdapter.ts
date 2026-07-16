@@ -67,7 +67,7 @@ export function useWorkspacePermissionAdapter(
   const canRunAnalysis = canMutateCurrentSource
   const canShowEvalBar = canRunAnalysis
   const canShowAnalysisPanel = isLocalEditable
-  const canShowComments = isLocalEditable
+  const canShowComments = hasSource
   const canShowAnnotations = isLocalEditable
 
   return {
@@ -77,7 +77,7 @@ export function useWorkspacePermissionAdapter(
     sourceUnavailable,
     canEditBoard: canEditBase,
     canEditAnnotations: canShowAnnotations,
-    canEditComments: canShowComments,
+    canEditComments: canMutateCurrentSource,
     canCreateVariations: canEditBase,
     canEnterBoardEditor: canEditBase || (!hasSource && localEntryContext),
     canOpenLocalPgnAsNewSource: true,

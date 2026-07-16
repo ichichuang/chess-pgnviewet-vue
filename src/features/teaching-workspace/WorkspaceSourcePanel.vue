@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
+import type { PgnNavigationIntent } from '@/features/pgn/pgnWorkspaceTypes'
 import { usePgnStore } from '@/stores'
 
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
@@ -19,6 +20,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   action: [name: WorkspaceToolbarAction]
+  navigate: [intent: PgnNavigationIntent]
 }>()
 
 const pgn = usePgnStore()
@@ -75,6 +77,7 @@ const pgn = usePgnStore()
       :can-open-local-pgn-as-new-source="props.canOpenLocalPgnAsNewSource"
       :can-insert-local-pgn-into-current-source="props.canInsertLocalPgnIntoCurrentSource"
       @action="emit('action', $event)"
+      @navigate="emit('navigate', $event)"
     />
   </section>
 </template>
