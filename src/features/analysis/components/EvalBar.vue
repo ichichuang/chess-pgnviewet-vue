@@ -10,9 +10,10 @@ const analysis = useAnalysisStore()
 const workspace = useWorkspaceStore()
 
 const MAX_CP = 800
+const currentResult = computed(() => analysis.matchingCurrent)
 
 const whiteScore = computed(() => {
-  const score = analysis.current?.score
+  const score = currentResult.value?.score
 
   if (!score) {
     return null
@@ -55,7 +56,7 @@ let context: ReturnType<typeof gsap.context> | null = null
 let reducedMotionQuery: MediaQueryList | null = null
 
 const scoreText = computed(() => {
-  const score = analysis.current?.score
+  const score = currentResult.value?.score
 
   if (!score) {
     return '—'

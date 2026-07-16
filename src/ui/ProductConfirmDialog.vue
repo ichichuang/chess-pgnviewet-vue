@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ProductButton from './ProductButton.vue'
 import ProductDialog from './ProductDialog.vue'
+import type { ProductOverlayReturnFocus } from './productOverlayFocus'
 
 const props = withDefaults(
   defineProps<{
@@ -11,12 +12,14 @@ const props = withDefaults(
     cancelText?: string
     dangerous?: boolean
     busy?: boolean
+    returnFocus?: ProductOverlayReturnFocus | undefined
   }>(),
   {
     confirmText: '确认',
     cancelText: '取消',
     dangerous: false,
     busy: false,
+    returnFocus: undefined,
   }
 )
 
@@ -51,6 +54,7 @@ function onConfirm(): void {
     :closable="!busy"
     :mask-closable="!busy"
     :close-on-esc="!busy"
+    :return-focus="returnFocus"
     initial-focus="safe-action"
     @update:show="emit('update:show', $event)"
   >

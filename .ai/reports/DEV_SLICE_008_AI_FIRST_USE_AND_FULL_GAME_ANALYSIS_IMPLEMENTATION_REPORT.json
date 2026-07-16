@@ -1,0 +1,326 @@
+{
+  "slice": "DEV-SLICE-008",
+  "title": "AI first-use and full-game analysis execution implementation",
+  "status": "PASS",
+  "verified_baseline": {
+    "repository_path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "64581d5059a122bb7b80dc6f0513d5ff2fc8bc57",
+    "local_head": "64581d5059a122bb7b80dc6f0513d5ff2fc8bc57",
+    "origin_main": "64581d5059a122bb7b80dc6f0513d5ff2fc8bc57",
+    "live_remote_main": "64581d5059a122bb7b80dc6f0513d5ff2fc8bc57",
+    "ahead_behind": "0/0",
+    "worktree_and_index": "clean before implementation; no untracked files"
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/ui/RESPONSIVE_SCREEN_SPEC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_005_DIRTY_STATE_AND_DESTRUCTIVE_NAVIGATION_SAFETY_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_006_NODE_COMMENT_AND_GAME_TEACHING_NOTE_EDITING_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_007_PGN_IMPORT_PROGRESS_CANCELLATION_AND_PARTIAL_SUCCESS_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+  ],
+  "implementation_surfaces_inspected": [
+    "src/features/analysis/components/AnalysisPanel.vue",
+    "src/features/analysis/components/EvalBar.vue",
+    "src/features/analysis/domain/analysisResult.ts",
+    "src/features/analysis/domain/classifyMove.ts",
+    "src/features/analysis/domain/score.ts",
+    "src/features/analysis/domain/search.ts",
+    "src/features/analysis/domain/search.worker.ts",
+    "src/features/analysis/domain/searchEngine.ts",
+    "src/features/pgn/domain/parsePgn.ts",
+    "src/features/pgn/domain/sourceOwnership.ts",
+    "src/features/pgn/domain/types.ts",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+    "src/stores/analysis.ts",
+    "src/stores/pgn.ts",
+    "src/ui/ProductConfirmDialog.vue",
+    "src/ui/ProductDialog.vue"
+  ],
+  "defects_reproduced": {
+    "MISSING-UI-009": "First-use acceptance was a component-local ref, so closing and reopening the AnalysisPanel in the same SPA session displayed the notice again.",
+    "MISSING-UI-010": "The full-game control was permanently disabled and displayed unsupported copy; no canonical full-game snapshot, progress, cancellation loop, or completed composition existed.",
+    "NONCONF-UI-017": "The analysis surface could execute only a volatile current-node request and therefore could not represent a navigation-stable whole-game task truthfully.",
+    "COR-001_subset": "Current-position output existed, but the first-use and full-game execution subset lacked the task identity and lifecycle required by the corrected audit; candidate insertion and dedicated cancelled/stale surfaces remain deferred."
+  },
+  "root_cause_investigation": {
+    "first_use": "AnalysisPanel owned firstUseAccepted as ref(false); destroying the component destroyed the only acceptance owner, while no approved persistence owner was appropriate for session-only consent.",
+    "full_game": "The Store request context contained one selected node/FEN and its identity acceptance required the focused node to remain current. It had no scope, stable game identity, ordered position set, per-node results, or proven total, so ordinary navigation invalidated the only request shape and a safe whole-game loop could not be built on it.",
+    "late_results": "The previous acceptance check was current-node-bound and result state was singular. A full-game task required request-level base identity plus per-position immutable identity so cancellation, source changes, and late Worker responses could be rejected without coupling to board focus.",
+    "explicit_hypothesis": "Moving consent to module-backed Analysis Store session state fixes remount loss without persistence, and replacing the volatile node context with an immutable scoped task snapshot fixes whole-game identity while preserving the stricter node match for current-position analysis."
+  },
+  "implementation": {
+    "surface": "WS-001/WS-003 unified local editable workspace analysis region",
+    "classification": "APPROVED_TARGET",
+    "scope": "MISSING-UI-009, MISSING-UI-010, NONCONF-UI-017, and only the first-use plus full-game execution subset of COR-001",
+    "analysis_store_count": 1,
+    "search_engine_owner_count": 1,
+    "worker_pool_count": 1,
+    "dependencies_added": "none",
+    "persistence_added": "none",
+    "api_or_router_changes": "none",
+    "existing_contracts_reused": [
+      "canonical parsed PGN tree and selected stable game ID",
+      "PGN Store source session, source ID, revision, and mutability",
+      "DEV-SLICE-004 workspace permission projection",
+      "existing SearchEngine depth and max-think-time behavior",
+      "ProductConfirmDialog/ProductDialog focus ownership",
+      "project Tokens and existing analysis motion tokens"
+    ]
+  },
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_008_AI_FIRST_USE_AND_FULL_GAME_ANALYSIS_IMPLEMENTATION_REPORT.json",
+    "src/features/analysis/components/AnalysisPanel.vue",
+    "src/features/analysis/components/EvalBar.vue",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/stores/analysis.ts",
+    "src/ui/ProductConfirmDialog.vue",
+    "src/ui/ProductDialog.vue"
+  ],
+  "first_use_lifetime": {
+    "owner": "the existing Analysis Store module owns one explicit in-memory application-session acceptance bit",
+    "before_acceptance": "both current-position and full-game actions show the same ProductConfirmDialog; no SearchEngine or Worker is created before confirmation",
+    "cancel": "notice cancellation starts no request or Worker, changes no PGN state, and restores focus to the initiating scope control",
+    "spa_remount": "acceptance survives AnalysisPanel unmount/remount and Store reset/recreation within the loaded application module",
+    "full_reload": "a full page reload reloads the module and resets acceptance to false",
+    "storage": "no localStorage, sessionStorage, IndexedDB, URL, Router state, handoff, Settings, Query, or server record is written",
+    "browser_storage_evidence": "localStorage and sessionStorage remained empty before and after acceptance and current-position completion"
+  },
+  "full_game_snapshot": {
+    "capture_time": "synchronously before SearchEngine creation",
+    "immutable_fields": [
+      "unique monotonic request ID",
+      "scope",
+      "source session",
+      "source ID",
+      "source revision",
+      "stable selected game ID",
+      "frozen ordered position collection"
+    ],
+    "position_fields": [
+      "stable node ID",
+      "stable game/node/FEN node key",
+      "position hash",
+      "canonical FEN",
+      "display label",
+      "ply",
+      "parent FEN when present",
+      "source move from/to when present"
+    ],
+    "ordering": "root first, followed by the canonical first-child mainline in deterministic ply order",
+    "initial_position_included": true,
+    "variations_analyzed": false,
+    "validation_input_result": "the external one-game PGN produced 110 unique frozen positions: initial/root plus 109 canonical mainline plies, ending at 55. Rb7+; the complete parsed tree contained 549 nodes because source variations were retained but not analyzed"
+  },
+  "task_identity_and_results": {
+    "current_position": "request identity additionally requires the same selected node, FEN, and position hash",
+    "full_game": "request identity requires the same permission/mutability, source session, source ID, source revision, and stable game ID; ordinary node navigation is intentionally excluded",
+    "result_identity": "each position result repeats request, scope, source, revision, game, node key, position hash, FEN, label, and ply identity",
+    "completed_full_game": "the Store publishes one frozen aggregate only after every sequential result is accepted; partial results are not exposed as completed output",
+    "retry_and_reanalysis": "retry and explicit reanalysis revalidate the current source/game and allocate a fresh request ID plus fresh frozen snapshot",
+    "coexisting_result_selection": "the panel result animation key and DOM request identity derive from completedScope so current and full-game results cannot borrow each other's request ID"
+  },
+  "progress_contract": {
+    "strategy": "bounded sequential evaluation through the existing SearchEngine and its existing four-Worker pool",
+    "engine_settings": "unchanged depth 4 and max-think-time 900 ms per position",
+    "total": "the frozen canonical position count",
+    "completed": "the number of accepted position results only",
+    "percentage": "round(completed / total * 100), bounded to 100",
+    "current_position": "one-based current index plus stable node ID/key and canonical label",
+    "ui": "native determinate progress with completed/total/percentage and current-position live text; current-position analysis retains the existing indeterminate presentation",
+    "synthetic_progress": false,
+    "observed_values": [
+      "0/110 (0%)",
+      "5/110 (5%)",
+      "10/110 (9%)",
+      "18/110 (16%)",
+      "28/110 (25%)",
+      "46/110 (42%)",
+      "60/110 (55%)",
+      "74/110 (67%)",
+      "87/110 (79%)",
+      "100/110 (91%)",
+      "110/110 (100%)"
+    ]
+  },
+  "cancellation_and_invalidation": {
+    "explicit_cancel": "clears the active request/progress, stops and terminates the engine pool, prevents another position from starting, and ignores the current late response",
+    "cancelled_rerun_evidence": "request 2 stopped at 7/110; all four rerun Workers terminated; after a late-result wait the prior completed request 1 still owned all 110 results and request 2 published nothing",
+    "source_replacement": "opening the same real external PGN as a fresh local source changed source session and source ID, stopped request 2, terminated Workers, cleared full-game matching, and exposed no stale result",
+    "source_revision": "source revision is part of every request/result base match and the TeachingWorkspace context watcher reconciles it immediately",
+    "game_switch": "switching from stable game ID 2 to game ID 3 during request 3 stopped the task, terminated Workers, cleared progress, and exposed no matching result",
+    "permission_loss": "the permission projection is watched and reconcileContext rejects active work when canRunAnalysis becomes false",
+    "local_copy_replacement": "a new source/session identity cannot match the old task; analysis may start again only as an explicit fresh request on a verified local editable copy",
+    "workspace_disposal_and_route_cleanup": "source/mode cleanup stops the Store task; Store disposal invalidates the request and destroys the engine",
+    "dedicated_cancelled_or_stale_ui": "not added; reserved for DEV-SLICE-009"
+  },
+  "completed_output_and_write_boundary": {
+    "composition": "one read-only summary plus an ordered mainline list of stable label, white-view score, and best move for each matching node",
+    "full_game_browser_result": "110/110 results rendered as 110 list rows with data-analysis-request-id=1 and focus on 重新分析整局",
+    "automatic_navigation": false,
+    "candidate_insertion": false,
+    "automatic_annotations": false,
+    "automatic_variations": false,
+    "pgn_writes": false,
+    "writeMoveAssessment": "retained for the later explicit-action contract, restricted to current-position identity, and has no caller in this slice"
+  },
+  "source_integrity_evidence": {
+    "external_file": "/Users/cc/Downloads/lichess_pgn_2024.06.11_Pushko374_vs_a054545641.SDAp2GH0.pgn",
+    "external_file_size": 10132,
+    "external_file_sha256": "33cbed8cdd6503e8f4002dfb35429baa5b97fc70113ce1d103e798f59c9343db",
+    "characteristics": "one legal Lichess game with a 109-ply mainline and source variations; no file content is embedded in this report",
+    "full_game_projection": "before/after PGN plus primitive tree projection SHA-256 remained de3eee20316418305086c27d5e6f5e677373af17c67bc79e06b3584af979a2df; source session, source ID, revision 0, clean revision 0, and game ID remained unchanged; only the user-initiated board navigation changed selectedNodeId",
+    "complete_projection": "a separate current-position run normalized headers, tags, PGN text, all 549 mainline/variation nodes and nested fields, annotations/comments, game teaching notes, and draft state into 208,969 bytes; before/after SHA-256 remained a350610ccf2df9e96af83f87997312f624dd9fe5e5feb2fb9af6dedc26320bfe",
+    "unchanged_fields": "tree text, source identity, source revision, annotations, comments, teaching notes, variations, selected node, localStorage, and sessionStorage were identical before and after the complete-projection run"
+  },
+  "accessibility_motion_and_layout": {
+    "first_use_focus": "the safe 暂不开启 action receives initial focus; cancellation returns to the exact 分析当前局面 or 分析整局 trigger",
+    "running_focus": "the stable 取消分析 action receives focus after acceptance and reanalysis",
+    "terminal_focus": "completion and explicit stop settle focus on the stable 重新分析 or 重新分析整局 action after result motion finishes",
+    "dialog_lifecycle": "ProductDialog restores captured/dynamic focus after Naive UI leave cleanup rather than before it",
+    "reduced_motion": "current progress remained visible with animation-name none, identity transform, opacity 1, and visibility visible; terminal focus remained correct",
+    "responsive": "1440x960 light, 1280x800 light, 1024x768 light/reduced, and 390x844 dark compositions remained nonblank without document horizontal overflow",
+    "narrow_dialog": "the 337px dialog and all actions remained within the 390px viewport and retained one internal overflow owner"
+  },
+  "readonly_and_contract_blocked_behavior": {
+    "real_public_data": "the real public competition list returned 18,368 items; competition 47347 detail and its read-only venue display rendered real data with zero analysis controls",
+    "venue_display": "the independent read-only display rendered two public pairings, no AnalysisPanel, no analysis request action, and no Vite overlay",
+    "contract_blocked_replay": "/match/dev-slice-008-validation rendered truthful unavailable copy, no request, no AnalysisPanel, and no analysis action",
+    "competition_commentary_handoff": "the selected real pairing produced the truthful contract-unavailable workspace handoff with no canonical PGN source and no analysis controls",
+    "local_copy_boundary": "no synthetic readonly snapshot or local copy was invented; a confirmed local editable copy would be a new source/session and can only run a fresh explicitly accepted task"
+  },
+  "static_validation": [
+    {
+      "command": "jq empty .ai/reports/DEV_SLICE_008_AI_FIRST_USE_AND_FULL_GAME_ANALYSIS_IMPLEMENTATION_REPORT.json",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run audit:prod",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "pass"
+    },
+    {
+      "command": "mise exec -- pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-dev-slice-008-build.A0AwJT --emptyOutDir",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm test",
+      "result": "not run by repository policy"
+    }
+  ],
+  "browser_validation": {
+    "server": "http://127.0.0.1:5174/pgnViewer/",
+    "first_use": "fresh current and full-game requests both showed the notice with zero Workers; cancellation started nothing; acceptance created four Workers for the requested scope",
+    "lifetime": "true AnalysisPanel unmount/remount retained acceptance and the matching result; full reload reset acceptance and Worker count to zero",
+    "current_position": "one frozen-position request completed with five read-only candidate lines; next-node navigation hid the matching current result while retaining the raw result for its original node",
+    "full_game": "one immutable 110-position request completed 110 accepted Worker jobs and rendered 110 matching rows; ordinary navigation changed selectedNodeId but retained request ID 1 and monotonic progress",
+    "cancellation": "a full-game rerun cancelled at 7/110; no later position/result was published, all Workers terminated, and the prior completed request remained unchanged",
+    "fresh_identity": "explicit full-game reanalysis allocated request ID 2 after request ID 1; a later validated game task allocated request ID 3",
+    "source_and_game_invalidation": "fresh local source replacement and a real two-game switch each stopped active work and removed matching stale output",
+    "source_integrity": "the complete normalized PGN projection and storage snapshot were identical before and after analysis",
+    "readonly_and_blocked": "real competition detail/display and contract-blocked replay/commentary paths exposed no engine action",
+    "responsive_and_themes": "wide light and narrow dark layouts passed; the narrow consent dialog and analysis actions stayed inside the viewport",
+    "reduced_motion": "progress remained visible without nonessential animation and completion focus settled correctly",
+    "focus": "notice cancel, running cancel, completion, explicit stop, and remount focus paths reached stable valid controls",
+    "runtime_health": "validated fresh reload, integrity, reduced-motion, competition, venue-display, and contract-blocked paths had nonblank DOM, no Vite overlay, no page error, no breaking console error, and no failed response; an established non-breaking favicon 404 appeared only on the first cold dev-server launch",
+    "artifacts": "no screenshots, browser scripts, fixtures, sample PGNs, logs, or browser artifacts were created in the repository"
+  },
+  "cor_and_od_impact": {
+    "MISSING-UI-009": "implemented with one memory-only application-session acceptance owner and verified remount/reload/storage boundaries",
+    "MISSING-UI-010": "implemented with a canonical immutable full-game task, real determinate progress, cancellation, and minimal read-only completion",
+    "NONCONF-UI-017": "implemented for current/full task execution with stable game/node identity and source-safe invalidation",
+    "COR-001": "only the first-use and full-game execution subset is implemented; authority-wide closure is not claimed",
+    "OD-03": "remains open and unchanged; this slice adds no persistent engine-resource default",
+    "OD-04": "remains open and unchanged; this slice adds no persistent analysis preference or retention contract",
+    "OD-01_to_OD-11": "all remain visibly open; no provisional value was promoted to authority"
+  },
+  "remaining_dev_slice_009_work": [
+    "dedicated visible cancelled lifecycle",
+    "dedicated stale-result product surface and terminology cleanup",
+    "explicit candidate-line insertion and its write boundary",
+    "any approved explicit assessment/variation write action"
+  ],
+  "remaining_cor_001_work": [
+    "DEV-SLICE-009 candidate insertion and cancelled/stale presentation",
+    "owner decisions for any persistent engine resource/default/retention behavior",
+    "future contract-backed remote/read-only copy analysis only after a real canonical source contract exists"
+  ],
+  "limitations": [
+    "Full-game execution is intentionally sequential and can take several minutes for a long source game at the existing depth and think-time settings.",
+    "Cancelling a rerun preserves a still-valid earlier completed result; DEV-SLICE-009 owns any dedicated cancelled-state product treatment.",
+    "No confirmed readonly pairing PGN contract existed in the real competition handoff, so no synthetic readonly snapshot or editable-copy transition was fabricated.",
+    "The development server has an established non-breaking missing favicon resource message on its first cold launch; all fresh validation routes after reload were console-clean."
+  ],
+  "review": {
+    "result": "independent final diff review found one scope-identity issue, it was fixed, and no additional finding remained",
+    "addressed": "resultAnimationKey and data-analysis-request-id now derive from completedScope so coexisting current/full results cannot expose or animate under the wrong request identity"
+  },
+  "commit_subject": "feat(analysis): 完成首次提示与整局分析执行闭环",
+  "verdict": "DEV_SLICE_008_AI_FIRST_USE_AND_FULL_GAME_ANALYSIS_PASS"
+}

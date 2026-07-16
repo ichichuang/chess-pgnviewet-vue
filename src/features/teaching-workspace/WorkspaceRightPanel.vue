@@ -75,8 +75,9 @@ const annotationSummary = computed(() => ({
   arrows: pgn.currentAnnotation?.arrows.length ?? 0,
   squares: pgn.currentAnnotation?.squares.length ?? 0,
 }))
+const currentAnalysis = computed(() => analysis.matchingCurrent)
 const analysisScore = computed(() => {
-  const score = analysis.current?.score
+  const score = currentAnalysis.value?.score
 
   if (!score) {
     return '—'
@@ -302,7 +303,7 @@ function cancelTeachingDraft(): void {
             <dt>评估</dt>
             <dd>{{ analysisScore }}</dd>
             <dt>最佳着法</dt>
-            <dd>{{ analysis.current?.bestMove || '—' }}</dd>
+            <dd>{{ currentAnalysis?.bestMove || '—' }}</dd>
           </dl>
         </section>
       </template>

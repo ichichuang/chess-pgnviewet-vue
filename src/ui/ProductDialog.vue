@@ -79,6 +79,10 @@ function onAfterEnter(): void {
   })
 }
 
+async function onAfterLeave(): Promise<void> {
+  await restoreFocus()
+}
+
 watch(
   () => props.show,
   (visible) => {
@@ -89,10 +93,7 @@ watch(
           : { focusActive: focusActiveDialog }
       )
       void nextTick(focusActiveDialog)
-      return
     }
-
-    void restoreFocus()
   }
 )
 </script>
@@ -108,6 +109,7 @@ watch(
     :block-scroll="true"
     @update:show="emit('update:show', $event)"
     @after-enter="onAfterEnter"
+    @after-leave="onAfterLeave"
   >
     <div
       ref="dialogCardRef"

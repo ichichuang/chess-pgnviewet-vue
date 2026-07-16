@@ -246,7 +246,23 @@ watch(
   [() => workspaceModeContext.value, () => pgn.source.id],
   () => {
     analysis.stop()
-  }
+  },
+  { flush: 'sync' }
+)
+
+watch(
+  [
+    () => permissions.canRunAnalysis,
+    () => pgn.sourceSession,
+    () => pgn.sourceRevision,
+    () => pgn.currentGameId,
+    () => pgn.currentNode?.id,
+    () => pgn.currentFen,
+  ],
+  () => {
+    analysis.reconcileContext(permissions.canRunAnalysis)
+  },
+  { flush: 'sync' }
 )
 
 let beforeUnloadRegistered = false
