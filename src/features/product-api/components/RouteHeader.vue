@@ -3,6 +3,10 @@ import { computed, ref } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
 
 import SettingsSurface from '@/features/settings'
+import {
+  createRouteSettingsContext,
+  type SettingsPage,
+} from '@/features/settings/settingsContext'
 import { useAuthStore } from '@/stores'
 import { ProductButton } from '@/ui'
 
@@ -12,6 +16,7 @@ const props = defineProps<{
   title: string
   titleId: string
   subtitle?: string
+  settingsPage: Exclude<SettingsPage, 'workspace'>
   registerTitle: (element: RouteTitleRef) => void
 }>()
 
@@ -19,6 +24,7 @@ const auth = useAuthStore()
 const sessionLabel = computed(() => auth.accountLabel)
 const settingsOpen = ref(false)
 const settingsButtonRef = ref<InstanceType<typeof ProductButton> | null>(null)
+const settingsContext = computed(() => createRouteSettingsContext(props.settingsPage))
 
 function logout(): void {
   auth.logout()
@@ -58,6 +64,7 @@ function registerRouteTitle(element: RouteTitleRef): void {
 
     <SettingsSurface
       v-model:show="settingsOpen"
+      :context="settingsContext"
       :on-return-focus="() => settingsButtonRef?.focus()"
     />
   </div>

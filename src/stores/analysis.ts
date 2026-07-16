@@ -20,6 +20,7 @@ type WorkerMode = 'worker' | 'main-thread-fallback' | 'unavailable'
 
 interface AnalysisContext {
   requestId: number
+  sourceId: string
   nodeId: number
   nodeKey: string
   positionId: string
@@ -42,6 +43,7 @@ export interface AnalysisLine {
 
 interface CurrentAnalysis {
   requestId: number
+  sourceId: string
   nodeId: number
   nodeKey: string
   positionId: string
@@ -198,11 +200,12 @@ function contextFromCurrentNode(): Omit<AnalysisContext, 'requestId'> | null {
   const pgn = usePgnStore()
   const node = pgn.currentNode
 
-  if (!pgn.hasGame || !node) {
+  if (!pgn.hasGame || !node || !pgn.canMutateCurrentSource) {
     return null
   }
 
   return {
+    sourceId: pgn.source.id,
     nodeId: node.id,
     nodeKey: nodeKeyFor(pgn.selectedIndex, node.id),
     positionId: hashString(pgn.currentFen),
@@ -258,6 +261,7 @@ export const useAnalysisStore = defineStore('analysis', {
       if (
         !force &&
         this.workerMode !== 'unavailable' &&
+        this.current?.sourceId === context.sourceId &&
         this.current?.nodeKey === context.nodeKey &&
         this.current.positionId === context.positionId
       ) {
@@ -266,6 +270,7 @@ export const useAnalysisStore = defineStore('analysis', {
 
       if (
         !force &&
+        this.activeRequest?.sourceId === context.sourceId &&
         this.activeRequest?.nodeKey === context.nodeKey &&
         this.activeRequest.positionId === context.positionId
       ) {
@@ -307,6 +312,7 @@ export const useAnalysisStore = defineStore('analysis', {
         const pvLegal = validatePv(request.fen, currentEval.pv)
         this.current = {
           requestId: request.requestId,
+          sourceId: request.sourceId,
           nodeId: request.nodeId,
           nodeKey: request.nodeKey,
           positionId: request.positionId,
@@ -370,6 +376,8 @@ export const useAnalysisStore = defineStore('analysis', {
 
       return (
         this.activeRequest?.requestId === request.requestId &&
+        pgn.canMutateCurrentSource &&
+        pgn.source.id === request.sourceId &&
         pgn.currentNode?.id === request.nodeId &&
         hashString(pgn.currentFen) === request.positionId
       )
@@ -387,7 +395,12 @@ export const useAnalysisStore = defineStore('analysis', {
       const pgn = usePgnStore()
       const node = pgn.currentNode
 
-      if (!node || node.id !== request.nodeId) {
+      if (
+        !pgn.canMutateCurrentSource ||
+        pgn.source.id !== request.sourceId ||
+        !node ||
+        node.id !== request.nodeId
+      ) {
         return
       }
 

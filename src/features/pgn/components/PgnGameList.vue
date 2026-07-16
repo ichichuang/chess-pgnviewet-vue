@@ -7,6 +7,11 @@ const emit = defineEmits<{
   action: [name: PgnWorkspaceAction]
 }>()
 
+const props = defineProps<{
+  canOpenLocalPgnAsNewSource: boolean
+  canInsertLocalPgnIntoCurrentSource: boolean
+}>()
+
 const store = usePgnStore()
 
 function openLocal() {
@@ -26,8 +31,16 @@ function insertLocal() {
     </header>
 
     <div class="pgn-list-actions">
-      <button type="button" @click="openLocal">打开 PGN</button>
-      <button type="button" :disabled="!store.hasGame" @click="insertLocal">插入</button>
+      <button type="button" :disabled="!props.canOpenLocalPgnAsNewSource" @click="openLocal">
+        打开 PGN
+      </button>
+      <button
+        type="button"
+        :disabled="!props.canInsertLocalPgnIntoCurrentSource"
+        @click="insertLocal"
+      >
+        插入
+      </button>
     </div>
 
     <input

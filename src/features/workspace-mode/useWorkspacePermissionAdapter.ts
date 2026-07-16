@@ -1,4 +1,16 @@
+import {
+  canCopyReadonlySnapshot,
+  isLocalEditableDataSource,
+  localSourceIdentityLabel,
+} from '@/features/pgn/domain/sourceOwnership'
+import type { DataSource } from '@/features/pgn/domain/types'
+
 import type { WorkspaceModeContext } from './workspaceModeTypes'
+
+export interface WorkspaceSourceProjection {
+  source: DataSource
+  hasCanonicalPgnSnapshot: boolean
+}
 
 export interface WorkspacePermissions {
   hasSource: boolean
@@ -10,8 +22,10 @@ export interface WorkspacePermissions {
   canEditComments: boolean
   canCreateVariations: boolean
   canEnterBoardEditor: boolean
-  canImportLocalPgn: boolean
-  canImportAsLocalCopy: boolean
+  canOpenLocalPgnAsNewSource: boolean
+  canInsertLocalPgnIntoCurrentSource: boolean
+  canMutateCurrentSource: boolean
+  canCreateEditableLocalCopy: boolean
   canRunAnalysis: boolean
   canShowEvalBar: boolean
   canShowAnalysisPanel: boolean
@@ -20,30 +34,37 @@ export interface WorkspacePermissions {
   canShowAnnotations: boolean
   modeLabel: string
   sourceLabel: string
+  sourceIdentityLabel: string
   unavailableReason: string | null
 }
 
 const UNAVAILABLE_SOURCES = new Set([
   'cloud_pgn',
   'backend_handoff_pgn',
+  'competition_pairing',
   'electronic_board_live',
   'online_game_live',
   'replay_only',
 ])
 
-const LOCAL_EDITABLE_SOURCES = new Set(['manual_pgn'])
-
-export function useWorkspacePermissionAdapter(context: WorkspaceModeContext): WorkspacePermissions {
-  const hasSource = context.source !== 'unknown' && context.mode !== 'unknown'
+export function useWorkspacePermissionAdapter(
+  context: WorkspaceModeContext,
+  active: WorkspaceSourceProjection
+): WorkspacePermissions {
+  const hasSource = active.hasCanonicalPgnSnapshot && active.source.type !== 'null'
   const sourceUnavailable =
-    context.mode === 'unknown' ||
-    context.source === 'unknown' ||
-    UNAVAILABLE_SOURCES.has(context.source)
-  const sourceReadonly = context.readonly || sourceUnavailable
-  const isLocalEditable = LOCAL_EDITABLE_SOURCES.has(context.source) && !sourceReadonly
+    !hasSource &&
+    (context.mode === 'unknown' ||
+      context.source === 'unknown' ||
+      UNAVAILABLE_SOURCES.has(context.source))
+  const isLocalEditable = hasSource && isLocalEditableDataSource(active.source)
+  const sourceReadonly = hasSource ? !isLocalEditable : context.readonly || sourceUnavailable
+  const canMutateCurrentSource = isLocalEditable
+  const localEntryContext =
+    context.mode === 'analysis' && context.source === 'manual_pgn' && !context.readonly
 
-  const canEditBase = isLocalEditable
-  const canRunAnalysis = isLocalEditable
+  const canEditBase = canMutateCurrentSource
+  const canRunAnalysis = canMutateCurrentSource
   const canShowEvalBar = canRunAnalysis
   const canShowAnalysisPanel = isLocalEditable
   const canShowComments = isLocalEditable
@@ -58,19 +79,40 @@ export function useWorkspacePermissionAdapter(context: WorkspaceModeContext): Wo
     canEditAnnotations: canShowAnnotations,
     canEditComments: canShowComments,
     canCreateVariations: canEditBase,
-    canEnterBoardEditor: canEditBase,
-    canImportLocalPgn: true,
-    canImportAsLocalCopy: context.mode === 'competition_commentary' || context.mode === 'replay',
+    canEnterBoardEditor: canEditBase || (!hasSource && localEntryContext),
+    canOpenLocalPgnAsNewSource: true,
+    canInsertLocalPgnIntoCurrentSource: canMutateCurrentSource,
+    canMutateCurrentSource,
+    canCreateEditableLocalCopy:
+      hasSource &&
+      context.mode !== 'live_spectator' &&
+      (context.mode === 'competition_commentary' || context.mode === 'replay') &&
+      canCopyReadonlySnapshot(active.source),
     canRunAnalysis,
     canShowEvalBar,
     canShowAnalysisPanel,
     canShowNotation: true,
     canShowComments,
     canShowAnnotations,
-    modeLabel: modeLabel(context.mode),
-    sourceLabel: sourceLabel(context.source),
+    modeLabel: isLocalEditable ? '本地分析' : modeLabel(context.mode),
+    sourceLabel: hasSource
+      ? activeSourceLabel(active.source)
+      : localEntryContext
+        ? '无来源'
+        : sourceLabel(context.source),
+    sourceIdentityLabel: localSourceIdentityLabel(active.source),
     unavailableReason: sourceUnavailable ? '当前版本暂不支持这项能力。' : null,
   }
+}
+
+function activeSourceLabel(source: DataSource): string {
+  if (source.ownership === 'local') {
+    return source.origin === 'readonly-copy' ? '本地可编辑副本' : '本地可编辑 PGN'
+  }
+
+  if (source.origin === 'completed-replay') return '完成棋局只读快照'
+  if (source.origin === 'completed-commentary') return '完成赛事讲解只读快照'
+  return '无来源'
 }
 
 function modeLabel(mode: string): string {

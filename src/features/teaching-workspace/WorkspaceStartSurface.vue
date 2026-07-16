@@ -2,7 +2,7 @@
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
 const props = defineProps<{
-  canImportLocalPgn: boolean
+  canOpenLocalPgnAsNewSource: boolean
   canEnterBoardEditor: boolean
 }>()
 
@@ -20,7 +20,7 @@ const emit = defineEmits<{
       <button
         class="start-card"
         type="button"
-        :disabled="!props.canImportLocalPgn"
+        :disabled="!props.canOpenLocalPgnAsNewSource"
         @click="emit('action', 'openLocal')"
       >
         <strong>本地 PGN</strong>

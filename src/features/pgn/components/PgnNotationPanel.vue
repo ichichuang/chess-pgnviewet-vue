@@ -9,6 +9,10 @@ const emit = defineEmits<{
   action: [name: Extract<PgnWorkspaceAction, 'openLocal'>]
 }>()
 
+const props = defineProps<{
+  canOpenLocalPgnAsNewSource: boolean
+}>()
+
 const store = usePgnStore()
 const expanded = ref(emptyExpanded())
 const movesScroller = ref()
@@ -126,7 +130,14 @@ function openLocal() {
 <template>
   <section class="pgn-panel" data-p1c-pgn-panel>
     <header class="pgn-panel-toolbar" role="toolbar" aria-label="PGN 导航">
-      <button class="pgn-control" type="button" @click="openLocal">打开 PGN</button>
+      <button
+        class="pgn-control"
+        type="button"
+        :disabled="!props.canOpenLocalPgnAsNewSource"
+        @click="openLocal"
+      >
+        打开 PGN
+      </button>
       <button
         class="pgn-control"
         type="button"

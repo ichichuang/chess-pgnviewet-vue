@@ -15,16 +15,16 @@ import {
   ProductStateBanner,
   ProductSwitch,
 } from '@/ui'
+import type { SettingsCapabilityContext, SettingsRightTab } from './settingsContext'
 
 const props = withDefaults(
   defineProps<{
     show: boolean
+    context: SettingsCapabilityContext
     onReturnFocus?: () => void
-    allowAnalysis?: boolean
   }>(),
   {
     onReturnFocus: () => undefined,
-    allowAnalysis: true,
   }
 )
 
@@ -185,17 +185,16 @@ const boardOrientationOptions = [
   { label: '黑方在下', value: BOARD_ORIENTATION_BLACK },
 ]
 
-const rightTabOptions = computed(() => {
-  const options = [
-    { label: '棋谱', value: 'notation' },
-    { label: '评论', value: 'comments' },
-    { label: '标注', value: 'annotations' },
-  ]
-  if (props.allowAnalysis) {
-    options.push({ label: '分析', value: 'analysis' })
-  }
-  return options
-})
+const rightTabLabels: Record<SettingsRightTab, string> = {
+  notation: '棋谱',
+  comments: '评论',
+  annotations: '标注',
+  analysis: '分析',
+}
+
+const rightTabOptions = computed(() =>
+  props.context.availableRightTabs.map((value) => ({ label: rightTabLabels[value], value }))
+)
 
 const effectiveActiveRightTab = computed(() => {
   const current = workspace.activeRightTab
@@ -242,7 +241,11 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
     </template>
 
     <div class="settings-body">
-      <section class="settings-group" aria-labelledby="appearance-heading">
+      <section
+        v-if="context.capabilities.theme"
+        class="settings-group"
+        aria-labelledby="appearance-heading"
+      >
         <h3 id="appearance-heading" class="group-title">外观</h3>
         <ProductSelect
           :model-value="theme.preference"
@@ -252,16 +255,21 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
         />
       </section>
 
-      <section class="settings-group" aria-labelledby="layout-heading">
+      <section
+        v-if="context.capabilities.workspaceLayout"
+        class="settings-group"
+        aria-labelledby="layout-heading"
+      >
         <h3 id="layout-heading" class="group-title">工作区布局</h3>
         <ProductSwitch
+          v-if="context.capabilities.sourcePanelLayout"
           :model-value="workspace.showLeftSidebar"
           label="显示来源导航"
           :disabled="layoutBusy"
           @update:model-value="onShowLeftSidebarChange"
         />
         <ProductSwitch
-          v-if="allowAnalysis"
+          v-if="context.capabilities.analysisLayout"
           :model-value="workspace.showAnalysisRegion"
           label="显示分析区域"
           :disabled="layoutBusy"
@@ -274,6 +282,7 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
           @update:model-value="onToolbarCollapsedChange"
         />
         <ProductSelect
+          v-if="context.capabilities.boardView"
           :model-value="workspace.boardAlignment"
           :options="boardAlignmentOptions"
           label="棋盘位置"
@@ -281,6 +290,7 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
           @update:model-value="onBoardAlignmentChange"
         />
         <ProductSelect
+          v-if="context.capabilities.boardView"
           :model-value="workspace.boardOrientation"
           :options="boardOrientationOptions"
           label="棋盘朝向"
@@ -288,6 +298,7 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
           @update:model-value="onBoardOrientationChange"
         />
         <ProductSelect
+          v-if="context.capabilities.rightPanel && rightTabOptions.length > 0"
           :model-value="effectiveActiveRightTab"
           :options="rightTabOptions"
           label="当前右侧内容"
@@ -296,6 +307,7 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
           @update:model-value="onActiveRightTabChange"
         />
         <ProductButton
+          v-if="context.capabilities.analysisLayout"
           variant="secondary"
           size="small"
           :disabled="layoutBusy || !canResetRightPgnHeightPx"
@@ -303,6 +315,9 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
         >
           恢复棋谱与分析自动分区
         </ProductButton>
+        <p v-if="context.capabilities.analysisLayout" class="settings-note">
+          AI 分析仅在允许的本地来源中由用户显式启动；这里不保存 AI 启用状态或默认分析范围。
+        </p>
       </section>
 
       <ProductStateBanner v-if="failureMessage" status="warning" title="设置未能保存">
@@ -361,6 +376,12 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
   margin: 0 0 var(--s-1);
   color: var(--text);
   font-size: var(--fs-md);
+}
+
+.settings-note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
 }
 
 .settings-footer {

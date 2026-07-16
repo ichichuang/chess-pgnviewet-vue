@@ -9,6 +9,7 @@ import {
   isCapabilityAvailable,
 } from '@/features/product-api/domain/capabilityAvailability'
 import type { WorkspaceModeContext } from '@/features/workspace-mode/workspaceModeTypes'
+import { completedReadonlyDataSource } from '@/features/pgn/domain/sourceOwnership'
 import { useAuthStore, usePgnStore } from '@/stores'
 
 type RemoteReplayStatus = 'idle' | 'loading' | 'ready' | 'unavailable' | 'error'
@@ -37,10 +38,17 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
   }
 
   watch(
-    () => [context.value, auth.isAuthenticated] as const,
+    () => [context.value, auth.isAuthenticated, pgn.source.id] as const,
     async ([value]) => {
       abortCurrent()
       detail.value = ''
+
+      if (pgn.source.ownership === 'local') {
+        status.value = 'idle'
+        message.value = ''
+        loadedKey = ''
+        return
+      }
 
       if (
         value.mode === 'analysis' &&
@@ -101,10 +109,10 @@ export function useRemoteReplayLoader(context: ComputedRef<WorkspaceModeContext>
           meta: privateQueryMeta,
         })
         if (activeQueryKey !== queryKey) return
-        const ok = pgn.openText(replay.pgnText, {
-          type: 'remote_replay',
-          filename: `${replay.gameId}.pgn`,
-        })
+        const ok = pgn.openText(
+          replay.pgnText,
+          completedReadonlyDataSource('completed-replay', `${replay.gameId}.pgn`)
+        )
 
         if (!ok) {
           status.value = 'error'

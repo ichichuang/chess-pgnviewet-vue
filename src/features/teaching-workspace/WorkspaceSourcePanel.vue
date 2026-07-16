@@ -7,9 +7,12 @@ import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 const props = defineProps<{
   modeLabel: string
   sourceLabel: string
+  sourceIdentityLabel: string
   sourceUnavailable: boolean
   unavailableReason: string | null
-  canImportLocalPgn: boolean
+  canOpenLocalPgnAsNewSource: boolean
+  canInsertLocalPgnIntoCurrentSource: boolean
+  canCreateEditableLocalCopy: boolean
   canEnterBoardEditor: boolean
 }>()
 
@@ -26,6 +29,9 @@ const pgn = usePgnStore()
       <div class="source-panel-identity">
         <span class="source-panel-mode">{{ props.modeLabel }}</span>
         <span class="source-panel-source">{{ props.sourceLabel }}</span>
+        <span v-if="props.sourceIdentityLabel" class="source-panel-source-identity">
+          {{ props.sourceIdentityLabel }}
+        </span>
       </div>
       <p v-if="props.sourceUnavailable && props.unavailableReason" class="source-panel-unavailable">
         {{ props.unavailableReason }}
@@ -36,10 +42,18 @@ const pgn = usePgnStore()
       <button
         class="source-panel-action"
         type="button"
-        :disabled="!props.canImportLocalPgn"
+        :disabled="!props.canOpenLocalPgnAsNewSource"
         @click="emit('action', 'openLocal')"
       >
         导入本地 PGN
+      </button>
+      <button
+        v-if="props.canCreateEditableLocalCopy"
+        class="source-panel-action"
+        type="button"
+        @click="emit('action', 'createEditableLocalCopy')"
+      >
+        创建本地可编辑副本
       </button>
       <button
         class="source-panel-action"
@@ -52,7 +66,12 @@ const pgn = usePgnStore()
       <RouterLink class="source-panel-action" :to="{ name: 'competitions' }">从赛事进入</RouterLink>
     </div>
 
-    <PgnGameList v-if="pgn.hasGame" @action="emit('action', $event)" />
+    <PgnGameList
+      v-if="pgn.hasGame"
+      :can-open-local-pgn-as-new-source="props.canOpenLocalPgnAsNewSource"
+      :can-insert-local-pgn-into-current-source="props.canInsertLocalPgnIntoCurrentSource"
+      @action="emit('action', $event)"
+    />
   </section>
 </template>
 
@@ -93,6 +112,11 @@ const pgn = usePgnStore()
 .source-panel-source {
   color: var(--text-muted);
   font-size: var(--fs-sm);
+}
+
+.source-panel-source-identity {
+  color: var(--accent-strong);
+  font-size: var(--fs-xs);
 }
 
 .source-panel-unavailable {

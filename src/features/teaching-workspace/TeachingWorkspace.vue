@@ -20,7 +20,8 @@ import type {
 } from '@/features/board/domain/boardCapabilities'
 import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
 import { ProductDrawer, ProductSheet } from '@/ui'
-import { useAnalysisStore, useWorkspaceStore } from '@/stores'
+import { useAnalysisStore, usePgnStore, useWorkspaceStore } from '@/stores'
+import { createWorkspaceSettingsContext } from '@/features/settings/settingsContext'
 import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceModeContext'
 import {
   useWorkspacePermissionAdapter,
@@ -38,13 +39,23 @@ import { useWorkspaceSplitter } from './useWorkspaceSplitter'
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
 const workspaceModeContext = useWorkspaceModeContext()
+const pgn = usePgnStore()
 const permissions = reactive<WorkspacePermissions>(
-  useWorkspacePermissionAdapter(workspaceModeContext.value)
+  useWorkspacePermissionAdapter(workspaceModeContext.value, {
+    source: pgn.source,
+    hasCanonicalPgnSnapshot: pgn.hasCanonicalPgnSnapshot,
+  })
 )
 watch(
-  () => workspaceModeContext.value,
-  (context) => {
-    Object.assign(permissions, useWorkspacePermissionAdapter(context))
+  [() => workspaceModeContext.value, () => pgn.source, () => pgn.hasCanonicalPgnSnapshot],
+  ([context]) => {
+    Object.assign(
+      permissions,
+      useWorkspacePermissionAdapter(context, {
+        source: pgn.source,
+        hasCanonicalPgnSnapshot: pgn.hasCanonicalPgnSnapshot,
+      })
+    )
   },
   { immediate: true }
 )
@@ -55,8 +66,7 @@ const {
   fileInput,
   handlePgnAction,
   onFiles,
-  pgn,
-} = usePgnWorkspaceRuntime()
+} = usePgnWorkspaceRuntime(() => permissions)
 const workspace = useWorkspaceStore()
 const analysis = useAnalysisStore()
 const remoteReplay = useRemoteReplayLoader(workspaceModeContext)
@@ -70,6 +80,9 @@ const radialWidth = ref<0.08 | 0.16 | 0.28>(0.16)
 const sourceDrawerOpen = ref(false)
 const contextPanelOpen = ref(false)
 const isNarrow = ref(typeof window !== 'undefined' ? window.innerWidth <= 900 : false)
+const settingsContext = computed(() =>
+  createWorkspaceSettingsContext(workspaceModeContext.value, permissions, pgn.source)
+)
 
 function updateBreakpoint(): void {
   isNarrow.value = window.innerWidth <= 900
@@ -182,7 +195,7 @@ const boardJustifyContent = computed(() => {
 })
 
 watch(
-  () => workspaceModeContext.value,
+  [() => workspaceModeContext.value, () => pgn.source.id],
   () => {
     analysis.stop()
   }
@@ -204,7 +217,15 @@ function handleWorkspaceAction(name: WorkspaceToolbarAction): void {
   }
 
   if (name === 'openLocal' || name === 'insertLocal') {
+    analysis.stop()
     handlePgnAction(name)
+    return
+  }
+
+  if (name === 'createEditableLocalCopy') {
+    if (!permissions.canCreateEditableLocalCopy) return
+    analysis.stop()
+    pgn.createEditableLocalCopy(workspaceModeContext.value.mode)
   }
 }
 
@@ -216,6 +237,7 @@ function enterBoardEditor() {
 }
 
 function finishBoardEditor(snapshot: BoardEditorDraftSnapshot): void {
+  if (!permissions.canEnterBoardEditor) return
   analysis.stop()
   const ok = pgn.insertPgnFromFen(snapshot.fen)
 
@@ -269,6 +291,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
 
     <WorkspaceToolbar
       :permissions="permissions"
+      :settings-context="settingsContext"
       @action="handleWorkspaceAction"
       @open-source="sourceDrawerOpen = true"
       @toggle-context="contextPanelOpen = !contextPanelOpen"
@@ -295,9 +318,14 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
           <WorkspaceSourcePanel
             :mode-label="permissions.modeLabel"
             :source-label="permissions.sourceLabel"
+            :source-identity-label="permissions.sourceIdentityLabel"
             :source-unavailable="permissions.sourceUnavailable"
             :unavailable-reason="permissions.unavailableReason"
-            :can-import-local-pgn="permissions.canImportLocalPgn"
+            :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
+            :can-insert-local-pgn-into-current-source="
+              permissions.canInsertLocalPgnIntoCurrentSource
+            "
+            :can-create-editable-local-copy="permissions.canCreateEditableLocalCopy"
             :can-enter-board-editor="permissions.canEnterBoardEditor"
             @action="handleWorkspaceAction"
           />
@@ -330,7 +358,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
 
         <div v-if="!hasBoardContent" class="board-stage board-stage-empty">
           <WorkspaceStartSurface
-            :can-import-local-pgn="permissions.canImportLocalPgn"
+            :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
             :can-enter-board-editor="permissions.canEnterBoardEditor"
             @action="handleWorkspaceAction"
           />
@@ -415,9 +443,14 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
       <WorkspaceSourcePanel
         :mode-label="permissions.modeLabel"
         :source-label="permissions.sourceLabel"
+        :source-identity-label="permissions.sourceIdentityLabel"
         :source-unavailable="permissions.sourceUnavailable"
         :unavailable-reason="permissions.unavailableReason"
-        :can-import-local-pgn="permissions.canImportLocalPgn"
+        :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
+        :can-insert-local-pgn-into-current-source="
+          permissions.canInsertLocalPgnIntoCurrentSource
+        "
+        :can-create-editable-local-copy="permissions.canCreateEditableLocalCopy"
         :can-enter-board-editor="permissions.canEnterBoardEditor"
         @action="handleWorkspaceAction"
       />

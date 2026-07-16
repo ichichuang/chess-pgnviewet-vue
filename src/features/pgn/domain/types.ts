@@ -1,11 +1,35 @@
 import type { BoardAnnotation } from '@/features/annotations/domain/annotationTypes'
 
-type DataSourceType = 'FS' | 'manual' | 'null' | 'remote_replay'
+interface EmptyDataSource {
+  type: 'null'
+  id: ''
+  ownership: 'none'
+  editable: false
+  localCopyPolicy: 'forbidden'
+  origin: 'none'
+}
 
-export interface DataSource {
-  type: DataSourceType
+interface LocalDataSource {
+  type: 'FS' | 'manual'
+  id: string
+  ownership: 'local'
+  editable: true
+  localCopyPolicy: 'not-applicable'
+  origin: 'local-file' | 'manual-position' | 'readonly-copy'
   filename?: string | undefined
 }
+
+interface ReadonlyDataSource {
+  type: 'remote_replay' | 'competition_snapshot'
+  id: string
+  ownership: 'remote'
+  editable: false
+  localCopyPolicy: 'completed-snapshot' | 'forbidden'
+  origin: 'completed-replay' | 'completed-commentary'
+  filename?: string | undefined
+}
+
+export type DataSource = EmptyDataSource | LocalDataSource | ReadonlyDataSource
 
 export interface MoveNode {
   id: number

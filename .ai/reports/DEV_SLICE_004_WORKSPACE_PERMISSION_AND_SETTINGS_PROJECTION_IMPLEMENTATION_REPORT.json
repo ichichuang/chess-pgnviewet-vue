@@ -1,0 +1,404 @@
+{
+  "title": "DEV-SLICE-004 workspace permission and settings projection implementation report",
+  "slice": "DEV-SLICE-004",
+  "verified_baseline": {
+    "repository": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "03473566b88342d7d51591f85eae30b2a77d3aea",
+    "local_head_before_changes": "03473566b88342d7d51591f85eae30b2a77d3aea",
+    "origin_main_before_changes": "03473566b88342d7d51591f85eae30b2a77d3aea",
+    "live_remote_main_before_changes": "03473566b88342d7d51591f85eae30b2a77d3aea",
+    "ahead_behind_before_changes": "0/0",
+    "worktree_and_index_before_changes": "clean"
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/PRODUCT_REQUIREMENT_TRACEABILITY.json",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/SETTINGS_SURFACE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md (read-only)",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json (read-only)"
+  ],
+  "callers_inspected": [
+    "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+    "src/features/workspace-mode/workspaceModeContext.ts",
+    "src/features/workspace-mode/workspaceModeTypes.ts",
+    "src/features/workspace-mode/workspaceModeQuery.ts",
+    "src/features/workspace-mode/WorkspaceModeController.vue",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+    "src/features/teaching-workspace/WorkspaceStartSurface.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/features/teaching-workspace/workspaceToolbarTypes.ts",
+    "src/features/teaching-workspace/useRemoteReplayLoader.ts",
+    "src/features/pgn/usePgnWorkspaceRuntime.ts",
+    "src/features/pgn/components/PgnGameList.vue",
+    "src/features/pgn/components/PgnNotationPanel.vue",
+    "src/features/pgn/domain/types.ts",
+    "src/stores/pgn.ts",
+    "src/stores/analysis.ts",
+    "src/persistence/workspace/workspaceHandoff.ts",
+    "src/features/settings/SettingsSurface.vue",
+    "src/features/product-api/components/RouteHeader.vue",
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/features/product-api/views/VenueDisplayView.vue",
+    "src/features/product-api/views/LiveCompetitionView.vue",
+    "src/features/product-api/views/CompatibilityUnavailableView.vue",
+    "src/features/auth/views/LoginView.vue",
+    "src/features/navigation/views/NotFoundView.vue"
+  ],
+  "defects_reproduced": [
+    {
+      "id": "MISSING-UI-008",
+      "before": "A loaded read-only snapshot had no explicit, independently owned editable-local-copy identity or action.",
+      "after": "An authorized completed replay/commentary snapshot exposes a clearly named local-copy action that creates a distinct memory-owned local source."
+    },
+    {
+      "id": "MISSING-UI-014",
+      "before": "Completed commentary had no contract-independent local-copy shell.",
+      "after": "The generic completed-commentary snapshot identity and copy shell work only for real already-loaded PGN data; protected loading remains contract-blocked."
+    },
+    {
+      "id": "MISSING-UI-023",
+      "before": "Settings received no typed page/mode/source capability projection.",
+      "after": "SettingsSurface requires a deterministic SettingsCapabilityContext and renders only applicable controls."
+    },
+    {
+      "id": "NONCONF-UI-010",
+      "before": "One broad local-PGN permission authorized both open and insert.",
+      "after": "Open-as-new, insert-current, mutate-current, and create-local-copy are separate named capabilities."
+    },
+    {
+      "id": "NONCONF-UI-011",
+      "before": "Open and insert converged on ambiguous handlers without an explicit source-ownership boundary.",
+      "after": "Open always creates a new local identity; insert is guarded by current local editability and the exact expected source identity."
+    },
+    {
+      "id": "NONCONF-UI-019",
+      "before": "Competition routes displayed workspace-only settings as if globally applicable.",
+      "after": "Competition list/detail receive theme-only route contexts; non-settings surfaces remain without SettingsSurface."
+    },
+    {
+      "id": "NONCONF-UI-020",
+      "before": "Settings initialized analysis permission as a fixed true value.",
+      "after": "No AI enablement/default preference is projected or persisted; the local-only note states that analysis requires an explicit action."
+    }
+  ],
+  "implementation_decisions": [
+    "DataSource is a discriminated ownership union for empty, local-editable, and completed-read-only sources.",
+    "Local and read-only identities are generated in memory and are never persisted by this slice.",
+    "The PGN Store is the final guard for insertion, move/variation mutation, annotation mutation, and analysis writes.",
+    "The file runtime captures the insertion target identity before opening the chooser and checks it before and after asynchronous file reading.",
+    "A local copy deep-clones approved PGN items, move trees, parent links, annotations, comments, NAGs, and approved local teaching fields while replacing source ownership.",
+    "Settings projection derives from the existing route context, workspace mode, active DataSource, and permission adapter without adding a Store or persistence owner."
+  ],
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+    "src/features/pgn/components/PgnGameList.vue",
+    "src/features/pgn/components/PgnNotationPanel.vue",
+    "src/features/pgn/domain/sourceOwnership.ts",
+    "src/features/pgn/domain/types.ts",
+    "src/features/pgn/usePgnWorkspaceRuntime.ts",
+    "src/features/product-api/components/RouteHeader.vue",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/features/settings/settingsContext.ts",
+    "src/features/settings/SettingsSurface.vue",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+    "src/features/teaching-workspace/WorkspaceStartSurface.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/features/teaching-workspace/useRemoteReplayLoader.ts",
+    "src/features/teaching-workspace/workspaceToolbarTypes.ts",
+    "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+    "src/stores/analysis.ts",
+    "src/stores/pgn.ts"
+  ],
+  "permission_capability_model": {
+    "before": {
+      "canImportLocalPgn": "One ambiguous boolean controlled open and insert.",
+      "copy": "No typed completed-snapshot copy capability.",
+      "mutation": "UI context readonly was not a complete Store-side source ownership guard."
+    },
+    "after": {
+      "canOpenLocalPgnAsNewSource": "Allows an independent local source replacement; never inserts into the active source.",
+      "canInsertLocalPgnIntoCurrentSource": "True only for a loaded explicitly local editable DataSource.",
+      "canMutateCurrentSource": "True only for a loaded explicitly local editable DataSource.",
+      "canCreateEditableLocalCopy": "True only for a real loaded completed read-only snapshot in replay or completed-commentary mode; false for live.",
+      "canRunAnalysis": "True only when current-source mutation is authorized."
+    }
+  },
+  "side_effect_guards": {
+    "runtime": [
+      "handlePgnAction checks the exact open or insert capability before opening the chooser.",
+      "Insert captures pgn.source.id and rejects a changed target both before and after File.text().",
+      "Drop always uses open-as-new-source semantics."
+    ],
+    "pgn_store": [
+      "insertText rejects every non-local or non-editable active source.",
+      "insertPgnFromFen rejects a loaded read-only source.",
+      "tryMove, promotion resolution, branch resolution, drawing mutation, clear, undo, and redo re-check canMutateCurrentSource.",
+      "createEditableLocalCopy re-checks real snapshot, copy policy, and replay/commentary mode."
+    ],
+    "analysis_store": [
+      "Analysis context creation requires a local mutable source and records sourceId.",
+      "Async result acceptance requires the same mutable sourceId, node, and position.",
+      "Annotation assessment writes re-check mutable source ownership and sourceId."
+    ]
+  },
+  "source_identity_rules": {
+    "empty": "type=null, empty id, ownership=none, editable=false, copy forbidden.",
+    "open_local": "Creates a new local:<memory-id>, origin=local-file, editable=true source each time.",
+    "manual_position": "Creates a new local:<memory-id>, origin=manual-position source only when no loaded source exists.",
+    "completed_readonly": "Creates a readonly:<memory-id> remote source with completed-snapshot copy policy only after real PGN data is available.",
+    "editable_copy": "Creates a new local:<memory-id>, origin=readonly-copy, strips filename/remote ownership/handoff/transport identity, and is visibly labeled 本地可编辑副本 plus a shortened local identity.",
+    "persistence": "All new source identities and copied PGN state remain memory-owned."
+  },
+  "local_copy_semantics": {
+    "preserved": [
+      "approved PGN headers/tags/text",
+      "FEN and approved display fields",
+      "move tree structure and selection identifiers",
+      "annotations, comments, analysis annotation values, and NAGs"
+    ],
+    "deep_clone": [
+      "PgnItem",
+      "GameTree",
+      "every MoveNode",
+      "parent links rebound to cloned parents",
+      "BoardAnnotation arrays and values"
+    ],
+    "excluded": [
+      "tokens and credentials",
+      "protected identifiers",
+      "remote filename/ownership/handoff identity",
+      "transport and query metadata",
+      "live credentials and clocks",
+      "contract-only state"
+    ],
+    "original_immutability": "Browser evidence confirmed distinct item/tree/root/child/annotation references; local annotation mutation changed only the copy."
+  },
+  "completed_commentary_boundary": {
+    "implemented": "A completed-commentary readonly DataSource projection and local-copy shell operate on real already-loaded canonical PGN snapshots.",
+    "not_implemented": "No protected commentary/replay request, fake success, synthetic game, new contract, clock, credential, or persistence owner.",
+    "status": "MISSING-UI-014 remains partially contract-blocked and is not claimed closed."
+  },
+  "settings_applicability_matrix": [
+    {
+      "surface": "workspace/no source",
+      "theme": true,
+      "workspace_layout": true,
+      "source_panel_layout": true,
+      "board_view": false,
+      "right_panel": false,
+      "analysis_layout": false
+    },
+    {
+      "surface": "workspace/local editable source",
+      "theme": true,
+      "workspace_layout": true,
+      "source_panel_layout": true,
+      "board_view": true,
+      "right_panel": true,
+      "analysis_layout": true
+    },
+    {
+      "surface": "workspace/completed readonly replay or commentary",
+      "theme": true,
+      "workspace_layout": true,
+      "source_panel_layout": true,
+      "board_view": true,
+      "right_panel": true,
+      "analysis_layout": false
+    },
+    {
+      "surface": "competition list",
+      "theme": true,
+      "workspace_layout": false,
+      "source_panel_layout": false,
+      "board_view": false,
+      "right_panel": false,
+      "analysis_layout": false
+    },
+    {
+      "surface": "competition detail",
+      "theme": true,
+      "workspace_layout": false,
+      "source_panel_layout": false,
+      "board_view": false,
+      "right_panel": false,
+      "analysis_layout": false
+    },
+    {
+      "surface": "compatibility, NotFound, login, venue display, live unavailable",
+      "settings_surface": false,
+      "reason": "No authority declares workspace settings applicable on these surfaces."
+    }
+  ],
+  "provisional_ai_setting_behavior": {
+    "persistent_enable_toggle": false,
+    "approved_default_claim": false,
+    "new_preference_write": false,
+    "local_context_copy": "AI 分析仅在允许的本地来源中由用户显式启动；这里不保存 AI 启用状态或默认分析范围。",
+    "od_boundary": "OD-03 and OD-04 remain open."
+  },
+  "contract_blocked_remainder": [
+    "/match/:key remains unavailable and issues no request before a confirmed contract.",
+    "/share/:uuid remains unavailable and gains no fake PGN or copy success.",
+    "/cloud/:fileid remains unavailable and gains no fake PGN or copy success.",
+    "/competitions/:hdid/live remains truthful read-only unavailable behavior.",
+    "Protected replay/commentary success remains unavailable when the capability contract is absent.",
+    "No login demand is introduced ahead of contract availability."
+  ],
+  "static_validation": [
+    {
+      "command": "jq empty .ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-dev-slice-004-build --emptyOutDir",
+      "result": "pass"
+    }
+  ],
+  "browser_validation": {
+    "server": "http://127.0.0.1:5174/pgnViewer/",
+    "tools": [
+      "real Chromium browser automation",
+      "Chrome native file chooser",
+      "temporary in-browser Pinia/handoff projection for unavailable read-only contracts"
+    ],
+    "no_source": {
+      "open_as_new": "enabled",
+      "insert_current": "disabled",
+      "local_copy": "absent",
+      "settings": "theme, source navigation layout, and toolbar collapse only"
+    },
+    "local_source": {
+      "temporary_pgn": "Loaded through a native file chooser; temporary PGN and browser artifacts were removed and none are retained in the repository.",
+      "first_identity": "local:0f4cc418... (browser-run memory identity)",
+      "insert_result": "Game count changed from 1 to 2 while the local identity prefix remained 0f4cc418.",
+      "copy_action": "absent because the source was already local editable.",
+      "settings": "local board/right-panel/analysis controls present; AI note makes explicit-action and no-persistence behavior clear."
+    },
+    "readonly_projection": {
+      "limitation": "No currently approved protected replay/commentary contract was reachable, so page-only state projection was used without repository source changes.",
+      "remote_identity": "readonly:b928035e-227c-454b-8cc9-364b4bb3bad3",
+      "insert": "disabled in UI and rejected by Store",
+      "move_annotation_analysis": "Store attempts returned no canonical graph, FEN, item, tree, or annotation changes; analysis did not start.",
+      "copy_identity": "local:eb6787ab-5657-4a02-85c1-d3a9a13e19aa",
+      "copy_integrity": "Distinct item/tree/root/child/annotation references and rebound parent links; mutation of the local copy left the original unchanged.",
+      "copy_status_projection": "After the source became local, the stale remote-unavailable banner cleared, the local-copy label appeared, and insertion became enabled.",
+      "open_as_new_identity": "local:7f86d572-449b-4b96-8259-4cd7ecad753d",
+      "open_as_new_integrity": "The new local PGN replaced the active source without mutating the saved readonly item or identity.",
+      "live_exclusion": "A live-spectator projection exposed no copy action, insertion, analysis tab, or mutation capability.",
+      "commentary_shell": "A completed-commentary projection showed 赛事讲解, 完成赛事讲解只读快照, disabled insertion, and the authorized copy action."
+    },
+    "stale_callback": {
+      "projection": "File.text() replaced the local source before resolving.",
+      "result": "The stale PGN was not inserted; the replacement source remained one game and the runtime reported 插入目标已变化，请重新选择当前本地来源。"
+    },
+    "route_settings": {
+      "competition_list": "theme only; workspace and AI controls absent",
+      "competition_detail": "theme only; workspace and AI controls absent",
+      "back_forward_refresh": "detail/list identity and theme-only settings remained deterministic after back, forward, and reload",
+      "mode_source_changes": "no-source, local, replay readonly, live readonly, and completed-commentary projections updated controls deterministically"
+    },
+    "contract_blocked_route": {
+      "route": "/pgnViewer/match/valid123",
+      "copy_success": false,
+      "login_demand": false,
+      "dynamic_network_requests": 0,
+      "fake_pgn": false,
+      "visible_truth": "这项能力尚未具备已确认的读取合同，当前不会发起请求。"
+    },
+    "overlay_and_accessibility": {
+      "desktop": "right-placement Drawer; initial focus on 关闭设置",
+      "narrow_520x800": "bottom-placement Sheet; initial focus on 关闭设置",
+      "escape": "closed both forms and returned focus to 设置",
+      "themes": "light produced color-scheme light and dark produced color-scheme dark",
+      "dom": "non-empty",
+      "vite_overlay": "absent",
+      "console": "no breaking application errors; one non-breaking favicon.ico 404 was observed in one browser session"
+    }
+  },
+  "cor_impact": {
+    "COR-003": "DEV-SLICE-004 permission/source-ownership portion implemented; no unrelated dirty-state or editor work claimed.",
+    "COR-026": "DEV-SLICE-004 typed route/mode/source settings projection implemented; no authority-wide backlog closure claimed."
+  },
+  "od_boundaries": {
+    "OD-01": "No teaching collection/session entity or persistence owner added.",
+    "OD-02": "No recovery duration, autosave contract, or Dexie table added.",
+    "OD-03": "No AI-enabled default is asserted or persisted.",
+    "OD-04": "No full-game/default analysis scope is asserted or persisted.",
+    "OD-05_to_OD-11": "Remain open and unchanged; no provisional value is converted into authority."
+  },
+  "limitations": [
+    "The protected replay/commentary PGN contract is unavailable, so the read-only completed-source validation used an explicitly documented temporary browser projection.",
+    "MISSING-UI-014 is not fully closed because contract-dependent completed-event data loading remains blocked.",
+    "Source identities are intentionally memory-only and change on every independent open or copy.",
+    "The observed favicon.ico 404 is pre-existing/non-breaking and outside this slice."
+  ]
+}

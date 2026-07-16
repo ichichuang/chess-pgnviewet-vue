@@ -1,21 +1,42 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import type { BoardMoveRequest } from '@/features/board/domain/boardTypes'
+import { localFileDataSource } from '@/features/pgn/domain/sourceOwnership'
 import { usePgnStore } from '@/stores'
 
 import type { PgnWorkspaceAction } from './pgnWorkspaceTypes'
 
-export function usePgnWorkspaceRuntime() {
+interface PgnImportCapabilities {
+  canOpenLocalPgnAsNewSource: boolean
+  canInsertLocalPgnIntoCurrentSource: boolean
+}
+
+export function usePgnWorkspaceRuntime(capabilities: () => PgnImportCapabilities) {
   const pgn = usePgnStore()
   const fileInput = ref<HTMLInputElement | null>(null)
   const insertMode = ref(false)
+  const insertTargetSourceId = ref('')
   const dragDepth = ref(0)
   const boardPosition = computed(() => pgn.currentFen)
   const boardInteractive = computed(() => pgn.hasGame)
   const dragActive = computed(() => dragDepth.value > 0)
 
   function handlePgnAction(name: PgnWorkspaceAction): void {
+    const allowed =
+      name === 'openLocal'
+        ? capabilities().canOpenLocalPgnAsNewSource
+        : capabilities().canInsertLocalPgnIntoCurrentSource
+
+    if (!allowed) {
+      pgn.lastError =
+        name === 'openLocal'
+          ? '当前无法打开新的本地 PGN 来源。'
+          : '当前来源不可插入 PGN，请改为打开新的本地来源。'
+      return
+    }
+
     insertMode.value = name === 'insertLocal'
+    insertTargetSourceId.value = insertMode.value ? pgn.source.id : ''
     fileInput.value?.click()
   }
 
@@ -23,7 +44,27 @@ export function usePgnWorkspaceRuntime() {
     return /\.(pgn|txt)$/i.test(file.name)
   }
 
-  async function importFiles(files: File[], insert: boolean): Promise<void> {
+  function canImport(insert: boolean, expectedSourceId: string): boolean {
+    if (!insert) return capabilities().canOpenLocalPgnAsNewSource
+
+    return (
+      expectedSourceId !== '' &&
+      pgn.source.id === expectedSourceId &&
+      pgn.canMutateCurrentSource &&
+      capabilities().canInsertLocalPgnIntoCurrentSource
+    )
+  }
+
+  async function importFiles(files: File[], insert: boolean, expectedSourceId = ''): Promise<void> {
+    const allowed = canImport(insert, expectedSourceId)
+
+    if (!allowed) {
+      pgn.lastError = insert
+        ? '当前来源不可插入 PGN，请改为打开新的本地来源。'
+        : '当前无法打开新的本地 PGN 来源。'
+      return
+    }
+
     const pgnFiles = files.filter(isPgnFile)
 
     if (pgnFiles.length === 0) {
@@ -33,8 +74,19 @@ export function usePgnWorkspaceRuntime() {
 
     try {
       const texts = await Promise.all(pgnFiles.map((file) => file.text()))
+
+      if (!canImport(insert, expectedSourceId)) {
+        pgn.lastError = insert
+          ? '插入目标已变化，请重新选择当前本地来源。'
+          : '当前无法打开新的本地 PGN 来源。'
+        return
+      }
+
       const merged = texts.join('\n\n')
-      const ok = insert ? pgn.insertText(merged) : pgn.openText(merged, { type: 'FS' })
+      const filename = pgnFiles.length === 1 ? pgnFiles[0]?.name : `${pgnFiles.length} 个本地文件`
+      const ok = insert
+        ? pgn.insertText(merged)
+        : pgn.openText(merged, localFileDataSource(filename))
 
       if (ok) {
         pgn.lastError = null
@@ -52,13 +104,16 @@ export function usePgnWorkspaceRuntime() {
     }
 
     const files = input.files
+    const insert = insertMode.value
+    const expectedSourceId = insertTargetSourceId.value
 
     if (files?.length) {
-      await importFiles(Array.from(files), insertMode.value)
+      await importFiles(Array.from(files), insert, expectedSourceId)
     }
 
     input.value = ''
     insertMode.value = false
+    insertTargetSourceId.value = ''
   }
 
   function isFileDrag(event: DragEvent): boolean {

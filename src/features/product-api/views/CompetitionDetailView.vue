@@ -417,6 +417,7 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   <ProductRouteShell :title="title" subtitle="选择组别、轮次和对阵，进入讲解或场外大屏">
     <template #header="{ titleId, registerTitle }">
       <RouteHeader
+        settings-page="competition-detail"
         :title="title"
         :title-id="titleId"
         subtitle="选择组别、轮次和对阵，进入讲解或场外大屏"

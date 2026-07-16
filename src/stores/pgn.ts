@@ -21,6 +21,13 @@ import {
   STANDARD_START_FEN,
 } from '@/features/pgn/domain/parsePgn'
 import {
+  canCopyReadonlySnapshot,
+  editableLocalCopyDataSource,
+  emptyDataSource,
+  isLocalEditableDataSource,
+  manualPositionDataSource,
+} from '@/features/pgn/domain/sourceOwnership'
+import {
   filterItems,
   findNode,
   pageCount,
@@ -28,7 +35,8 @@ import {
   pathToNode,
   pgnTitle,
 } from '@/features/pgn/domain/pgnStorage'
-import type { DataSource, MoveNode, PgnItem } from '@/features/pgn/domain/types'
+import type { DataSource, GameTree, MoveNode, PgnItem } from '@/features/pgn/domain/types'
+import type { WorkspaceMode } from '@/features/workspace-mode/workspaceModeTypes'
 
 interface PendingPromotion {
   from: string
@@ -78,7 +86,7 @@ function defaultPgnState(): PgnState {
     searchKey: '',
     page: 0,
     pageSize: 12,
-    source: { type: 'null' },
+    source: emptyDataSource(),
     lastError: null,
     pendingPromotion: null,
     pendingBranch: null,
@@ -121,6 +129,15 @@ export const usePgnStore = defineStore('pgn', {
   getters: {
     hasGame(state): boolean {
       return state.selectedIndex >= 0 && Boolean(state.items[state.selectedIndex]?.tree)
+    },
+    hasCanonicalPgnSnapshot(): boolean {
+      return this.hasGame && this.items.length > 0
+    },
+    canMutateCurrentSource(state): boolean {
+      return this.hasGame && isLocalEditableDataSource(state.source)
+    },
+    canCreateEditableLocalCopy(state): boolean {
+      return this.hasCanonicalPgnSnapshot && canCopyReadonlySnapshot(state.source)
     },
     filtered(state): PgnItem[] {
       return filterItems(state.items, state.searchKey)
@@ -234,11 +251,12 @@ export const usePgnStore = defineStore('pgn', {
       if (this.source.type !== 'remote_replay') return
       this.$reset()
     },
-    openText(text: string, source: DataSource = { type: 'FS' }): boolean {
+    openText(text: string, source: DataSource): boolean {
       try {
         const items = parseStrictCollection(text)
+        assignItemSources(items, source)
         this.items = items
-        this.source = source
+        this.source = { ...source }
         this.page = 0
         this.searchKey = ''
         this.pendingPromotion = null
@@ -254,8 +272,14 @@ export const usePgnStore = defineStore('pgn', {
       }
     },
     insertText(text: string): boolean {
+      if (!this.canMutateCurrentSource) {
+        this.lastError = '当前来源不可插入 PGN，请改为打开新的本地来源。'
+        return false
+      }
+
       try {
         const items = parseStrictCollection(text)
+        assignItemSources(items, this.source)
         this.items.push(...items)
 
         if (this.selectedIndex === -1) {
@@ -273,7 +297,38 @@ export const usePgnStore = defineStore('pgn', {
         return false
       }
     },
+    createEditableLocalCopy(mode: WorkspaceMode): boolean {
+      if (
+        !this.canCreateEditableLocalCopy ||
+        (mode !== 'competition_commentary' && mode !== 'replay')
+      ) {
+        this.lastError = '当前来源没有可复制的已完成棋谱快照。'
+        return false
+      }
+
+      const localSource = editableLocalCopyDataSource()
+      const copiedItems = cloneApprovedPgnItems(this.items, localSource)
+
+      if (copiedItems.length === 0) {
+        this.lastError = '当前来源没有可复制的已完成棋谱快照。'
+        return false
+      }
+
+      this.items = copiedItems
+      this.source = localSource
+      this.pendingPromotion = null
+      this.pendingBranch = null
+      this.drawUndo = []
+      this.drawRedo = []
+      this.lastError = null
+      return true
+    },
     insertPgnFromFen(fen: string): boolean {
+      if (this.hasGame && !this.canMutateCurrentSource) {
+        this.lastError = '当前来源为只读，不能插入手动局面。'
+        return false
+      }
+
       const normalizedFen = fen.trim().replace(/\s+/gu, ' ')
 
       try {
@@ -291,12 +346,13 @@ export const usePgnStore = defineStore('pgn', {
           return false
         }
 
-        item.dataSource = { type: 'manual' }
+        const activeSource = this.hasGame ? this.source : manualPositionDataSource()
+        item.dataSource = { ...activeSource }
 
         const hasSelectedItem = this.selectedIndex >= 0 && this.selectedIndex < this.items.length
         const insertIndex = hasSelectedItem ? this.selectedIndex + 1 : this.items.length
         this.items.splice(insertIndex, 0, item)
-        this.source = { type: 'manual' }
+        this.source = { ...activeSource }
         this.selectItem(insertIndex)
         this.pendingPromotion = null
         this.pendingBranch = null
@@ -366,6 +422,11 @@ export const usePgnStore = defineStore('pgn', {
       to: string
       promotion?: PromotionPiece
     }): 'applied' | 'branch' | 'promotion' | 'illegal' {
+      if (!this.canMutateCurrentSource) {
+        this.lastError = '当前来源为只读，不能修改棋谱。'
+        return 'illegal'
+      }
+
       const node = this.currentNode
 
       if (!node) {
@@ -423,6 +484,7 @@ export const usePgnStore = defineStore('pgn', {
       return 'branch'
     },
     resolvePromotion(piece: PromotionPiece): void {
+      if (!this.canMutateCurrentSource) return
       const pending = this.pendingPromotion
 
       if (!pending) {
@@ -436,6 +498,11 @@ export const usePgnStore = defineStore('pgn', {
       this.pendingPromotion = null
     },
     resolveBranch(asMainline: boolean): void {
+      if (!this.canMutateCurrentSource) {
+        this.pendingBranch = null
+        return
+      }
+
       const pending = this.pendingBranch
       const item = this.selectedItem
 
@@ -481,6 +548,7 @@ export const usePgnStore = defineStore('pgn', {
       this.pendingBranch = null
     },
     drawAnnotation(payload: AnnotationDrawPayload): void {
+      if (!this.canMutateCurrentSource) return
       if (payload.kind === 'arrow' && payload.to) {
         this.toggleDrawArrow(payload.from, payload.to, payload.color)
         return
@@ -495,6 +563,7 @@ export const usePgnStore = defineStore('pgn', {
       color: BoardAnnotation['squares'][number]['color'],
       kind: BoardAnnotation['squares'][number]['kind']
     ): void {
+      if (!this.canMutateCurrentSource) return
       const node = this.currentNode
 
       if (!node) {
@@ -520,6 +589,7 @@ export const usePgnStore = defineStore('pgn', {
       to: string,
       color: BoardAnnotation['arrows'][number]['color']
     ): void {
+      if (!this.canMutateCurrentSource) return
       const node = this.currentNode
 
       if (!node) {
@@ -541,6 +611,7 @@ export const usePgnStore = defineStore('pgn', {
       this.recordDrawChange(node, before)
     },
     clearDrawing(): void {
+      if (!this.canMutateCurrentSource) return
       const node = this.currentNode
 
       if (!node) {
@@ -568,6 +639,7 @@ export const usePgnStore = defineStore('pgn', {
       this.drawRedo = []
     },
     undoCurrentDrawing(): boolean {
+      if (!this.canMutateCurrentSource) return false
       const node = this.currentNode
 
       if (!node) {
@@ -597,6 +669,7 @@ export const usePgnStore = defineStore('pgn', {
       return true
     },
     redoCurrentDrawing(): boolean {
+      if (!this.canMutateCurrentSource) return false
       const node = this.currentNode
 
       if (!node) {
@@ -669,4 +742,59 @@ function findLastHistoryIndex(entries: DrawHistoryEntry[], nodeId: number): numb
   }
 
   return -1
+}
+
+function assignItemSources(items: PgnItem[], source: DataSource): void {
+  for (const item of items) {
+    item.dataSource = { ...source }
+  }
+}
+
+function cloneApprovedPgnItems(items: PgnItem[], source: DataSource): PgnItem[] {
+  return items.map((item) => ({
+    headers: [...item.headers],
+    tags: { ...item.tags },
+    PGN: item.PGN,
+    ...(item.FEN === undefined ? {} : { FEN: item.FEN }),
+    ...(item.Event === undefined ? {} : { Event: item.Event }),
+    ...(item.White === undefined ? {} : { White: item.White }),
+    ...(item.Black === undefined ? {} : { Black: item.Black }),
+    ...(item.Result === undefined ? {} : { Result: item.Result }),
+    ...(item.pgnTitle === undefined ? {} : { pgnTitle: item.pgnTitle }),
+    ...(item.description === undefined ? {} : { description: item.description }),
+    ...(item.last_fen === undefined ? {} : { last_fen: item.last_fen }),
+    dataSource: { ...source },
+    ...(item.tree === undefined ? {} : { tree: cloneGameTree(item.tree) }),
+    ...(item.parseError === undefined ? {} : { parseError: item.parseError }),
+  }))
+}
+
+function cloneGameTree(tree: GameTree): GameTree {
+  return {
+    startFen: tree.startFen,
+    fromFen: tree.fromFen,
+    root: cloneMoveNode(tree.root, null),
+  }
+}
+
+function cloneMoveNode(node: MoveNode, parent: MoveNode | null): MoveNode {
+  const copy: MoveNode = {
+    id: node.id,
+    san: node.san,
+    fen: node.fen,
+    ply: node.ply,
+    moveNumber: node.moveNumber,
+    color: node.color,
+    rawComments: [...node.rawComments],
+    annotation: cloneAnnotation(node.annotation),
+    nags: [...node.nags],
+    parent,
+    children: [],
+    ...(node.from === undefined ? {} : { from: node.from }),
+    ...(node.to === undefined ? {} : { to: node.to }),
+    ...(node.promotion === undefined ? {} : { promotion: node.promotion }),
+    ...(node.prevFen === undefined ? {} : { prevFen: node.prevFen }),
+  }
+  copy.children = node.children.map((child) => cloneMoveNode(child, copy))
+  return copy
 }

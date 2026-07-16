@@ -8,6 +8,7 @@ import {
 import { BOARD_ORIENTATION_BLACK } from '@/features/board/domain/boardTypes'
 import { useAuthStore, usePgnStore, useWorkspaceStore } from '@/stores'
 import SettingsSurface from '@/features/settings'
+import type { SettingsCapabilityContext } from '@/features/settings/settingsContext'
 import { ProductButton, ProductConfirmDialog } from '@/ui'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
@@ -19,6 +20,7 @@ import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
 const props = defineProps<{
   permissions: WorkspacePermissions
+  settingsContext: SettingsCapabilityContext
 }>()
 
 const emit = defineEmits<{
@@ -51,11 +53,12 @@ function setAnnotationColor(color: AnnotationColorId): void {
 }
 
 function confirmClearDrawing(): void {
-  if (!pgn.hasCurrentDrawing) return
+  if (!props.permissions.canMutateCurrentSource || !pgn.hasCurrentDrawing) return
   showClearConfirm.value = true
 }
 
 function onClearDrawingConfirmed(): void {
+  if (!props.permissions.canMutateCurrentSource) return
   pgn.clearDrawing()
   showClearConfirm.value = false
 }
@@ -176,17 +179,24 @@ onBeforeUnmount(() => {
         <section class="toolbar-group" aria-label="棋谱文件">
           <ProductButton
             size="small"
-            :disabled="!props.permissions.canImportLocalPgn"
+            :disabled="!props.permissions.canOpenLocalPgnAsNewSource"
             @click="emit('action', 'openLocal')"
           >
             打开 PGN
           </ProductButton>
           <ProductButton
             size="small"
-            :disabled="!props.permissions.canImportLocalPgn"
+            :disabled="!props.permissions.canInsertLocalPgnIntoCurrentSource"
             @click="emit('action', 'insertLocal')"
           >
             插入
+          </ProductButton>
+          <ProductButton
+            v-if="props.permissions.canCreateEditableLocalCopy"
+            size="small"
+            @click="emit('action', 'createEditableLocalCopy')"
+          >
+            创建本地可编辑副本
           </ProductButton>
         </section>
 
@@ -317,6 +327,7 @@ onBeforeUnmount(() => {
 
     <SettingsSurface
       v-model:show="settingsOpen"
+      :context="settingsContext"
       :on-return-focus="() => settingsButtonRef?.focus()"
     />
   </header>

@@ -67,7 +67,11 @@ const analysisScore = computed(() => {
       :panes="panes"
     >
       <template #notation>
-        <PgnNotationPanel class="panel-content" @action="emit('action', $event)" />
+        <PgnNotationPanel
+          class="panel-content"
+          :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
+          @action="emit('action', $event)"
+        />
       </template>
 
       <template #comments>

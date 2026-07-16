@@ -1,1 +1,2 @@
-export type WorkspaceToolbarAction = 'enterBoardEditor' | 'insertLocal' | 'openLocal'
+export type WorkspaceToolbarAction =
+  'createEditableLocalCopy' | 'enterBoardEditor' | 'insertLocal' | 'openLocal'
