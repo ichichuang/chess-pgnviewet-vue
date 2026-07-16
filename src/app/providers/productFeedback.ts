@@ -1,5 +1,7 @@
 import { inject, provide, type InjectionKey } from 'vue'
 
+import type { ProductOverlayReturnFocus } from '@/ui/productOverlayFocus'
+
 export type ProductRecoverableMessageKind =
   'settings-saved' | 'settings-save-failed' | 'action-completed' | 'content-temporarily-unavailable'
 
@@ -21,6 +23,7 @@ export interface ProductConfirmationRequest {
   confirmText?: string
   cancelText?: string
   dangerous?: boolean
+  returnFocus?: ProductOverlayReturnFocus
 }
 
 export interface ProductFeedbackApi {

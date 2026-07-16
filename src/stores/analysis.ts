@@ -20,7 +20,9 @@ type WorkerMode = 'worker' | 'main-thread-fallback' | 'unavailable'
 
 interface AnalysisContext {
   requestId: number
+  sourceSession: number
   sourceId: string
+  sourceRevision: number
   nodeId: number
   nodeKey: string
   positionId: string
@@ -205,7 +207,9 @@ function contextFromCurrentNode(): Omit<AnalysisContext, 'requestId'> | null {
   }
 
   return {
+    sourceSession: pgn.sourceSession,
     sourceId: pgn.source.id,
+    sourceRevision: pgn.sourceRevision,
     nodeId: node.id,
     nodeKey: nodeKeyFor(pgn.selectedIndex, node.id),
     positionId: hashString(pgn.currentFen),
@@ -271,6 +275,8 @@ export const useAnalysisStore = defineStore('analysis', {
       if (
         !force &&
         this.activeRequest?.sourceId === context.sourceId &&
+        this.activeRequest.sourceSession === context.sourceSession &&
+        this.activeRequest.sourceRevision === context.sourceRevision &&
         this.activeRequest?.nodeKey === context.nodeKey &&
         this.activeRequest.positionId === context.positionId
       ) {
@@ -377,7 +383,9 @@ export const useAnalysisStore = defineStore('analysis', {
       return (
         this.activeRequest?.requestId === request.requestId &&
         pgn.canMutateCurrentSource &&
+        pgn.sourceSession === request.sourceSession &&
         pgn.source.id === request.sourceId &&
+        pgn.sourceRevision === request.sourceRevision &&
         pgn.currentNode?.id === request.nodeId &&
         hashString(pgn.currentFen) === request.positionId
       )
@@ -397,7 +405,9 @@ export const useAnalysisStore = defineStore('analysis', {
 
       if (
         !pgn.canMutateCurrentSource ||
+        pgn.sourceSession !== request.sourceSession ||
         pgn.source.id !== request.sourceId ||
+        pgn.sourceRevision !== request.sourceRevision ||
         !node ||
         node.id !== request.nodeId
       ) {
@@ -415,14 +425,21 @@ export const useAnalysisStore = defineStore('analysis', {
         return
       }
 
+      const analysis = {
+        ...result,
+        analysisScope: 'single' as const,
+      }
+
+      if (JSON.stringify(node.annotation.analysis) === JSON.stringify(analysis)) {
+        return
+      }
+
       node.annotation = {
         ...node.annotation,
-        analysis: {
-          ...result,
-          analysisScope: 'single',
-        },
+        analysis,
       }
       node.rawComments = serializeAnnotation(node.annotation)
+      pgn.markCurrentSourceChanged(request.sourceId, request.sourceSession, request.sourceRevision)
     },
   },
 })

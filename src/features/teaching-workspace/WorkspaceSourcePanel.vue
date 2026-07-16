@@ -8,6 +8,7 @@ const props = defineProps<{
   modeLabel: string
   sourceLabel: string
   sourceIdentityLabel: string
+  localChangeDescription: string
   sourceUnavailable: boolean
   unavailableReason: string | null
   canOpenLocalPgnAsNewSource: boolean
@@ -35,6 +36,9 @@ const pgn = usePgnStore()
       </div>
       <p v-if="props.sourceUnavailable && props.unavailableReason" class="source-panel-unavailable">
         {{ props.unavailableReason }}
+      </p>
+      <p v-if="props.localChangeDescription" class="source-panel-local-change" aria-live="polite">
+        {{ props.localChangeDescription }}
       </p>
     </header>
 
@@ -120,6 +124,12 @@ const pgn = usePgnStore()
 }
 
 .source-panel-unavailable {
+  margin: 0;
+  color: var(--warning);
+  font-size: var(--fs-sm);
+}
+
+.source-panel-local-change {
   margin: 0;
   color: var(--warning);
   font-size: var(--fs-sm);

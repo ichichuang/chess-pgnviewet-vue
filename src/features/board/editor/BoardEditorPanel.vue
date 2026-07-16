@@ -9,6 +9,8 @@ const props = defineProps<BoardEditorPanelProps>()
 const emit = defineEmits<{
   finish: []
   cancel: []
+  clear: []
+  reset: []
 }>()
 
 const {
@@ -125,10 +127,8 @@ const {
     </div>
 
     <div class="editor-band operation-band">
-      <button class="op-btn" type="button" @click="editorDraft.clearBoard()">清空棋盘</button>
-      <button class="op-btn" type="button" @click="editorDraft.resetToStartingPosition()">
-        标准初始
-      </button>
+      <button class="op-btn" type="button" @click="emit('clear')">清空棋盘</button>
+      <button class="op-btn" type="button" @click="emit('reset')">标准初始</button>
       <button class="op-btn" type="button" @click="emit('cancel')">取消</button>
       <button class="finish-btn" type="button" @click="emit('finish')">完成摆谱</button>
     </div>

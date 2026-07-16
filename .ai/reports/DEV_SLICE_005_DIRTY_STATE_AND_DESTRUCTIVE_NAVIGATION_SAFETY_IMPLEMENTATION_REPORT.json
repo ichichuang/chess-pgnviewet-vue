@@ -1,0 +1,272 @@
+{
+  "slice": "DEV-SLICE-005",
+  "title": "Dirty state and destructive navigation safety implementation",
+  "verified_baseline": {
+    "repository_path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "6bd43744d5365418a6090f49cd92f0bdab8537f0",
+    "local_head": "6bd43744d5365418a6090f49cd92f0bdab8537f0",
+    "origin_main": "6bd43744d5365418a6090f49cd92f0bdab8537f0",
+    "live_remote_main": "6bd43744d5365418a6090f49cd92f0bdab8537f0",
+    "ahead_behind": "0/0",
+    "worktree_and_index": "clean before implementation; no untracked files"
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/ui/ACCESSIBILITY_SPEC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md (read-only planning evidence)",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json (read-only planning evidence)"
+  ],
+  "callers_inspected": [
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+    "src/features/teaching-workspace/WorkspaceStartSurface.vue",
+    "src/features/teaching-workspace/WorkspaceRightPanel.vue",
+    "src/features/teaching-workspace/useRemoteReplayLoader.ts",
+    "src/features/teaching-workspace/workspaceToolbarTypes.ts",
+    "src/features/pgn/usePgnWorkspaceRuntime.ts",
+    "src/features/pgn/components/PgnGameList.vue",
+    "src/features/pgn/components/PgnNotationPanel.vue",
+    "src/features/pgn/domain/sourceOwnership.ts",
+    "src/features/pgn/domain/types.ts",
+    "src/features/board/CanonicalChessBoard.vue",
+    "src/features/board/domain/boardCapabilities.ts",
+    "src/features/board/editor/BoardEditorPanel.vue",
+    "src/features/board/editor/boardEditorDraft.ts",
+    "src/features/board/editor/useBoardEditorPanelView.ts",
+    "src/features/board/useBoardView.ts",
+    "src/stores/pgn.ts",
+    "src/stores/analysis.ts",
+    "src/stores/workspace.ts",
+    "src/stores/auth.ts",
+    "src/features/workspace-mode/WorkspaceModeController.vue",
+    "src/features/workspace-mode/useWorkspacePermissionAdapter.ts",
+    "src/features/workspace-mode/workspaceModeContext.ts",
+    "src/persistence/workspace/workspaceHandoff.ts",
+    "src/router/index.ts",
+    "src/app/providers/ProductFeedbackProvider.vue",
+    "src/app/providers/productFeedback.ts",
+    "src/ui/ProductDialog.vue",
+    "src/ui/ProductConfirmDialog.vue",
+    "src/ui/productOverlayFocus.ts",
+    "src/features/board/PgnChessBoard.vue and src/features/board/pgn/usePgnChessBoard.ts (dormant parallel component evidence only)"
+  ],
+  "defects_reproduced": [
+    {
+      "id": "MISSING-UI-004",
+      "before": "The canonical workspace had no dirty owner, unsaved local-change indication, route/browser leave guard, source-replacement confirmation, or manual-draft safety boundary.",
+      "after": "The PGN Store owns typed source and draft revisions, the source/status region describes unsaved work, and all reachable destructive callers use one guarded confirmation coordinator."
+    },
+    {
+      "id": "COR-020_DEV_SLICE_005",
+      "before": "Local PGN replacement could finish after a newer source, manual cancel/reset/clear destroyed drafts immediately, annotation clear used a one-off dialog, and provider confirmation replacement could lose focus or stack intent state.",
+      "after": "Source session/revision/draft identity is rechecked around asynchronous waits, draft mutations are guarded independently, annotation clear is coordinated, and provider confirmation settlement is one-shot with explicit return focus."
+    }
+  ],
+  "dirty_state_owner": {
+    "owner": "src/stores/pgn.ts",
+    "reason": "The existing PGN Store already owns active source identity, canonical move trees, annotations, and every implemented canonical mutation. Workspace Store remains layout-only.",
+    "source_model": {
+      "sourceSession": "Monotonic in-memory generation changed after each successful source establishment or discard.",
+      "sourceRevision": "Incremented only after an actual successful local canonical mutation.",
+      "cleanSourceRevision": "Baseline established for a newly opened source or new editable local copy.",
+      "dirty_rule": "Local editable source and sourceRevision differs from cleanSourceRevision."
+    },
+    "manual_draft_model": {
+      "id": "Monotonic draft identity.",
+      "sourceSession_and_sourceId": "Bind the draft to the source generation from which it was initialized.",
+      "baselineFen": "First normalized generated editor snapshot after initialization, avoiding raw-FEN clock/en-passant false positives.",
+      "currentFen_and_revision": "Idempotent FEN-based draft change tracking; returning to the normalized baseline is clean."
+    },
+    "async_identity": "WorkspaceEditIdentity captures source session, source ID, canonical revision, draft ID, draft revision, and current draft FEN."
+  },
+  "dirty_transition_matrix": [
+    { "action": "Empty workspace", "result": "clean" },
+    { "action": "Successful local PGN open or source replacement", "result": "new source session; clean" },
+    { "action": "Successful editable local copy", "result": "new source identity/session; clean" },
+    { "action": "Fresh manual position applied without a draft change", "result": "new manual source; clean" },
+    { "action": "Successful PGN insertion into the same authorized local source", "result": "canonical dirty" },
+    { "action": "New legal move node", "result": "canonical dirty" },
+    { "action": "Existing-child move navigation", "result": "unchanged" },
+    { "action": "New resolved main line or variation", "result": "canonical dirty" },
+    { "action": "Duplicate/existing variation selection", "result": "unchanged" },
+    { "action": "Actual annotation add/remove/clear/undo/redo", "result": "canonical dirty" },
+    { "action": "Annotation no-op or permission rejection", "result": "unchanged" },
+    { "action": "Enter manual editor and establish normalized baseline", "result": "draft clean; canonical unchanged" },
+    { "action": "Change piece placement, side to move, or castling state", "result": "draft dirty only" },
+    { "action": "Return draft exactly to baseline", "result": "draft clean" },
+    { "action": "Apply changed draft", "result": "canonical dirty; draft discarded after success" },
+    { "action": "Apply failure", "result": "canonical and draft preserved" },
+    { "action": "Analysis assessment explicitly written through the dormant typed boundary", "result": "canonical dirty with source session/revision guard" },
+    { "action": "Remote/read-only/replay/live/competition/contract-blocked mutation attempt", "result": "rejected; never dirty" }
+  ],
+  "actions_excluded_from_dirty_tracking": [
+    "source/game/node selection",
+    "existing move navigation and variation expansion",
+    "search and paging",
+    "panel, tab, drawer, sheet, toolbar, splitter, board alignment, and orientation changes",
+    "annotation tool or color selection",
+    "theme and settings changes",
+    "analysis execution without explicit PGN mutation",
+    "loading and remote refresh",
+    "failed operations",
+    "cancelled confirmations and file pickers",
+    "promotion or branch cancellation",
+    "rejected stale callbacks",
+    "read-only and contract-blocked browsing"
+  ],
+  "destructive_action_matrix": [
+    { "intent": "route leave/back/forward", "guard": "Vue Router leave guard; exact requested destination continues once only after confirmation" },
+    { "intent": "same-route handoff replacement", "guard": "Vue Router update guard only when handoff query identity changes" },
+    { "intent": "open replacement local PGN or file drop", "guard": "candidate read and strict parse occur first; active source remains unchanged until guarded execution" },
+    { "intent": "create replacement editable local copy", "guard": "shared coordinator; successful copy begins a clean source session" },
+    { "intent": "clear current drawings", "guard": "shared coordinator replaces the former one-off dialog" },
+    { "intent": "close dirty manual draft", "guard": "confirmation discards the draft only; cancellation preserves it" },
+    { "intent": "clear or reset dirty manual draft", "guard": "confirmation wraps the exact board mutation and rechecks draft identity" },
+    { "intent": "whole-PGN clear/reset", "guard": "no active product caller exists; no new UI or unsupported action was invented" }
+  ],
+  "route_guard_behavior": {
+    "clean_leave": "Allowed immediately; a clean draft is discarded only after a successful transition.",
+    "dirty_leave": "One safe-first confirmation; cancellation returns false with state intact; confirmation returns true to the original navigation without router recursion.",
+    "duplicate_navigation": "Dirty route guards use one shared confirmation promise and an explicit latest-destination-wins policy. A later destructive route attempt replaces only the pending target and return-focus owner, joins the same confirmation, and is the only target allowed to complete; afterEach consumes only that exact target route object.",
+    "successful_discard": "The exact captured session is discarded only after successful navigation or the matching unmount fallback, never when permission is merely requested.",
+    "focus": "Direct in-page navigation restores the connected trigger on cancel; history navigation with no captured trigger uses the focusable workspace main fallback."
+  },
+  "beforeunload_behavior": {
+    "registration": "A beforeunload listener is added synchronously only while canonical local state or a manual draft is dirty.",
+    "handler": "Only preventDefault and returnValue assignment are used; browser-native warning copy is not controlled.",
+    "cleanup": "Listener is removed immediately when clean and on workspace unmount.",
+    "runtime_inspection": "A temporary page-runtime listener counter observed added=1 after a real annotation mutation and removed=1 after confirmed workspace leave.",
+    "automation_limitation": "Controlled Chrome and Playwright reload primitives auto-handle or suppress the native warning UI, so warning text and user-choice rendering were not asserted."
+  },
+  "manual_editor_draft_behavior": {
+    "initialization": "The editor can start from an empty workspace; its first post-render normalized FEN becomes the clean baseline.",
+    "isolation": "Draft FEN/revision lives beside, but separately from, canonical source revision; palette selection alone does not dirty.",
+    "close": "Clean drafts close directly. Dirty drafts require confirmation; Escape/cancel preserves the exact draft and focus.",
+    "clear_reset": "No-op clear/reset avoids confirmation. Actual clear/reset is executed once after confirmation and remains a draft relative to the original baseline when different.",
+    "apply": "Success uses the existing FEN-to-PGN boundary, marks changed canonical content dirty, clears the draft, and closes the editor. Failure leaves the editor and draft intact.",
+    "replacement": "Successful source replacement closes and invalidates the old editor draft; cancellation or failure does not."
+  },
+  "confirmation_focus_and_reentrancy_contract": {
+    "surface": "Provider-owned ProductDialog with alertdialog role for destructive intents.",
+    "initial_focus": "Safe non-destructive action.",
+    "dismissal": "Escape cancels; dangerous dialogs have no close button and are not mask-closable.",
+    "focus_trap": "Tab and Shift+Tab remain within the dialog.",
+    "focus_return": "Exact connected trigger for in-page actions, including a confirmation nested over the narrow source drawer; workspace main fallback for history navigation.",
+    "provider_reentrancy": "An active or settling provider confirmation rejects a new request rather than replacing content.",
+    "coordinator_reentrancy": "One in-flight action. Repeated route attempts join one confirmation under the explicit latest-destination policy; unrelated conflicting destructive actions are rejected deterministically. Dialogs never stack and actions never double-execute.",
+    "settlement": "Resolver is cleared before close callbacks; active request remains through the close tick so focus restoration can finish."
+  },
+  "stale_action_protection": [
+    "Capture WorkspaceEditIdentity before native file selection or drop processing.",
+    "Recheck source session, source ID, canonical revision, draft identity, draft revision, and draft FEN after File.text().",
+    "Strict-parse candidate text before destructive confirmation without assigning it to the active source.",
+    "Recheck the exact identity after dialog wait and immediately before destructive execution.",
+    "Ignore late file completion after runtime unmount.",
+    "Analysis requests and the dormant assessment writer include source session and revision guards.",
+    "Failed parse, read, cancellation, or stale rejection preserves the original source and dirty state."
+  ],
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_005_DIRTY_STATE_AND_DESTRUCTIVE_NAVIGATION_SAFETY_IMPLEMENTATION_REPORT.json",
+    "src/app/providers/ProductFeedbackProvider.vue",
+    "src/app/providers/productFeedback.ts",
+    "src/features/board/CanonicalChessBoard.vue",
+    "src/features/board/domain/boardCapabilities.ts",
+    "src/features/board/editor/BoardEditorPanel.vue",
+    "src/features/pgn/usePgnWorkspaceRuntime.ts",
+    "src/features/teaching-workspace/TeachingWorkspace.vue",
+    "src/features/teaching-workspace/WorkspaceSourcePanel.vue",
+    "src/features/teaching-workspace/WorkspaceToolbar.vue",
+    "src/features/teaching-workspace/useWorkspaceDestructiveActionCoordinator.ts",
+    "src/features/teaching-workspace/workspaceToolbarTypes.ts",
+    "src/stores/analysis.ts",
+    "src/stores/pgn.ts"
+  ],
+  "static_validation": [
+    { "command": "jq empty .ai/reports/DEV_SLICE_005_DIRTY_STATE_AND_DESTRUCTIVE_NAVIGATION_SAFETY_IMPLEMENTATION_REPORT.json", "result": "pass" },
+    { "command": "git diff --check", "result": "pass" },
+    { "command": "pnpm run format:check", "result": "pass" },
+    { "command": "pnpm run check:governance", "result": "pass" },
+    { "command": "pnpm run lint", "result": "pass" },
+    { "command": "pnpm run lint:style", "result": "pass" },
+    { "command": "pnpm run check:unused", "result": "pass" },
+    { "command": "pnpm run check:static", "result": "pass" },
+    { "command": "pnpm run audit:prod", "result": "pass" },
+    { "command": "pnpm run typecheck", "result": "pass" },
+    { "command": "pnpm exec vite build --outDir <temporary-directory> --emptyOutDir", "result": "pass" }
+  ],
+  "browser_validation": {
+    "server": "http://127.0.0.1:5174/pgnViewer/",
+    "tools": [
+      "Build Web Apps Browser and Chrome control",
+      "Chrome native macOS file chooser through Computer Use",
+      "Playwright CLI in temporary-output sessions for viewport and runtime inspection"
+    ],
+    "fixtures": "Three temporary PGN files were created under /tmp, used through real file selection, then deleted. A browser-accessible transient copy used only for the final nested-focus recheck was also deleted with all Playwright output. No fixture, screenshot, trace, or browser artifact exists in the repository.",
+    "no_source": "Left for /competitions without confirmation and returned to a non-empty workspace DOM.",
+    "local_open": "Real temporary PGN A and B each opened as distinct local sources and began without an unsaved-change indication.",
+    "navigation_clean": "Selecting existing move e4 and returning to the initial node changed board position/selection without marking dirty.",
+    "variation_dirty": "A real keyboard move e2-e3 was resolved as a variation and produced the local unsaved-change indication.",
+    "annotation_dirty": "A real board highlight enabled undo/clear and marked the local source dirty; confirmed clear executed once and remained dirty.",
+    "manual_draft": "Fresh editor baseline was clean; changing side-to-move was draft-only; close cancellation preserved it; confirmed reset returned clean; changed apply created canonical dirty state.",
+    "source_replacement": "Dirty manual source to PGN B was cancelled once with state intact, then confirmed once; B replaced it and began clean.",
+    "failed_replacement": "A strict-parse failure for an invalid PGN showed no destructive confirmation and preserved dirty PGN B.",
+    "route_guard": "Dirty direct navigation opened one safe-first alertdialog; Escape preserved URL/source/dirty state and returned focus to the exact 赛事 link; confirmation navigated once and the subsequent clean browser back returned to an empty clean workspace.",
+    "duplicate_request": "Two simultaneous dirty route attempts for 赛事 and then 登录 produced one alertdialog. Accepting it completed the explicit latest destination (/login) once, with no intermediate /competitions navigation and no remaining dialog.",
+    "focus": "Safe initial focus, Tab to destructive action, Shift+Tab back to safe action, Escape cancellation, direct-link trigger return, and exact nested source-drawer 打开 PGN trigger return all passed.",
+    "beforeunload": "Temporary runtime instrumentation observed one dirty registration and one cleanup removal; native browser warning UI is automation-managed and was not asserted.",
+    "readonly": "The real /competitions/47347/display venue route rendered read-only controls with no PGN open, editor, annotation, or dirty confirmation surface.",
+    "contract_blocked": "The /match/dev-slice-005-blocked route rendered its truthful unavailable action with no editing controls, dirty status, or confirmation; no fake data was introduced.",
+    "themes": "The settings selector was exercised by keyboard through light and dark, then restored to system preference; no dirty state was created.",
+    "responsive": "Playwright snapshots at 1280x900 and 390x844 both had non-empty DOM and the approved desktop/narrow compositions.",
+    "runtime_health": "No Vite error overlay and no breaking application console error. A separate Playwright session observed only the existing non-breaking favicon.ico 404."
+  },
+  "cor_impact": {
+    "MISSING-UI-004": "Implemented for the active unified workspace, local PGN/source replacement, annotations, route leave, beforeunload, and manual editor draft.",
+    "COR-020": "DEV-SLICE-005 dirty-state/destructive-navigation portion implemented. No authority-wide backlog closure is claimed."
+  },
+  "od_boundaries": {
+    "OD-01": "No lesson/session/collection entity added.",
+    "OD-02": "No autosave, recovery duration, teaching persistence, or Dexie table added.",
+    "OD-03": "No AI default or persistence decision asserted.",
+    "OD-04": "No full-game analysis scope or automatic insertion activated.",
+    "OD-05_to_OD-11": "Remain open and unchanged; no provisional value was promoted to authority."
+  },
+  "limitations": [
+    "Browser automation controls auto-handle or suppress the browser-native beforeunload warning UI; listener registration and cleanup were verified by temporary runtime instrumentation instead of asserting native copy or user-choice rendering.",
+    "No confirmed protected replay/commentary contract currently exposes an editable-local-copy action in a naturally reachable browser state. The local-copy replacement caller and Store guards were reviewed and statically validated without projecting fake product data.",
+    "Stale async protection was validated through captured identity/revision code paths and failed replacement behavior; no timing-dependent artificial File.text override was injected into product runtime.",
+    "The dormant analysis assessment writer remains without a UI caller. Ordinary analysis remains non-mutating by architecture; no new analysis insertion capability was activated."
+  ],
+  "remaining_deferred_work": [
+    "Contract-backed replay, live, cloud, share, clock, hardware, and persistence capabilities remain blocked.",
+    "Dormant PgnChessBoard runtime consolidation remains outside DEV-SLICE-005.",
+    "Whole-PGN clear/reset UI remains absent; no unsupported destructive action was invented."
+  ]
+}

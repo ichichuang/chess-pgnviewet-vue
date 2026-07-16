@@ -346,18 +346,23 @@ export interface ChessboardEvents {
   'editor-commit': [snapshot: BoardEditorDraftSnapshot]
   'editor-error': [message: string]
   'editor-cancel': []
+  'editor-clear-request': []
+  'editor-reset-request': []
   'wheel-navigation': [direction: BoardWheelNavigationDirection]
   'interaction-active': [active: boolean]
 }
 
 export interface ChessboardExposed {
   cancelPromotion: () => void
+  clearEditorDraft: () => BoardEditorDraftSnapshot
   clearAnnotations: () => boolean
   flipOrientation: () => void
   getPosition: () => string
+  getEditorDraftSnapshot: () => BoardEditorDraftSnapshot
   readonly interactionActive: boolean
   redoAnnotations: () => boolean
   resolvePromotion: (piece: PromotionPiece) => void
+  resetEditorDraft: () => BoardEditorDraftSnapshot
   setOrientation: (orientation: BoardOrientation) => void
   setPosition: (fen: string) => void
   undoAnnotations: () => boolean

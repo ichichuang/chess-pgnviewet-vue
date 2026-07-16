@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import { useMessage } from 'naive-ui'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -49,12 +49,14 @@ const sessionExpiredReturnPath = ref('/')
 const confirmationOpen = ref(false)
 const activeConfirmation = ref<ProductConfirmationRequest | null>(null)
 let confirmationResolver: ((accepted: boolean) => void) | null = null
+let confirmationSettling = false
 
 const confirmationTitle = computed(() => activeConfirmation.value?.title ?? '')
 const confirmationDescription = computed(() => activeConfirmation.value?.description ?? '')
 const confirmationConfirmText = computed(() => activeConfirmation.value?.confirmText ?? '确认')
 const confirmationCancelText = computed(() => activeConfirmation.value?.cancelText ?? '取消')
 const confirmationDangerous = computed(() => activeConfirmation.value?.dangerous ?? false)
+const confirmationReturnFocus = computed(() => activeConfirmation.value?.returnFocus)
 
 function currentSafeReturnPath(requested?: string): string {
   return safeAuthReturnPath(requested) ?? safeAuthReturnPath(route.fullPath) ?? '/'
@@ -86,7 +88,10 @@ function goToLogin(reason: 'expired' | 'required'): void {
 }
 
 function requestConfirmation(request: ProductConfirmationRequest): Promise<boolean> {
-  confirmationResolver?.(false)
+  if (confirmationResolver || confirmationSettling) {
+    return Promise.resolve(false)
+  }
+
   activeConfirmation.value = request
   confirmationOpen.value = true
   return new Promise((resolve) => {
@@ -96,10 +101,16 @@ function requestConfirmation(request: ProductConfirmationRequest): Promise<boole
 
 function settleConfirmation(accepted: boolean): void {
   const resolve = confirmationResolver
+  if (!resolve) return
+
   confirmationResolver = null
+  confirmationSettling = true
   confirmationOpen.value = false
-  activeConfirmation.value = null
-  resolve?.(accepted)
+  resolve(accepted)
+  void nextTick(() => {
+    if (!confirmationOpen.value) activeConfirmation.value = null
+    confirmationSettling = false
+  })
 }
 
 const api: ProductFeedbackApi = {
@@ -118,6 +129,7 @@ const unsubscribeAuthLoss = subscribePrivateAuthUiLoss(() => {
 onBeforeUnmount(() => {
   unsubscribeAuthLoss()
   confirmationResolver?.(false)
+  confirmationResolver = null
 })
 </script>
 
@@ -163,11 +175,13 @@ onBeforeUnmount(() => {
   </ProductDialog>
 
   <ProductDialog
-    v-if="activeConfirmation"
     :show="confirmationOpen"
     :title="confirmationTitle"
     :description="confirmationDescription"
     :role="confirmationDangerous ? 'alertdialog' : 'dialog'"
+    :closable="!confirmationDangerous"
+    :mask-closable="!confirmationDangerous"
+    :return-focus="confirmationReturnFocus"
     initial-focus="safe-action"
     @update:show="(show) => !show && settleConfirmation(false)"
   >

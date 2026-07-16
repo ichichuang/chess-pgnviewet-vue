@@ -9,7 +9,7 @@ import { BOARD_ORIENTATION_BLACK } from '@/features/board/domain/boardTypes'
 import { useAuthStore, usePgnStore, useWorkspaceStore } from '@/stores'
 import SettingsSurface from '@/features/settings'
 import type { SettingsCapabilityContext } from '@/features/settings/settingsContext'
-import { ProductButton, ProductConfirmDialog } from '@/ui'
+import { ProductButton } from '@/ui'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 
@@ -32,7 +32,6 @@ const emit = defineEmits<{
 const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
 const auth = useAuthStore()
-const showClearConfirm = ref(false)
 const settingsOpen = ref(false)
 const settingsButtonRef = ref<InstanceType<typeof ProductButton> | null>(null)
 
@@ -50,17 +49,6 @@ const alignments: readonly { key: 'center' | 'left' | 'right'; label: string }[]
 
 function setAnnotationColor(color: AnnotationColorId): void {
   workspace.setAnnotationColor(color)
-}
-
-function confirmClearDrawing(): void {
-  if (!props.permissions.canMutateCurrentSource || !pgn.hasCurrentDrawing) return
-  showClearConfirm.value = true
-}
-
-function onClearDrawingConfirmed(): void {
-  if (!props.permissions.canMutateCurrentSource) return
-  pgn.clearDrawing()
-  showClearConfirm.value = false
 }
 
 const rootEl = ref<HTMLElement | null>(null)
@@ -284,20 +272,11 @@ onBeforeUnmount(() => {
           <ProductButton
             size="small"
             :disabled="!pgn.hasCurrentDrawing"
-            @click="confirmClearDrawing()"
+            @click="emit('action', 'clearAnnotations')"
           >
             清除
           </ProductButton>
         </section>
-
-        <ProductConfirmDialog
-          v-model:show="showClearConfirm"
-          title="清除标注"
-          body="确定要清除当前节点的所有标注吗？此操作无法撤销。"
-          dangerous
-          confirm-text="清除"
-          @confirm="onClearDrawingConfirmed"
-        />
 
         <section class="toolbar-group" aria-label="面板控制">
           <ProductButton

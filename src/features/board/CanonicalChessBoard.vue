@@ -162,6 +162,20 @@ function onEditorUpdate(snapshot: BoardEditorDraftSnapshot): void {
   emit('editor-update', snapshot)
 }
 
+function clearEditorDraft(): BoardEditorDraftSnapshot {
+  editorDraft.clearBoard()
+  return editorDraft.snapshot.value
+}
+
+function resetEditorDraft(): BoardEditorDraftSnapshot {
+  editorDraft.resetToStartingPosition()
+  return editorDraft.snapshot.value
+}
+
+function getEditorDraftSnapshot(): BoardEditorDraftSnapshot {
+  return editorDraft.snapshot.value
+}
+
 function onRadialCommand(command: BoardRadialCommand): void {
   const context = {
     command,
@@ -245,14 +259,17 @@ function clearAnnotations(): boolean {
 
 const exposed: ChessboardExposed = {
   cancelPromotion,
+  clearEditorDraft,
   clearAnnotations,
   flipOrientation,
   getPosition,
+  getEditorDraftSnapshot,
   get interactionActive() {
     return interactionActive.value
   },
   redoAnnotations,
   resolvePromotion,
+  resetEditorDraft,
   setOrientation: (orientation: BoardOrientation) => setOrientation(orientation),
   setPosition,
   undoAnnotations,
@@ -302,6 +319,8 @@ defineExpose(exposed)
         :free-placement="capabilities.editor.freePlacement"
         @finish="onEditorFinish"
         @cancel="onEditorCancel"
+        @clear="emit('editor-clear-request')"
+        @reset="emit('editor-reset-request')"
       />
     </aside>
     <PromotionChooser

@@ -6,7 +6,14 @@ Layout contract: docs/ui/LAYOUT_SYSTEM_SPEC.md
 - body must not scroll; each column has one scroll owner
 -->
 <script setup lang="ts">
-import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import {
+  onBeforeRouteLeave,
+  onBeforeRouteUpdate,
+  useRoute,
+  useRouter,
+  type RouteLocationNormalized,
+} from 'vue-router'
 
 import AnalysisPanel from '@/features/analysis/components/AnalysisPanel.vue'
 import EvalBar from '@/features/analysis/components/EvalBar.vue'
@@ -17,10 +24,15 @@ import type {
   BoardRadialCommand,
   BoardWheelNavigationDirection,
   ChessboardCapabilities,
+  ChessboardExposed,
 } from '@/features/board/domain/boardCapabilities'
+import { STANDARD_START_FEN } from '@/features/board/domain/boardTypes'
+import type { DataSource } from '@/features/pgn/domain/types'
 import { usePgnWorkspaceRuntime } from '@/features/pgn/usePgnWorkspaceRuntime'
 import { ProductDrawer, ProductSheet } from '@/ui'
+import type { ProductOverlayReturnFocus } from '@/ui/productOverlayFocus'
 import { useAnalysisStore, usePgnStore, useWorkspaceStore } from '@/stores'
+import type { WorkspaceEditIdentity } from '@/stores/pgn'
 import { createWorkspaceSettingsContext } from '@/features/settings/settingsContext'
 import { useWorkspaceModeContext } from '@/features/workspace-mode/workspaceModeContext'
 import {
@@ -36,10 +48,20 @@ import WorkspaceToolbar from './WorkspaceToolbar.vue'
 import { useRemoteReplayLoader } from './useRemoteReplayLoader'
 import { useTeachingWorkspaceMotion } from './useTeachingWorkspaceMotion'
 import { useWorkspaceSplitter } from './useWorkspaceSplitter'
+import { useWorkspaceDestructiveActionCoordinator } from './useWorkspaceDestructiveActionCoordinator'
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
 const workspaceModeContext = useWorkspaceModeContext()
+const route = useRoute()
+const router = useRouter()
 const pgn = usePgnStore()
+const workspace = useWorkspaceStore()
+const analysis = useAnalysisStore()
+const workspaceMainEl = ref<HTMLElement | null>(null)
+const boardRef = ref<ChessboardExposed | null>(null)
+const boardEditorActive = ref(false)
+const manualDraftId = ref<number | null>(null)
+const destructiveActions = useWorkspaceDestructiveActionCoordinator()
 const permissions = reactive<WorkspacePermissions>(
   useWorkspacePermissionAdapter(workspaceModeContext.value, {
     source: pgn.source,
@@ -66,16 +88,17 @@ const {
   fileInput,
   handlePgnAction,
   onFiles,
-} = usePgnWorkspaceRuntime(() => permissions)
-const workspace = useWorkspaceStore()
-const analysis = useAnalysisStore()
+} = usePgnWorkspaceRuntime(() => permissions, {
+  replaceSource: replaceWorkspaceSource,
+  workspaceFocusTarget: () => workspaceMainEl.value,
+  onSourceReplaced: closeBoardEditorAfterSourceReplacement,
+})
 const remoteReplay = useRemoteReplayLoader(workspaceModeContext)
 const remoteReplayVisible = remoteReplay.visible
 const remoteReplayMessage = remoteReplay.message
 const remoteReplayDetail = remoteReplay.detail
 const remoteReplayStatus = remoteReplay.status
 const { onSplitterKeyDown, onSplitterPointerDown, rightStackEl, rightStackStyle } = useWorkspaceSplitter()
-const boardEditorActive = ref(false)
 const radialWidth = ref<0.08 | 0.16 | 0.28>(0.16)
 const sourceDrawerOpen = ref(false)
 const contextPanelOpen = ref(false)
@@ -122,6 +145,17 @@ const radialColorIndex = computed(() =>
 )
 
 const hasBoardContent = computed(() => pgn.hasGame)
+const localChangeDescription = computed(() => {
+  if (pgn.hasUnsavedSourceChanges && pgn.hasUnsavedManualDraft) {
+    return '当前有尚未保存的本地更改，局面更改尚未应用。'
+  }
+
+  if (pgn.hasUnsavedManualDraft) {
+    return '当前局面更改尚未应用。'
+  }
+
+  return pgn.hasUnsavedSourceChanges ? '当前有尚未保存的本地更改。' : ''
+})
 const showEvalRail = computed(() => permissions.canShowEvalBar && hasBoardContent.value)
 const showAnalysisRegion = computed(() => permissions.canShowAnalysisPanel && workspace.showAnalysisRegion)
 
@@ -160,8 +194,8 @@ const boardCapabilities = computed<ChessboardCapabilities>(() => ({
     onUndo: pgn.undoCurrentDrawing,
     onRedo: pgn.redoCurrentDrawing,
     onClear: () => {
-      pgn.clearDrawing()
-      return true
+      void clearCurrentAnnotations()
+      return false
     },
   },
   radialMenu: {
@@ -201,7 +235,176 @@ watch(
   }
 )
 
+let beforeUnloadRegistered = false
+interface PendingWorkspaceNavigation {
+  target: RouteLocationNormalized
+  identity: WorkspaceEditIdentity
+  accepted: boolean
+  discardWorkspace: boolean
+  returnFocus: ProductOverlayReturnFocus
+  confirmation: Promise<boolean> | null
+}
+
+let pendingNavigation: PendingWorkspaceNavigation | null = null
+let currentWorkspaceInvoker: HTMLElement | null = null
+
+function rememberWorkspaceInvoker(event: MouseEvent): void {
+  const target = event.target
+  currentWorkspaceInvoker =
+    target instanceof Element
+      ? target.closest<HTMLElement>('button, a[href], input, [tabindex]:not([tabindex="-1"])')
+      : null
+  const captured = currentWorkspaceInvoker
+  globalThis.queueMicrotask(() => {
+    if (currentWorkspaceInvoker === captured) currentWorkspaceInvoker = null
+  })
+}
+
+function workspaceReturnFocus(preferWorkspaceOwner = false): ProductOverlayReturnFocus {
+  const invokingElement = currentWorkspaceInvoker?.isConnected ? currentWorkspaceInvoker : null
+  if (preferWorkspaceOwner && !invokingElement) {
+    return () => workspaceMainEl.value
+  }
+
+  const activeElement = document.activeElement
+  const active =
+    activeElement instanceof HTMLElement &&
+    activeElement !== document.body &&
+    activeElement !== document.documentElement
+      ? activeElement
+      : null
+  const returnTarget = invokingElement ?? active
+  return () => (returnTarget?.isConnected ? returnTarget : workspaceMainEl.value)
+}
+
+function onBeforeUnload(event: BeforeUnloadEvent): void {
+  event.preventDefault()
+  event.returnValue = ''
+}
+
+function updateBeforeUnloadRegistration(dirty: boolean): void {
+  if (typeof window === 'undefined' || beforeUnloadRegistered === dirty) return
+
+  if (dirty) {
+    window.addEventListener('beforeunload', onBeforeUnload)
+  } else {
+    window.removeEventListener('beforeunload', onBeforeUnload)
+  }
+
+  beforeUnloadRegistered = dirty
+}
+
+watch(() => pgn.hasUnsavedWorkspaceChanges, updateBeforeUnloadRegistration, {
+  immediate: true,
+  flush: 'sync',
+})
+
+const removeRouteAfterEach = router.afterEach((to, _from, failure) => {
+  const pending = pendingNavigation
+  if (!pending || pending.target !== to) return
+
+  pendingNavigation = null
+  if (failure || !pending.accepted) return
+
+  if (pending.discardWorkspace) {
+    pgn.discardWorkspaceSession(pending.identity)
+  } else if (pending.identity.manualDraftId !== null) {
+    pgn.discardManualEditorDraft(pending.identity.manualDraftId)
+  }
+  closeBoardEditorAfterSourceReplacement()
+})
+
+onBeforeRouteLeave(async (to) => {
+  return guardWorkspaceNavigation(to, 'route-leave', pgn.hasUnsavedSourceChanges)
+})
+
+onBeforeRouteUpdate(async (to, from) => {
+  if (queryText(to.query.handoff) === queryText(from.query.handoff)) return true
+  return guardWorkspaceNavigation(to, 'route-handoff', true)
+})
+
+async function guardWorkspaceNavigation(
+  to: RouteLocationNormalized,
+  intent: 'route-handoff' | 'route-leave',
+  discardWorkspace: boolean
+): Promise<boolean> {
+  const returnFocus = workspaceReturnFocus(currentWorkspaceInvoker === null)
+  const activeNavigation = pendingNavigation
+
+  if (activeNavigation?.confirmation) {
+    activeNavigation.target = to
+    activeNavigation.discardWorkspace = discardWorkspace
+    activeNavigation.returnFocus = returnFocus
+    return finishWorkspaceNavigationGuard(activeNavigation, to)
+  }
+
+  if (destructiveActions.inFlight.value) return false
+
+  const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+  if (!pgn.hasUnsavedWorkspaceChanges) {
+    if (intent === 'route-leave' && expectedIdentity.manualDraftId === null) return true
+
+    pendingNavigation = {
+      target: to,
+      identity: expectedIdentity,
+      accepted: true,
+      discardWorkspace,
+      returnFocus,
+      confirmation: null,
+    }
+    return true
+  }
+
+  const navigation: PendingWorkspaceNavigation = {
+    target: to,
+    identity: expectedIdentity,
+    accepted: false,
+    discardWorkspace,
+    returnFocus,
+    confirmation: null,
+  }
+  pendingNavigation = navigation
+  navigation.confirmation = destructiveActions.run({
+    intent,
+    expectedIdentity,
+    confirm: true,
+    returnFocus: () => navigation.returnFocus(),
+    execute: () => true,
+  })
+  return finishWorkspaceNavigationGuard(navigation, to)
+}
+
+async function finishWorkspaceNavigationGuard(
+  navigation: PendingWorkspaceNavigation,
+  requestedTarget: RouteLocationNormalized
+): Promise<boolean> {
+  const accepted = await navigation.confirmation
+  if (pendingNavigation !== navigation || navigation.target !== requestedTarget) return false
+  if (!accepted) {
+    pendingNavigation = null
+    return false
+  }
+
+  navigation.accepted = true
+  return true
+}
+
 onBeforeUnmount(() => {
+  removeRouteAfterEach()
+  if (beforeUnloadRegistered && typeof window !== 'undefined') {
+    window.removeEventListener('beforeunload', onBeforeUnload)
+    beforeUnloadRegistered = false
+  }
+
+  if (pendingNavigation?.accepted && pendingNavigation.target.fullPath === route.fullPath) {
+    if (pendingNavigation.discardWorkspace) {
+      pgn.discardWorkspaceSession(pendingNavigation.identity)
+    } else if (pendingNavigation.identity.manualDraftId !== null) {
+      pgn.discardManualEditorDraft(pendingNavigation.identity.manualDraftId)
+    }
+    pendingNavigation = null
+  }
+
   analysis.dispose()
 })
 
@@ -212,45 +415,176 @@ defineExpose({
 
 function handleWorkspaceAction(name: WorkspaceToolbarAction): void {
   if (name === 'enterBoardEditor') {
-    enterBoardEditor()
+    void enterBoardEditor()
     return
   }
 
   if (name === 'openLocal' || name === 'insertLocal') {
     analysis.stop()
-    handlePgnAction(name)
+    handlePgnAction(name, workspaceReturnFocus())
+    return
+  }
+
+  if (name === 'clearAnnotations') {
+    void clearCurrentAnnotations()
     return
   }
 
   if (name === 'createEditableLocalCopy') {
-    if (!permissions.canCreateEditableLocalCopy) return
-    analysis.stop()
-    pgn.createEditableLocalCopy(workspaceModeContext.value.mode)
+    void createEditableLocalCopy()
   }
 }
 
-function enterBoardEditor() {
-  if (!permissions.canEnterBoardEditor) return
+async function replaceWorkspaceSource(request: {
+  expectedIdentity: WorkspaceEditIdentity
+  source: DataSource
+  text: string
+  returnFocus: () => HTMLElement | null | void
+}): Promise<boolean> {
+  return destructiveActions.run({
+    intent: 'source-replacement',
+    expectedIdentity: request.expectedIdentity,
+    confirm: pgn.hasUnsavedWorkspaceChanges,
+    returnFocus: request.returnFocus,
+    execute: () => pgn.openText(request.text, request.source),
+  })
+}
+
+async function createEditableLocalCopy(): Promise<void> {
+  if (!permissions.canCreateEditableLocalCopy) return
+  analysis.stop()
+  const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+  const replaced = await destructiveActions.run({
+    intent: 'local-copy-replacement',
+    expectedIdentity,
+    confirm: pgn.hasUnsavedWorkspaceChanges,
+    returnFocus: workspaceReturnFocus(),
+    execute: () => pgn.createEditableLocalCopy(workspaceModeContext.value.mode),
+  })
+
+  if (replaced) closeBoardEditorAfterSourceReplacement()
+}
+
+async function clearCurrentAnnotations(): Promise<void> {
+  if (!permissions.canEditAnnotations || !pgn.hasCurrentDrawing) return
+  const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+  await destructiveActions.run({
+    intent: 'annotation-clear',
+    expectedIdentity,
+    confirm: true,
+    returnFocus: workspaceReturnFocus(),
+    execute: () => pgn.clearDrawing(),
+  })
+}
+
+async function enterBoardEditor(): Promise<void> {
+  if (!permissions.canEnterBoardEditor || boardEditorActive.value) return
   analysis.stop()
   workspace.setAnnotationTool(null)
+  const draftId = pgn.beginManualEditorDraft()
+  if (draftId === null) return
+  manualDraftId.value = draftId
   boardEditorActive.value = true
+  await nextTick()
+
+  const snapshot = boardRef.value?.getEditorDraftSnapshot()
+  if (!snapshot || manualDraftId.value !== draftId || !pgn.updateManualEditorDraft(draftId, snapshot.fen)) {
+    pgn.discardManualEditorDraft(draftId)
+    manualDraftId.value = null
+    boardEditorActive.value = false
+  }
 }
 
 function finishBoardEditor(snapshot: BoardEditorDraftSnapshot): void {
   if (!permissions.canEnterBoardEditor) return
+  const draftId = manualDraftId.value
+  if (draftId === null || !pgn.updateManualEditorDraft(draftId, snapshot.fen)) return
+  const draftChanged = pgn.hasUnsavedManualDraft
   analysis.stop()
-  const ok = pgn.insertPgnFromFen(snapshot.fen)
+  const ok = pgn.insertPgnFromFen(snapshot.fen, draftChanged)
 
   if (!ok) {
     boardEditorActive.value = true
     return
   }
 
+  pgn.discardManualEditorDraft(draftId)
+  manualDraftId.value = null
   boardEditorActive.value = false
 }
 
-function cancelBoardEditor() {
+function onBoardEditorUpdate(snapshot: BoardEditorDraftSnapshot): void {
+  const draftId = manualDraftId.value
+  if (draftId !== null) pgn.updateManualEditorDraft(draftId, snapshot.fen)
+}
+
+async function cancelBoardEditor(): Promise<void> {
+  const draftId = manualDraftId.value
+  if (draftId === null) {
+    boardEditorActive.value = false
+    return
+  }
+
+  const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+  await destructiveActions.run({
+    intent: 'manual-draft-close',
+    expectedIdentity,
+    confirm: pgn.hasUnsavedManualDraft,
+    returnFocus: workspaceReturnFocus(),
+    execute: () => {
+      if (!pgn.discardManualEditorDraft(draftId)) return false
+      manualDraftId.value = null
+      boardEditorActive.value = false
+      return true
+    },
+  })
+}
+
+async function clearBoardEditorDraft(): Promise<void> {
+  await mutateBoardEditorDraft('manual-draft-clear', () => boardRef.value?.clearEditorDraft())
+}
+
+async function resetBoardEditorDraft(): Promise<void> {
+  await mutateBoardEditorDraft('manual-draft-reset', () => boardRef.value?.resetEditorDraft())
+}
+
+async function mutateBoardEditorDraft(
+  intent: 'manual-draft-clear' | 'manual-draft-reset',
+  mutate: () => BoardEditorDraftSnapshot | undefined
+): Promise<void> {
+  const draftId = manualDraftId.value
+  if (draftId === null) return
+
+  const current = boardRef.value?.getEditorDraftSnapshot()
+  if (!current) return
+  if (intent === 'manual-draft-clear' && current.fen.split(' ')[0] === '8/8/8/8/8/8/8/8') {
+    return
+  }
+  if (intent === 'manual-draft-reset' && current.fen === STANDARD_START_FEN) return
+
+  const expectedIdentity = pgn.captureWorkspaceEditIdentity()
+  await destructiveActions.run({
+    intent,
+    expectedIdentity,
+    confirm: pgn.hasUnsavedManualDraft,
+    returnFocus: workspaceReturnFocus(),
+    execute: () => {
+      const snapshot = mutate()
+      return snapshot ? pgn.updateManualEditorDraft(draftId, snapshot.fen) : false
+    },
+  })
+}
+
+function closeBoardEditorAfterSourceReplacement(): void {
   boardEditorActive.value = false
+  manualDraftId.value = null
+}
+
+function queryText(value: unknown): string {
+  if (Array.isArray(value)) {
+    return value.find((item) => typeof item === 'string')?.trim() ?? ''
+  }
+  return typeof value === 'string' ? value.trim() : ''
 }
 
 function onBoardRadialCommand(command: BoardRadialCommand): void {
@@ -286,7 +620,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
 </script>
 
 <template>
-  <div ref="rootEl" class="workspace" data-p1a-shell>
+  <div ref="rootEl" class="workspace" data-p1a-shell @click.capture="rememberWorkspaceInvoker">
     <a class="skip-link" href="#workspace-main">跳到主内容</a>
 
     <WorkspaceToolbar
@@ -299,7 +633,9 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
 
     <main
       id="workspace-main"
+      ref="workspaceMainEl"
       class="layout"
+      tabindex="-1"
       :class="{
         'no-list': !workspace.showLeftSidebar,
         'no-context': !contextPanelOpen,
@@ -319,6 +655,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
             :mode-label="permissions.modeLabel"
             :source-label="permissions.sourceLabel"
             :source-identity-label="permissions.sourceIdentityLabel"
+            :local-change-description="localChangeDescription"
             :source-unavailable="permissions.sourceUnavailable"
             :unavailable-reason="permissions.unavailableReason"
             :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
@@ -356,7 +693,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
           <span v-if="remoteReplayDetail">{{ remoteReplayDetail }}</span>
         </div>
 
-        <div v-if="!hasBoardContent" class="board-stage board-stage-empty">
+        <div v-if="!hasBoardContent && !boardEditorActive" class="board-stage board-stage-empty">
           <WorkspaceStartSurface
             :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
             :can-enter-board-editor="permissions.canEnterBoardEditor"
@@ -370,6 +707,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
               {{ pgn.selectedItem ? pgn.titleFor(pgn.selectedItem, pgn.selectedIndex) : '统一工作区' }}
             </h1>
             <CanonicalChessBoard
+              ref="boardRef"
               :position="boardPosition"
               v-bind="{
                 ...(pgn.lastMove === undefined ? {} : { lastMove: pgn.lastMove }),
@@ -379,6 +717,9 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
               @radial-command="onBoardRadialCommand"
               @editor-commit="finishBoardEditor"
               @editor-cancel="cancelBoardEditor"
+              @editor-clear-request="clearBoardEditorDraft"
+              @editor-reset-request="resetBoardEditorDraft"
+              @editor-update="onBoardEditorUpdate"
               @wheel-navigation="onBoardWheelNavigation"
             />
           </section>
@@ -444,6 +785,7 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
         :mode-label="permissions.modeLabel"
         :source-label="permissions.sourceLabel"
         :source-identity-label="permissions.sourceIdentityLabel"
+        :local-change-description="localChangeDescription"
         :source-unavailable="permissions.sourceUnavailable"
         :unavailable-reason="permissions.unavailableReason"
         :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"

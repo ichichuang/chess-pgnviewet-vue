@@ -63,6 +63,24 @@ interface DrawHistoryEntry {
   after: DrawSnapshot
 }
 
+interface ManualPositionDraftRevision {
+  id: number
+  sourceSession: number
+  sourceId: string
+  baselineFen: string | null
+  currentFen: string | null
+  revision: number
+}
+
+export interface WorkspaceEditIdentity {
+  sourceSession: number
+  sourceId: string
+  sourceRevision: number
+  manualDraftId: number | null
+  manualDraftRevision: number
+  manualDraftFen: string | null
+}
+
 interface PgnState {
   items: PgnItem[]
   selectedIndex: number
@@ -76,6 +94,11 @@ interface PgnState {
   pendingBranch: PendingBranch | null
   drawUndo: DrawHistoryEntry[]
   drawRedo: DrawHistoryEntry[]
+  sourceSession: number
+  sourceRevision: number
+  cleanSourceRevision: number
+  manualDraft: ManualPositionDraftRevision | null
+  nextManualDraftId: number
 }
 
 function defaultPgnState(): PgnState {
@@ -92,6 +115,11 @@ function defaultPgnState(): PgnState {
     pendingBranch: null,
     drawUndo: [],
     drawRedo: [],
+    sourceSession: 0,
+    sourceRevision: 0,
+    cleanSourceRevision: 0,
+    manualDraft: null,
+    nextManualDraftId: 0,
   }
 }
 
@@ -138,6 +166,19 @@ export const usePgnStore = defineStore('pgn', {
     },
     canCreateEditableLocalCopy(state): boolean {
       return this.hasCanonicalPgnSnapshot && canCopyReadonlySnapshot(state.source)
+    },
+    hasUnsavedSourceChanges(state): boolean {
+      return (
+        isLocalEditableDataSource(state.source) &&
+        state.sourceRevision !== state.cleanSourceRevision
+      )
+    },
+    hasUnsavedManualDraft(state): boolean {
+      const draft = state.manualDraft
+      return draft !== null && draft.baselineFen !== null && draft.currentFen !== draft.baselineFen
+    },
+    hasUnsavedWorkspaceChanges(): boolean {
+      return this.hasUnsavedSourceChanges || this.hasUnsavedManualDraft
     },
     filtered(state): PgnItem[] {
       return filterItems(state.items, state.searchKey)
@@ -249,7 +290,124 @@ export const usePgnStore = defineStore('pgn', {
   actions: {
     clearPrivateReplay(): void {
       if (this.source.type !== 'remote_replay') return
-      this.$reset()
+      this.discardWorkspaceSession(this.captureWorkspaceEditIdentity())
+    },
+    captureWorkspaceEditIdentity(): WorkspaceEditIdentity {
+      return {
+        sourceSession: this.sourceSession,
+        sourceId: this.source.id,
+        sourceRevision: this.sourceRevision,
+        manualDraftId: this.manualDraft?.id ?? null,
+        manualDraftRevision: this.manualDraft?.revision ?? 0,
+        manualDraftFen: this.manualDraft?.currentFen ?? null,
+      }
+    },
+    matchesWorkspaceEditIdentity(expected: WorkspaceEditIdentity): boolean {
+      const current = this.captureWorkspaceEditIdentity()
+
+      return (
+        current.sourceSession === expected.sourceSession &&
+        current.sourceId === expected.sourceId &&
+        current.sourceRevision === expected.sourceRevision &&
+        current.manualDraftId === expected.manualDraftId &&
+        current.manualDraftRevision === expected.manualDraftRevision &&
+        current.manualDraftFen === expected.manualDraftFen
+      )
+    },
+    validateText(text: string): boolean {
+      try {
+        parseStrictCollection(text)
+        this.lastError = null
+        return true
+      } catch (error) {
+        this.lastError = error instanceof Error ? error.message : 'PGN 解析失败'
+        return false
+      }
+    },
+    beginManualEditorDraft(): number | null {
+      if (this.hasGame && !isLocalEditableDataSource(this.source)) {
+        return null
+      }
+
+      this.nextManualDraftId += 1
+      this.manualDraft = {
+        id: this.nextManualDraftId,
+        sourceSession: this.sourceSession,
+        sourceId: this.source.id,
+        baselineFen: null,
+        currentFen: null,
+        revision: 0,
+      }
+      return this.nextManualDraftId
+    },
+    updateManualEditorDraft(id: number, fen: string): boolean {
+      const draft = this.manualDraft
+
+      if (
+        !draft ||
+        draft.id !== id ||
+        draft.sourceSession !== this.sourceSession ||
+        draft.sourceId !== this.source.id
+      ) {
+        return false
+      }
+
+      const normalizedFen = normalizeFen(fen)
+
+      if (draft.baselineFen === null) {
+        draft.baselineFen = normalizedFen
+        draft.currentFen = normalizedFen
+        return true
+      }
+
+      if (draft.currentFen === normalizedFen) {
+        return true
+      }
+
+      draft.currentFen = normalizedFen
+      draft.revision += 1
+      return true
+    },
+    discardManualEditorDraft(id: number): boolean {
+      if (this.manualDraft?.id !== id) {
+        return false
+      }
+
+      this.manualDraft = null
+      return true
+    },
+    markCurrentSourceChanged(
+      expectedSourceId?: string,
+      expectedSourceSession?: number,
+      expectedSourceRevision?: number
+    ): boolean {
+      const sourceId = expectedSourceId ?? this.source.id
+      const sourceSession = expectedSourceSession ?? this.sourceSession
+      const sourceRevision = expectedSourceRevision ?? this.sourceRevision
+
+      if (
+        !isLocalEditableDataSource(this.source) ||
+        this.source.id !== sourceId ||
+        this.sourceSession !== sourceSession ||
+        this.sourceRevision !== sourceRevision
+      ) {
+        return false
+      }
+
+      this.sourceRevision += 1
+      return true
+    },
+    discardWorkspaceSession(expected: WorkspaceEditIdentity): boolean {
+      if (!this.matchesWorkspaceEditIdentity(expected)) {
+        return false
+      }
+
+      const nextSession = this.sourceSession + 1
+      const nextManualDraftId = this.nextManualDraftId
+      Object.assign(this, defaultPgnState())
+      this.sourceSession = nextSession
+      this.nextManualDraftId = nextManualDraftId
+      return true
     },
     openText(text: string, source: DataSource): boolean {
       try {
@@ -264,6 +422,7 @@ export const usePgnStore = defineStore('pgn', {
         this.drawUndo = []
         this.drawRedo = []
         this.selectItem(0)
+        this.establishCleanSourceSession()
         this.lastError = null
         return true
       } catch (error) {
@@ -290,6 +449,7 @@ export const usePgnStore = defineStore('pgn', {
         this.pendingBranch = null
         this.drawUndo = []
         this.drawRedo = []
+        this.markCurrentSourceChanged()
         this.lastError = null
         return true
       } catch (error) {
@@ -320,10 +480,11 @@ export const usePgnStore = defineStore('pgn', {
       this.pendingBranch = null
       this.drawUndo = []
       this.drawRedo = []
+      this.establishCleanSourceSession()
       this.lastError = null
       return true
     },
-    insertPgnFromFen(fen: string): boolean {
+    insertPgnFromFen(fen: string, draftChanged = true): boolean {
       if (this.hasGame && !this.canMutateCurrentSource) {
         this.lastError = '当前来源为只读，不能插入手动局面。'
         return false
@@ -339,6 +500,7 @@ export const usePgnStore = defineStore('pgn', {
       }
 
       try {
+        const createsManualSource = !this.hasGame
         const [item] = parseStrictCollection(pgnTextFromFen(normalizedFen))
 
         if (!item) {
@@ -346,7 +508,7 @@ export const usePgnStore = defineStore('pgn', {
           return false
         }
 
-        const activeSource = this.hasGame ? this.source : manualPositionDataSource()
+        const activeSource = createsManualSource ? manualPositionDataSource() : this.source
         item.dataSource = { ...activeSource }
 
         const hasSelectedItem = this.selectedIndex >= 0 && this.selectedIndex < this.items.length
@@ -358,6 +520,12 @@ export const usePgnStore = defineStore('pgn', {
         this.pendingBranch = null
         this.drawUndo = []
         this.drawRedo = []
+        if (createsManualSource) {
+          this.establishCleanSourceSession()
+        }
+        if (!createsManualSource || draftChanged) {
+          this.markCurrentSourceChanged(activeSource.id)
+        }
         this.lastError = null
         return true
       } catch (error) {
@@ -464,6 +632,7 @@ export const usePgnStore = defineStore('pgn', {
       if (node.children.length === 0) {
         const child = createNode(node, applied)
         node.children.push(child)
+        this.markCurrentSourceChanged()
         this.selectedNodeId = child.id
         this.pendingPromotion = null
         this.pendingBranch = null
@@ -543,31 +712,33 @@ export const usePgnStore = defineStore('pgn', {
 
       this.selectedNodeId = child.id
       this.pendingBranch = null
+      this.markCurrentSourceChanged()
     },
     cancelBranch(): void {
       this.pendingBranch = null
     },
-    drawAnnotation(payload: AnnotationDrawPayload): void {
-      if (!this.canMutateCurrentSource) return
+    drawAnnotation(payload: AnnotationDrawPayload): boolean {
+      if (!this.canMutateCurrentSource) return false
       if (payload.kind === 'arrow' && payload.to) {
-        this.toggleDrawArrow(payload.from, payload.to, payload.color)
-        return
+        return this.toggleDrawArrow(payload.from, payload.to, payload.color)
       }
 
       if (payload.kind === 'square' || payload.kind === 'highlight') {
-        this.toggleDrawSquare(payload.from, payload.color, payload.kind)
+        return this.toggleDrawSquare(payload.from, payload.color, payload.kind)
       }
+
+      return false
     },
     toggleDrawSquare(
       square: string,
       color: BoardAnnotation['squares'][number]['color'],
       kind: BoardAnnotation['squares'][number]['kind']
-    ): void {
-      if (!this.canMutateCurrentSource) return
+    ): boolean {
+      if (!this.canMutateCurrentSource) return false
       const node = this.currentNode
 
       if (!node) {
-        return
+        return false
       }
 
       const before = snapDrawings(node)
@@ -582,18 +753,18 @@ export const usePgnStore = defineStore('pgn', {
 
       node.annotation = { ...cloneAnnotation(node.annotation), squares }
       syncRawComments(node)
-      this.recordDrawChange(node, before)
+      return this.recordDrawChange(node, before)
     },
     toggleDrawArrow(
       from: string,
       to: string,
       color: BoardAnnotation['arrows'][number]['color']
-    ): void {
-      if (!this.canMutateCurrentSource) return
+    ): boolean {
+      if (!this.canMutateCurrentSource) return false
       const node = this.currentNode
 
       if (!node) {
-        return
+        return false
       }
 
       const before = snapDrawings(node)
@@ -608,35 +779,37 @@ export const usePgnStore = defineStore('pgn', {
 
       node.annotation = { ...cloneAnnotation(node.annotation), arrows }
       syncRawComments(node)
-      this.recordDrawChange(node, before)
+      return this.recordDrawChange(node, before)
     },
-    clearDrawing(): void {
-      if (!this.canMutateCurrentSource) return
+    clearDrawing(): boolean {
+      if (!this.canMutateCurrentSource) return false
       const node = this.currentNode
 
       if (!node) {
-        return
+        return false
       }
 
       const before = snapDrawings(node)
 
       if (before.arrows.length === 0 && before.squares.length === 0) {
-        return
+        return false
       }
 
       node.annotation = { ...cloneAnnotation(node.annotation), arrows: [], squares: [] }
       syncRawComments(node)
-      this.recordDrawChange(node, before)
+      return this.recordDrawChange(node, before)
     },
-    recordDrawChange(node: MoveNode, before: DrawSnapshot): void {
+    recordDrawChange(node: MoveNode, before: DrawSnapshot): boolean {
       const after = snapDrawings(node)
 
       if (sameDrawSnapshot(before, after)) {
-        return
+        return false
       }
 
       this.drawUndo.push({ nodeId: node.id, before, after })
       this.drawRedo = []
+      this.markCurrentSourceChanged()
+      return true
     },
     undoCurrentDrawing(): boolean {
       if (!this.canMutateCurrentSource) return false
@@ -665,6 +838,7 @@ export const usePgnStore = defineStore('pgn', {
       }
       syncRawComments(node)
       this.drawRedo.push(entry)
+      this.markCurrentSourceChanged()
 
       return true
     },
@@ -695,6 +869,7 @@ export const usePgnStore = defineStore('pgn', {
       }
       syncRawComments(node)
       this.drawUndo.push(entry)
+      this.markCurrentSourceChanged()
 
       return true
     },
@@ -705,8 +880,18 @@ export const usePgnStore = defineStore('pgn', {
     setPage(page: number): void {
       this.page = Math.max(0, Math.min(page, this.pageTotal - 1))
     },
+    establishCleanSourceSession(): void {
+      this.sourceSession += 1
+      this.sourceRevision = 0
+      this.cleanSourceRevision = 0
+      this.manualDraft = null
+    },
   },
 })
+
+function normalizeFen(fen: string): string {
+  return fen.trim().replace(/\s+/gu, ' ')
+}
 
 function snapDrawings(node: MoveNode): DrawSnapshot {
   return {
