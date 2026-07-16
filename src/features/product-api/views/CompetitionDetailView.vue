@@ -415,8 +415,13 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
 
 <template>
   <ProductRouteShell :title="title" subtitle="选择组别、轮次和对阵，进入讲解或场外大屏">
-    <template #header>
-      <RouteHeader :title="title" subtitle="选择组别、轮次和对阵，进入讲解或场外大屏" />
+    <template #header="{ titleId, registerTitle }">
+      <RouteHeader
+        :title="title"
+        :title-id="titleId"
+        subtitle="选择组别、轮次和对阵，进入讲解或场外大屏"
+        :register-title="registerTitle"
+      />
     </template>
 
     <section class="detail-content" aria-labelledby="competition-detail-title">

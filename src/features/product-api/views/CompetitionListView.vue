@@ -347,8 +347,13 @@ function updatePage(next: number): void {
 
 <template>
   <ProductRouteShell title="赛事" subtitle="查找公开赛事并查看组别、轮次和对阵。">
-    <template #header>
-      <RouteHeader title="赛事" subtitle="查找公开赛事并查看组别、轮次和对阵。" />
+    <template #header="{ titleId, registerTitle }">
+      <RouteHeader
+        title="赛事"
+        :title-id="titleId"
+        subtitle="查找公开赛事并查看组别、轮次和对阵。"
+        :register-title="registerTitle"
+      />
     </template>
 
     <section class="list-content" aria-labelledby="competition-list-title">

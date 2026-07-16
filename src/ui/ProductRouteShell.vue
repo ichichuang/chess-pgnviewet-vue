@@ -1,41 +1,109 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { useRoute } from 'vue-router'
 
-withDefaults(
+type RouteTitleRef = ComponentPublicInstance | Element | null
+
+const props = withDefaults(
   defineProps<{
     title: string
     subtitle?: string
     backTo?: string
+    titleId?: string
+    contentId?: string
     skipTargetId?: string
   }>(),
   {
     subtitle: '',
     backTo: '',
-    skipTargetId: 'main-content',
+    titleId: '',
+    contentId: '',
+    skipTargetId: '',
   }
 )
 
-const titleRef = ref<HTMLHeadingElement | null>(null)
+defineSlots<{
+  header?: (props: {
+    titleId: string
+    contentId: string
+    registerTitle: (element: RouteTitleRef) => void
+    focusTitle: () => void
+  }) => unknown
+  actions?: () => unknown
+  default?: () => unknown
+}>()
 
-onMounted(async () => {
-  await nextTick()
-  titleRef.value?.focus()
+const route = useRoute()
+const instanceId = useId().replace(/[^A-Za-z0-9_-]/gu, '')
+const generatedTitleId = `product-route-title-${instanceId}`
+const generatedContentId = `product-route-content-${instanceId}`
+
+const routeTitleId = computed(() => props.titleId || generatedTitleId)
+const routeContentId = computed(() => {
+  const requestedContentId = props.contentId || props.skipTargetId
+  if (requestedContentId && requestedContentId !== routeTitleId.value) return requestedContentId
+  return generatedContentId
 })
+
+const titleRef = ref<HTMLHeadingElement | null>(null)
+const contentRef = ref<HTMLElement | null>(null)
+
+async function focusTitleAfterRender(): Promise<void> {
+  await nextTick()
+  focusTitle()
+}
 
 function focusTitle(): void {
   titleRef.value?.focus()
 }
 
+function registerTitle(element: RouteTitleRef): void {
+  if (element instanceof HTMLHeadingElement) {
+    titleRef.value = element
+    return
+  }
+
+  const componentElement =
+    element && '$el' in element && element.$el instanceof HTMLHeadingElement
+      ? element.$el
+      : null
+  titleRef.value = componentElement
+}
+
+async function focusContent(event: MouseEvent): Promise<void> {
+  event.preventDefault()
+  await nextTick()
+  contentRef.value?.focus()
+}
+
+onMounted(() => {
+  void focusTitleAfterRender()
+})
+
+watch(
+  () => route.path,
+  () => {
+    void focusTitleAfterRender()
+  }
+)
+
 defineExpose({ focusTitle })
 </script>
 
 <template>
-  <main class="product-route-shell">
-    <a :href="`#${skipTargetId}`" class="skip-link">跳转到主要内容</a>
+  <div class="product-route-shell">
+    <a :href="`#${routeContentId}`" class="skip-link" @click="focusContent">跳转到主要内容</a>
     <header class="product-route-header">
-      <slot name="header">
+      <slot
+        name="header"
+        :title-id="routeTitleId"
+        :content-id="routeContentId"
+        :register-title="registerTitle"
+        :focus-title="focusTitle"
+      >
         <div class="route-title-block">
-          <h1 :id="skipTargetId" ref="titleRef" class="route-title" tabindex="-1">
+          <h1 :id="routeTitleId" :ref="registerTitle" class="route-title" tabindex="-1">
             {{ title }}
           </h1>
           <p v-if="subtitle" class="route-subtitle">{{ subtitle }}</p>
@@ -45,10 +113,16 @@ defineExpose({ focusTitle })
         </div>
       </slot>
     </header>
-    <section :id="skipTargetId" class="product-route-body" tabindex="-1" aria-label="页面内容">
+    <main
+      :id="routeContentId"
+      ref="contentRef"
+      class="product-route-body"
+      tabindex="-1"
+      :aria-labelledby="routeTitleId"
+    >
       <slot />
-    </section>
-  </main>
+    </main>
+  </div>
 </template>
 
 <style scoped>
@@ -103,6 +177,11 @@ defineExpose({ focusTitle })
   color: var(--text);
   font-size: var(--fs-xl);
   outline: none;
+}
+
+.route-title:focus {
+  border-radius: var(--r-xs);
+  box-shadow: var(--state-focus-ring);
 }
 
 .route-subtitle {

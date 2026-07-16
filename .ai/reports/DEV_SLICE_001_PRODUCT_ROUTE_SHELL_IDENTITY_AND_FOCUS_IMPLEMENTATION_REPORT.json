@@ -1,0 +1,247 @@
+{
+  "report_id": "DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT",
+  "created_at": "2026-07-16T14:10:00+08:00",
+  "repository": {
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main"
+  },
+  "verified_baseline": {
+    "expected": "269f9dd6128735e067af26935f158e4eefc34885",
+    "local_head_before_edit": "269f9dd6128735e067af26935f158e4eefc34885",
+    "origin_main_before_edit": "269f9dd6128735e067af26935f158e4eefc34885",
+    "live_remote_main_before_edit": "269f9dd6128735e067af26935f158e4eefc34885",
+    "ahead_behind_before_edit": "0/0",
+    "worktree_before_edit": "clean",
+    "index_before_edit": "clean",
+    "untracked_files_before_edit": "none"
+  },
+  "authority_reads": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/COMPATIBILITY_AND_UNAVAILABLE_SURFACES_SPEC.zh-CN.md",
+    "docs/design/pages/UNIFIED_WORKSPACE_PAGE_SPEC.zh-CN.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "src/ui/ProductRouteShell.vue",
+    "src/features/product-api/components/RouteHeader.vue",
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/features/product-api/views/CompatibilityEntryView.vue",
+    "src/features/product-api/views/CompetitionLiveRedirectView.vue",
+    "src/features/workspace-mode/WorkspaceModeController.vue",
+    "src/views/NotFoundView.vue",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+  ],
+  "affected_findings": [
+    {
+      "id": "NONCONF-UI-001",
+      "reproduced": true,
+      "evidence": "Before patch, ProductRouteShell bound the same skipTargetId to the route h1 and the route body section, so the route title ID and skip-link target ID were not unique."
+    },
+    {
+      "id": "NONCONF-UI-002",
+      "reproduced": true,
+      "evidence": "Before patch, the #header slot replaced the shell-owned h1 and left ProductRouteShell titleRef unregistered for custom-header consumers."
+    },
+    {
+      "id": "NONCONF-UI-003",
+      "reproduced": true,
+      "evidence": "Before patch, RouteHeader rendered its own h1 without accepting the shell title ID or focus registration contract."
+    }
+  ],
+  "files_changed": [
+    "src/ui/ProductRouteShell.vue",
+    "src/features/product-api/components/RouteHeader.vue",
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json"
+  ],
+  "direct_product_route_shell_consumers_inspected": [
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/features/product-api/views/CompatibilityEntryView.vue",
+    "src/features/product-api/views/CompetitionLiveRedirectView.vue",
+    "src/features/workspace-mode/WorkspaceModeController.vue",
+    "src/views/NotFoundView.vue"
+  ],
+  "implementation": {
+    "summary": "ProductRouteShell now owns separate generated title and content IDs, exposes a typed header slot contract, registers the visible route title from default and custom headers, focuses the route title after mount and path navigation, and focuses the actual main content region from the skip link. RouteHeader now consumes the shell-owned title ID and title registration callback instead of creating a second independent page-title owner.",
+    "api_contract": {
+      "ProductRouteShell_props_added": ["titleId", "contentId"],
+      "ProductRouteShell_backward_compatibility": "skipTargetId remains accepted as a content target alias when it does not collide with the title ID.",
+      "ProductRouteShell_header_slot_props": ["titleId", "contentId", "registerTitle", "focusTitle"],
+      "RouteHeader_required_props_added": ["titleId", "registerTitle"]
+    },
+    "scope_preserved": [
+      "No router topology changes",
+      "No query/API/auth/store/persistence changes",
+      "No token/dependency/package/lockfile changes",
+      "No Tabs, Drawer, Sheet, Dialog, Settings, or venue-display behavior changes",
+      "No automated tests or test infrastructure"
+    ]
+  },
+  "before_after_dom_contract": {
+    "before": {
+      "title_id": "same value as skipTargetId",
+      "content_id": "same value as skipTargetId",
+      "skip_target": "same DOM ID used by title and content",
+      "custom_header_focus_owner": "RouteHeader h1 was independent of ProductRouteShell titleRef"
+    },
+    "after": {
+      "title_id": "product-route-title-<vue-use-id>",
+      "content_id": "product-route-content-<vue-use-id>",
+      "skip_target": "skip link href targets the focusable main.product-route-body content ID",
+      "main_aria_labelledby": "main aria-labelledby points to the unique visible h1 title ID",
+      "h1_count": "exactly one h1 per validated route",
+      "custom_header_focus_owner": "RouteHeader h1 receives ProductRouteShell titleId and registerTitle"
+    }
+  },
+  "validation_commands": [
+    {
+      "command": "git fetch origin && pwd -P && git remote get-url origin && git branch --show-current && git status --short && git rev-parse HEAD && git rev-parse origin/main && git ls-remote origin refs/heads/main && git rev-list --left-right --count HEAD...origin/main",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "tmpdir=$(mktemp -d /tmp/dev-slice-001-build.XXXXXX); pnpm exec vite build --outDir \"$tmpdir\" --emptyOutDir",
+      "result": "PASS",
+      "temporary_output": "/tmp/dev-slice-001-build-final.AqnB9q",
+      "note": "Vite emitted the existing large-chunk warning; build completed successfully."
+    }
+  ],
+  "browser_validation": {
+    "result": "PASS",
+    "browser": "Playwright runtime with cached Chromium 1217 explicit executable, headless",
+    "viewport": "1366x900",
+    "paths": [
+      "http://127.0.0.1:5174/pgnViewer/competitions",
+      "http://127.0.0.1:5174/pgnViewer/competitions/47347"
+    ],
+    "real_detail_route_source": {
+      "route": "/pgnViewer/competitions/47347",
+      "source": "first real detail link rendered from the live competition list",
+      "link_text": "查看详情"
+    },
+    "navigation_coverage": [
+      "list direct entry",
+      "list skip link keyboard activation",
+      "detail direct entry",
+      "detail refresh",
+      "browser back to list",
+      "browser forward to detail"
+    ],
+    "focus_evidence": [
+      {
+        "state": "list direct entry",
+        "active_element": "h1#product-route-title-v-0",
+        "focus_ring": "rgba(31, 157, 87, 0.22) 0px 0px 0px 3px"
+      },
+      {
+        "state": "detail direct entry",
+        "active_element": "h1#product-route-title-v-0",
+        "focus_ring": "rgba(31, 157, 87, 0.22) 0px 0px 0px 3px"
+      },
+      {
+        "state": "detail refresh",
+        "active_element": "h1#product-route-title-v-0",
+        "focus_ring": "rgba(31, 157, 87, 0.22) 0px 0px 0px 3px"
+      },
+      {
+        "state": "browser back to list",
+        "active_element": "h1#product-route-title-v-0",
+        "focus_ring": "rgba(31, 157, 87, 0.22) 0px 0px 0px 3px"
+      },
+      {
+        "state": "browser forward to detail",
+        "active_element": "h1#product-route-title-v-0",
+        "focus_ring": "rgba(31, 157, 87, 0.22) 0px 0px 0px 3px"
+      },
+      {
+        "state": "skip link focused by keyboard",
+        "active_element": "a.skip-link",
+        "visible_top": "12px"
+      },
+      {
+        "state": "skip link activated",
+        "active_element": "main#product-route-content-v-0"
+      }
+    ],
+    "dom_evidence": {
+      "h1_count": 1,
+      "duplicate_ids": [],
+      "title_id": "product-route-title-v-0",
+      "content_id": "product-route-content-v-0",
+      "skip_href": "#product-route-content-v-0",
+      "main_aria_labelledby": "product-route-title-v-0",
+      "vite_overlay": false,
+      "page_errors": [],
+      "breaking_console_errors": [],
+      "non_breaking_console_events": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "layout_sanity": "route shell, title, and main content regions had nonzero visible rectangles on both validated routes"
+    }
+  },
+  "cor_impact": {
+    "COR-013": "This slice repairs the route-shell title/main ID collision and route-title focus subset only. It does not claim ownership of unrelated keyboard tabs, splitter, overlay return-focus, or broader accessibility backlog items.",
+    "COR-027": "No provider, theme, adapter, Drawer, Dialog, Sheet, Settings, or Naive UI mapping changes were made. No COR-027 closure status was changed.",
+    "COR-028": "This report records one narrow browser validation for this slice. It does not replace full all-page acceptance evidence or create automated test files."
+  },
+  "limitations": [
+    "Safari WebDriver could not be used because Safari Remote Automation is disabled in user settings.",
+    "The default Playwright runtime expected Chromium revision 1200, which was absent. The final browser validation used an already installed Playwright-managed Chromium 1217 executable with the same Playwright automation runtime.",
+    "An attempted npx Playwright 1.57 browser install for revision 1200 stalled after creating an incomplete cache directory; the specific installer process was terminated. No repository files were changed by this attempt.",
+    "Browser validation was intentionally narrow and did not generate screenshots, visual-regression artifacts, automated test files, or pixel-measurement loops.",
+    "The browser console recorded one non-breaking 404 resource message; there were no page errors, Vite overlays, or breaking console errors."
+  ],
+  "pnpm_test": "not run; repository instructions forbid pnpm test and automated test infrastructure for this slice"
+}

@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
 
 import SettingsSurface from '@/features/settings'
 import { useAuthStore } from '@/stores'
 import { ProductButton } from '@/ui'
 
-defineProps<{
+type RouteTitleRef = ComponentPublicInstance | Element | null
+
+const props = defineProps<{
   title: string
+  titleId: string
   subtitle?: string
+  registerTitle: (element: RouteTitleRef) => void
 }>()
 
 const auth = useAuthStore()
@@ -18,14 +23,20 @@ const settingsButtonRef = ref<InstanceType<typeof ProductButton> | null>(null)
 function logout(): void {
   auth.logout()
 }
+
+function registerRouteTitle(element: RouteTitleRef): void {
+  props.registerTitle(element)
+}
 </script>
 
 <template>
-  <header class="route-header">
+  <div class="route-header">
     <div class="route-title">
       <RouterLink class="workspace-link" :to="{ name: 'workspace' }">工作区</RouterLink>
       <div>
-        <h1>{{ title }}</h1>
+        <h1 :id="titleId" :ref="registerRouteTitle" class="route-heading" tabindex="-1">
+          {{ title }}
+        </h1>
         <p v-if="subtitle">{{ subtitle }}</p>
       </div>
     </div>
@@ -49,7 +60,7 @@ function logout(): void {
       v-model:show="settingsOpen"
       :on-return-focus="() => settingsButtonRef?.focus()"
     />
-  </header>
+  </div>
 </template>
 
 <style scoped>
@@ -80,6 +91,12 @@ function logout(): void {
 .route-title h1 {
   color: var(--text);
   font-size: var(--fs-xl);
+  outline: none;
+}
+
+.route-heading:focus {
+  border-radius: var(--r-xs);
+  box-shadow: var(--state-focus-ring);
 }
 
 .route-title p {
