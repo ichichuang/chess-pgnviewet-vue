@@ -1,0 +1,339 @@
+{
+  "reportType": "SKELETON_CLOSURE_IMPLEMENTATION_REPORT",
+  "taskId": "SKELETON-CLOSURE-001",
+  "status": "PASS",
+  "createdAtUtc": "2026-07-17T08:08:35Z",
+  "repository": {
+    "path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main"
+  },
+  "baseline": {
+    "expected": "03ed4c021b8f6cb901779d0adb53d02d5b9b799b",
+    "localHead": "03ed4c021b8f6cb901779d0adb53d02d5b9b799b",
+    "originMain": "03ed4c021b8f6cb901779d0adb53d02d5b9b799b",
+    "liveRemoteMain": "03ed4c021b8f6cb901779d0adb53d02d5b9b799b",
+    "aheadBehind": "0/0",
+    "cleanWorktree": true,
+    "cleanIndex": true,
+    "untrackedFiles": false,
+    "verifiedBeforeEditing": true
+  },
+  "scope": {
+    "closedBlocker": "SKEL-BLOCK-001",
+    "excludedBlockers": [
+      "SKEL-BLOCK-002",
+      "SKEL-BLOCK-003",
+      "SKEL-BLOCK-004",
+      "SKEL-BLOCK-005"
+    ],
+    "claimAllPageSkeletonsComplete": false
+  },
+  "authoritiesRead": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_DEFINITION.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/pages/COMPETITION_LIST_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/ui/COMPONENT_SYSTEM_SPEC.zh-CN.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/FRONTEND_ARCHITECTURE_RFC.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/PRODUCTION_DEPLOYMENT_BOUNDARY.md",
+    "docs/architecture/SOURCE_ADAPTER_ADR.md",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    ".ai/reports/PAGE_COMPETITION_LIST_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-page-skeleton-completeness-audit-03ed4c0.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-page-skeleton-completeness-audit-03ed4c0.json"
+  ],
+  "codeAndConsumerEvidenceRead": [
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/ui/ProductSheet.vue",
+    "src/ui/ProductDrawer.vue",
+    "src/ui/ProductSelect.vue",
+    "src/ui/ProductButton.vue",
+    "src/ui/productOverlayFocus.ts",
+    "src/query/queryClient.ts",
+    "src/api/productApi.ts",
+    "src/api/productTypes.ts",
+    "src/api/productMappers.ts",
+    "src/api/endpoints.ts"
+  ],
+  "rootCauseHypothesis": "buildQuery() incorrectly treats every non-default non-empty allowed status as invalid, while the compact Filter trigger incorrectly reuses the reset-eligibility predicate instead of representing unconditional access to the filter surface.",
+  "rootCauseInvestigation": {
+    "statusRewrite": "parseRouteQuery() accepts '', 20, 21, and 22, but buildQuery() previously preserved only '' and 21 and rewrote 20/22 to 21.",
+    "compactAccess": "The compact Filter trigger used :disabled=\"!canReset\" even though canReset describes whether Clear has work to do, not whether the filter surface is available.",
+    "focusTiming": "The project overlay and Naive UI complete focus restoration after the Sheet leave transition, so an immediate nextTick results focus was later overwritten by trigger restoration.",
+    "sheetGeometry": "The page's auto-height bottom Sheet collapsed to its header in the real browser and placed Apply/Cancel below the viewport; the established page-local 80vh Sheet sizing makes its controls reachable without changing shared visual policy."
+  },
+  "defectsReproducedBeforePatch": [
+    {
+      "id": "STATUS_20_REWRITE",
+      "route": "/competitions?status=20",
+      "observation": "The page parsed and summarized 报名中, then Query rebuilt the route as status=21."
+    },
+    {
+      "id": "STATUS_22_REWRITE",
+      "route": "/competitions?status=22",
+      "observation": "The page parsed and summarized 已结束, then Query rebuilt the route as status=21."
+    },
+    {
+      "id": "EXPLICIT_EMPTY_DISTINCT",
+      "route": "/competitions?status=",
+      "observation": "Explicit empty represented 全部 and was observably distinct from missing status, which resolved to the approved 21 default."
+    },
+    {
+      "id": "DEFAULT_COMPACT_FILTER_DISABLED",
+      "widths": [900, 560, 390],
+      "observation": "At the default applied state the compact Filter trigger was disabled, had tabIndex -1, and could not expose status/type/date controls."
+    },
+    {
+      "id": "RESET_ACCESS_PREDICATE_COLLISION",
+      "observation": "Clear and Filter shared canReset even though Clear is conditional and Filter is an unconditional access action."
+    }
+  ],
+  "implementation": [
+    "buildQuery() now preserves every value in the existing ALLOWED_STATUS set and retains the defensive default for unexpected internal values.",
+    "The compact Filter trigger no longer uses canReset or isFetching; canReset remains limited to Clear actions.",
+    "The trigger exposes aria-expanded and aria-controls, and the controlled ProductSheet owns the matching id.",
+    "The page gives the filter Sheet an established 80vh height so Apply and Cancel remain reachable across required compact widths.",
+    "ProductDrawer and ProductSheet minimally expose the existing after-leave lifecycle as a typed event because real-browser evidence proved that the required Apply focus cannot reliably be scheduled before overlay focus restoration completes.",
+    "Valid compact Apply sets one URL state, resets page to 1, closes the Sheet, then focuses the existing results heading after leave; Cancel/Escape retains the existing trigger restoration path.",
+    "URL remains the sole owner of applied filters and page; the existing local draft remains separate."
+  ],
+  "urlStatusTruthTable": [
+    {
+      "input": "missing",
+      "approvedMeaning": "default 比赛中",
+      "beforeNextBuild": "21",
+      "afterNextBuild": "21",
+      "repositoryActflag": 21
+    },
+    {
+      "input": "status=",
+      "approvedMeaning": "全部",
+      "beforeNextBuild": "status=",
+      "afterNextBuild": "status=",
+      "repositoryActflag": 0
+    },
+    {
+      "input": "status=20",
+      "approvedMeaning": "报名中",
+      "beforeNextBuild": "status=21",
+      "afterNextBuild": "status=20",
+      "repositoryActflag": 20
+    },
+    {
+      "input": "status=21",
+      "approvedMeaning": "比赛中",
+      "beforeNextBuild": "status=21",
+      "afterNextBuild": "status=21",
+      "repositoryActflag": 21
+    },
+    {
+      "input": "status=22",
+      "approvedMeaning": "已结束",
+      "beforeNextBuild": "status=21",
+      "afterNextBuild": "status=22",
+      "repositoryActflag": 22
+    },
+    {
+      "input": "status=99",
+      "approvedMeaning": "invalid",
+      "beforeNextBuild": "corrected to status=21",
+      "afterNextBuild": "corrected to status=21",
+      "repositoryActflag": 21,
+      "invalidValueReachedRepository": false
+    }
+  ],
+  "repositoryRequestEvidence": {
+    "staticPath": [
+      "parseRouteQuery validates the status allowlist and supplies the missing-status default",
+      "routeState.status becomes filters.actflag",
+      "the query key includes the normalized filters and page",
+      "tournamentRepository.list receives the filters",
+      "productApi maps non-empty actflag with Number(normalized.actflag) and explicit empty to numeric 0"
+    ],
+    "realPublicResultEvidence": [
+      {
+        "status": "",
+        "summary": "状态：全部",
+        "total": 22387
+      },
+      {
+        "status": "20",
+        "summary": "状态：报名中",
+        "total": 18194
+      },
+      {
+        "status": "21",
+        "summary": "状态：比赛中",
+        "total": 18368
+      },
+      {
+        "status": "22",
+        "summary": "状态：已结束",
+        "total": 18196
+      }
+    ],
+    "networkInspectorNote": "The selected in-app Browser exposes DOM, interaction, console, viewport, and page state but no raw request-body inspector. Matching actflag values are therefore established by the exact repository mapping plus distinct real public result states, without instrumenting or modifying production code."
+  },
+  "compactFilterAccessContract": {
+    "widthsValidated": [900, 560, 390],
+    "defaultFilterDisabled": false,
+    "defaultFilterTabIndex": 0,
+    "accessibleName": "筛选",
+    "collapsedAriaExpanded": "false",
+    "openAriaExpanded": "true",
+    "ariaControls": "competition-filter-sheet",
+    "controlledElementExistsWhenOpen": true,
+    "cancelFocus": "Filter trigger",
+    "applyFocus": "赛事结果 heading",
+    "applyClosesSheet": true,
+    "applyResetsPage": 1,
+    "clearAtDefault": "not rendered in the compact applied summary; desktop Clear remains disabled",
+    "clearWhenChanged": "enabled and resets to the approved default",
+    "filterDuringFetchPolicy": "has no canReset or isFetching disablement"
+  },
+  "filesChanged": [
+    {
+      "path": "src/features/product-api/views/CompetitionListView.vue",
+      "purpose": "Preserve allowed status values; separate Filter access from Clear eligibility; add truthful ARIA, reachable Sheet geometry, and post-leave Apply focus."
+    },
+    {
+      "path": "src/ui/ProductDrawer.vue",
+      "purpose": "Expose Naive UI's existing after-leave lifecycle as a typed project-adapter event."
+    },
+    {
+      "path": "src/ui/ProductSheet.vue",
+      "purpose": "Forward the typed after-leave lifecycle to the page consumer."
+    },
+    {
+      "path": ".ai/reports/SKELETON_CLOSURE_001_COMPETITION_LIST_FILTER_QUERY_AND_COMPACT_ACCESS_IMPLEMENTATION_REPORT.json",
+      "purpose": "Immutable closure evidence."
+    }
+  ],
+  "staticValidation": [
+    {
+      "command": "jq empty .ai/reports/SKELETON_CLOSURE_001_COMPETITION_LIST_FILTER_QUERY_AND_COMPACT_ACCESS_IMPLEMENTATION_REPORT.json",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm run audit:prod",
+      "result": "PASS",
+      "detail": "No known production vulnerabilities found."
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "pnpm exec vite build --outDir <temporary external directory>",
+      "result": "PASS",
+      "detail": "Vite 8.1.4 transformed 3224 modules; temporary output was outside the repository and removed."
+    }
+  ],
+  "browserValidation": {
+    "server": "Vite development server at http://127.0.0.1:5174/pgnViewer/",
+    "data": "real public competition API data",
+    "desktop": {
+      "width": 1440,
+      "statusValues": ["", "20", "21", "22"],
+      "combinedApply": "search=周末, status=22, type=1, date=2026-06 remained intact and focused 赛事结果"
+    },
+    "compact": [
+      {
+        "width": 900,
+        "result": "Filter enabled at default; open/cancel/apply/invalid-date/page-reset/focus contracts passed."
+      },
+      {
+        "width": 560,
+        "result": "Filter enabled at default; controlled Sheet and reachable actions passed; Escape returned focus to Filter."
+      },
+      {
+        "width": 390,
+        "result": "Filter enabled at default; controlled Sheet and reachable actions passed; Escape returned focus to Filter."
+      }
+    ],
+    "pagination": "status=20 remained status=20 on page=2; results heading focused; real result meta was page 2 / 910.",
+    "refresh": "A hard navigation to status=20&page=2 retained URL, summary, 18194-result total, and page 2.",
+    "history": "One Back restored status=20&page=2 and one Forward restored status=20 page 1, with no intermediate query entry.",
+    "invalidStatus": "status=99 was replaced with status=21, correction notice rendered, and static request tracing proved 99 never reached actflag.",
+    "invalidDate": "month=13 kept the Sheet open, left the URL unchanged, rendered the existing error, and focused the invalid month input.",
+    "retainedAccess": "Filter remained enabled and tabbable before, during, and after query-driven state changes; it has no fetching disablement.",
+    "themes": "Real UI selection verified nonblank light and dark rendering, then restored the original system preference.",
+    "focus": "Cancel/Escape restored Filter; Apply settled on 赛事结果 after the Sheet left; pagination settled on 赛事结果; invalid date settled on the month input.",
+    "reducedMotion": "The current browser reported prefers-reduced-motion=false. Browser capability discovery exposed viewport and visibility only, so reduce emulation was unavailable; the global 0.01ms reduced-motion rule in src/styles/base.css was verified and this slice changes no motion CSS.",
+    "dom": "nonempty",
+    "viteOverlay": false,
+    "breakingConsoleOrPageErrors": false,
+    "artifactsCreated": false
+  },
+  "limitations": [
+    "No raw browser request-body inspector was available on the selected in-app Browser; repository request-body evidence is the exact production mapping plus distinct real public results.",
+    "The selected Browser could not emulate prefers-reduced-motion; current preference, the active global fallback rule, and the absence of motion changes were verified instead.",
+    "No screenshots, recordings, browser scripts, automated tests, fixtures, mocks, or sample data were created, as required."
+  ],
+  "remainingSkeletonBlockers": [
+    {
+      "id": "SKEL-BLOCK-002",
+      "summary": "Competition detail can remain in dependent endless loading states."
+    },
+    {
+      "id": "SKEL-BLOCK-003",
+      "summary": "Responsive workspace context ownership remains duplicated."
+    },
+    {
+      "id": "SKEL-BLOCK-004",
+      "summary": "Focus can be lost after accepting board-editor discard."
+    },
+    {
+      "id": "SKEL-BLOCK-005",
+      "summary": "Venue display completeness/truncation above 100 entries remains unresolved."
+    }
+  ],
+  "finalVerdict": "SKELETON_CLOSURE_001_COMPETITION_LIST_FILTER_QUERY_AND_COMPACT_ACCESS_PASS"
+}

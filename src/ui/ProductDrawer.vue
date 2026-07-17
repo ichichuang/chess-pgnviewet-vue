@@ -43,6 +43,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   'update:show': [show: boolean]
+  'after-leave': []
 }>()
 
 const isBlockAxisPlacement = computed(
@@ -110,6 +111,7 @@ watch(
     :block-scroll="true"
     @update:show="emit('update:show', $event)"
     @after-enter="onAfterEnter"
+    @after-leave="emit('after-leave')"
   >
     <NDrawerContent
       ref="contentRef"

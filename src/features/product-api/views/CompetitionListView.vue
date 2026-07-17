@@ -118,7 +118,7 @@ function parseRouteQuery(query: LocationQuery): ParsedQueryState {
 function buildQuery(state: Omit<ParsedQueryState, 'correction'>): LocationQuery {
   const query: Record<string, string> = {}
   if (state.search) query.search = state.search
-  query.status = state.status === DEFAULT_STATUS || state.status === '' ? state.status : DEFAULT_STATUS
+  query.status = ALLOWED_STATUS.has(state.status) ? state.status : DEFAULT_STATUS
   if (state.type) query.type = state.type
   query.date = `${state.year}-${String(state.month).padStart(2, '0')}`
   if (state.page !== 1) query.page = String(state.page)
@@ -152,6 +152,7 @@ const yearFieldRef = ref<{ focus: () => void } | null>(null)
 const monthFieldRef = ref<{ focus: () => void } | null>(null)
 const resultHeadingRef = ref<HTMLHeadingElement | null>(null)
 const filterSheetOpen = ref(false)
+const focusResultsAfterSheetClose = ref(false)
 const correctionNotice = ref<string | null>(null)
 
 const filters = computed(() => ({
@@ -303,6 +304,17 @@ async function focusFirstInvalid(invalid: { year?: string; month?: string }): Pr
   }
 }
 
+async function focusAppliedResults(): Promise<void> {
+  await nextTick()
+  resultHeadingRef.value?.focus()
+}
+
+function onFilterSheetAfterLeave(): void {
+  if (!focusResultsAfterSheetClose.value) return
+  focusResultsAfterSheetClose.value = false
+  void focusAppliedResults()
+}
+
 function applyFilters(): void {
   validation.value = validateDraft()
   if (validation.value.year || validation.value.month) {
@@ -321,8 +333,9 @@ function applyFilters(): void {
       page: 1,
     }),
   })
+  focusResultsAfterSheetClose.value = filterSheetOpen.value
   filterSheetOpen.value = false
-  void nextTick(() => resultHeadingRef.value?.focus())
+  if (!focusResultsAfterSheetClose.value) void focusAppliedResults()
 }
 
 function resetFilters(): void {
@@ -401,14 +414,21 @@ function updatePage(next: number): void {
         <ProductButton
           native-type="button"
           variant="secondary"
-          :disabled="!canReset"
+          :aria-expanded="filterSheetOpen"
+          aria-controls="competition-filter-sheet"
           @click="filterSheetOpen = true"
         >
           筛选
         </ProductButton>
       </form>
 
-      <ProductSheet v-model:show="filterSheetOpen" title="筛选赛事">
+      <ProductSheet
+        id="competition-filter-sheet"
+        v-model:show="filterSheetOpen"
+        title="筛选赛事"
+        height="80vh"
+        @after-leave="onFilterSheetAfterLeave"
+      >
         <div class="sheet-fields">
           <ProductSelect v-model="draft.status" label="状态" :options="statusOptions" />
           <ProductSelect v-model="draft.type" label="类型" :options="typeOptions" />

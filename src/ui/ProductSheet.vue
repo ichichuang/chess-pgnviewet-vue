@@ -27,6 +27,7 @@ withDefaults(
 
 const emit = defineEmits<{
   'update:show': [show: boolean]
+  'after-leave': []
 }>()
 </script>
 
@@ -43,6 +44,7 @@ const emit = defineEmits<{
     :initial-focus="initialFocus ?? 'safe-action'"
     :return-focus="returnFocus"
     @update:show="emit('update:show', $event)"
+    @after-leave="emit('after-leave')"
   >
     <template v-if="$slots.header" #header>
       <slot name="header" />
