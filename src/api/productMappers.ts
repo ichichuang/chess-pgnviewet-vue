@@ -160,23 +160,38 @@ function resultFromStatus(value: string): string {
   }
 }
 
-function lifecycleFromStatus(value: string, isBye: boolean): string {
-  if (isBye) return '轮空'
+function lifecycleFromStatus(value: string, isBye: boolean): CompetitionPairing['lifecycle'] {
+  if (isBye) return 'bye'
 
   const status = Number(value)
-  if (!Number.isInteger(status)) return '状态待确认'
+  if (!Number.isInteger(status)) return 'unknown'
 
   switch (status & 0x0f) {
     case 0:
-      return '未开始'
+      return 'waiting'
     case 1:
-      return '进行中'
+      return 'ongoing'
     case 2:
     case 3:
     case 4:
     case 5:
-      return '已结束'
+      return 'completed'
     default:
+      return 'unknown'
+  }
+}
+
+function pairingStatus(lifecycle: CompetitionPairing['lifecycle']): string {
+  switch (lifecycle) {
+    case 'waiting':
+      return '未开始'
+    case 'ongoing':
+      return '进行中'
+    case 'completed':
+      return '已结束'
+    case 'bye':
+      return '轮空'
+    case 'unknown':
       return '状态待确认'
   }
 }
@@ -332,6 +347,7 @@ export function mapCompetitionPairings(
     const blackName = text(item.blackname)
     const isBye = !whiteId || !blackId || !whiteName || !blackName
     const status = text(item.status)
+    const lifecycle = lifecycleFromStatus(status, isBye)
 
     return {
       id: text(item.id),
@@ -343,8 +359,11 @@ export function mapCompetitionPairings(
       blackName: blackName || '轮空',
       whiteRating: text(item.welo),
       blackRating: text(item.belo),
+      whiteTeam: text(item.wjgname),
+      blackTeam: text(item.bjgname),
       result: resultFromStatus(status),
-      status: lifecycleFromStatus(status, isBye),
+      status: pairingStatus(lifecycle),
+      lifecycle,
     }
   })
 

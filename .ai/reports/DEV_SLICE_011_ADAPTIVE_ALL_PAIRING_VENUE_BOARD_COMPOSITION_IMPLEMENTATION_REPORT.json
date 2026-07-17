@@ -1,0 +1,329 @@
+{
+  "slice": "DEV-SLICE-011",
+  "title": "Adaptive all-pairing venue board composition implementation",
+  "status": "PASS",
+  "verified_baseline": {
+    "repository_path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "1372204a41c31a4a9c5aaad6d4cde7fc436d9828",
+    "local_head": "1372204a41c31a4a9c5aaad6d4cde7fc436d9828",
+    "origin_main": "1372204a41c31a4a9c5aaad6d4cde7fc436d9828",
+    "live_remote_main": "1372204a41c31a4a9c5aaad6d4cde7fc436d9828",
+    "ahead_behind": "0/0",
+    "worktree_and_index": "clean before implementation; no untracked files"
+  },
+  "owner_decision": {
+    "page_a_ownership": "Page A selects the competition and group; the independent venue route resolves its round unless a valid explicit round is intentionally supplied as an operator override.",
+    "automatic_round_rule": "Inspect the last valid round in canonical source order. Select it when ongoing or completed; when upcoming, select the nearest preceding completed round; when lifecycle is unknown, select the latest confirmed completed round or show a stable truthful unavailable state.",
+    "upcoming_prohibition": "An upcoming round is never selected merely because it is last.",
+    "explicit_override": "A valid explicit round remains in the URL and survives refresh, back, and forward. Invalid round and legacy page/focus parameters are removed without promoting an automatic round into the URL.",
+    "layout_rule": "Every pairing in source order is rendered simultaneously in one viewport using the candidate grid that maximizes the real square-board dimension.",
+    "decision_status": "OD-05 and OD-06 remain open. This slice uses documented provisional venue Tokens and does not convert them into owner-approved permanent values."
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/architecture/PERSISTENCE_ADR.md",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_005_DIRTY_STATE_AND_DESTRUCTIVE_NAVIGATION_SAFETY_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_006_NODE_COMMENT_AND_GAME_TEACHING_NOTE_EDITING_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_007_PGN_IMPORT_PROGRESS_CANCELLATION_AND_PARTIAL_SUCCESS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_008_AI_FIRST_USE_AND_FULL_GAME_ANALYSIS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_009_AI_CANDIDATE_INSERTION_CANCELLED_STALE_AND_TERMINOLOGY_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_010_ROUND_POLICY_AND_TEAM_BLOCKED_REGION_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+  ],
+  "authorities_updated": [
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md"
+  ],
+  "implementation_surfaces_inspected": [
+    "src/api/productTypes.ts",
+    "src/api/productMappers.ts",
+    "src/api/productApi.ts",
+    "src/api/queryClient.ts",
+    "src/features/product-api/domain/competitionRoundPolicy.ts",
+    "src/features/product-api/domain/capabilityAvailability.ts",
+    "src/features/product-api/views/CompetitionDisplayView.vue",
+    "src/features/product-api/components/VenueDisplayShell.vue",
+    "src/features/product-api/composables/useVenueDisplayLayout.ts",
+    "src/features/board/CanonicalChessBoard.vue",
+    "src/features/board/useBoardCapabilityOptions.ts",
+    "src/features/board/useBoardView.ts",
+    "src/styles/tokens.css",
+    "every in-repository VenueDisplayShell and useVenueDisplayLayout consumer"
+  ],
+  "root_cause_investigation": {
+    "fixed_capacity_geometry": "The previous owner used a 280px minimum card width, 140px minimum card height, 12px gap, and a 4x4 capacity ceiling. Width and height capacity were calculated independently from the player header and square board requirement.",
+    "round_selection": "The previous automatic display policy chose an ongoing or upcoming round before a completed round and canonicalized the automatic result into the URL, so a last upcoming round could replace the nearest preceding completed round.",
+    "observed_whitespace": "At 1920x1080, one pairing occupied only a 463x269.56 card in a four-column model, three pairings occupied three 463x269.56 cards with a vacant column and unused stage height, and ten pairings used 4x3 even though 5x2 yields larger square boards.",
+    "board_contract": "The production pairing DTO and current repository expose names, ratings, teams, board numbers, status, and result, but no authoritative live or final FEN. The live_board_positions capability remains contract-blocked.",
+    "hypothesis": "A capacity model based on independent minimum card dimensions cannot optimize a fixed header plus square board. Enumerating every possible column count against the measured stage, subtracting the fixed header and real gaps, and maximizing the resulting square dimension removes that mismatch while keeping every pairing visible."
+  },
+  "round_selection_truth_table": [
+    {
+      "input": "valid explicit round",
+      "result": "select explicit round",
+      "url": "preserve explicit round"
+    },
+    {
+      "input": "last canonical round ongoing",
+      "result": "select last round",
+      "url": "automatic result stays out of URL"
+    },
+    {
+      "input": "last canonical round completed",
+      "result": "select last round",
+      "url": "automatic result stays out of URL"
+    },
+    {
+      "input": "last canonical round upcoming with preceding completed round",
+      "result": "select nearest preceding completed round",
+      "url": "automatic result stays out of URL"
+    },
+    {
+      "input": "last canonical round upcoming without preceding completed round",
+      "result": "stable no-completed-round-available state",
+      "url": "no guessed round"
+    },
+    {
+      "input": "last canonical round lifecycle unknown with confirmed completed round",
+      "result": "select latest confirmed completed round",
+      "url": "automatic result stays out of URL"
+    },
+    {
+      "input": "last canonical round lifecycle unknown without confirmed completed round",
+      "result": "stable lifecycle-unknown/no-completed-round state",
+      "url": "no guessed round"
+    },
+    {
+      "input": "no valid rounds",
+      "result": "stable no-rounds state",
+      "url": "no guessed round"
+    }
+  ],
+  "adaptive_layout_algorithm": {
+    "owner": "src/features/product-api/composables/useVenueDisplayLayout.ts",
+    "measurement": "ResizeObserver measures the venue stage and player-header probe; computed column gap is read from the governed grid Token.",
+    "candidates": "For every column count from 1 through pairingCount, rows=ceil(pairingCount/columns), tile width and tile height are calculated from the measured stage and actual gaps.",
+    "board_dimension": "boardSize=min(tileWidth, tileHeight-fixedPlayerHeaderHeight). Negative capacity is clamped to zero.",
+    "selection": "Choose the largest boardSize. Within the 0.01px tie tolerance, choose fewer empty cells, then lower tile aspect distortion, then fewer columns for deterministic final ordering.",
+    "output": "Typed CSS variables set equal grid columns, equal rows, and the fixed player-header allowance. Every source pairing is rendered once in source order; there is no pagination, carousel, focus overlay, rotation, hidden overflow, or document scrolling.",
+    "resize_behavior": "The observer recomputes geometry after stage or header changes without a second layout runtime."
+  },
+  "match_container_contract": {
+    "owner": "src/features/product-api/components/VenueDisplayMatch.vue",
+    "header": "A fixed three-column header renders left competitor information, centered VS/board/result, and right competitor information with side-correct alignment and ellipsis truncation.",
+    "metadata": "Only real mapped name, rating, team, board number, status, and result fields render. Missing fields are omitted.",
+    "board_stage": "The lower square stage keeps identical geometry for loading, waiting, ongoing, completed, stale, disconnected, partial-failure, failed, bye, and contract-blocked projections.",
+    "readonly": "A validated authoritative FEN would use the existing CanonicalChessBoard with move, promotion, annotation, radial-menu, editing, wheel-navigation, click, and drag capabilities disabled; keyboard/touch square navigation and coordinates remain available.",
+    "ordering": "CompetitionDisplayView renders the repository pairing array directly and records source indices 0..n-1 without sorting."
+  },
+  "board_data_and_truth_boundary": {
+    "authoritative_fen_observed": false,
+    "canonical_board_instances_observed": 0,
+    "current_result": "Non-bye real pairings render an equal square unavailable stage stating that the authoritative live/final position is unavailable. Confirmed byes render a distinct truthful bye stage.",
+    "validation_rule": "Any future supplied position must successfully round-trip through chess.js before CanonicalChessBoard is mounted. Invalid or absent FEN never falls back to the standard starting position.",
+    "last_trusted_position": "The component can retain a supplied last trusted real FEN and overlay stale, disconnected, or partial-failure state. This slice has no real per-board transport evidence, so those labels were not fabricated in current production data.",
+    "forbidden_data": "No fake FEN, start-position fallback, synthetic move, clock, PGN, annotation, evaluation, AI result, hardware status, sample content, or fallback success was added.",
+    "future_contract": "Authoritative live/final FEN, per-board freshness, disconnection, subscription, clock, and hardware contracts remain COR-024/contract-blocked work."
+  },
+  "real_pairing_counts_inspected": [
+    {
+      "hdid": "42804",
+      "count": 1,
+      "round_behavior": "last ongoing",
+      "observed_1920x1080": "1x1 grid; 1888x810.98 stage; 724.58px square board capacity"
+    },
+    {
+      "hdid": "50624",
+      "count": 3,
+      "round_behavior": "last upcoming; nearest preceding completed selected",
+      "observed_1920x1080": "3x1 grid; 1888x810.98 stage; 621.33px square board capacity"
+    },
+    {
+      "hdid": "46714",
+      "count": 7,
+      "round_behavior": "last completed",
+      "observed_3840x2160": "4x2 grid; 3808x1858.61 stage; 815.30px square board capacity"
+    },
+    {
+      "hdid": "42007",
+      "count": 10,
+      "round_behavior": "last completed",
+      "observed_1920x1080": "5x2 grid; 1888x784.37 stage; 313.09px square board capacity",
+      "observed_2560x1080": "5x2 grid; 2528x784.37 stage; 299.79px square board capacity",
+      "observed_1280x720": "5x2 grid; all ten source indices visible without document overflow"
+    },
+    {
+      "hdid": "47347",
+      "count": 0,
+      "round_behavior": "last upcoming with no preceding completed round; truthful unavailable state"
+    },
+    {
+      "hdid": "44350",
+      "count": 0,
+      "round_behavior": "unknown lifecycle with no confirmed completed round; truthful lifecycle-unknown state"
+    },
+    {
+      "hdid": "43042",
+      "count": 1,
+      "round_behavior": "last ongoing"
+    }
+  ],
+  "implementation": {
+    "classification": "CURRENT_IMPLEMENTED adaptive geometry and round policy plus truthful CONTRACT_BLOCKED board data surface",
+    "dependencies_added": "none",
+    "requests_or_endpoints_added": "none",
+    "persistence_added": "none",
+    "router_topology_changed": false,
+    "workspace_or_analysis_changed": false,
+    "automated_tests_or_artifacts_added": "none",
+    "page_size_boundary": "The existing public pairing repository contract accepts at most 100 rows per request. All real groups located in this validation were at or below ten pairings; no pagination UI or hidden client page was retained."
+  },
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_011_ADAPTIVE_ALL_PAIRING_VENUE_BOARD_COMPOSITION_IMPLEMENTATION_REPORT.json",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "src/api/productTypes.ts",
+    "src/api/productMappers.ts",
+    "src/features/product-api/domain/competitionRoundPolicy.ts",
+    "src/features/product-api/views/CompetitionDisplayView.vue",
+    "src/features/product-api/components/VenueDisplayShell.vue",
+    "src/features/product-api/components/VenueDisplayMatch.vue",
+    "src/features/product-api/composables/useVenueDisplayLayout.ts",
+    "src/styles/tokens.css"
+  ],
+  "static_validation": [
+    {
+      "command": "jq empty .ai/reports/DEV_SLICE_011_ADAPTIVE_ALL_PAIRING_VENUE_BOARD_COMPOSITION_IMPLEMENTATION_REPORT.json",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "pass; dependency, architecture, residue, token, mock, secret, and product-copy checks all passed"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "pass; includes production audit with no known vulnerabilities"
+    },
+    {
+      "command": "pnpm run audit:prod",
+      "result": "pass; no known vulnerabilities"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-build.VRynCS",
+      "result": "pass; 3224 modules transformed; temporary repository-external output removed"
+    },
+    {
+      "command": "pnpm test",
+      "result": "not run by repository policy"
+    }
+  ],
+  "browser_validation": {
+    "server": "http://127.0.0.1:5174/pgnViewer/",
+    "all_pairings": "Real one-, three-, seven-, and ten-pairing rounds rendered every source index simultaneously. The largest located set rendered indices 0 through 9 in one 5x2 grid.",
+    "geometry": "One and three games were substantially larger than ten games. The 1080p, 4K, and 21:9 measurements selected 1x1, 3x1, 4x2, and 5x2 candidates as appropriate and produced no document scroll.",
+    "headers": "Real cards rendered left competitor, centered VS/board/result, and right competitor in source order with available ratings and teams.",
+    "rounds": "42804/43042 confirmed last-ongoing selection; 42007/46714 confirmed last-completed selection; 50624 confirmed last-upcoming fallback to the preceding completed round; 47347 and 44350 confirmed truthful unavailable states.",
+    "url_state": "50624 explicit round=1 remained explicit; restore-auto pushed a group-only URL; browser back restored explicit round and forward restored automatic selection. Command-R refresh preserved automatic selection. Invalid round plus legacy page/focus parameters canonicalized to group-only automatic state.",
+    "truth_boundary": "No authoritative FEN was present. The final ten-pairing run mounted zero CanonicalChessBoard instances, nine equal contract-blocked stages, and one truthful bye stage.",
+    "theme": "The same seven-pairing route rendered governed light and dark colors. The original follow-system preference was restored and resolved to dark in the current OS environment.",
+    "motion": "No pagination, rotation, carousel, or focus animation exists. The loaded reduced-motion media rules remove venue transitions; the validation environment itself reported prefers-reduced-motion=false.",
+    "focus": "Ordinary route entry and refresh focused the unique display H1. The final page contained no duplicate IDs. Group and round controls remained keyboard-operable; settings dialog returned focus to its trigger.",
+    "runtime_health": "Fresh final tab rendered a nonblank DOM with exact 1280x720 document dimensions, no Vite overlay, no horizontal/vertical document overflow, and only Vite connect debug logs; there were no warning, error, or page-error entries.",
+    "artifacts": "No screenshots, browser scripts, snapshots, fixtures, mocks, test files, or browser artifacts were created or retained."
+  },
+  "cor_and_od_impact": {
+    "COR-004": "CLOSED with deterministic all-pairing geometry, source ordering, equal tile geometry, real count/viewport evidence, and truthful same-size unavailable board stages.",
+    "COR-005": "Display round policy now follows the revised owner decision, but COR-005 remains OPEN_IMPLEMENTATION_GAP because its broader commentary/display lifecycle contract is outside this slice.",
+    "COR-024": "Remains OPEN_CONTRACT_BLOCKED for real live/final FEN, freshness, disconnect, subscription, clock, and hardware data.",
+    "OD-05": "remains open; provisional responsive geometry Tokens are visibly marked and not promoted to owner-approved permanent values",
+    "OD-06": "remains open; provisional density/text Tokens are visibly marked and not promoted to owner-approved permanent values",
+    "OD-01_to_OD-11": "no owner decision was marked fully closed by this slice"
+  },
+  "limitations": [
+    "No current public pairing response exposed an authoritative live or final FEN, so only truthful blocked and bye board stages were exercised with real data.",
+    "No real per-board freshness/disconnection/partial-failure evidence exists. The match container preserves geometry and can retain a supplied trusted position, but this slice does not synthesize those runtime states.",
+    "The pairing read contract currently caps one request at 100 rows. The largest real group located contained ten pairings; groups above the repository limit require a future confirmed API contract rather than client pagination.",
+    "The browser environment could inspect loaded prefers-reduced-motion rules but could not supply a real OS reduce preference; no venue animation path exists.",
+    "No automated tests exist or were added because repository policy forbids automated test infrastructure; validation used static checks and narrow real-browser evidence."
+  ],
+  "review": {
+    "result": "Full authorized diff, architecture boundary, truthfulness, route policy, geometry, responsive, focus, theme, and runtime reviews completed with no remaining slice-local blocker.",
+    "addressed_during_validation": "The product-copy governance scanner rejected an internal blocked-board class name and Knip identified four unnecessary public exports. The class was renamed to an approved unavailable term, the API surface was narrowed, and both checks then passed."
+  },
+  "commit_subject": "feat(display): 建立自适应全对局棋盘展示布局",
+  "verdict": "DEV_SLICE_011_ADAPTIVE_ALL_PAIRING_VENUE_BOARD_COMPOSITION_PASS"
+}

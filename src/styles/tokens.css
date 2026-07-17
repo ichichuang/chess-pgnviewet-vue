@@ -49,6 +49,20 @@
   --route-body-pad: var(--s-4);
   --route-scroll-offset: var(--s-4);
 
+  /*
+    Venue display provisional geometry.
+    OD-05/OD-06 remain open; these values are implementation inputs for real-screen review,
+    not confirmed minimum/preferred board sizes or final venue spacing.
+  */
+  --venue-display-grid-gap: var(--s-3);
+  --venue-display-player-header-h: clamp(72px, 8vh, 108px);
+  --venue-display-player-text-min-h: clamp(18px, 2vh, 28px);
+  --venue-display-player-meta-min-h: clamp(14px, 1.6vh, 22px);
+  --venue-display-versus-min-inline: clamp(52px, 4vw, 84px);
+  --venue-display-state-overlay-pad: var(--s-3);
+  --venue-display-contract-copy-max-inline: clamp(156px, 18vw, 320px);
+  --venue-display-contract-copy-margin-inline: auto;
+
   /* Card, dialog and drawer geometry */
   --card-max-w: 420px;
   --dialog-max-w: 560px;

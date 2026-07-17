@@ -1,19 +1,28 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, useId } from 'vue'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title: string
     subtitle?: string
+    titleId?: string
     skipTargetId?: string
   }>(),
   {
     subtitle: '',
-    skipTargetId: 'display-stage',
+    titleId: '',
+    skipTargetId: '',
   }
 )
 
+const instanceId = useId().replace(/[^A-Za-z0-9_-]/gu, '')
+const routeTitleId = computed(() => props.titleId || `venue-display-title-${instanceId}`)
+const routeContentId = computed(() => {
+  if (props.skipTargetId && props.skipTargetId !== routeTitleId.value) return props.skipTargetId
+  return `venue-display-stage-${instanceId}`
+})
 const titleRef = ref<HTMLHeadingElement | null>(null)
+const stageRef = ref<HTMLElement | null>(null)
 
 onMounted(async () => {
   await nextTick()
@@ -24,16 +33,21 @@ function focusTitle(): void {
   titleRef.value?.focus()
 }
 
+function focusStage(event: MouseEvent): void {
+  event.preventDefault()
+  stageRef.value?.focus({ preventScroll: true })
+}
+
 defineExpose({ focusTitle })
 </script>
 
 <template>
   <main class="venue-display-shell">
-    <a :href="`#${skipTargetId}`" class="skip-link">跳转到主要内容</a>
+    <a :href="`#${routeContentId}`" class="skip-link" @click="focusStage">跳转到主要内容</a>
 
     <header class="venue-display-header">
       <div class="display-title-block">
-        <h1 :id="skipTargetId" ref="titleRef" class="display-title" tabindex="-1">
+        <h1 :id="routeTitleId" ref="titleRef" class="display-title" tabindex="-1">
           {{ title }}
         </h1>
         <p v-if="subtitle" class="display-subtitle">{{ subtitle }}</p>
@@ -47,7 +61,13 @@ defineExpose({ focusTitle })
       <slot name="controls" />
     </div>
 
-    <section :id="skipTargetId" class="venue-display-stage" tabindex="-1" aria-label="大屏展示舞台">
+    <section
+      :id="routeContentId"
+      ref="stageRef"
+      class="venue-display-stage"
+      tabindex="-1"
+      :aria-labelledby="routeTitleId"
+    >
       <slot />
     </section>
 

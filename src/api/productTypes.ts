@@ -45,6 +45,8 @@ export interface CompetitionRound {
   readonly endTime: string
 }
 
+type CompetitionPairingLifecycle = 'waiting' | 'ongoing' | 'completed' | 'bye' | 'unknown'
+
 export interface CompetitionPairing {
   readonly id: string
   readonly competitionId: string
@@ -55,8 +57,11 @@ export interface CompetitionPairing {
   readonly blackName: string
   readonly whiteRating: string
   readonly blackRating: string
+  readonly whiteTeam: string
+  readonly blackTeam: string
   readonly result: string
   readonly status: string
+  readonly lifecycle: CompetitionPairingLifecycle
 }
 
 export interface FinishedGameReplay {

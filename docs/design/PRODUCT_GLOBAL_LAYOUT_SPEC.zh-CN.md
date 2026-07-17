@@ -268,7 +268,7 @@ APPROVED_TARGET：
 | 统一工作区   | WorkspaceToolbar、棋盘                | 左来源 list-inner；右当前 tab 内容 | body、棋盘、同列双滚动          |
 | 赛事列表     | RouteHeader、筛选摘要、分页槽         | 结果表/列表                        | 页面 body、表格内再嵌套列表滚动 |
 | 赛事详情     | RouteHeader、赛事摘要、组别/轮次控制  | 对阵列表                           | 每轮次各自纵向滚动              |
-| 当前公开大屏 | RouteHeader/显示上下文、分页/聚焦控制 | 对阵或大屏网格模块                 | 教学 shell 滚动                 |
+| 当前公开大屏 | RouteHeader/显示上下文、组别/轮次控制 | 无滚动的全对阵自适应网格           | body、网格、教学 shell 滚动     |
 | 登录         | 页面背景                              | login-surface 在高度不足时唯一滚动 | 卡片内部和页面同时滚动          |
 | 设置         | Sheet/Dialog header 与 footer         | 设置内容体                         | 每个设置组独立滚动              |
 | 兼容/不可用  | RouteHeader                           | 状态内容仅在高度不足时滚动         | 空白页面或自动跳转循环          |
@@ -317,18 +317,15 @@ APPROVED_TARGET：
 
     VenueDisplayShell
     ├─ DisplayContext：赛事、组别、轮次、更新时间
-    ├─ DisplayControls：集合、分页、暂停、聚焦
+    ├─ DisplayControls：组别、显式轮次覆盖
     └─ DisplayStage：minmax(0, 1fr)
-       ├─ PairingDisplay（CURRENT_IMPLEMENTED）
-       └─ MultiBoardGrid（CONTRACT_BLOCKED 数据，APPROVED_TARGET 组合）
+       └─ AdaptiveAllPairingGrid（CURRENT_IMPLEMENTED 几何，CONTRACT_BLOCKED 实时棋盘数据）
 
 - VenueDisplayShell 使用同一 --workspace-viewport-h 和全局 Token，但不导入 WorkspaceToolbar、来源导航、右侧棋谱、分析或编辑区。
-- CURRENT_IMPLEMENTED 只显示公开对阵组合；不存在真实棋盘局面时不保留假棋盘格。
-- APPROVED_TARGET 的 grid 枚举行列候选，使用视口、信息区、棋盘数和符号化 minimumBoardSize/preferredBoardSize 评分。
-- OD-05 未关闭前不把最小/首选棋盘尺寸写入 CSS Token 或页面常量。
-- OD-06 未关闭前不把大屏安全边距、格间距和轮播时间写入页面常量。
-- 候选不满足确认可读阈值时减少每页数量并分页；不无限缩小。
-- 聚焦使用单棋盘布局并保存原页、排序和轮播状态；退出后恢复。
+- CURRENT_IMPLEMENTED 枚举 `1..pairingCount` 列，以舞台实测宽高、Token 间距与选手头部高度最大化正方棋盘；同分先减少空格，再降低宽高失真。
+- 所选轮次全部对阵按来源顺序在一个视口中同时存在；等列、等行、等棋盘几何，不分页、不轮播、不聚焦覆盖、不隐藏溢出。
+- 不存在真实权威 FEN 时保留同尺寸合同阻断棋盘舞台，绝不渲染默认起始局面。
+- OD-05 未关闭前不声明最终最小/首选棋盘尺寸；OD-06 未关闭前，当前全局 Token 间距仍是可审查的临时值而非最终设备常量。
 
 ## 13. 登录与设置几何
 

@@ -374,10 +374,11 @@ CURRENT_IMPLEMENTED 的基础棋盘角色：
 ### 13.3 场外大屏
 
 - CURRENT_IMPLEMENTED：独立公开对阵展示，只有真实赛事、组别、轮次和对阵数据。
-- APPROVED_TARGET：合同就绪后的多棋盘网格、分页、单局聚焦、暂停/继续和故障排序。
+- CURRENT_IMPLEMENTED：实测舞台驱动的全对阵自适应同屏、稳定来源顺序、左选手 / VS / 右选手头部与同尺寸合同阻断棋盘舞台。
+- APPROVED_TARGET：合同就绪后在同一格子中显示规范只读棋盘及有真实证据的故障状态。
 - CONTRACT_BLOCKED：实时棋盘局面、批量订阅、权威时钟和实时新鲜度。
 - OPEN_OWNER_DECISION：OD-05、OD-06、OD-07、OD-08。
-- PROHIBITED：教学棋谱面板、AI、评价、编辑工具、来源批注、管理后台和不可读的无限缩小。
+- PROHIBITED：分页、轮播、聚焦覆盖、隐藏对阵、教学棋谱面板、AI、评价、编辑工具、来源批注、管理后台和伪 FEN。
 
 ## 14. 全局状态组件
 
