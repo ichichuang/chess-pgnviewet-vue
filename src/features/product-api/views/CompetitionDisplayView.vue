@@ -6,6 +6,7 @@ import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router'
 import { competitionDisplayRepository } from '@/api/productApi'
 import type { CompetitionPairing } from '@/api/productTypes'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
+import { selectDisplayRound } from '@/features/product-api/domain/competitionRoundPolicy'
 import { resourceError } from '@/features/product-api/domain/resourceError'
 import {
   ProductButton,
@@ -25,11 +26,10 @@ const hdid = computed(() => routeText(route.params.hdid))
 const stageRef = ref<HTMLElement | null>(null)
 const { columns, pageSize } = useVenueDisplayLayout(stageRef)
 
-const selectedGroupId = ref(routeText(route.query.group))
-const selectedRoundId = ref(routeText(route.query.round))
 const isPaused = ref(false)
 const lastFocusedId = ref('')
 const returnFocusRef = ref<HTMLElement | null>(null)
+const roundRouteContextPending = ref(true)
 
 const pageFromQuery = computed(() => {
   const n = Number(route.query.page)
@@ -56,7 +56,13 @@ const groupOptions = computed(() =>
   groups.value.map((group) => ({ label: group.name, value: group.ticketId }))
 )
 
-
+const selectedGroupId = computed(() => {
+  const explicitGroupId = routeText(route.query.group)
+  const explicitGroup = groups.value.find(
+    (group) => group.id === explicitGroupId || group.ticketId === explicitGroupId
+  )
+  return explicitGroup?.ticketId ?? groups.value[0]?.ticketId ?? ''
+})
 
 const roundsQuery = useQuery({
   queryKey: computed(() => productQueryKeys.displayRounds(hdid.value, selectedGroupId.value)),
@@ -66,10 +72,17 @@ const roundsQuery = useQuery({
   enabled: computed(() => Boolean(hdid.value && selectedGroupId.value)),
 })
 
-const rounds = computed(() => roundsQuery.data.value ?? [])
+const rounds = computed(() =>
+  (roundsQuery.data.value ?? []).filter((round) => round.groupId === selectedGroupId.value)
+)
 const roundOptions = computed(() =>
   rounds.value.map((round) => ({ label: round.name, value: round.id }))
 )
+const selectedRound = computed(() =>
+  selectDisplayRound(rounds.value, routeText(route.query.round))
+)
+const selectedRoundId = computed(() => selectedRound.value?.id ?? '')
+const selectedRoundName = computed(() => selectedRound.value?.name ?? '')
 
 const pairingsQuery = useQuery({
   queryKey: computed(() =>
@@ -148,64 +161,38 @@ const updatedAtText = computed(() => {
 })
 
 watch(
-  groups,
-  (items) => {
-    if (selectedGroupId.value && items.some((group) => group.ticketId === selectedGroupId.value)) {
-      return
-    }
-    selectedGroupId.value = items[0]?.ticketId ?? ''
-  },
-  { immediate: true }
-)
-
-watch(
-  () => [routeText(route.query.group), routeText(route.query.round), pageFromQuery.value] as const,
-  ([groupId, roundId, page]) => {
-    if (groupId && groupId !== selectedGroupId.value) selectedGroupId.value = groupId
-    if (roundId && roundId !== selectedRoundId.value) selectedRoundId.value = roundId
-    if (page !== pageFromQuery.value) {
-      // route already owns page; local ref not needed
-    }
+  () => route.query.round,
+  (value, previous) => {
+    if (routeText(value) !== routeText(previous)) roundRouteContextPending.value = true
   }
 )
 
 watch(
-  [selectedGroupId, selectedRoundId],
-  ([groupId, roundId], [prevGroupId, prevRoundId]) => {
-    const changed = groupId !== prevGroupId || roundId !== prevRoundId
-    if (
-      routeText(route.query.group) === groupId &&
-      routeText(route.query.round) === roundId
-    ) {
+  [rounds, selectedGroupId, () => route.query.round],
+  async ([items, groupId, routeRound]) => {
+    if (!groupId || !items.length) return
+
+    const explicitRoundId = routeText(routeRound)
+    const explicitRoundIsValid = items.some((round) => round.id === explicitRoundId)
+    const resolvedRound = selectDisplayRound(items, explicitRoundId)
+    if (!resolvedRound) return
+
+    const groupIsCanonical = routeText(route.query.group) === groupId
+    if (explicitRoundIsValid && groupIsCanonical) {
+      roundRouteContextPending.value = false
       return
     }
 
+    const roundNeedsPolicy = !explicitRoundIsValid
+    const shouldFocusResult = roundNeedsPolicy && roundRouteContextPending.value
+    roundRouteContextPending.value = false
     const query = buildQuery()
-    query.group = groupId || undefined
-    query.round = roundId || undefined
-    if (changed) {
-      query.page = '1'
-      query.focus = undefined
-    }
-    void router.replace({ query })
-  },
-  { flush: 'post' }
-)
-
-watch(
-  rounds,
-  (items) => {
-    if (selectedRoundId.value && items.some((round) => round.id === selectedRoundId.value)) {
-      return
-    }
-    // Display round default: explicit URL is already handled by watcher above.
-    // Fallback order: source current round, latest round, first round.
-    const sourceCurrentId = items[0]?.sourceCurrentRoundId
-    const latestRound = items[items.length - 1]
-    selectedRoundId.value =
-      (sourceCurrentId && items.some((r) => r.id === sourceCurrentId)
-        ? sourceCurrentId
-        : latestRound?.id) ?? items[0]?.id ?? ''
+    query.group = groupId
+    query.round = resolvedRound.id
+    query.page = '1'
+    query.focus = undefined
+    await router.replace({ query })
+    if (shouldFocusResult) await focusRoundResult()
   },
   { immediate: true }
 )
@@ -255,6 +242,33 @@ function buildQuery(): Record<string, string | undefined> {
     if (text) result[key] = text
   }
   return result
+}
+
+async function selectGroup(groupId: string | number | null): Promise<void> {
+  if (!groupId || groupId === selectedGroupId.value) return
+  roundRouteContextPending.value = true
+  const query = buildQuery()
+  query.group = String(groupId)
+  query.round = undefined
+  query.page = '1'
+  query.focus = undefined
+  await router.push({ query })
+}
+
+async function selectRound(roundId: string | number | null): Promise<void> {
+  if (!roundId || roundId === selectedRoundId.value) return
+  const query = buildQuery()
+  query.group = selectedGroupId.value
+  query.round = String(roundId)
+  query.page = '1'
+  query.focus = undefined
+  await router.push({ query })
+  await focusRoundResult()
+}
+
+async function focusRoundResult(): Promise<void> {
+  await nextTick()
+  stageRef.value?.focus()
 }
 
 function updatePage(page: number): void {
@@ -354,18 +368,20 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
     <template #controls>
       <div class="display-control-group">
         <ProductSelect
-          v-model="selectedGroupId"
+          :model-value="selectedGroupId"
           label="组别"
           placeholder="选择组别"
           :options="groupOptions"
           :disabled="groupsQuery.isLoading.value"
+          @update:model-value="selectGroup"
         />
         <ProductSelect
-          v-model="selectedRoundId"
+          :model-value="selectedRoundId"
           label="轮次"
           placeholder="选择轮次"
           :options="roundOptions"
           :disabled="roundsQuery.isLoading.value"
+          @update:model-value="selectRound"
         />
       </div>
 
@@ -387,7 +403,12 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
       </div>
     </template>
 
-    <div ref="stageRef" class="stage-measure">
+    <div
+      ref="stageRef"
+      class="stage-measure"
+      tabindex="-1"
+      :aria-label="selectedRoundName ? `${selectedRoundName}对阵结果` : '赛事对阵结果'"
+    >
       <ResourceState
         v-if="isInitialPending || (errorState && rawPairings.length === 0) || (!isInitialPending && rawPairings.length === 0 && !isRetainedFetching)"
         :pending="isInitialPending"
@@ -494,6 +515,12 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
   width: 100%;
   height: 100%;
   min-height: 0;
+}
+
+.stage-measure:focus {
+  outline: none;
+  border-radius: var(--r-sm);
+  box-shadow: var(--state-focus-ring);
 }
 
 .display-control-group {

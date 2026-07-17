@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter, type LocationQuery } from 'vue-router'
 
 import { tournamentRepository } from '@/api/productApi'
@@ -8,6 +8,8 @@ import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
 import type { CompetitionPairing } from '@/api/productTypes'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
+import { evaluateCapabilityAvailability } from '@/features/product-api/domain/capabilityAvailability'
+import { selectCommentaryRound } from '@/features/product-api/domain/competitionRoundPolicy'
 import { resourceError } from '@/features/product-api/domain/resourceError'
 import {
   buildRootWorkspaceRouteFromHandoff,
@@ -28,6 +30,10 @@ const PAGE_SIZE = 50
 
 const route = useRoute()
 const router = useRouter()
+const roundResultRef = ref<HTMLElement | null>(null)
+const roundCanonicalizationPending = ref(false)
+const roundRouteContextPending = ref(Boolean(routeText(route.query.round)))
+const roundPolicyFocusPending = ref(false)
 
 interface ParsedQueryState {
   group: string
@@ -108,11 +114,22 @@ watch(
   () => routeState.value.correction,
   (correction) => {
     if (correction) {
+      if (routeText(route.query.round) && !routeState.value.round) {
+        roundCanonicalizationPending.value = true
+        roundRouteContextPending.value = true
+      }
       correctionNotice.value = correction
       void router.replace({ query: buildQuery(routeState.value) })
     }
   },
   { immediate: true }
+)
+
+watch(
+  () => route.query.round,
+  (value, previous) => {
+    if (routeText(value) !== routeText(previous)) roundRouteContextPending.value = true
+  }
 )
 
 function routeText(value: unknown): string {
@@ -175,33 +192,51 @@ const roundsQuery = useQuery({
   placeholderData: keepPreviousData,
 })
 
-const rounds = computed(() => roundsQuery.data.value ?? [])
+const rounds = computed(() =>
+  (roundsQuery.data.value ?? []).filter((round) => round.groupId === selectedGroupId.value)
+)
 const roundOptions = computed<ProductSelectOption[]>(() =>
   rounds.value.map((round) => ({ label: round.name, value: round.id }))
 )
 
 const selectedRoundId = computed(() => {
-  const urlRound = routeState.value.round
-  if (urlRound && rounds.value.some((r) => r.id === urlRound)) {
-    return urlRound
-  }
-  const sourceCurrentRoundId = rounds.value[0]?.sourceCurrentRoundId ?? ''
-  return rounds.value.find((r) => r.id === sourceCurrentRoundId)?.id ?? rounds.value[0]?.id ?? ''
+  return selectCommentaryRound(rounds.value, routeState.value.round)?.id ?? ''
 })
 
 watch(
   [() => routeState.value.round, rounds],
-  ([urlRound, roundsData]) => {
-    if (!urlRound || !roundsData.length) return
-    if (!roundsData.some((r) => r.id === urlRound)) {
-      correctionNotice.value = '所选轮次不存在，已使用默认轮次'
-      const query = { ...route.query }
-      delete query.round
-      delete query.page
-      void router.replace({ query })
+  async ([urlRound, roundsData]) => {
+    if (!roundsData.length) return
+
+    if (urlRound && roundsData.some((round) => round.id === urlRound)) {
+      roundCanonicalizationPending.value = false
+      roundRouteContextPending.value = false
+      return
     }
+
+    const invalidExplicitRound = Boolean(urlRound)
+    if (!invalidExplicitRound && !roundCanonicalizationPending.value) return
+
+    const fallbackRound = selectCommentaryRound(roundsData)
+    const shouldFocusResult = roundRouteContextPending.value
+    roundCanonicalizationPending.value = false
+    roundRouteContextPending.value = false
+    correctionNotice.value = '所选轮次不存在，已使用讲解轮次规则校正'
+
+    const query = { ...route.query }
+    if (fallbackRound) query.round = fallbackRound.id
+    else delete query.round
+    delete query.page
+    await router.replace({ query })
+    if (shouldFocusResult) await focusRoundResult()
   }
 )
+
+watch([selectedGroupId, selectedRoundId], async ([, roundId]) => {
+  if (!roundPolicyFocusPending.value || !roundId) return
+  roundPolicyFocusPending.value = false
+  await focusRoundResult()
+})
 
 const pageIndex = computed(() => routeState.value.page - 1)
 
@@ -240,6 +275,8 @@ const eventTime = computed(() => detailQuery.data.value?.startTime || '')
 const eventOrganizer = computed(() => detailQuery.data.value?.organizer || '')
 const eventAddress = computed(() => detailQuery.data.value?.address || '')
 const eventDescription = computed(() => detailQuery.data.value?.description || '')
+const isTeamCompetition = computed(() => detailQuery.data.value?.eventType === 'team')
+const teamAggregateAvailability = evaluateCapabilityAvailability('team_aggregates')
 
 const selectedGroupName = computed(() => {
   const group = groups.value.find(
@@ -284,6 +321,7 @@ const hierarchySheetOpen = ref(false)
 
 function selectGroup(groupId: string | number | null): void {
   if (!groupId || groupId === selectedGroupId.value) return
+  roundPolicyFocusPending.value = true
   void router.push({
     query: buildQuery({
       group: String(groupId),
@@ -297,6 +335,7 @@ function selectGroup(groupId: string | number | null): void {
 
 function selectRound(roundId: string | number | null): void {
   if (!roundId || roundId === selectedRoundId.value) return
+  roundPolicyFocusPending.value = true
   void router.push({
     query: buildQuery({
       group: selectedGroupId.value,
@@ -306,6 +345,11 @@ function selectRound(roundId: string | number | null): void {
     }),
   })
   selectedPairingId.value = null
+}
+
+async function focusRoundResult(): Promise<void> {
+  await nextTick()
+  roundResultRef.value?.focus()
 }
 
 function submitSearch(): void {
@@ -342,12 +386,15 @@ function selectPairing(pairing: CompetitionPairing): void {
 }
 
 function displayRoute(): { name: string; params: Record<string, string>; query: LocationQuery } {
+  const explicitRoundId = rounds.value.some((round) => round.id === routeState.value.round)
+    ? routeState.value.round
+    : ''
   return {
     name: 'competition-display',
     params: { hdid: hdid.value },
     query: buildQuery({
       group: selectedGroupId.value,
-      round: selectedRoundId.value,
+      round: explicitRoundId,
       pairingSearch: '',
       page: 1,
     }),
@@ -441,6 +488,15 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
           <p v-if="eventAddress">地址：{{ eventAddress }}</p>
           <p v-if="eventDescription" class="description">{{ eventDescription }}</p>
         </div>
+      </section>
+
+      <section v-if="isTeamCompetition" class="team-aggregate-region" aria-label="团体聚合信息">
+        <ProductStateBanner status="info" title="团体聚合暂不可用">
+          <p>
+            {{ teamAggregateAvailability.reason }}
+            当前继续显示真实赛事详情、组别、轮次与单台对阵；不会计算或展示团体总分、排名、台序或破同分数据。
+          </p>
+        </ProductStateBanner>
       </section>
 
       <div class="primary-actions">
@@ -549,9 +605,16 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
         />
       </div>
 
-      <section class="pairing-region" aria-labelledby="pairing-region-title">
+      <section
+        ref="roundResultRef"
+        class="pairing-region"
+        tabindex="-1"
+        aria-labelledby="pairing-region-title"
+      >
         <div class="pairing-region-header">
-          <h3 id="pairing-region-title">对阵列表</h3>
+          <h3 id="pairing-region-title">
+            对阵列表<span v-if="selectedRoundName"> · {{ selectedRoundName }}</span>
+          </h3>
           <span v-if="pairingsRefreshing" class="refresh-indicator" aria-live="polite">
             更新中…
           </span>
@@ -686,12 +749,17 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
 }
 
 .event-summary,
+.team-aggregate-region,
 .primary-actions,
 .controls,
 .mobile-summary,
 .regional-states,
 .selected-summary {
   flex: 0 0 auto;
+}
+
+.team-aggregate-region p {
+  margin: 0;
 }
 
 .event-summary {
@@ -807,6 +875,12 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   min-height: 0;
   overflow: auto;
   scrollbar-gutter: stable;
+}
+
+.pairing-region:focus {
+  outline: none;
+  border-radius: var(--r-sm);
+  box-shadow: var(--state-focus-ring);
 }
 
 .pairing-region-header {

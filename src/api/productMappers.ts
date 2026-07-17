@@ -4,15 +4,18 @@ import { ApiClientError } from './client'
 import type {
   Competition,
   CompetitionDetail,
+  CompetitionEventType,
   CompetitionGroup,
   CompetitionPairing,
   CompetitionRound,
+  CompetitionRoundLifecycle,
   PageResult,
   PairingListInput,
 } from './productTypes'
 
 const IdentifierDtoSchema = z.union([z.string(), z.number()])
 const NullableTextDtoSchema = z.union([z.string(), z.number(), z.null()])
+const NullableIdentifierDtoSchema = z.union([z.string(), z.number(), z.null()])
 
 const ServiceResponseSchema = z.object({
   err: z.number(),
@@ -50,6 +53,7 @@ const CompetitionDetailSchema = z.object({
   act_starttime: z.string(),
   act_endtime: z.string(),
   type: NullableTextDtoSchema,
+  ext_type: NullableTextDtoSchema,
   ext_catgory: NullableTextDtoSchema,
   shoptitle: NullableTextDtoSchema,
   sponsor: NullableTextDtoSchema,
@@ -83,8 +87,8 @@ const CompetitionRoundSchema = z.object({
 const CompetitionRoundsEnvelopeSchema = z.object({
   resp: ServiceResponseSchema,
   content: z.object({
-    cur_round: IdentifierDtoSchema,
-    roundfinish: z.unknown(),
+    cur_round: NullableIdentifierDtoSchema,
+    roundfinish: NullableIdentifierDtoSchema,
     roundinfo: z.array(CompetitionRoundSchema),
   }),
 })
@@ -191,6 +195,46 @@ function competitionLifecycle(
   return '状态待确认'
 }
 
+function competitionEventType(extType: string | number | null): CompetitionEventType {
+  const sourceType = text(extType)
+  if (sourceType === '1') return 'team'
+  if (sourceType === '0') return 'individual'
+  return 'unknown'
+}
+
+function sourceRoundOrder(value: string): number | null {
+  if (!/^\d+$/u.test(value)) return null
+
+  const parsed = Number(value)
+  return Number.isSafeInteger(parsed) ? parsed : null
+}
+
+function roundLifecycleFromSource(
+  roundId: string,
+  currentRoundId: string,
+  finishedRoundId: string
+): CompetitionRoundLifecycle {
+  const roundOrder = sourceRoundOrder(roundId)
+  const currentOrder = sourceRoundOrder(currentRoundId)
+  const finishedOrder = sourceRoundOrder(finishedRoundId)
+
+  if (
+    (finishedRoundId && roundId === finishedRoundId) ||
+    (roundOrder !== null && finishedOrder !== null && roundOrder <= finishedOrder)
+  ) {
+    return 'completed'
+  }
+
+  if (currentRoundId && roundId === currentRoundId) return 'ongoing'
+
+  if (roundOrder !== null && currentOrder !== null) {
+    if (roundOrder < currentOrder) return 'completed'
+    if (roundOrder > currentOrder) return 'upcoming'
+  }
+
+  return 'unknown'
+}
+
 export function mapCompetitionList(raw: unknown): PageResult<Competition> {
   const envelope = parseEnvelope(CompetitionListEnvelopeSchema, raw, '赛事列表')
   const items = (envelope.content.Details ?? []).map((item) => ({
@@ -222,6 +266,7 @@ export function mapCompetitionDetail(raw: unknown, expectedId: string): Competit
     startTime: item.act_starttime.trim(),
     endTime: item.act_endtime.trim(),
     type: text(item.type),
+    eventType: competitionEventType(item.ext_type),
     category: text(item.ext_catgory),
     organizer: text(item.shoptitle) || text(item.sponsor),
     countSummary: '',
@@ -257,19 +302,22 @@ export function mapCompetitionRounds(
 ): CompetitionRound[] {
   const envelope = parseEnvelope(CompetitionRoundsEnvelopeSchema, raw, '赛事轮次')
   const currentRoundId = text(envelope.content.cur_round)
+  const finishedRoundId = text(envelope.content.roundfinish)
 
-  return envelope.content.roundinfo.map((item, index) => ({
-    id: text(item.round_id),
-    competitionId,
-    groupId: ticketId,
-    ticketId,
-    name: `第 ${index + 1} 轮`,
-    roundNumber: index + 1,
-    status: '',
-    startTime: item.starttime.trim(),
-    endTime: '',
-    sourceCurrentRoundId: currentRoundId,
-  }))
+  return envelope.content.roundinfo.map((item, index) => {
+    const roundId = text(item.round_id)
+    return {
+      id: roundId,
+      competitionId,
+      groupId: ticketId,
+      ticketId,
+      name: `第 ${index + 1} 轮`,
+      roundNumber: index + 1,
+      lifecycle: roundLifecycleFromSource(roundId, currentRoundId, finishedRoundId),
+      startTime: item.starttime.trim(),
+      endTime: '',
+    }
+  })
 }
 
 export function mapCompetitionPairings(

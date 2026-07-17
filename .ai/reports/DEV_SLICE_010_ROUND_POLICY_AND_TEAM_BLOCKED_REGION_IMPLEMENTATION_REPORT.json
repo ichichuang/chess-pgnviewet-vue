@@ -1,0 +1,257 @@
+{
+  "slice": "DEV-SLICE-010",
+  "title": "Tournament round policy separation and team aggregate blocked-region implementation",
+  "status": "PASS",
+  "verified_baseline": {
+    "repository_path": "/Users/cc/Work/neobv/Chess/chess-pgnviewer-vue",
+    "remote": "https://github.com/ichichuang/chess-pgnviewet-vue.git",
+    "branch": "main",
+    "expected_commit": "95fb67ea823d35607d58c1898c4fb9e36ae9dccd",
+    "local_head": "95fb67ea823d35607d58c1898c4fb9e36ae9dccd",
+    "origin_main": "95fb67ea823d35607d58c1898c4fb9e36ae9dccd",
+    "live_remote_main": "95fb67ea823d35607d58c1898c4fb9e36ae9dccd",
+    "ahead_behind": "0/0",
+    "worktree_and_index": "clean before implementation; no untracked files"
+  },
+  "authorities_read": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".ai/skills/project-ui/SKILL.md",
+    "docs/product/PRODUCT_DESIGN_BLUEPRINT.zh-CN.md",
+    "docs/product/OWNER_PRODUCT_REQUIREMENT_BASELINE.zh-CN.md",
+    "docs/product/PRODUCT_MODE_AND_CAPABILITY_MATRIX.json",
+    "docs/product/WORKSPACE_MODES.md",
+    "docs/design/PRODUCT_UI_DESIGN_INDEX.zh-CN.md",
+    "docs/design/PRODUCT_UI_IMPLEMENTATION_HANDOFF.zh-CN.md",
+    "docs/design/PRODUCT_SCREEN_INVENTORY.zh-CN.md",
+    "docs/design/pages/COMPETITION_DETAIL_PAGE_SPEC.zh-CN.md",
+    "docs/design/pages/VENUE_DISPLAY_PAGE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_UI_DESIGN_SYSTEM.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_LAYOUT_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_INTERACTION_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_GLOBAL_STATE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_RESPONSIVE_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_COMPONENT_RESPONSIBILITY_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_NAIVE_UI_MAPPING.zh-CN.md",
+    "docs/design/PRODUCT_COMMON_OVERLAYS_AND_DIALOGS_SPEC.zh-CN.md",
+    "docs/design/PRODUCT_IMPLEMENTATION_CORRECTION_BACKLOG.zh-CN.md",
+    "docs/architecture/WEB_API_SOURCE_AUTHORITY.md",
+    "docs/architecture/WEB_REQUEST_ARCHITECTURE_BASELINE.md",
+    "docs/architecture/API_BOUNDARY_ADR.md",
+    "docs/architecture/WEB_API_ENDPOINT_INVENTORY.json",
+    "docs/architecture/WEB_API_CONTRACT_COVERAGE_MATRIX.json",
+    "docs/migration/SOURCE_PROVENANCE.md",
+    "docs/migration/CAPABILITY_MATRIX.json",
+    ".ai/reports/DEV_SLICE_001_PRODUCT_ROUTE_SHELL_IDENTITY_AND_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_002_PRODUCT_TABS_ROVING_FOCUS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_003_DIALOG_SHEET_AND_OVERLAY_SEMANTICS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_004_WORKSPACE_PERMISSION_AND_SETTINGS_PROJECTION_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_005_DIRTY_STATE_AND_DESTRUCTIVE_NAVIGATION_SAFETY_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_006_NODE_COMMENT_AND_GAME_TEACHING_NOTE_EDITING_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_007_PGN_IMPORT_PROGRESS_CANCELLATION_AND_PARTIAL_SUCCESS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_008_AI_FIRST_USE_AND_FULL_GAME_ANALYSIS_IMPLEMENTATION_REPORT.json",
+    ".ai/reports/DEV_SLICE_009_AI_CANDIDATE_INSERTION_CANCELLED_STALE_AND_TERMINOLOGY_IMPLEMENTATION_REPORT.json",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.md",
+    "/Users/cc/Downloads/chess-pgnviewet-vue-current-interface-audit-corrected.json"
+  ],
+  "implementation_surfaces_inspected": [
+    "src/api/productTypes.ts",
+    "src/api/productMappers.ts",
+    "src/api/productApi.ts",
+    "src/api/queryClient.ts",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/features/product-api/views/CompetitionDisplayView.vue",
+    "src/features/product-api/views/CompetitionListView.vue",
+    "src/features/product-api/components/ResourceState.vue",
+    "src/features/product-api/domain/capabilityAvailability.ts",
+    "src/persistence/workspace/workspaceHandoff.ts",
+    "src/ui/ProductRouteShell.vue",
+    "src/ui/ProductUnavailableState.vue",
+    "src/ui/ProductSelect.vue",
+    "/Users/cc/Work/neobv/Chess/pgnViewer/src/views/mall/components/groupRoundList.vue",
+    "/Users/cc/Work/neobv/Chess/chess-main-overseas/src/view/competition/view/details/components/encounter.vue",
+    "/Users/cc/Work/neobv/Chess/chess-main-overseas/src/view/competition/view/details/init.js"
+  ],
+  "defects_reproduced": {
+    "MISSING-UI-015": "Verified team competitions rendered the same individual detail composition with no dedicated truthful team-aggregate contract region.",
+    "NONCONF-UI-022": "The round mapper discarded roundfinish, made round status blank, and rejected a real cur_round:null payload; detail selected source-current-or-first while display selected source-current-or-last-or-first.",
+    "COR-005": "A missing detail round was copied into the display URL, so display inherited commentary context instead of independently applying a display policy.",
+    "COR-023_subset": "The team aggregate contract was correctly absent, but no stable blocked region explained that absence while preserving valid individual regions.",
+    "url_and_focus": "Semantically invalid detail rounds were removed rather than canonicalized to the resolved policy result, and correction focus remained on the route title rather than the visible round result region."
+  },
+  "root_cause_investigation": {
+    "mapper": "CompetitionRoundsEnvelopeSchema accepted roundfinish as unknown but mapCompetitionRounds ignored it, forced status to an empty string, duplicated cur_round onto every item, and required cur_round to be non-null even though production returns null before an authoritative current round exists.",
+    "views": "Both views implemented local fallback logic against sourceCurrentRoundId and collection endpoints instead of consuming a normalized lifecycle. CompetitionDetailView also passed its computed default into the display link, preventing the display route from owning its distinct default policy.",
+    "team": "CompetitionDetailSchema already read generic type and ext_catgory but omitted the production ext_type event-format field. Without a typed event-format projection, the UI could not identify a verified team event without prohibited title or row-shape guessing.",
+    "hypothesis": "Map nullable source lifecycle markers and ext_type once at the repository boundary, then make each route consume a small framework-free policy with explicit URL priority. This removes raw source interpretation from Vue components while keeping missing evidence unknown and contract-blocked team content truthful."
+  },
+  "real_payload_and_lifecycle_evidence": {
+    "transport": "Real anonymous responses were observed through the fixed development proxy for GetActList, GetActDetail, GetActGroups, GetMatchRoundlist, and GetMatchPairlist; no credentials, cookies, protected requests, or complete sensitive payloads were retained in this report.",
+    "individual_distinct_policy_event": {
+      "hdid": "50624",
+      "event_format": "ext_type=0 mapped to individual",
+      "round_markers": "cur_round=1, roundfinish=null, numeric round IDs 0 through 10",
+      "projection": "round 0 completed, round 1 ongoing, rounds 2 through 10 upcoming",
+      "observed_defaults": "detail/commentary selected round 0; display selected round 1"
+    },
+    "completed_event": {
+      "hdid": "46744",
+      "event_format": "ext_type=0 mapped to individual",
+      "round_markers": "cur_round=2, roundfinish=2, numeric round IDs 0 through 2",
+      "projection": "all three rounds completed; latest completed is round 2"
+    },
+    "unknown_event": {
+      "hdid": "50457",
+      "event_format": "ext_type=0 mapped to individual",
+      "round_markers": "cur_round=null, roundfinish=null, numeric round IDs 0 through 7",
+      "projection": "all rounds unknown because neither current nor completed source evidence exists; both policies use the final first-valid fallback without promoting lifecycle"
+    },
+    "team_events": [
+      "33475: ext_type=1 and generic type=1",
+      "23347: ext_type=1 and generic type=2"
+    ],
+    "team_field_conclusion": "The two verified team events have different generic type values but the same ext_type=1, while verified individual events use ext_type=0. The mapper therefore uses only ext_type for CompetitionEventType and never title text, ext_catgory, group names, pairing counts, or results.",
+    "source_semantics": "The two read-only Web authorities compare numeric round_id values with cur_round to label lower rounds completed, the exact current round current, and higher rounds not started. Production roundfinish is a nullable completion high-water marker and overrides an equal cur_round on completed events.",
+    "unknown_rule": "Exact finished/current identifier equality is usable for nonnumeric identifiers; ordered lifecycle requires nonnegative safe-integer source identifiers. Missing, empty, non-comparable, or unsupported evidence remains unknown. Client time, names, source array position, current UI selection, and pairing status are never used."
+  },
+  "implementation": {
+    "surface": "CD-001/CD-002 competition detail and current public pairing-card venue display selection only",
+    "classification": "CURRENT_IMPLEMENTED plus truthful CONTRACT_BLOCKED team aggregate region",
+    "scope": "MISSING-UI-015, NONCONF-UI-022, COR-005, and only the blocked-region subset of COR-023",
+    "round_lifecycle_owner": "src/api/productMappers.ts maps CompetitionRound.lifecycle as completed, ongoing, upcoming, or unknown",
+    "policy_owner": "src/features/product-api/domain/competitionRoundPolicy.ts exports separate selectCommentaryRound and selectDisplayRound functions without Vue, Router, Query, persistence, or transport dependencies",
+    "team_owner": "CompetitionDetail.eventType is mapped from ext_type; CompetitionDetailView consumes the existing team_aggregates capability projection",
+    "dependencies_added": "none",
+    "requests_or_endpoints_added": "none",
+    "persistence_added": "none",
+    "router_topology_changed": false,
+    "venue_board_geometry_changed": false,
+    "automated_tests_or_artifacts_added": "none"
+  },
+  "commentary_round_policy": [
+    "explicit URL round when it belongs to the selected group",
+    "latest completed round in source order",
+    "first source-confirmed ongoing round",
+    "nearest source-confirmed upcoming round in source order",
+    "first valid round"
+  ],
+  "display_round_policy": [
+    "explicit URL round when it belongs to the selected group",
+    "first source-confirmed ongoing round",
+    "nearest source-confirmed upcoming round in source order",
+    "latest completed round in source order",
+    "first valid round"
+  ],
+  "url_focus_and_handoff_contract": {
+    "detail_missing_round": "Resolved in memory for commentary and pairings but omitted from the display link, allowing display to execute its own policy.",
+    "display_missing_round": "Resolved by the display policy and canonicalized with router.replace together with the valid group.",
+    "invalid_round": "Resolved by the route-specific policy, canonicalized with router.replace, clears stale page/focus state where applicable, and reaches a stable URL without a navigation loop.",
+    "explicit_round": "Preserved on detail, display entry, display refresh, browser back, and browser forward.",
+    "manual_selection": "Uses router.push so selection history remains traversable.",
+    "focus": "An invalid correction or user-triggered policy selection focuses the visible pairing result region or display stage. A valid explicit route and ordinary background refresh do not steal focus.",
+    "commentary_handoff": "The no-round 50624 handoff was readonly competition_commentary with competitionId 50624 and policy-selected roundId 0.",
+    "display_entry": "The same no-round detail link omitted round and display independently canonicalized roundId 1."
+  },
+  "team_blocked_region_contract": {
+    "condition": "Render exactly once only when mapped CompetitionDetail.eventType is team.",
+    "copy": "State that the real read contract is unconfirmed and that team aggregate success content will not be displayed or computed.",
+    "preserved_regions": "Real event summary, group, round, pairing, resource states, and existing safe actions remain available.",
+    "forbidden_content": "No team total, standings, board order, match points, tie-break, ranking, success DTO, fallback, or sample data is created.",
+    "actions": "No retry without a request and no login before contract confirmation.",
+    "network": "The region evaluates the existing team_aggregates contract-blocked projection and issues no request."
+  },
+  "files_changed": [
+    ".ai/reports/DEV_SLICE_010_ROUND_POLICY_AND_TEAM_BLOCKED_REGION_IMPLEMENTATION_REPORT.json",
+    "src/api/productMappers.ts",
+    "src/api/productTypes.ts",
+    "src/features/product-api/domain/competitionRoundPolicy.ts",
+    "src/features/product-api/views/CompetitionDetailView.vue",
+    "src/features/product-api/views/CompetitionDisplayView.vue"
+  ],
+  "static_validation": [
+    {
+      "command": "jq empty .ai/reports/DEV_SLICE_010_ROUND_POLICY_AND_TEAM_BLOCKED_REGION_IMPLEMENTATION_REPORT.json",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run format:check",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:governance",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run lint:style",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:unused",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run check:static",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run audit:prod",
+      "result": "pass; no known vulnerabilities"
+    },
+    {
+      "command": "pnpm run typecheck",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm exec vite build --outDir /tmp/chess-pgnviewer-vue-dev-slice-010-build.loxbSN --emptyOutDir",
+      "result": "pass; temporary output verified and removed"
+    },
+    {
+      "command": "pnpm test",
+      "result": "not run by repository policy"
+    }
+  ],
+  "browser_validation": {
+    "server": "http://127.0.0.1:5174/pgnViewer/",
+    "individual": "50624 rendered detail round 0 without a round query, rendered no team region, created a readonly commentary handoff for round 0, and linked to display without a round query; display independently canonicalized round 1.",
+    "explicit_valid": "Explicit upcoming round 2 remained selected on detail, display entry, display refresh, browser back, and browser forward.",
+    "invalid": "Invalid detail round canonicalized to round 0 and focused the pairing result region; invalid display round canonicalized to round 1 and focused the display stage; no loop occurred.",
+    "completed_ongoing_upcoming_unknown": "50624 exercised completed round 0, ongoing round 1, and explicit upcoming round 2; 46744 confirmed completed high-water behavior; 50457 accepted nullable markers, preserved unknown lifecycle, and used first valid round 0 without guessing.",
+    "team": "Verified team events 33475 and 23347 each rendered exactly one blocked region with zero retry/login actions while retaining event summary, controls, round region, and real pairings behavior. Verified individual 50624 rendered zero team regions.",
+    "no_synthesized_team_success": "The team region contained only the contract-blocked explanation and no aggregate table, score, standings, ranking, board-order, tie-break, or success action.",
+    "retained_refresh": "A delayed real GetMatchPairlist refetch retained all three display cards, showed 正在更新, and preserved focus on 暂停轮换.",
+    "partial_failure": "A manual transport abort with no replacement response exercised the existing retry path twice; all three last-trusted cards remained, 部分内容未完成 appeared, focus stayed put, and a subsequent real refetch recovered with zero partial-failure banners and zero page errors.",
+    "responsive": "At 1440x900, detail used desktop controls/table and hid narrow composition; at 390x844 it used mobile summary/narrow list and hid desktop composition. Team region remained exactly once, display retained three cards, and both routes had no horizontal document overflow.",
+    "theme": "The same route resolved distinct governed light and dark token colors, then restored the original system preference.",
+    "focus_and_keyboard": "Route title focus remained for ordinary valid/missing detail entry; invalid correction moved focus to the visible result region; manual round selectors remain keyboard-focusable; background retained refresh did not move focus.",
+    "runtime_health": "Final clean-page DOM was nonblank, Vite overlay count was zero, console-breaking error count was zero, and page-error count was zero.",
+    "artifacts": "No screenshots, browser scripts, snapshots, fixtures, mocks, test files, or browser artifacts were created or retained in the repository."
+  },
+  "cor_impact": {
+    "MISSING-UI-015": "implemented as a stable truthful team-aggregate blocked region backed by authoritative mapped event format",
+    "NONCONF-UI-022": "implemented with normalized repository-owned lifecycle and separate framework-free policies",
+    "COR-005": "the named implementation gap is no longer reproducible; detail and display independently resolve their approved policy and preserve explicit URL state",
+    "COR-023": "only the truthful blocked-region subset is implemented; aggregate success remains OPEN_CONTRACT_BLOCKED",
+    "OD-01_to_OD-11": "all remain open and unchanged; no provisional value was promoted"
+  },
+  "remaining_risks": [
+    "Team aggregate data remains unavailable until a real DTO/repository contract is confirmed; this slice intentionally adds no success shape or request.",
+    "Events with null or non-comparable lifecycle markers remain unknown and use only the first-valid terminal fallback; client time and names will not fill that gap.",
+    "The DEV-SLICE-010 task packet requires display ongoing then nearest-upcoming priority, while the current venue page authority still documents ongoing then latest-completed; this implementation follows the higher-priority explicit task without modifying authority documents.",
+    "Production cross-origin browser transport remains outside this local development validation and retains the existing deployment-boundary limitation.",
+    "No automated tests exist or were added because repository policy forbids automated test infrastructure; validation uses static checks and narrow real-browser evidence."
+  ],
+  "review": {
+    "result": "Targeted full-diff, mapper-boundary, URL-loop, focus, contract-truthfulness, responsive, and runtime reviews completed with no remaining actionable slice-local finding.",
+    "addressed": "nullable cur_round contract mismatch, incorrect generic type team detection, source-current/latest local fallbacks, display inheritance of commentary default, invalid URL deletion without canonical result, focus theft risk during background refresh, and stylelint selector order"
+  },
+  "commit_subject": "fix(competition): 分离讲解与展示轮次策略并完善团体阻断区",
+  "verdict": "DEV_SLICE_010_ROUND_POLICY_AND_TEAM_BLOCKED_REGION_PASS"
+}

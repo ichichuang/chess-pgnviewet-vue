@@ -15,7 +15,10 @@ export interface Competition {
   readonly countSummary: string
 }
 
+export type CompetitionEventType = 'individual' | 'team' | 'unknown'
+
 export interface CompetitionDetail extends Competition {
+  readonly eventType: CompetitionEventType
   readonly description: string
   readonly address: string
 }
@@ -28,6 +31,8 @@ export interface CompetitionGroup {
   readonly countSummary: string
 }
 
+export type CompetitionRoundLifecycle = 'completed' | 'ongoing' | 'upcoming' | 'unknown'
+
 export interface CompetitionRound {
   readonly id: string
   readonly competitionId: string
@@ -35,10 +40,9 @@ export interface CompetitionRound {
   readonly ticketId: string
   readonly name: string
   readonly roundNumber: number | null
-  readonly status: string
+  readonly lifecycle: CompetitionRoundLifecycle
   readonly startTime: string
   readonly endTime: string
-  readonly sourceCurrentRoundId: string
 }
 
 export interface CompetitionPairing {
