@@ -10,7 +10,6 @@ const ignores = [
   '**/dist/**',
   '**/.vite/**',
   '**/coverage/**',
-  '**/.serena/**',
   '**/.git/**',
   '**/.DS_Store',
   '/Users/cc/Work/neobv/Chess/pgnViewer-new/**',

@@ -16,7 +16,6 @@ export const permanentExcludedDirectories = [
   'dist',
   '.vite',
   'coverage',
-  '.serena',
 ]
 
 export const generatedOrLocalPatterns = [

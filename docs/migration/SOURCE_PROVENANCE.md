@@ -38,8 +38,8 @@ generated inventory is API authority.
 
 - Source roots are never imported or modified.
 - Environment files, credentials, certificates, keys, databases, browser
-  state, logs, dependency stores, build output, caches, and generated Serena
-  caches are excluded.
+  state, logs, dependency stores, build output, and generated tool caches are
+  excluded.
 - Credential-like values are never copied into the target or command output.
 - Endpoint adoption is field-level and repository-owned.
 - No mock, fixture, sample, demo, or synthetic success data closes a contract

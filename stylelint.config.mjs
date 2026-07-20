@@ -6,7 +6,6 @@ export default {
     '**/dist/**',
     '**/.vite/**',
     '**/coverage/**',
-    '**/.serena/**',
     '**/.git/**',
     '/Users/cc/Work/neobv/Chess/pgnViewer-new/**',
     '/Users/cc/Work/neobv/Chess/pgnViewer/**',

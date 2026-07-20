@@ -85,7 +85,7 @@ The following roots are read-only evidence sources and must never be modified:
 - `/Users/cc/Work/neobv/Chess/chess-main-overseas`
 - `/Users/cc/Work/neobv/Chess/chess-pgnviewer`
 
-Never inspect or copy environment files, credentials, certificates, keys, databases, browser state, logs, dependency stores, build output, caches, generated Serena caches, or unproven screenshots. Do not follow symlinks outside an approved source root.
+Never inspect or copy environment files, credentials, certificates, keys, databases, browser state, logs, dependency stores, build output, generated tool caches, or unproven screenshots. Do not follow symlinks outside an approved source root.
 
 ## Validation and package policy
 

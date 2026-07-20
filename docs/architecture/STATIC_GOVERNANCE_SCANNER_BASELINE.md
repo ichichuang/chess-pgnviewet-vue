@@ -34,7 +34,6 @@ Permanent exclusions:
 - `dist`
 - `.vite`
 - `coverage`
-- `.serena`
 - local logs, local databases, and `.local` files
 - read-only evidence-source repositories
 
