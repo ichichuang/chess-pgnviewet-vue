@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { gsap } from 'gsap'
 
@@ -20,10 +20,12 @@ const emit = defineEmits<{
 const rootEl = ref<HTMLElement | null>(null)
 const localCardEl = ref<HTMLElement | null>(null)
 const editorCardEl = ref<HTMLElement | null>(null)
-const competitionsCardRef = ref<InstanceType<typeof RouterLink> | null>(null)
-const competitionsCardEl = computed(() =>
-  competitionsCardRef.value?.$el instanceof HTMLElement ? competitionsCardRef.value.$el : null
-)
+const competitionsCardEl = ref<HTMLElement | null>(null)
+
+function setCompetitionsCardEl(el: unknown): void {
+  const cardEl = (el as { $el?: unknown } | null)?.$el
+  competitionsCardEl.value = cardEl instanceof HTMLElement ? cardEl : null
+}
 let context: ReturnType<typeof gsap.context> | null = null
 
 // Press feedback only on actionable cards; disabled or contract-blocked cards
@@ -91,7 +93,7 @@ onBeforeUnmount(() => {
         <span>自由摆放棋子，创建教学起点</span>
       </button>
 
-      <RouterLink ref="competitionsCardRef" class="start-card" :to="{ name: 'competitions' }">
+      <RouterLink :ref="setCompetitionsCardEl" class="start-card" :to="{ name: 'competitions' }">
         <strong>从赛事进入</strong>
         <span>浏览公开赛事，进入讲解或观战</span>
       </RouterLink>
