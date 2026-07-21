@@ -18,21 +18,20 @@ const emit = defineEmits<{
 }>()
 
 const rootEl = ref<HTMLElement | null>(null)
-const localCardEl = ref<HTMLElement | null>(null)
-const editorCardEl = ref<HTMLElement | null>(null)
-const competitionsCardEl = ref<HTMLElement | null>(null)
+const localActionEl = ref<HTMLElement | null>(null)
+const editorActionEl = ref<HTMLElement | null>(null)
+const competitionsActionEl = ref<HTMLElement | null>(null)
 
-function setCompetitionsCardEl(el: unknown): void {
-  const cardEl = (el as { $el?: unknown } | null)?.$el
-  competitionsCardEl.value = cardEl instanceof HTMLElement ? cardEl : null
+function setCompetitionsActionEl(el: unknown): void {
+  const actionEl = (el as { $el?: unknown } | null)?.$el
+  competitionsActionEl.value = actionEl instanceof HTMLElement ? actionEl : null
 }
+
 let context: ReturnType<typeof gsap.context> | null = null
 
-// Press feedback only on actionable cards; disabled or contract-blocked cards
-// keep their static disabled presentation.
-usePressMotion(localCardEl, () => props.canOpenLocalPgnAsNewSource)
-usePressMotion(editorCardEl, () => props.canEnterBoardEditor)
-usePressMotion(competitionsCardEl, () => true)
+usePressMotion(localActionEl, () => props.canOpenLocalPgnAsNewSource)
+usePressMotion(editorActionEl, () => props.canEnterBoardEditor)
+usePressMotion(competitionsActionEl, () => true)
 
 onMounted(() => {
   const root = rootEl.value
@@ -40,11 +39,11 @@ onMounted(() => {
   if (!root) return
 
   context = gsap.context(() => undefined, root)
-  const cards = Array.from(root.querySelectorAll<HTMLElement>('.start-card'))
+  const targets = Array.from(root.querySelectorAll<HTMLElement>('[data-start-entry]'))
 
   context.add(() => {
     gsap.fromTo(
-      cards,
+      targets,
       { autoAlpha: 0, y: motionScalar(root, '--workspace-motion-distance-panel') },
       {
         autoAlpha: 1,
@@ -67,134 +66,170 @@ onBeforeUnmount(() => {
 
 <template>
   <section ref="rootEl" class="start-surface" aria-labelledby="workspace-start-title">
-    <h1 id="workspace-start-title" class="start-title">统一工作区</h1>
-    <p class="start-subtitle">选择一种来源开始教学、讲解或分析。</p>
+    <div class="start-content">
+      <header data-start-entry class="start-header">
+        <h1 id="workspace-start-title">尚未选择棋局</h1>
+        <p>导入本地棋谱、设置教学局面，或从公开赛事中选择一盘棋。</p>
+      </header>
 
-    <div class="start-options">
-      <button
-        ref="localCardEl"
-        class="start-card"
-        type="button"
-        :disabled="!props.canOpenLocalPgnAsNewSource"
-        @click="emit('action', 'openLocal')"
+      <div data-start-entry class="start-primary-actions">
+        <button
+          ref="localActionEl"
+          class="start-action primary"
+          type="button"
+          :disabled="!props.canOpenLocalPgnAsNewSource"
+          @click="emit('action', 'openLocal')"
+        >
+          <strong>导入本地 PGN</strong>
+          <span>选择一个或多个棋谱文件开始教学</span>
+        </button>
+
+        <button
+          ref="editorActionEl"
+          class="start-action"
+          type="button"
+          :disabled="!props.canEnterBoardEditor"
+          @click="emit('action', 'enterBoardEditor')"
+        >
+          <strong>设置局面</strong>
+          <span>自由摆放棋子并创建新的教学起点</span>
+        </button>
+      </div>
+
+      <RouterLink
+        :ref="setCompetitionsActionEl"
+        data-start-entry
+        class="competition-entry"
+        :to="{ name: 'competitions' }"
       >
-        <strong>本地 PGN</strong>
-        <span>导入本地棋谱文件进行教学与批注</span>
-      </button>
-
-      <button
-        ref="editorCardEl"
-        class="start-card"
-        type="button"
-        :disabled="!props.canEnterBoardEditor"
-        @click="emit('action', 'enterBoardEditor')"
-      >
-        <strong>手动局面</strong>
-        <span>自由摆放棋子，创建教学起点</span>
-      </button>
-
-      <RouterLink :ref="setCompetitionsCardEl" class="start-card" :to="{ name: 'competitions' }">
-        <strong>从赛事进入</strong>
-        <span>浏览公开赛事，进入讲解或观战</span>
+        浏览公开赛事并选择讲解对局
+        <span aria-hidden="true">→</span>
       </RouterLink>
 
-      <div class="start-card disabled" aria-disabled="true">
-        <strong>云端棋谱</strong>
-        <span>当前版本暂不支持</span>
-      </div>
-
-      <div class="start-card disabled" aria-disabled="true">
-        <strong>分享/链接棋谱</strong>
-        <span>当前版本暂不支持</span>
-      </div>
-
-      <div class="start-card disabled" aria-disabled="true">
-        <strong>实时观战</strong>
-        <span>当前版本暂不支持</span>
-      </div>
-
-      <div class="start-card disabled" aria-disabled="true">
-        <strong>棋局回放</strong>
-        <span>当前版本暂不支持</span>
-      </div>
+      <aside data-start-entry class="future-sources" aria-label="尚未开放的来源">
+        <strong>其他来源</strong>
+        <span>云端棋谱、分享链接、实时观战和远程回放将在对应服务可用后开放。</span>
+      </aside>
     </div>
   </section>
 </template>
 
 <style scoped>
 .start-surface {
-  display: flex;
+  display: grid;
   flex: 1 1 auto;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  place-items: center;
   min-width: 0;
   min-height: 0;
-  padding: var(--s-5);
+  padding: var(--s-6);
   overflow: auto;
+}
+
+.start-content {
+  display: grid;
+  gap: var(--s-5);
+  width: min(100%, calc(var(--workspace-list-w) * 2));
+}
+
+.start-header {
+  display: grid;
+  gap: var(--s-2);
   text-align: center;
 }
 
-.start-title {
-  margin: 0 0 var(--s-2);
+.start-header h1,
+.start-header p {
+  margin: 0;
+}
+
+.start-header h1 {
   color: var(--text);
   font-size: var(--fs-2xl);
 }
 
-.start-subtitle {
-  margin: 0 0 var(--s-6);
+.start-header p {
   color: var(--text-muted);
   font-size: var(--fs-md);
 }
 
-.start-options {
+.start-primary-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--workspace-list-w-compact), 1fr));
-  gap: var(--s-4);
-  width: 100%;
-  max-width: calc(var(--workspace-list-w) * 2 + var(--s-4));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
 }
 
-.start-card {
+.start-action {
   display: grid;
   gap: var(--s-2);
-  min-height: var(--control-h);
+  min-height: calc(var(--control-h) * 2);
   padding: var(--s-5);
   border: var(--workspace-border-w) solid var(--border-strong);
   border-radius: var(--r-md);
   background: var(--surface);
   color: var(--text);
   font: inherit;
-  text-decoration: none;
+  text-align: left;
   cursor: pointer;
   transition:
     border-color var(--workspace-motion-duration-fast) var(--workspace-motion-ease-standard),
     background-color var(--workspace-motion-duration-fast) var(--workspace-motion-ease-standard);
 }
 
-.start-card strong {
+.start-action.primary {
+  border-color: var(--accent-line);
+  background: var(--accent-bg);
+}
+
+.start-action strong {
   font-size: var(--fs-lg);
 }
 
-.start-card span {
+.start-action span {
   color: var(--text-muted);
   font-size: var(--fs-sm);
 }
 
-.start-card:disabled,
-.start-card.disabled {
+.start-action:hover:not(:disabled),
+.start-action:focus-visible {
+  border-color: var(--accent);
+  background: var(--state-hover-bg);
+}
+
+.start-action:disabled {
   cursor: default;
   opacity: var(--workspace-disabled-opacity);
 }
 
-.start-card:hover:not(:disabled, .disabled) {
-  border-color: var(--accent-soft);
-  background: var(--state-hover-bg);
+.competition-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: var(--control-h);
+  color: var(--accent-strong);
+  font-weight: 600;
+  text-decoration: none;
 }
 
-@media (width <= 560px) {
-  .start-options {
-    grid-template-columns: 1fr;
-  }
+.competition-entry:hover,
+.competition-entry:focus-visible {
+  text-decoration: underline;
+}
+
+.future-sources {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--s-2);
+  padding-top: var(--s-4);
+  border-top: var(--workspace-border-w) solid var(--border);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.future-sources strong {
+  flex: 0 0 auto;
+  color: var(--text-2);
 }
 </style>
