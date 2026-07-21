@@ -138,10 +138,16 @@ const {
   onOverlayLeave,
   onPanelEnter,
   onPanelLeave,
+  onStageEnter,
+  onStageLeave,
+  onStatusEnter,
+  onStatusLeave,
   rootEl,
 } = useTeachingWorkspaceMotion({
   boardState: () =>
     `${workspace.boardOrientation}:${workspace.boardAlignment}:${boardEditorActive.value ? 'editor' : 'board'}`,
+  contextOpen: () => contextPanelOpen.value,
+  isNarrow: () => isNarrow.value,
   leftPanelVisible: () => workspace.showLeftSidebar,
 })
 
@@ -893,47 +899,51 @@ function onBoardWheelNavigation(direction: BoardWheelNavigationDirection): void 
         :class="`align-${workspace.boardAlignment}`"
         aria-label="棋盘舞台"
       >
-        <div
-          v-if="remoteReplayVisible"
-          class="remote-status"
-          :data-state="remoteReplayStatus"
-          aria-live="polite"
-        >
-          <strong>{{ remoteReplayMessage }}</strong>
-          <span v-if="remoteReplayDetail">{{ remoteReplayDetail }}</span>
-        </div>
+        <Transition :css="false" @enter="onStatusEnter" @leave="onStatusLeave">
+          <div
+            v-if="remoteReplayVisible"
+            class="remote-status"
+            :data-state="remoteReplayStatus"
+            aria-live="polite"
+          >
+            <strong>{{ remoteReplayMessage }}</strong>
+            <span v-if="remoteReplayDetail">{{ remoteReplayDetail }}</span>
+          </div>
+        </Transition>
 
-        <div v-if="!hasBoardContent && !boardEditorActive" class="board-stage board-stage-empty">
-          <WorkspaceStartSurface
-            :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
-            :can-enter-board-editor="permissions.canEnterBoardEditor"
-            @action="handleWorkspaceAction"
-          />
-        </div>
-
-        <div v-else class="board-stage" :style="{ justifyContent: boardJustifyContent }">
-          <section class="board-align-frame" aria-labelledby="workspace-board-title">
-            <h1 id="workspace-board-title" class="board-title">
-              {{ pgn.selectedItem ? pgn.titleFor(pgn.selectedItem, pgn.selectedIndex) : '统一工作区' }}
-            </h1>
-            <CanonicalChessBoard
-              ref="boardRef"
-              :position="boardPosition"
-              v-bind="{
-                ...(pgn.lastMove === undefined ? {} : { lastMove: pgn.lastMove }),
-                ...(pgn.currentAnnotation === null ? {} : { annotations: pgn.currentAnnotation }),
-              }"
-              :capabilities="boardCapabilities"
-              @radial-command="onBoardRadialCommand"
-              @editor-commit="finishBoardEditor"
-              @editor-cancel="cancelBoardEditor"
-              @editor-clear-request="clearBoardEditorDraft"
-              @editor-reset-request="resetBoardEditorDraft"
-              @editor-update="onBoardEditorUpdate"
-              @wheel-navigation="onBoardWheelNavigation"
+        <Transition :css="false" @enter="onStageEnter" @leave="onStageLeave">
+          <div v-if="!hasBoardContent && !boardEditorActive" class="board-stage board-stage-empty">
+            <WorkspaceStartSurface
+              :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
+              :can-enter-board-editor="permissions.canEnterBoardEditor"
+              @action="handleWorkspaceAction"
             />
-          </section>
-        </div>
+          </div>
+
+          <div v-else class="board-stage" :style="{ justifyContent: boardJustifyContent }">
+            <section class="board-align-frame" aria-labelledby="workspace-board-title">
+              <h1 id="workspace-board-title" class="board-title">
+                {{ pgn.selectedItem ? pgn.titleFor(pgn.selectedItem, pgn.selectedIndex) : '统一工作区' }}
+              </h1>
+              <CanonicalChessBoard
+                ref="boardRef"
+                :position="boardPosition"
+                v-bind="{
+                  ...(pgn.lastMove === undefined ? {} : { lastMove: pgn.lastMove }),
+                  ...(pgn.currentAnnotation === null ? {} : { annotations: pgn.currentAnnotation }),
+                }"
+                :capabilities="boardCapabilities"
+                @radial-command="onBoardRadialCommand"
+                @editor-commit="finishBoardEditor"
+                @editor-cancel="cancelBoardEditor"
+                @editor-clear-request="clearBoardEditorDraft"
+                @editor-reset-request="resetBoardEditorDraft"
+                @editor-update="onBoardEditorUpdate"
+                @wheel-navigation="onBoardWheelNavigation"
+              />
+            </section>
+          </div>
+        </Transition>
       </section>
 
       <aside

@@ -4,6 +4,10 @@ import { gsap } from 'gsap'
 
 import { formatMoverScore, formatWhiteScore } from '@/features/analysis/domain/formatAnalysis'
 import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
+import {
+  completeLeaveImmediately,
+  createStateEnterHook,
+} from '@/features/motion/stateEnterHooks'
 import { ProductButton, ProductConfirmDialog, ProductStateBanner } from '@/ui'
 import { useAnalysisStore, usePgnStore } from '@/stores'
 import type { AnalysisLine, AnalysisPositionResult } from '@/stores/analysis'
@@ -79,6 +83,7 @@ const resultAnimationKey = computed(() => {
 const rootEl = ref<HTMLElement | null>(null)
 const progressEl = ref<HTMLElement | null>(null)
 const resultEl = ref<HTMLElement | null>(null)
+const onStateEnter = createStateEnterHook(rootEl)
 let context: ReturnType<typeof gsap.context> | null = null
 let reducedMotionQuery: MediaQueryList | null = null
 let firstUseReturnScope: 'current' | 'full' | null = null
@@ -459,85 +464,92 @@ watch(
       </ProductStateBanner>
     </div>
 
-    <section v-if="lifecycleState === 'off' || lifecycleState === 'first-use'" class="analysis-off">
-      <p>分析默认关闭，不会占用额外计算资源。</p>
-      <div class="analysis-actions">
-        <ProductButton
-          data-analysis-action="start-current"
-          size="small"
-          variant="primary"
-          :disabled="!pgn.hasGame || Boolean(analysisStartPauseReason)"
-          :title="analysisStartPauseReason"
-          @click="onStart('current')"
-        >
-          分析当前局面
-        </ProductButton>
-        <ProductButton
-          data-analysis-action="start-full"
-          size="small"
-          :disabled="!canStartFullGame"
-          :title="analysisStartPauseReason"
-          @click="onStart('full')"
-        >
-          分析整局
-        </ProductButton>
-      </div>
-      <p v-if="analysisStartPauseReason" class="analysis-start-reason">
-        {{ analysisStartPauseReason }}
-      </p>
-    </section>
+    <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+      <section
+        v-if="lifecycleState === 'off' || lifecycleState === 'first-use'"
+        class="analysis-off"
+      >
+        <p>分析默认关闭，不会占用额外计算资源。</p>
+        <div class="analysis-actions">
+          <ProductButton
+            data-analysis-action="start-current"
+            size="small"
+            variant="primary"
+            :disabled="!pgn.hasGame || Boolean(analysisStartPauseReason)"
+            :title="analysisStartPauseReason"
+            @click="onStart('current')"
+          >
+            分析当前局面
+          </ProductButton>
+          <ProductButton
+            data-analysis-action="start-full"
+            size="small"
+            :disabled="!canStartFullGame"
+            :title="analysisStartPauseReason"
+            @click="onStart('full')"
+          >
+            分析整局
+          </ProductButton>
+        </div>
+        <p v-if="analysisStartPauseReason" class="analysis-start-reason">
+          {{ analysisStartPauseReason }}
+        </p>
+      </section>
+    </Transition>
 
-    <section v-else-if="lifecycleState === 'source-limited'" class="analysis-state">
+    <section v-if="lifecycleState === 'source-limited'" class="analysis-state">
       <ProductStateBanner status="info" title="当前来源不支持 AI 分析">
         只读实时内容不提供 AI、引擎评估或候选变化写入。
       </ProductStateBanner>
     </section>
 
-    <section
-      v-else-if="lifecycleState === 'preparing' || lifecycleState === 'running'"
-      class="analysis-running"
-    >
-      <div
-        v-if="analysis.runningScope === 'full' && analysis.progress"
-        class="analysis-progress-block"
+    <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+      <section
+        v-if="lifecycleState === 'preparing' || lifecycleState === 'running'"
+        class="analysis-running"
       >
-        <p class="analysis-progress-copy" aria-live="polite">
-          {{ fullGameProgressText }}
-        </p>
-        <progress
-          class="analysis-native-progress"
-          :max="analysis.progress.total"
-          :value="analysis.progress.completed"
-          role="progressbar"
-          aria-label="整局分析进度"
-          aria-valuemin="0"
-          :aria-valuemax="analysis.progress.total"
-          :aria-valuenow="analysis.progress.completed"
-          :aria-valuetext="`${analysis.progress.completed} / ${analysis.progress.total}，${analysis.progress.percentage}%`"
-        />
-        <p class="analysis-current-position" aria-live="polite">
-          当前：{{ analysis.progress.currentLabel }}（{{ analysis.progress.currentIndex }} /
-          {{ analysis.progress.total }}）
-        </p>
-      </div>
-      <div v-else class="analysis-progress" aria-hidden="true">
-        <span ref="progressEl" />
-      </div>
-      <div class="analysis-actions">
-        <ProductButton
-          data-analysis-action="cancel"
-          size="small"
-          variant="danger"
-          @blur="onCancelBlur"
-          @click="onCancelAnalysis"
-          @focus="onCancelFocus"
+        <div
+          v-if="analysis.runningScope === 'full' && analysis.progress"
+          class="analysis-progress-block"
         >
-          取消分析
-        </ProductButton>
-      </div>
-    </section>
+          <p class="analysis-progress-copy" aria-live="polite">
+            {{ fullGameProgressText }}
+          </p>
+          <progress
+            class="analysis-native-progress"
+            :max="analysis.progress.total"
+            :value="analysis.progress.completed"
+            role="progressbar"
+            aria-label="整局分析进度"
+            aria-valuemin="0"
+            :aria-valuemax="analysis.progress.total"
+            :aria-valuenow="analysis.progress.completed"
+            :aria-valuetext="`${analysis.progress.completed} / ${analysis.progress.total}，${analysis.progress.percentage}%`"
+          />
+          <p class="analysis-current-position" aria-live="polite">
+            当前：{{ analysis.progress.currentLabel }}（{{ analysis.progress.currentIndex }} /
+            {{ analysis.progress.total }}）
+          </p>
+        </div>
+        <div v-else class="analysis-progress" aria-hidden="true">
+          <span ref="progressEl" />
+        </div>
+        <div class="analysis-actions">
+          <ProductButton
+            data-analysis-action="cancel"
+            size="small"
+            variant="danger"
+            @blur="onCancelBlur"
+            @click="onCancelAnalysis"
+            @focus="onCancelFocus"
+          >
+            取消分析
+          </ProductButton>
+        </div>
+      </section>
+    </Transition>
 
-    <section v-else-if="lifecycleState === 'failed'" class="analysis-state" role="alert">
+    <section v-if="lifecycleState === 'failed'" class="analysis-state" role="alert">
       <ProductStateBanner status="error" :title="presentation.title">
         {{ presentation.description }}
       </ProductStateBanner>

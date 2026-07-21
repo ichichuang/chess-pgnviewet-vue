@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { ProductRouteShell, ProductUnavailableState } from '@/ui'
+import { useRouteEntryMotion } from '@/features/motion/useRouteEntryMotion'
 import TeachingWorkspace from '@/features/teaching-workspace/TeachingWorkspace.vue'
 import {
   readWorkspaceHandoffContext,
@@ -15,6 +16,9 @@ import type { WorkspaceModeContext } from './workspaceModeTypes'
 
 const route = useRoute()
 const router = useRouter()
+
+const routeRootEl = ref<HTMLElement | null>(null)
+useRouteEntryMotion(routeRootEl)
 
 const workspaceModeContext = computed<WorkspaceModeContext>(() => {
   const handoffId = queryText(route.query.handoff)
@@ -71,7 +75,15 @@ function handleReturn(): void {
 </script>
 
 <template>
-  <ProductRouteShell v-if="handoffInvalid" title="无法打开此内容">
+  <ProductRouteShell
+    v-if="handoffInvalid"
+    :ref="
+      (el) => {
+        routeRootEl = (el as { $el?: HTMLElement } | null)?.$el ?? null
+      }
+    "
+    title="无法打开此内容"
+  >
     <div class="handoff-invalid-surface">
       <ProductUnavailableState
         kind="invalid"

@@ -10,6 +10,7 @@ import {
   type BlockedCapabilityFamily,
 } from '@/features/product-api/domain/capabilityAvailability'
 import { useProductFeedback } from '@/app/providers/productFeedback'
+import { useRouteEntryMotion } from '@/features/motion/useRouteEntryMotion'
 import { ProductRouteShell, ProductUnavailableState } from '@/ui'
 import { isSafeWorkspaceIdentifier } from '@/persistence/workspace/workspaceHandoff'
 
@@ -32,6 +33,9 @@ interface EntryDefinition {
 const route = useRoute()
 const router = useRouter()
 const productFeedback = useProductFeedback()
+
+const routeRootEl = ref<HTMLElement | null>(null)
+useRouteEntryMotion(routeRootEl)
 
 const state = ref<EntryState>('evaluating')
 const identifier = ref('')
@@ -161,7 +165,10 @@ function stateTitle(): string {
 </script>
 
 <template>
-  <ProductRouteShell :title="stateTitle()">
+  <ProductRouteShell
+    :ref="(el) => { routeRootEl = (el as any)?.$el ?? null }"
+    :title="stateTitle()"
+  >
     <div class="entry-state-surface">
       <ProductUnavailableState
         v-if="state !== 'evaluating'"

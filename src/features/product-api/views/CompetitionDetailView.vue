@@ -6,6 +6,12 @@ import { useRoute, useRouter, type LocationQuery } from 'vue-router'
 import { tournamentRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
 import type { CompetitionPairing } from '@/api/productTypes'
+import {
+  completeLeaveImmediately,
+  createStateEnterHook,
+} from '@/features/motion/stateEnterHooks'
+import { useResultsRefreshMotion } from '@/features/motion/useResultsRefreshMotion'
+import { useRouteEntryMotion } from '@/features/motion/useRouteEntryMotion'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import { evaluateCapabilityAvailability } from '@/features/product-api/domain/capabilityAvailability'
@@ -30,7 +36,11 @@ const PAGE_SIZE = 50
 
 const route = useRoute()
 const router = useRouter()
+const routeRootEl = ref<HTMLElement | null>(null)
 const roundResultRef = ref<HTMLElement | null>(null)
+
+useRouteEntryMotion(routeRootEl)
+const onStateEnter = createStateEnterHook(routeRootEl)
 const roundCanonicalizationPending = ref(false)
 const roundRouteContextPending = ref(Boolean(routeText(route.query.round)))
 const roundPolicyFocusPending = ref(false)
@@ -269,6 +279,17 @@ const pairingsQuery = useQuery({
 
 const pairings = computed(() => pairingsQuery.data.value?.items ?? [])
 
+// Retained-refresh feedback scoped to the pairing region only: animate on a
+// new truthy data identity; error transitions never dip retained pairings.
+const pairingsRefreshIdentity = ref<unknown>(null)
+watch(
+  () => pairingsQuery.data.value,
+  (data) => {
+    if (data) pairingsRefreshIdentity.value = data
+  }
+)
+useResultsRefreshMotion(roundResultRef, pairingsRefreshIdentity)
+
 const title = computed(() => detailQuery.data.value?.title || '赛事详情')
 const eventStatus = computed(() => detailQuery.data.value?.status || '状态待确认')
 const eventTime = computed(() => detailQuery.data.value?.startTime || '')
@@ -461,7 +482,11 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
 </script>
 
 <template>
-  <ProductRouteShell :title="title" subtitle="选择组别、轮次和对阵，进入讲解或场外大屏">
+  <ProductRouteShell
+    :ref="(el) => { routeRootEl = (el as any)?.$el ?? null }"
+    :title="title"
+    subtitle="选择组别、轮次和对阵，进入讲解或场外大屏"
+  >
     <template #header="{ titleId, registerTitle }">
       <RouteHeader
         settings-page="competition-detail"
@@ -615,8 +640,10 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
           <h3 id="pairing-region-title">
             对阵列表<span v-if="selectedRoundName"> · {{ selectedRoundName }}</span>
           </h3>
-          <span v-if="pairingsRefreshing" class="refresh-indicator" aria-live="polite">
-            更新中…
+          <span class="refresh-indicator" aria-live="polite">
+            <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+              <span v-if="pairingsRefreshing">更新中…</span>
+            </Transition>
           </span>
         </div>
 
@@ -717,12 +744,14 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
         </template>
       </section>
 
-      <section v-if="selectedPairing" class="selected-summary" aria-label="已选对阵">
-        <p>{{ pairingSummary(selectedPairing) }}</p>
-        <p v-if="blockedActionText(selectedPairing)" class="blocked-notice">
-          {{ blockedActionText(selectedPairing) }}
-        </p>
-      </section>
+      <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+        <section v-if="selectedPairing" class="selected-summary" aria-label="已选对阵">
+          <p>{{ pairingSummary(selectedPairing) }}</p>
+          <p v-if="blockedActionText(selectedPairing)" class="blocked-notice">
+            {{ blockedActionText(selectedPairing) }}
+          </p>
+        </section>
+      </Transition>
     </section>
   </ProductRouteShell>
 </template>

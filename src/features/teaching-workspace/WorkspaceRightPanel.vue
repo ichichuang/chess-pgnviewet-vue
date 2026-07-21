@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, useId } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
+import { gsap } from 'gsap'
 
+import { motionDuration, motionEase } from '@/features/motion/gsapTokens'
+import {
+  completeLeaveImmediately,
+  createStateEnterHook,
+} from '@/features/motion/stateEnterHooks'
 import PgnNotationPanel from '@/features/pgn/components/PgnNotationPanel.vue'
 import type {
   PgnNavigationIntent,
@@ -36,6 +42,71 @@ const nodeEditor = ref<InstanceType<typeof ProductField> | null>(null)
 const gameEditor = ref<InstanceType<typeof ProductField> | null>(null)
 const nodeEditTrigger = ref<InstanceType<typeof ProductButton> | null>(null)
 const gameEditTrigger = ref<InstanceType<typeof ProductButton> | null>(null)
+
+const rootEl = ref<HTMLElement | null>(null)
+const notationPanelRef = ref<InstanceType<typeof PgnNotationPanel> | null>(null)
+const notationPanelEl = computed(() =>
+  notationPanelRef.value?.$el instanceof HTMLElement ? notationPanelRef.value.$el : null
+)
+const onStateEnter = createStateEnterHook(rootEl)
+let context: ReturnType<typeof gsap.context> | null = null
+
+// Collection identity: a new source or import replaces length and/or the first
+// allocated game id. Selection or highlight changes never touch this signature.
+const pgnListIdentity = computed(
+  () => `${pgn.sourceSession}:${pgn.items.length}:${pgn.gameIds[0] ?? 'empty'}`
+)
+
+function fadeInElement(element: HTMLElement | null): void {
+  const root = rootEl.value
+
+  if (!root || !element || !context) return
+
+  context.add(() => {
+    gsap.fromTo(
+      element,
+      { autoAlpha: 0 },
+      {
+        autoAlpha: 1,
+        duration: motionDuration(root, '--workspace-motion-duration-fast'),
+        ease: motionEase(root, '--workspace-motion-ease-enter'),
+        overwrite: true,
+        clearProps: 'opacity,visibility',
+      }
+    )
+  })
+}
+
+function activePaneContent(): HTMLElement | null {
+  return (
+    rootEl.value?.querySelector<HTMLElement>(
+      '.product-tab-panel[data-active="true"] .panel-content'
+    ) ?? null
+  )
+}
+
+async function animateActivePane(): Promise<void> {
+  await nextTick()
+  fadeInElement(activePaneContent())
+}
+
+async function animatePgnList(): Promise<void> {
+  await nextTick()
+  fadeInElement(notationPanelEl.value)
+}
+
+watch(() => workspace.activeRightTab, () => void animateActivePane(), { flush: 'post' })
+watch(pgnListIdentity, () => void animatePgnList(), { flush: 'post' })
+
+onMounted(() => {
+  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
+})
+
+onBeforeUnmount(() => {
+  if (rootEl.value) gsap.killTweensOf(rootEl.value.querySelectorAll('*'))
+  context?.revert()
+  context = null
+})
 
 const panes = computed<ProductTabPaneDef[]>(() => {
   const result: ProductTabPaneDef[] = [{ name: 'notation', tab: '棋谱' }]
@@ -135,7 +206,7 @@ function cancelTeachingDraft(): void {
 </script>
 
 <template>
-  <section class="workspace-right-panel" aria-label="工作区右侧面板">
+  <section ref="rootEl" class="workspace-right-panel" aria-label="工作区右侧面板">
     <ProductTabs
       v-model="workspace.activeRightTab"
       type="segment"
@@ -144,6 +215,7 @@ function cancelTeachingDraft(): void {
     >
       <template #notation>
         <PgnNotationPanel
+          ref="notationPanelRef"
           class="panel-content"
           :can-open-local-pgn-as-new-source="permissions.canOpenLocalPgnAsNewSource"
           @action="emit('action', $event)"
@@ -171,31 +243,33 @@ function cancelTeachingDraft(): void {
               </ProductButton>
             </header>
 
-            <div v-if="nodeDraftActive" class="teaching-editor">
-              <ProductField
-                :id="nodeEditorId"
-                ref="nodeEditor"
-                :model-value="pgn.teachingDraft?.currentText ?? ''"
-                label="节点批注内容"
-                description="空行分隔的段落会作为独立 PGN 批注保存；系统批注、用户批注、标注、变例和 NAG 不会被改动。"
-                multiline
-                :rows="6"
-                :error="teachingDraftError"
-                :spellcheck="true"
-                @update:model-value="updateTeachingDraft"
-              />
-              <div v-if="teachingDraftSuccess" aria-live="polite">
-                <ProductStateBanner status="success" :show-icon="false">
-                  {{ teachingDraftSuccess }}
-                </ProductStateBanner>
+            <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+              <div v-if="nodeDraftActive" class="teaching-editor">
+                <ProductField
+                  :id="nodeEditorId"
+                  ref="nodeEditor"
+                  :model-value="pgn.teachingDraft?.currentText ?? ''"
+                  label="节点批注内容"
+                  description="空行分隔的段落会作为独立 PGN 批注保存；系统批注、用户批注、标注、变例和 NAG 不会被改动。"
+                  multiline
+                  :rows="6"
+                  :error="teachingDraftError"
+                  :spellcheck="true"
+                  @update:model-value="updateTeachingDraft"
+                />
+                <div v-if="teachingDraftSuccess" aria-live="polite">
+                  <ProductStateBanner status="success" :show-icon="false">
+                    {{ teachingDraftSuccess }}
+                  </ProductStateBanner>
+                </div>
+                <div class="teaching-editor-actions">
+                  <ProductButton size="small" variant="primary" @click="saveTeachingDraft">
+                    {{ saveLabel }}
+                  </ProductButton>
+                  <ProductButton size="small" @click="cancelTeachingDraft">取消</ProductButton>
+                </div>
               </div>
-              <div class="teaching-editor-actions">
-                <ProductButton size="small" variant="primary" @click="saveTeachingDraft">
-                  {{ saveLabel }}
-                </ProductButton>
-                <ProductButton size="small" @click="cancelTeachingDraft">取消</ProductButton>
-              </div>
-            </div>
+            </Transition>
 
             <p
               v-if="
@@ -241,31 +315,33 @@ function cancelTeachingDraft(): void {
               </ProductButton>
             </header>
 
-            <div v-if="gameDraftActive" class="teaching-editor">
-              <ProductField
-                :id="gameEditorId"
-                ref="gameEditor"
-                :model-value="pgn.teachingDraft?.currentText ?? ''"
-                label="整盘对局教学笔记内容"
-                description="这份笔记只在本次工作区会话中保留，不属于 PGN 头信息，也不会写入文件或云端。"
-                multiline
-                :rows="7"
-                :error="teachingDraftError"
-                :spellcheck="true"
-                @update:model-value="updateTeachingDraft"
-              />
-              <div v-if="teachingDraftSuccess" aria-live="polite">
-                <ProductStateBanner status="success" :show-icon="false">
-                  {{ teachingDraftSuccess }}
-                </ProductStateBanner>
+            <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+              <div v-if="gameDraftActive" class="teaching-editor">
+                <ProductField
+                  :id="gameEditorId"
+                  ref="gameEditor"
+                  :model-value="pgn.teachingDraft?.currentText ?? ''"
+                  label="整盘对局教学笔记内容"
+                  description="这份笔记只在本次工作区会话中保留，不属于 PGN 头信息，也不会写入文件或云端。"
+                  multiline
+                  :rows="7"
+                  :error="teachingDraftError"
+                  :spellcheck="true"
+                  @update:model-value="updateTeachingDraft"
+                />
+                <div v-if="teachingDraftSuccess" aria-live="polite">
+                  <ProductStateBanner status="success" :show-icon="false">
+                    {{ teachingDraftSuccess }}
+                  </ProductStateBanner>
+                </div>
+                <div class="teaching-editor-actions">
+                  <ProductButton size="small" variant="primary" @click="saveTeachingDraft">
+                    {{ saveLabel }}
+                  </ProductButton>
+                  <ProductButton size="small" @click="cancelTeachingDraft">取消</ProductButton>
+                </div>
               </div>
-              <div class="teaching-editor-actions">
-                <ProductButton size="small" variant="primary" @click="saveTeachingDraft">
-                  {{ saveLabel }}
-                </ProductButton>
-                <ProductButton size="small" @click="cancelTeachingDraft">取消</ProductButton>
-              </div>
-            </div>
+            </Transition>
 
             <p v-if="pgn.currentGameTeachingNote" class="teaching-note-copy">
               {{ pgn.currentGameTeachingNote }}

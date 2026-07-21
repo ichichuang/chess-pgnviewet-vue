@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import { keepPreviousData, useQuery } from '@tanstack/vue-query'
-import { computed, nextTick, reactive, ref, watch } from 'vue'
+import { gsap } from 'gsap'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter, type LocationQuery } from 'vue-router'
 
 import { tournamentRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
+import {
+  motionDuration,
+  motionEase,
+  motionScalar,
+  prefersReducedMotion,
+} from '@/features/motion/gsapTokens'
+import { useResultsRefreshMotion } from '@/features/motion/useResultsRefreshMotion'
+import { useRouteEntryMotion } from '@/features/motion/useRouteEntryMotion'
 import RouteHeader from '@/features/product-api/components/RouteHeader.vue'
 import ResourceState from '@/features/product-api/components/ResourceState.vue'
 import { resourceError } from '@/features/product-api/domain/resourceError'
@@ -25,6 +34,11 @@ const DEFAULT_STATUS = '21'
 
 const route = useRoute()
 const router = useRouter()
+
+const routeRootEl = ref<HTMLElement | null>(null)
+const resultRegionEl = ref<HTMLElement | null>(null)
+
+useRouteEntryMotion(routeRootEl)
 
 const defaultDate = () => ({
   year: String(now.getFullYear()),
@@ -181,6 +195,67 @@ const competitionQuery = useQuery({
 })
 
 const competitions = computed(() => competitionQuery.data.value?.items ?? [])
+
+// Retained-refresh feedback: animate only on a new truthy data identity so
+// error transitions (data dropping to undefined) never dip retained content.
+const resultsRefreshIdentity = ref<unknown>(null)
+watch(
+  () => competitionQuery.data.value,
+  (data) => {
+    if (data) resultsRefreshIdentity.value = data
+  }
+)
+useResultsRefreshMotion(resultRegionEl, resultsRefreshIdentity)
+
+// Delegated press feedback for the result row/card detail links (plain
+// anchors, not ProductButton). Transform-only, fast, and owned by a local
+// gsap.context; navigation itself is never touched.
+let resultLinkPressContext: gsap.Context | null = null
+
+function animateResultLinkPress(event: Event): void {
+  if (prefersReducedMotion()) return
+  const target = event.target
+  if (!(target instanceof Element)) return
+  const link = target.closest('a')
+  if (!(link instanceof HTMLAnchorElement) || link.hasAttribute('disabled')) return
+  gsap.killTweensOf(link)
+  resultLinkPressContext?.add(() => {
+    gsap.fromTo(
+      link,
+      { scale: motionScalar(resultRegionEl.value, '--workspace-motion-press-scale') },
+      {
+        scale: 1,
+        duration: motionDuration(resultRegionEl.value, '--workspace-motion-duration-fast'),
+        ease: motionEase(resultRegionEl.value, '--workspace-motion-ease-state'),
+        overwrite: true,
+        clearProps: 'transform',
+      }
+    )
+  })
+}
+
+function onResultLinkKeyDown(event: KeyboardEvent): void {
+  if (event.repeat || (event.key !== 'Enter' && event.key !== ' ')) return
+  animateResultLinkPress(event)
+}
+
+onMounted(() => {
+  const region = resultRegionEl.value
+  if (!region) return
+  resultLinkPressContext = gsap.context(() => undefined, region)
+  region.addEventListener('pointerdown', animateResultLinkPress, { capture: true })
+  region.addEventListener('keydown', onResultLinkKeyDown, { capture: true })
+})
+
+onBeforeUnmount(() => {
+  const region = resultRegionEl.value
+  if (region) {
+    region.removeEventListener('pointerdown', animateResultLinkPress, { capture: true })
+    region.removeEventListener('keydown', onResultLinkKeyDown, { capture: true })
+  }
+  resultLinkPressContext?.revert()
+  resultLinkPressContext = null
+})
 const total = computed(() => competitionQuery.data.value?.total ?? 0)
 const pageCount = computed(() => Math.ceil(total.value / pageSize))
 const pageOneBased = computed(() => routeState.value.page)
@@ -359,7 +434,11 @@ function updatePage(next: number): void {
 </script>
 
 <template>
-  <ProductRouteShell title="赛事" subtitle="查找公开赛事并查看组别、轮次和对阵。">
+  <ProductRouteShell
+    :ref="(el) => { routeRootEl = (el as any)?.$el ?? null }"
+    title="赛事"
+    subtitle="查找公开赛事并查看组别、轮次和对阵。"
+  >
     <template #header="{ titleId, registerTitle }">
       <RouteHeader
         settings-page="competition-list"
@@ -476,7 +555,7 @@ function updatePage(next: number): void {
         当前显示上一次可用结果。请稍后重试。
       </ProductStateBanner>
 
-      <section class="result-region" aria-labelledby="result-heading">
+      <section ref="resultRegionEl" class="result-region" aria-labelledby="result-heading">
         <div class="result-meta">
           <h3 id="result-heading" ref="resultHeadingRef" class="result-heading" tabindex="-1">
             赛事结果

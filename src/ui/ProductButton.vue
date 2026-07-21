@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { NButton } from 'naive-ui'
+
+import { usePressMotion } from '@/features/motion/usePressMotion'
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'text'
 type ButtonSize = 'small' | 'medium' | 'large'
@@ -27,6 +29,14 @@ const emit = defineEmits<{
 }>()
 
 const buttonRef = ref<InstanceType<typeof NButton> | null>(null)
+const buttonEl = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  const el = buttonRef.value?.$el
+  buttonEl.value = el instanceof HTMLElement ? el : null
+})
+
+usePressMotion(buttonEl, () => !props.disabled && !props.busy)
 
 function focus(): void {
   const el = buttonRef.value?.$el

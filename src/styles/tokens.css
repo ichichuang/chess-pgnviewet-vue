@@ -125,6 +125,7 @@
   --workspace-motion-press-scale: 0.96;
   --workspace-motion-board-scale: 0.992;
   --workspace-motion-overlay-scale: 0.94;
+  --workspace-motion-refresh-dip-opacity: 0.55;
   --workspace-motion-ease-standard: ease;
   --workspace-motion-ease-enter: power2.out;
   --workspace-motion-ease-state: power1.out;

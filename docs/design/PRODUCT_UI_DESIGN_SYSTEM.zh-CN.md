@@ -420,6 +420,7 @@ CURRENT_IMPLEMENTED 的工作区动效只使用：
 - --workspace-motion-duration-fast、--workspace-motion-duration-base、--workspace-motion-duration-panel、--workspace-motion-duration-shell、--workspace-motion-duration-analysis、--workspace-motion-duration-progress
 - --workspace-motion-stagger-panel、--workspace-motion-distance-panel
 - --workspace-motion-press-scale、--workspace-motion-board-scale、--workspace-motion-overlay-scale
+- --workspace-motion-refresh-dip-opacity（保留数据刷新时的可读不透明度下限，只用于结果替换提示）
 - --workspace-motion-ease-standard、--workspace-motion-ease-enter、--workspace-motion-ease-state、--workspace-motion-ease-progress
 - 棋盘专属 --board-motion-_、--board-promotion-_、--board-radial-_、--board-editor-intro-_ Token
 

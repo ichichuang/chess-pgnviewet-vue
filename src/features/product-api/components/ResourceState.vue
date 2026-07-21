@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
+import {
+  completeLeaveImmediately,
+  createStateEnterHook,
+} from '@/features/motion/stateEnterHooks'
 import type { ResourceErrorKind } from '@/features/product-api/domain/resourceError'
 
 const props = withDefaults(
@@ -34,17 +38,27 @@ const errorTitle = computed(() => {
 const emit = defineEmits<{
   retry: []
 }>()
+
+const rootEl = ref<HTMLElement | null>(null)
+const onStateEnter = createStateEnterHook(rootEl)
 </script>
 
 <template>
-  <section v-if="pending || errorText || empty" class="resource-state" aria-live="polite">
-    <strong v-if="pending">{{ loadingText }}</strong>
-    <template v-else-if="errorText">
-      <strong>{{ errorTitle }}</strong>
-      <p>{{ errorText }}</p>
-      <button v-if="retryable" type="button" @click="emit('retry')">重试</button>
-    </template>
-    <strong v-else>{{ emptyText }}</strong>
+  <section
+    v-if="pending || errorText || empty"
+    ref="rootEl"
+    class="resource-state"
+    aria-live="polite"
+  >
+    <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+      <strong v-if="pending" key="pending">{{ loadingText }}</strong>
+      <div v-else-if="errorText" key="error" class="resource-state-detail">
+        <strong>{{ errorTitle }}</strong>
+        <p>{{ errorText }}</p>
+        <button v-if="retryable" type="button" @click="emit('retry')">重试</button>
+      </div>
+      <strong v-else key="empty">{{ emptyText }}</strong>
+    </Transition>
   </section>
 </template>
 
@@ -58,6 +72,12 @@ const emit = defineEmits<{
   border-radius: var(--r-sm);
   background: var(--surface);
   color: var(--text);
+}
+
+.resource-state-detail {
+  display: grid;
+  justify-items: start;
+  gap: var(--s-2);
 }
 
 .resource-state p {

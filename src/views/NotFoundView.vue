@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { useRouteEntryMotion } from '@/features/motion/useRouteEntryMotion'
 import { ProductRouteShell, ProductUnavailableState } from '@/ui'
 
 const router = useRouter()
+
+const routeRootEl = ref<HTMLElement | null>(null)
+useRouteEntryMotion(routeRootEl)
 
 function handleReturn(): void {
   router.push({ name: 'competitions' })
@@ -11,7 +16,7 @@ function handleReturn(): void {
 </script>
 
 <template>
-  <ProductRouteShell title="页面不可用">
+  <ProductRouteShell :ref="(el) => { routeRootEl = (el as any)?.$el ?? null }" title="页面不可用">
     <div class="not-found-surface">
       <ProductUnavailableState
         kind="invalid"

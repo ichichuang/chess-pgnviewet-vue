@@ -5,6 +5,8 @@ import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router'
 
 import { competitionDisplayRepository } from '@/api/productApi'
 import { productQueryKeys, publicQueryMeta } from '@/api/queryClient'
+import { useFlipGridMotion } from '@/features/motion/useFlipGridMotion'
+import { useRouteEntryMotion } from '@/features/motion/useRouteEntryMotion'
 import {
   resolveDisplayRound,
   type DisplayRoundResolution,
@@ -21,9 +23,12 @@ import { useVenueDisplayLayout } from '../composables/useVenueDisplayLayout.ts'
 const route = useRoute()
 const router = useRouter()
 const hdid = computed(() => routeText(route.params.hdid))
+const routeRootEl = ref<HTMLElement | null>(null)
 const stageFocusRef = ref<HTMLElement | null>(null)
 const displayGridRef = ref<HTMLElement | null>(null)
 const playerHeaderProbeRef = ref<HTMLElement | null>(null)
+
+useRouteEntryMotion(routeRootEl)
 
 const detailQuery = useQuery({
   queryKey: computed(() => productQueryKeys.displayDetail(hdid.value)),
@@ -104,6 +109,12 @@ const rawPairings = computed(() => pairingsQuery.data.value?.items ?? [])
 const pairingCount = computed(() => rawPairings.value.length)
 const { columns, rows, boardSize, tileWidth, tileHeight, style: layoutStyle } =
   useVenueDisplayLayout(displayGridRef, playerHeaderProbeRef, pairingCount)
+
+// Flip observes committed layouts only: it runs when the ordered tile identity
+// set changes (not on every 30s poll with identical keys). Source order, equal
+// geometry, and board size stay owned by Vue and useVenueDisplayLayout.
+const displayTileOrder = computed(() => rawPairings.value.map((pairing) => pairing.id).join('|'))
+useFlipGridMotion(displayGridRef, '.venue-match', displayTileOrder)
 
 const title = computed(() => detailQuery.data.value?.title || `赛事 ${hdid.value}`)
 const hasContextData = computed(
@@ -292,7 +303,11 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
 </script>
 
 <template>
-  <VenueDisplayShell :title="`${title} 大屏`" subtitle="公开对阵数据只读展示">
+  <VenueDisplayShell
+    :ref="(el) => { routeRootEl = (el as any)?.$el ?? null }"
+    :title="`${title} 大屏`"
+    subtitle="公开对阵数据只读展示"
+  >
     <template #header-actions>
       <ProductButton variant="secondary" size="small" @click="$router.push(backToDetail)">
         返回赛事详情

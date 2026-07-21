@@ -9,6 +9,7 @@ import {
   isCapabilityContractBlocked,
 } from '@/features/product-api/domain/capabilityAvailability'
 import { useProductFeedback } from '@/app/providers/productFeedback'
+import { useRouteEntryMotion } from '@/features/motion/useRouteEntryMotion'
 import { ProductRouteShell, ProductUnavailableState } from '@/ui'
 import { isSafeWorkspaceIdentifier } from '@/persistence/workspace/workspaceHandoff'
 
@@ -23,6 +24,9 @@ type LiveEntryState =
 const route = useRoute()
 const router = useRouter()
 const productFeedback = useProductFeedback()
+
+const routeRootEl = ref<HTMLElement | null>(null)
+useRouteEntryMotion(routeRootEl)
 
 const state = ref<LiveEntryState>('evaluating')
 const competitionId = ref('')
@@ -119,7 +123,10 @@ function stateTitle(): string {
 </script>
 
 <template>
-  <ProductRouteShell :title="stateTitle()">
+  <ProductRouteShell
+    :ref="(el) => { routeRootEl = (el as any)?.$el ?? null }"
+    :title="stateTitle()"
+  >
     <div class="live-entry-state-surface">
       <ProductUnavailableState
         v-if="state !== 'evaluating'"

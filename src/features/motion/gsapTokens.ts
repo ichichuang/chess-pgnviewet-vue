@@ -1,9 +1,20 @@
-function prefersReducedMotion(): boolean {
+export function prefersReducedMotion(): boolean {
   return (
     typeof window !== 'undefined' &&
     typeof window.matchMedia === 'function' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
   )
+}
+
+export function onReducedMotionChange(listener: () => void): () => void {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return () => undefined
+  }
+
+  const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+  query.addEventListener('change', listener)
+
+  return () => query.removeEventListener('change', listener)
 }
 
 export function motionDuration(owner: Element | null, token: string): number {

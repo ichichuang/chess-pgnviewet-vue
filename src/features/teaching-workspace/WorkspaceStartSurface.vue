@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import { gsap } from 'gsap'
+
+import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
+import { usePressMotion } from '@/features/motion/usePressMotion'
+
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
 const props = defineProps<{
@@ -9,15 +16,61 @@ const props = defineProps<{
 const emit = defineEmits<{
   action: [name: WorkspaceToolbarAction]
 }>()
+
+const rootEl = ref<HTMLElement | null>(null)
+const localCardEl = ref<HTMLElement | null>(null)
+const editorCardEl = ref<HTMLElement | null>(null)
+const competitionsCardRef = ref<InstanceType<typeof RouterLink> | null>(null)
+const competitionsCardEl = computed(() =>
+  competitionsCardRef.value?.$el instanceof HTMLElement ? competitionsCardRef.value.$el : null
+)
+let context: ReturnType<typeof gsap.context> | null = null
+
+// Press feedback only on actionable cards; disabled or contract-blocked cards
+// keep their static disabled presentation.
+usePressMotion(localCardEl, () => props.canOpenLocalPgnAsNewSource)
+usePressMotion(editorCardEl, () => props.canEnterBoardEditor)
+usePressMotion(competitionsCardEl, () => true)
+
+onMounted(() => {
+  const root = rootEl.value
+
+  if (!root) return
+
+  context = gsap.context(() => undefined, root)
+  const cards = Array.from(root.querySelectorAll<HTMLElement>('.start-card'))
+
+  context.add(() => {
+    gsap.fromTo(
+      cards,
+      { autoAlpha: 0, y: motionScalar(root, '--workspace-motion-distance-panel') },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: motionDuration(root, '--workspace-motion-duration-panel'),
+        ease: motionEase(root, '--workspace-motion-ease-enter'),
+        stagger: motionDuration(root, '--workspace-motion-stagger-panel'),
+        overwrite: true,
+        clearProps: 'opacity,transform,visibility',
+      }
+    )
+  })
+})
+
+onBeforeUnmount(() => {
+  context?.revert()
+  context = null
+})
 </script>
 
 <template>
-  <section class="start-surface" aria-labelledby="workspace-start-title">
+  <section ref="rootEl" class="start-surface" aria-labelledby="workspace-start-title">
     <h1 id="workspace-start-title" class="start-title">统一工作区</h1>
     <p class="start-subtitle">选择一种来源开始教学、讲解或分析。</p>
 
     <div class="start-options">
       <button
+        ref="localCardEl"
         class="start-card"
         type="button"
         :disabled="!props.canOpenLocalPgnAsNewSource"
@@ -28,6 +81,7 @@ const emit = defineEmits<{
       </button>
 
       <button
+        ref="editorCardEl"
         class="start-card"
         type="button"
         :disabled="!props.canEnterBoardEditor"
@@ -37,7 +91,7 @@ const emit = defineEmits<{
         <span>自由摆放棋子，创建教学起点</span>
       </button>
 
-      <RouterLink class="start-card" :to="{ name: 'competitions' }">
+      <RouterLink ref="competitionsCardRef" class="start-card" :to="{ name: 'competitions' }">
         <strong>从赛事进入</strong>
         <span>浏览公开赛事，进入讲解或观战</span>
       </RouterLink>

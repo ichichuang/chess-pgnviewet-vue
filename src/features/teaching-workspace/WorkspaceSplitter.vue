@@ -1,5 +1,10 @@
 <script setup lang="ts">
-withDefaults(
+import { onBeforeUnmount, ref, watch } from 'vue'
+import { gsap } from 'gsap'
+
+import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
+
+const props = withDefaults(
   defineProps<{
     dragging: boolean
     disabled?: boolean
@@ -14,6 +19,76 @@ const emit = defineEmits<{
   pointerDown: [event: PointerEvent]
   keyDown: [event: KeyboardEvent]
 }>()
+
+const gripEl = ref<HTMLElement | null>(null)
+
+function gripEmphasisScale(): number {
+  const grip = gripEl.value
+  const rest = motionScalar(grip, '--workspace-splitter-grip-w')
+  const active = motionScalar(grip, '--workspace-splitter-grip-w-active')
+
+  return rest > 0 && active > rest ? active / rest : 1
+}
+
+function emphasizeGrip(active: boolean): void {
+  const grip = gripEl.value
+  if (!grip) return
+
+  gsap.killTweensOf(grip)
+  gsap.to(grip, {
+    x: 0,
+    y: 0,
+    xPercent: -50,
+    yPercent: -50,
+    scaleY: active ? gripEmphasisScale() : 1,
+    duration: motionDuration(grip, '--workspace-motion-duration-fast'),
+    ease: motionEase(grip, '--workspace-motion-ease-state'),
+    overwrite: true,
+    ...(active ? {} : { clearProps: 'transform' }),
+  })
+}
+
+const KEYBOARD_EMPHASIS_KEYS = new Set(['ArrowUp', 'Up', 'ArrowDown', 'Down', 'Home', 'End'])
+
+function onKeyDown(event: KeyboardEvent): void {
+  const grip = gripEl.value
+
+  if (grip && !event.repeat && KEYBOARD_EMPHASIS_KEYS.has(event.key)) {
+    gsap.killTweensOf(grip)
+    gsap
+      .timeline()
+      .to(grip, {
+        x: 0,
+        y: 0,
+        xPercent: -50,
+        yPercent: -50,
+        scaleY: gripEmphasisScale(),
+        duration: motionDuration(grip, '--workspace-motion-duration-fast'),
+        ease: motionEase(grip, '--workspace-motion-ease-state'),
+      })
+      .to(grip, {
+        scaleY: 1,
+        duration: motionDuration(grip, '--workspace-motion-duration-base'),
+        ease: motionEase(grip, '--workspace-motion-ease-state'),
+        clearProps: 'transform',
+      })
+  }
+
+  emit('keyDown', event)
+}
+
+watch(
+  () => props.dragging,
+  (dragging) => emphasizeGrip(dragging)
+)
+
+onBeforeUnmount(() => {
+  const grip = gripEl.value
+  if (grip) {
+    gsap.killTweensOf(grip)
+    gsap.set(grip, { clearProps: 'transform' })
+  }
+})
 </script>
 
 <template>
@@ -28,9 +103,9 @@ const emit = defineEmits<{
     aria-valuemin="0"
     aria-valuemax="100"
     @pointerdown="emit('pointerDown', $event)"
-    @keydown="emit('keyDown', $event)"
+    @keydown="onKeyDown"
   >
-    <span aria-hidden="true" />
+    <span ref="gripEl" aria-hidden="true" />
   </button>
 </template>
 

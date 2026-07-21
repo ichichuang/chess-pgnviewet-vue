@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, useSlots, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, useSlots, watch } from 'vue'
+import { gsap } from 'gsap'
 import { NModal } from 'naive-ui'
+
+import { animateDialogEnter, animateOverlayLeave } from '@/features/motion/overlayMotion'
 
 import {
   captureProductOverlayFocus,
@@ -48,6 +51,7 @@ const bodyId = `${instanceId}-body`
 const actionsId = `${instanceId}-actions`
 
 const dialogCardRef = ref<HTMLElement | null>(null)
+const renderedShow = ref(props.show)
 const titleRef = ref<HTMLHeadingElement | null>(null)
 let focusEntry: ReturnType<typeof captureProductOverlayFocus> | null = null
 
@@ -87,20 +91,54 @@ watch(
   () => props.show,
   (visible) => {
     if (visible) {
+      renderedShow.value = true
       focusEntry = captureProductOverlayFocus(
         props.returnFocus
           ? { fallback: props.returnFocus, focusActive: focusActiveDialog }
           : { focusActive: focusActiveDialog }
       )
-      void nextTick(focusActiveDialog)
+      void nextTick(() => {
+        focusActiveDialog()
+        const card = dialogCardRef.value
+        if (card) {
+          // Cancel any in-flight exit so a rapid reopen re-enters cleanly from
+          // the current visual state with no stale inline styles.
+          gsap.killTweensOf(card)
+          gsap.set(card, { clearProps: 'opacity,transform,visibility' })
+          animateDialogEnter(card, card)
+        }
+      })
+      return
+    }
+
+    // Restore focus at the moment close starts; the exit animation must never
+    // delay focus return. The onAfterLeave path below becomes a harmless no-op.
+    void restoreFocus()
+    const card = dialogCardRef.value
+    if (card && renderedShow.value) {
+      animateOverlayLeave(card, card, 'dialog', () => {
+        // A reopen may have interrupted this exit; only release the overlay
+        // when the owning state is still closed.
+        if (!props.show) renderedShow.value = false
+      })
+    } else {
+      renderedShow.value = false
     }
   }
 )
+
+onBeforeUnmount(() => {
+  const card = dialogCardRef.value
+  if (card) {
+    gsap.killTweensOf(card)
+    gsap.set(card, { clearProps: 'opacity,transform,visibility' })
+  }
+})
 </script>
 
 <template>
   <NModal
-    :show="show"
+    :show="renderedShow"
     :closable="closable"
     :mask-closable="maskClosable"
     :close-on-esc="closeOnEsc"
@@ -213,5 +251,30 @@ watch(
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--s-3);
+}
+</style>
+
+<!-- Unscoped: neutralizes Naive's own CSS transitions on the teleported card
+and mask so GSAP owns the visuals while Naive keeps owning presence/focus
+timing. Mask enter fades on a token duration; mask leave is instant so it ends
+together with the GSAP card exit. -->
+<style>
+.product-dialog-card.fade-in-scale-up-transition-enter-active,
+.product-dialog-card.fade-in-scale-up-transition-leave-active {
+  transition: none;
+}
+
+.product-dialog-card.fade-in-scale-up-transition-enter-from,
+.product-dialog-card.fade-in-scale-up-transition-leave-to {
+  opacity: 1;
+  transform: none;
+}
+
+.n-modal-mask.fade-in-transition-enter-active {
+  transition-duration: var(--workspace-motion-duration-fast);
+}
+
+.n-modal-mask.fade-in-transition-leave-active {
+  transition: none;
 }
 </style>

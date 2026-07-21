@@ -2,6 +2,11 @@
 import { computed, ref } from 'vue'
 import { NInput } from 'naive-ui'
 
+import {
+  completeLeaveImmediately,
+  createStateEnterHook,
+} from '@/features/motion/stateEnterHooks'
+
 const props = defineProps<{
   modelValue: string
   label?: string
@@ -26,7 +31,9 @@ const emit = defineEmits<{
 }>()
 
 const inputRef = ref<InstanceType<typeof NInput> | null>(null)
+const fieldEl = ref<HTMLElement | null>(null)
 const inputId = computed(() => props.id ?? `pf-${Math.random().toString(36).slice(2, 9)}`)
+const onStateEnter = createStateEnterHook(fieldEl)
 
 function nativeInput(): HTMLInputElement | HTMLTextAreaElement | null {
   const el = inputRef.value?.$el
@@ -73,7 +80,7 @@ const inputProps = computed(() => {
 </script>
 
 <template>
-  <div class="product-field">
+  <div ref="fieldEl" class="product-field">
     <label v-if="label" class="field-label" :for="inputId">{{ label }}</label>
     <p v-if="description" :id="`${inputId}-description`" class="field-description">
       {{ description }}
@@ -83,9 +90,11 @@ const inputProps = computed(() => {
         <slot name="suffix" />
       </template>
     </NInput>
-    <p v-if="error" :id="`${inputId}-error`" class="field-error" role="alert">
-      {{ error }}
-    </p>
+    <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+      <p v-if="error" :id="`${inputId}-error`" class="field-error" role="alert">
+        {{ error }}
+      </p>
+    </Transition>
   </div>
 </template>
 

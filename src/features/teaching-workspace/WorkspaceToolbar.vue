@@ -97,7 +97,14 @@ function onGroupsLeave(element: Element, done: () => void): void {
   })
 }
 
-function animateToolbarState(event: MouseEvent): void {
+onMounted(() => {
+  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
+})
+
+// Press feedback for plain toolbar buttons only. ProductButton instances own
+// their press motion through the shared usePressMotion adapter and are skipped
+// here so the two never double-animate the same element.
+function animatePlainButtonPress(event: MouseEvent): void {
   const target = event.target
 
   if (!(target instanceof Element)) return
@@ -105,6 +112,7 @@ function animateToolbarState(event: MouseEvent): void {
   const button = target.closest('button')
 
   if (!(button instanceof HTMLButtonElement) || button.disabled) return
+  if (button.closest('.product-button')) return
 
   gsap.killTweensOf(button)
   context?.add(() => {
@@ -122,10 +130,6 @@ function animateToolbarState(event: MouseEvent): void {
   })
 }
 
-onMounted(() => {
-  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
-})
-
 onBeforeUnmount(() => {
   const targets = rootEl.value ? [rootEl.value, ...rootEl.value.querySelectorAll('*')] : []
   gsap.killTweensOf(targets)
@@ -140,7 +144,7 @@ onBeforeUnmount(() => {
     class="workspace-toolbar"
     role="toolbar"
     aria-label="工作区工具栏"
-    @click.capture="animateToolbarState"
+    @click.capture="animatePlainButtonPress"
   >
     <button
       class="toolbar-collapse"

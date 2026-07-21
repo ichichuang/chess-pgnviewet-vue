@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { gsap } from 'gsap'
+
+import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
+import {
+  completeLeaveImmediately,
+  createStateEnterHook,
+} from '@/features/motion/stateEnterHooks'
 import PgnGameList from '@/features/pgn/components/PgnGameList.vue'
 import type { PgnNavigationIntent } from '@/features/pgn/pgnWorkspaceTypes'
 import { usePgnStore } from '@/stores'
@@ -24,10 +32,53 @@ const emit = defineEmits<{
 }>()
 
 const pgn = usePgnStore()
+
+const rootEl = ref<HTMLElement | null>(null)
+const onStateEnter = createStateEnterHook(rootEl)
+let context: ReturnType<typeof gsap.context> | null = null
+
+// Genuine source switch: dip the whole panel container to the refresh token
+// opacity and back, once — never per render and never per item.
+async function animateSourceRefresh(): Promise<void> {
+  await nextTick()
+  const root = rootEl.value
+
+  if (!root || !context) return
+
+  const half = motionDuration(root, '--workspace-motion-duration-fast') / 2
+
+  context.add(() => {
+    gsap.to(root, {
+      keyframes: [
+        { autoAlpha: motionScalar(root, '--workspace-motion-refresh-dip-opacity'), duration: half },
+        { autoAlpha: 1, duration: half },
+      ],
+      ease: motionEase(root, '--workspace-motion-ease-state'),
+      overwrite: true,
+      clearProps: 'opacity,visibility',
+    })
+  })
+}
+
+watch(
+  () => [props.sourceLabel, props.sourceIdentityLabel],
+  () => void animateSourceRefresh(),
+  { flush: 'post' }
+)
+
+onMounted(() => {
+  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
+})
+
+onBeforeUnmount(() => {
+  if (rootEl.value) gsap.killTweensOf(rootEl.value)
+  context?.revert()
+  context = null
+})
 </script>
 
 <template>
-  <section class="source-panel" aria-label="来源">
+  <section ref="rootEl" class="source-panel" aria-label="来源">
     <header class="source-panel-head">
       <div class="source-panel-identity">
         <span class="source-panel-mode">{{ props.modeLabel }}</span>
@@ -72,13 +123,15 @@ const pgn = usePgnStore()
       <RouterLink class="source-panel-action" :to="{ name: 'competitions' }">从赛事进入</RouterLink>
     </div>
 
-    <PgnGameList
-      v-if="pgn.hasGame"
-      :can-open-local-pgn-as-new-source="props.canOpenLocalPgnAsNewSource"
-      :can-insert-local-pgn-into-current-source="props.canInsertLocalPgnIntoCurrentSource"
-      @action="emit('action', $event)"
-      @navigate="emit('navigate', $event)"
-    />
+    <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+      <PgnGameList
+        v-if="pgn.hasGame"
+        :can-open-local-pgn-as-new-source="props.canOpenLocalPgnAsNewSource"
+        :can-insert-local-pgn-into-current-source="props.canInsertLocalPgnIntoCurrentSource"
+        @action="emit('action', $event)"
+        @navigate="emit('navigate', $event)"
+      />
+    </Transition>
   </section>
 </template>
 

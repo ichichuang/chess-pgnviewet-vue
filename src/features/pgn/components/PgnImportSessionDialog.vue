@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { gsap } from 'gsap'
 
+import { motionDuration, motionEase } from '@/features/motion/gsapTokens'
+import {
+  completeLeaveImmediately,
+  createStateEnterHook,
+} from '@/features/motion/stateEnterHooks'
 import type {
   PgnImportFailureReason,
   PgnImportFileResult,
@@ -23,8 +29,18 @@ const emit = defineEmits<{
 
 const resultHeadingRef = ref<HTMLHeadingElement | null>(null)
 const cancelButtonRef = ref<InstanceType<typeof ProductButton> | null>(null)
+const importBodyEl = ref<HTMLElement | null>(null)
+const resultListEl = ref<HTMLOListElement | null>(null)
 const lastTitle = ref('正在导入本地 PGN')
 const lastDescription = ref('文件只在本机解析，不会上传。')
+const onStateEnter = createStateEnterHook(importBodyEl)
+
+const RESULT_PHASES: ReadonlySet<PgnImportSessionState['phase']> = new Set([
+  'awaiting-partial-confirmation',
+  'completed',
+  'cancelled',
+  'failed',
+])
 
 const FAILURE_LABELS: Record<PgnImportFailureReason, string> = {
   unreadable: '无法读取文件',
@@ -98,6 +114,62 @@ const progressValue = computed(() => {
 
 const progressNow = computed(() => progressValue.value.toFixed(2))
 
+// Visual-only smoothing between real reported progress values. ARIA always
+// exposes the real value; progress is never fabricated. Under reduced motion
+// the token duration is 0, so the displayed value jumps to the real one.
+const displayedProgress = ref(0)
+const progressTweenTarget = { value: 0 }
+
+watch(progressValue, (next) => {
+  gsap.to(progressTweenTarget, {
+    value: next,
+    duration: motionDuration(null, '--workspace-motion-duration-base'),
+    ease: motionEase(null, '--workspace-motion-ease-standard'),
+    overwrite: true,
+    onUpdate: () => {
+      displayedProgress.value = progressTweenTarget.value
+    },
+  })
+})
+
+watch(
+  () => props.session === null,
+  (closed) => {
+    if (!closed) return
+    gsap.killTweensOf(progressTweenTarget)
+    progressTweenTarget.value = 0
+    displayedProgress.value = 0
+  }
+)
+
+// Outcome states (partial confirmation, summary, failure) fade the result
+// list container in once per phase entry; rows never animate individually.
+watch(
+  () => props.session?.phase,
+  async (phase) => {
+    if (!phase || !RESULT_PHASES.has(phase)) return
+    await nextTick()
+    const list = resultListEl.value
+    if (!list) return
+    gsap.fromTo(
+      list,
+      { autoAlpha: 0 },
+      {
+        autoAlpha: 1,
+        duration: motionDuration(list, '--workspace-motion-duration-fast'),
+        ease: motionEase(list, '--workspace-motion-ease-enter'),
+        overwrite: true,
+        clearProps: 'opacity,visibility',
+      }
+    )
+  }
+)
+
+onBeforeUnmount(() => {
+  gsap.killTweensOf(progressTweenTarget)
+  if (resultListEl.value) gsap.killTweensOf(resultListEl.value)
+})
+
 function requestClose(): void {
   if (canCancel.value) {
     emit('cancel')
@@ -163,7 +235,7 @@ watch(
     :return-focus="returnFocus"
     @update:show="requestClose"
   >
-    <div v-if="session" class="import-session">
+    <div v-if="session" ref="importBodyEl" class="import-session">
       <div class="progress-block">
         <div class="progress-copy">
           <span>已处理 {{ session.completed }} / {{ session.total }} 个文件</span>
@@ -172,7 +244,7 @@ watch(
         <progress
           class="import-progress"
           :max="session.total"
-          :value="progressValue"
+          :value="displayedProgress"
           role="progressbar"
           aria-label="本地 PGN 导入进度"
           aria-valuemin="0"
@@ -182,9 +254,12 @@ watch(
       </div>
 
       <p class="session-status" aria-live="polite">{{ session.statusMessage }}</p>
-      <p v-if="session.currentFilename" class="current-file" aria-live="polite">
-        当前文件：{{ session.currentFilename }}（{{ session.currentIndex }} / {{ session.total }}）
-      </p>
+      <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+        <p v-if="session.currentFilename" class="current-file" aria-live="polite">
+          当前文件：{{ session.currentFilename }}（{{ session.currentIndex }} /
+          {{ session.total }}）
+        </p>
+      </Transition>
 
       <section class="result-section" aria-labelledby="pgn-import-result-heading">
         <h3
@@ -195,7 +270,7 @@ watch(
         >
           文件结果
         </h3>
-        <ol class="result-list" tabindex="0" aria-label="本地 PGN 文件导入结果">
+        <ol ref="resultListEl" class="result-list" tabindex="0" aria-label="本地 PGN 文件导入结果">
           <li v-for="result in session.results" :key="result.id" class="result-item">
             <span class="result-filename">{{ result.filename }}</span>
             <span :class="['result-state', `is-${result.status}`]">
