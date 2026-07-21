@@ -67,56 +67,45 @@ onBeforeUnmount(() => {
 
 <template>
   <section ref="rootEl" class="start-surface" aria-labelledby="workspace-start-title">
-    <h1 id="workspace-start-title" class="start-title">统一工作区</h1>
-    <p class="start-subtitle">选择一种来源开始教学、讲解或分析。</p>
+    <h1 id="workspace-start-title" class="sr-only">开始工作区</h1>
 
-    <div class="start-options">
+    <div class="start-card-surface">
       <button
         ref="localCardEl"
-        class="start-card"
+        class="start-card start-card-primary"
         type="button"
         :disabled="!props.canOpenLocalPgnAsNewSource"
         @click="emit('action', 'openLocal')"
       >
-        <strong>本地 PGN</strong>
-        <span>导入本地棋谱文件进行教学与批注</span>
+        <strong>导入本地 PGN</strong>
+        <span>打开本地棋谱文件进行教学、批注与分析</span>
       </button>
 
-      <button
-        ref="editorCardEl"
-        class="start-card"
-        type="button"
-        :disabled="!props.canEnterBoardEditor"
-        @click="emit('action', 'enterBoardEditor')"
-      >
-        <strong>手动局面</strong>
-        <span>自由摆放棋子，创建教学起点</span>
-      </button>
+      <div class="start-secondary-row">
+        <button
+          ref="editorCardEl"
+          class="start-card start-card-secondary"
+          type="button"
+          :disabled="!props.canEnterBoardEditor"
+          @click="emit('action', 'enterBoardEditor')"
+        >
+          <strong>创建手动局面</strong>
+          <span>自由摆放棋子，创建教学起点</span>
+        </button>
 
-      <RouterLink :ref="setCompetitionsCardEl" class="start-card" :to="{ name: 'competitions' }">
-        <strong>从赛事进入</strong>
-        <span>浏览公开赛事，进入讲解或观战</span>
-      </RouterLink>
-
-      <div class="start-card disabled" aria-disabled="true">
-        <strong>云端棋谱</strong>
-        <span>当前版本暂不支持</span>
+        <RouterLink
+          :ref="setCompetitionsCardEl"
+          class="start-card start-card-tertiary"
+          :to="{ name: 'competitions' }"
+        >
+          <strong>浏览公开赛事</strong>
+          <span>查看赛事、组别、轮次与对阵</span>
+        </RouterLink>
       </div>
 
-      <div class="start-card disabled" aria-disabled="true">
-        <strong>分享/链接棋谱</strong>
-        <span>当前版本暂不支持</span>
-      </div>
-
-      <div class="start-card disabled" aria-disabled="true">
-        <strong>实时观战</strong>
-        <span>当前版本暂不支持</span>
-      </div>
-
-      <div class="start-card disabled" aria-disabled="true">
-        <strong>棋局回放</strong>
-        <span>当前版本暂不支持</span>
-      </div>
+      <p class="start-unavailable-note">
+        云端棋谱、分享链接、实时观战与棋局回放暂不支持；未来可用时将明确提示创建本地副本。
+      </p>
     </div>
   </section>
 </template>
@@ -131,40 +120,32 @@ onBeforeUnmount(() => {
   min-width: 0;
   min-height: 0;
   padding: var(--s-5);
-  overflow: auto;
-  text-align: center;
+  overflow: hidden;
 }
 
-.start-title {
-  margin: 0 0 var(--s-2);
-  color: var(--text);
-  font-size: var(--fs-2xl);
-}
-
-.start-subtitle {
-  margin: 0 0 var(--s-6);
-  color: var(--text-muted);
-  font-size: var(--fs-md);
-}
-
-.start-options {
+.start-card-surface {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--workspace-list-w-compact), 1fr));
   gap: var(--s-4);
-  width: 100%;
-  max-width: calc(var(--workspace-list-w) * 2 + var(--s-4));
+  width: min(100%, calc(var(--workspace-list-w) * 2 + var(--s-4)));
+}
+
+.start-secondary-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
 }
 
 .start-card {
   display: grid;
   gap: var(--s-2);
   min-height: var(--control-h);
-  padding: var(--s-5);
+  padding: var(--s-4);
   border: var(--workspace-border-w) solid var(--border-strong);
   border-radius: var(--r-md);
   background: var(--surface);
   color: var(--text);
   font: inherit;
+  text-align: left;
   text-decoration: none;
   cursor: pointer;
   transition:
@@ -181,19 +162,61 @@ onBeforeUnmount(() => {
   font-size: var(--fs-sm);
 }
 
-.start-card:disabled,
-.start-card.disabled {
+.start-card:disabled {
   cursor: default;
   opacity: var(--workspace-disabled-opacity);
 }
 
-.start-card:hover:not(:disabled, .disabled) {
+.start-card:hover:not(:disabled) {
   border-color: var(--accent-soft);
   background: var(--state-hover-bg);
 }
 
+.start-card-primary {
+  border-color: var(--accent-line);
+  background: var(--accent-bg);
+}
+
+.start-card-primary strong {
+  color: var(--accent-strong);
+}
+
+.start-card-primary:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-bg-2);
+}
+
+.start-card-tertiary {
+  border-style: dashed;
+  background: transparent;
+}
+
+.start-card-tertiary:hover {
+  background: var(--surface-2);
+}
+
+.start-unavailable-note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  text-align: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Synchronized with --workspace-bp-mobile in tokens.css. */
 @media (width <= 560px) {
-  .start-options {
+  .start-secondary-row {
     grid-template-columns: 1fr;
   }
 }

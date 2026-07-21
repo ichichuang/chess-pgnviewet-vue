@@ -170,8 +170,12 @@ function stateTitle(): string {
     :title="stateTitle()"
   >
     <div class="entry-state-surface">
+      <div v-if="state === 'evaluating'" class="entry-evaluating" role="status" aria-live="polite">
+        <span class="entry-evaluating-spinner" aria-hidden="true" />
+        <span>正在打开…</span>
+      </div>
       <ProductUnavailableState
-        v-if="state !== 'evaluating'"
+        v-else
         :kind="stateKind()"
         :title="stateTitle()"
         :explanation="explanation"
@@ -192,5 +196,29 @@ function stateTitle(): string {
   align-items: center;
   justify-content: center;
   min-height: 100%;
+}
+
+.entry-evaluating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--fs-md);
+}
+
+.entry-evaluating-spinner {
+  width: var(--s-6);
+  height: var(--s-6);
+  border: 3px solid var(--border-strong);
+  border-top-color: var(--accent);
+  border-radius: var(--r-full);
+  animation: entry-evaluating-spin 0.9s linear infinite;
+}
+
+@keyframes entry-evaluating-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

@@ -45,20 +45,19 @@ defineExpose({ focusTitle })
   <main class="venue-display-shell">
     <a :href="`#${routeContentId}`" class="skip-link" @click="focusStage">跳转到主要内容</a>
 
-    <header class="venue-display-header">
+    <div class="venue-display-hud hud-top" aria-label="大屏信息">
       <div class="display-title-block">
         <h1 :id="routeTitleId" ref="titleRef" class="display-title" tabindex="-1">
           {{ title }}
         </h1>
         <p v-if="subtitle" class="display-subtitle">{{ subtitle }}</p>
       </div>
-      <div v-if="$slots['header-actions']" class="display-header-actions">
+      <div v-if="$slots['controls']" class="display-hud-controls">
+        <slot name="controls" />
+      </div>
+      <div v-if="$slots['header-actions']" class="display-hud-actions">
         <slot name="header-actions" />
       </div>
-    </header>
-
-    <div class="venue-display-controls" aria-label="大屏操作">
-      <slot name="controls" />
     </div>
 
     <section
@@ -71,16 +70,16 @@ defineExpose({ focusTitle })
       <slot />
     </section>
 
-    <footer class="venue-display-status" aria-live="polite">
+    <div class="venue-display-hud hud-bottom" aria-live="polite">
       <slot name="status" />
-    </footer>
+    </div>
   </main>
 </template>
 
 <style scoped>
 .venue-display-shell {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  width: 100vw;
   height: var(--workspace-viewport-h);
   min-height: 0;
   overflow: hidden;
@@ -105,17 +104,36 @@ defineExpose({ focusTitle })
   top: var(--s-3);
 }
 
-.venue-display-header {
+.venue-display-hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: var(--workspace-shell-z-raised);
   display: flex;
-  flex: 0 0 auto;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--s-4);
-  min-height: var(--route-header-min-h);
+  gap: var(--s-3);
   min-width: 0;
-  padding: var(--s-3) var(--s-5);
-  border-bottom: var(--workspace-border-w) solid var(--border);
-  background: var(--surface);
+  padding: 0 var(--s-5);
+  border: 0 solid var(--border);
+  background: var(--venue-display-hud-bg);
+  backdrop-filter: blur(4px);
+  white-space: nowrap;
+}
+
+.hud-top {
+  top: 0;
+  height: var(--venue-display-hud-h);
+  border-bottom-width: var(--workspace-border-w);
+}
+
+.hud-bottom {
+  bottom: 0;
+  height: var(--venue-display-status-h);
+  border-top-width: var(--workspace-border-w);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
 }
 
 .display-title-block {
@@ -127,70 +145,49 @@ defineExpose({ focusTitle })
 .display-title {
   margin: 0;
   color: var(--text);
-  font-size: var(--fs-xl);
+  font-size: var(--fs-lg);
   outline: none;
 }
 
 .display-subtitle {
   margin: 0;
   color: var(--text-muted);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
 }
 
-.display-header-actions {
+.display-hud-controls,
+.display-hud-actions {
   display: flex;
   flex: 0 0 auto;
+  flex-wrap: nowrap;
   align-items: center;
   gap: var(--s-2);
   min-width: 0;
 }
 
-.venue-display-controls {
-  display: flex;
-  flex: 0 0 auto;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
-  min-width: 0;
-  padding: var(--s-3) var(--s-5);
-  border-bottom: var(--workspace-border-w) solid var(--border);
-  background: var(--surface);
-}
-
 .venue-display-stage {
-  flex: 1 1 auto;
-  min-height: 0;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   min-width: 0;
-  padding: var(--route-body-pad);
+  min-height: 0;
+  padding: var(--venue-display-hud-h) var(--s-5) var(--venue-display-status-h);
   overflow: hidden;
   outline: none;
 }
 
-.venue-display-status {
-  display: flex;
-  flex: 0 0 auto;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
-  min-width: 0;
-  padding: var(--s-3) var(--s-5);
-  border-top: var(--workspace-border-w) solid var(--border);
-  background: var(--surface);
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-}
-
 /* Synchronized with --route-bp-narrow in tokens.css. */
 @media (width <= 760px) {
-  .venue-display-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .venue-display-hud {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--venue-display-hud-h);
+    padding: var(--s-2) var(--s-4);
   }
 
-  .display-header-actions {
-    flex-wrap: wrap;
+  .display-title-block {
+    flex: 1 1 auto;
   }
 }
 </style>

@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { gsap } from 'gsap'
 
+import AnalysisEvalChart from '@/features/analysis/components/AnalysisEvalChart.vue'
 import { formatMoverScore, formatWhiteScore } from '@/features/analysis/domain/formatAnalysis'
 import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
 import {
@@ -19,6 +20,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   candidateInserted: [nodeId: number]
+  selectNode: [nodeId: number]
 }>()
 
 const analysis = useAnalysisStore()
@@ -29,6 +31,8 @@ const showFirstUseNotice = ref(false)
 
 const currentResult = computed(() => analysis.matchingCurrent)
 const fullGameResult = computed(() => analysis.matchingFullGame)
+const chartResults = computed(() => fullGameResult.value?.results ?? [])
+const chartSelectedResult = computed(() => analysis.selectedPositionResult)
 const completedScope = computed(() => analysis.completedScope)
 const presentation = computed(() => analysis.presentation)
 const candidateFeedback = computed(() => analysis.candidatePresentation)
@@ -391,6 +395,10 @@ function candidateDisabledReason(line: AnalysisLine): string {
   return ''
 }
 
+function onChartSelectNode(nodeId: number): void {
+  emit('selectNode', nodeId)
+}
+
 function onInsertCandidate(
   result: AnalysisPositionResult,
   line: AnalysisLine,
@@ -437,7 +445,7 @@ watch(
   <section ref="rootEl" class="analysis-panel" aria-labelledby="workspace-analysis-title">
     <header class="analysis-header">
       <div>
-        <h2 id="workspace-analysis-title">AI 分析</h2>
+        <h2 id="workspace-analysis-title" class="sr-only">AI 分析</h2>
         <p
           :role="
             candidateFeedback ||
@@ -600,6 +608,12 @@ watch(
       <p v-if="resultRetained" class="analysis-retained" role="status">
         此前完成结果仍与当前来源、对局和局面一致，已保留供参考。
       </p>
+
+      <AnalysisEvalChart
+        :results="chartResults"
+        :selected-result="chartSelectedResult"
+        @select-node="onChartSelectNode"
+      />
 
       <template v-if="completedScope === 'full' && fullGameResult">
         <section class="analysis-summary" aria-label="整局分析摘要">
@@ -1011,6 +1025,18 @@ watch(
   place-items: center;
   min-height: 0;
   text-align: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (width <= 560px) {

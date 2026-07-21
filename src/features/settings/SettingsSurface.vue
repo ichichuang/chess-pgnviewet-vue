@@ -71,17 +71,14 @@ function close(): void {
   emit('update:show', false)
 }
 
-function onThemeChange(value: string | number | null): void {
-  const preference = value === 'light' || value === 'dark' || value === 'system' ? value : null
-  if (!preference) return
-
+function onThemeChange(preference: 'light' | 'dark' | 'system'): void {
   const succeeded = theme.setPreference(preference)
   if (succeeded) {
     failureMessage.value = null
     retryAction.value = null
-    liveAnnouncement.value = '设置已更新。'
+    liveAnnouncement.value = '主题已更新。'
   } else {
-    failureMessage.value = '更改已应用到当前页面，但未能保存到本设备。关闭或刷新后可能恢复原值。'
+    failureMessage.value = '主题已应用到当前页面，但未能保存到本设备。'
     retryAction.value = () => onThemeChange(preference)
   }
 }
@@ -96,7 +93,7 @@ async function applyWorkspaceChange(
     retryAction.value = null
     liveAnnouncement.value = '设置已更新。'
   } else {
-    failureMessage.value = '更改已应用到当前页面，但未能保存到本设备。关闭或刷新后可能恢复原值。'
+    failureMessage.value = '更改已应用到当前页面，但未能保存到本设备。'
     retryAction.value = () => void applyWorkspaceChange(retry, retry)
   }
 }
@@ -112,13 +109,6 @@ function onShowAnalysisRegionChange(value: boolean): void {
   void applyWorkspaceChange(
     () => workspace.setShowAnalysisRegion(value),
     () => workspace.setShowAnalysisRegion(value)
-  )
-}
-
-function onToolbarCollapsedChange(value: boolean): void {
-  void applyWorkspaceChange(
-    () => workspace.setToolbarCollapsed(value),
-    () => workspace.setToolbarCollapsed(value)
   )
 }
 
@@ -168,11 +158,16 @@ function onRetry(): void {
   }
 }
 
-const themeOptions = [
-  { label: '浅色', value: 'light' },
-  { label: '深色', value: 'dark' },
-  { label: '跟随系统', value: 'system' },
+const themeChoices: { value: 'light' | 'dark' | 'system'; label: string }[] = [
+  { value: 'light', label: '浅色' },
+  { value: 'dark', label: '深色' },
+  { value: 'system', label: '跟随系统' },
 ]
+
+const resolvedThemeLabel = computed(() => {
+  if (theme.resolvedTheme === 'dark') return '当前为深色'
+  return '当前为浅色'
+})
 
 const boardAlignmentOptions = [
   { label: '靠左', value: 'left' },
@@ -215,7 +210,7 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
     :auto-focus="false"
     initial-focus="safe-action"
     :return-focus="onReturnFocus"
-    width="var(--drawer-w)"
+    width="var(--drawer-w-wide)"
     height="80vh"
     @update:show="emit('update:show', $event)"
   >
@@ -243,79 +238,99 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
     <div class="settings-body">
       <section
         v-if="context.capabilities.theme"
-        class="settings-group"
+        class="settings-section"
         aria-labelledby="appearance-heading"
       >
-        <h3 id="appearance-heading" class="group-title">外观</h3>
-        <ProductSelect
-          :model-value="theme.preference"
-          :options="themeOptions"
-          label="主题"
-          @update:model-value="onThemeChange"
-        />
+        <h3 id="appearance-heading" class="section-title">外观</h3>
+
+        <div class="settings-row">
+          <div class="settings-row-label">
+            <span>主题</span>
+            <small
+              >{{ resolvedThemeLabel }} · 保存为
+              {{ theme.preference === 'system' ? '跟随系统' : theme.preference === 'dark' ? '深色' : '浅色' }}</small
+            >
+          </div>
+          <div class="theme-choice-group" role="group" aria-label="主题选择">
+            <ProductButton
+              v-for="choice in themeChoices"
+              :key="choice.value"
+              size="small"
+              :variant="theme.preference === choice.value ? 'primary' : 'secondary'"
+              :aria-pressed="theme.preference === choice.value"
+              @click="onThemeChange(choice.value)"
+            >
+              {{ choice.label }}
+            </ProductButton>
+          </div>
+        </div>
       </section>
 
       <section
         v-if="context.capabilities.workspaceLayout"
-        class="settings-group"
+        class="settings-section"
         aria-labelledby="layout-heading"
       >
-        <h3 id="layout-heading" class="group-title">工作区布局</h3>
-        <ProductSwitch
-          v-if="context.capabilities.sourcePanelLayout"
-          :model-value="workspace.showLeftSidebar"
-          label="显示来源导航"
-          :disabled="layoutBusy"
-          @update:model-value="onShowLeftSidebarChange"
-        />
-        <ProductSwitch
-          v-if="context.capabilities.analysisLayout"
-          :model-value="workspace.showAnalysisRegion"
-          label="显示分析区域"
-          :disabled="layoutBusy"
-          @update:model-value="onShowAnalysisRegionChange"
-        />
-        <ProductSwitch
-          :model-value="workspace.toolbarCollapsed"
-          label="收起工作区工具栏"
-          :disabled="layoutBusy"
-          @update:model-value="onToolbarCollapsedChange"
-        />
-        <ProductSelect
-          v-if="context.capabilities.boardView"
-          :model-value="workspace.boardAlignment"
-          :options="boardAlignmentOptions"
-          label="棋盘位置"
-          :disabled="layoutBusy"
-          @update:model-value="onBoardAlignmentChange"
-        />
-        <ProductSelect
-          v-if="context.capabilities.boardView"
-          :model-value="workspace.boardOrientation"
-          :options="boardOrientationOptions"
-          label="棋盘朝向"
-          :disabled="layoutBusy"
-          @update:model-value="onBoardOrientationChange"
-        />
-        <ProductSelect
-          v-if="context.capabilities.rightPanel && rightTabOptions.length > 0"
-          :model-value="effectiveActiveRightTab"
-          :options="rightTabOptions"
-          label="当前右侧内容"
-          placeholder="选择当前右侧内容"
-          :disabled="layoutBusy"
-          @update:model-value="onActiveRightTabChange"
-        />
-        <ProductButton
-          v-if="context.capabilities.analysisLayout"
-          variant="secondary"
-          size="small"
-          :disabled="layoutBusy || !canResetRightPgnHeightPx"
-          @click="onResetRightPgnHeightPx"
-        >
-          恢复棋谱与分析自动分区
-        </ProductButton>
-        <p v-if="context.capabilities.analysisLayout" class="settings-note">
+        <h3 id="layout-heading" class="section-title">工作区布局</h3>
+
+        <div class="settings-row">
+          <ProductSwitch
+            v-if="context.capabilities.sourcePanelLayout"
+            :model-value="workspace.showLeftSidebar"
+            label="显示来源导航"
+            :disabled="layoutBusy"
+            @update:model-value="onShowLeftSidebarChange"
+          />
+          <ProductSwitch
+            v-if="context.capabilities.analysisLayout"
+            :model-value="workspace.showAnalysisRegion"
+            label="显示分析标签"
+            :disabled="layoutBusy"
+            @update:model-value="onShowAnalysisRegionChange"
+          />
+        </div>
+
+        <div class="settings-row">
+          <ProductSelect
+            v-if="context.capabilities.boardView"
+            :model-value="workspace.boardAlignment"
+            :options="boardAlignmentOptions"
+            label="棋盘位置"
+            :disabled="layoutBusy"
+            @update:model-value="onBoardAlignmentChange"
+          />
+          <ProductSelect
+            v-if="context.capabilities.boardView"
+            :model-value="workspace.boardOrientation"
+            :options="boardOrientationOptions"
+            label="棋盘朝向"
+            :disabled="layoutBusy"
+            @update:model-value="onBoardOrientationChange"
+          />
+        </div>
+
+        <div class="settings-row">
+          <ProductSelect
+            v-if="context.capabilities.rightPanel && rightTabOptions.length > 0"
+            :model-value="effectiveActiveRightTab"
+            :options="rightTabOptions"
+            label="当前右侧内容"
+            placeholder="选择当前右侧内容"
+            :disabled="layoutBusy"
+            @update:model-value="onActiveRightTabChange"
+          />
+          <ProductButton
+            v-if="context.capabilities.analysisLayout"
+            variant="secondary"
+            size="small"
+            :disabled="layoutBusy || !canResetRightPgnHeightPx"
+            @click="onResetRightPgnHeightPx"
+          >
+            恢复棋谱与分析自动分区
+          </ProductButton>
+        </div>
+
+        <p class="settings-note">
           AI 分析仅在允许的本地来源中由用户显式启动；这里不保存 AI 启用状态或默认分析范围。
         </p>
       </section>
@@ -329,12 +344,6 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
         {{ liveAnnouncement }}
       </div>
     </div>
-
-    <template #footer>
-      <footer class="settings-footer">
-        <ProductButton variant="secondary" @click="close">关闭设置</ProductButton>
-      </footer>
-    </template>
   </Component>
 </template>
 
@@ -360,33 +369,56 @@ const layoutBusy = computed(() => workspace.layoutWriteInProgress)
 
 .settings-body {
   display: grid;
-  gap: var(--s-5);
+  gap: var(--s-3);
 }
 
-.settings-group {
+.settings-section {
   display: grid;
   gap: var(--s-3);
-  padding: var(--s-4);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--surface-2);
+  padding-bottom: var(--s-3);
+  border-bottom: var(--workspace-border-w) solid var(--border);
 }
 
-.group-title {
-  margin: 0 0 var(--s-1);
+.settings-section:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.section-title {
+  margin: 0;
   color: var(--text);
   font-size: var(--fs-md);
+}
+
+.settings-row {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.settings-row-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.settings-row-label small {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.theme-choice-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
 }
 
 .settings-note {
   margin: 0;
   color: var(--text-muted);
-  font-size: var(--fs-sm);
-}
-
-.settings-footer {
-  display: flex;
-  justify-content: flex-end;
+  font-size: var(--fs-xs);
 }
 
 .visually-hidden {

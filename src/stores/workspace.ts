@@ -104,14 +104,6 @@ export const useWorkspaceStore = defineStore('workspace', {
       }
       return this.persistLayout()
     },
-    async toggleToolbar(): Promise<boolean> {
-      this.toolbarCollapsed = !this.toolbarCollapsed
-      return this.persistLayout()
-    },
-    async setToolbarCollapsed(value: boolean): Promise<boolean> {
-      this.toolbarCollapsed = value
-      return this.persistLayout()
-    },
     async setBoardAlignment(alignment: WorkspaceBoardAlignment): Promise<boolean> {
       if (alignment === 'left' || alignment === 'center' || alignment === 'right') {
         this.boardAlignment = alignment

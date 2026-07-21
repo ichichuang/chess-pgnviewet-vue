@@ -25,6 +25,7 @@ import {
 import {
   ProductButton,
   ProductField,
+  ProductPagination,
   ProductRouteShell,
   ProductSelect,
   ProductSheet,
@@ -32,7 +33,7 @@ import {
 } from '@/ui'
 import type { ProductSelectOption } from '@/ui/ProductSelect.vue'
 
-const PAGE_SIZE = 50
+const PAIRING_PAGE_SIZE = 20
 
 const route = useRoute()
 const router = useRouter()
@@ -248,7 +249,7 @@ watch([selectedGroupId, selectedRoundId], async ([, roundId]) => {
   await focusRoundResult()
 })
 
-const pageIndex = computed(() => routeState.value.page - 1)
+const pairingPageIndex = computed(() => routeState.value.page - 1)
 
 const pairingsQuery = useQuery({
   queryKey: computed(() =>
@@ -268,8 +269,8 @@ const pairingsQuery = useQuery({
         ticketid: selectedGroupId.value,
         roundId: selectedRoundId.value,
         name: routeState.value.pairingSearch,
-        start: pageIndex.value * PAGE_SIZE,
-        pageSize: PAGE_SIZE,
+        start: pairingPageIndex.value * PAIRING_PAGE_SIZE,
+        pageSize: PAIRING_PAGE_SIZE,
       },
       signal
     ),
@@ -278,6 +279,9 @@ const pairingsQuery = useQuery({
 })
 
 const pairings = computed(() => pairingsQuery.data.value?.items ?? [])
+const pairingsTotal = computed(() => pairingsQuery.data.value?.total ?? 0)
+const pairingsPageCount = computed(() => Math.ceil(pairingsTotal.value / PAIRING_PAGE_SIZE))
+const pairingsPageOneBased = computed(() => routeState.value.page)
 
 // Retained-refresh feedback scoped to the pairing region only: animate on a
 // new truthy data identity; error transitions never dip retained pairings.
@@ -311,16 +315,15 @@ const selectedRoundName = computed(() => {
   return round?.name ?? ''
 })
 
-const detailError = computed(() => resourceError(detailQuery.error.value))
 const groupsError = computed(() => resourceError(groupsQuery.error.value))
 const roundsError = computed(() => resourceError(roundsQuery.error.value))
 const pairingsError = computed(() => resourceError(pairingsQuery.error.value))
 
-const detailLoading = computed(() => detailQuery.isPending.value && !detailQuery.data.value)
 const groupsLoading = computed(() => groupsQuery.isPending.value && !groupsQuery.data.value)
 const roundsLoading = computed(() => roundsQuery.isPending.value && !roundsQuery.data.value)
 const pairingsLoading = computed(() => pairingsQuery.isPending.value && !pairingsQuery.data.value)
 const pairingsRefreshing = computed(() => pairingsQuery.isFetching.value && !pairingsLoading.value)
+const completeFailure = computed(() => pairingsError.value !== null && pairings.value.length === 0)
 
 const hasUsableGroup = computed(() => Boolean(selectedGroupId.value))
 const hasUsableRound = computed(() => Boolean(selectedRoundId.value))
@@ -406,6 +409,12 @@ function selectPairing(pairing: CompetitionPairing): void {
   selectedPairingId.value = pairing.id
 }
 
+function updatePairingPage(next: number): void {
+  void router.push({
+    query: buildQuery({ ...routeState.value, page: next }),
+  })
+}
+
 function displayRoute(): { name: string; params: Record<string, string>; query: LocationQuery } {
   const explicitRoundId = rounds.value.some((round) => round.id === routeState.value.round)
     ? routeState.value.round
@@ -461,18 +470,6 @@ function blockedActionText(pairing: CompetitionPairing): string {
   return ''
 }
 
-function pairingSummary(pairing: CompetitionPairing): string {
-  const parts: string[] = []
-  parts.push(`第 ${pairing.boardNo || pairing.id} 台`)
-  parts.push(pairing.whiteName)
-  if (pairing.whiteRating) parts.push(`(${pairing.whiteRating})`)
-  parts.push('vs')
-  parts.push(pairing.blackName)
-  if (pairing.blackRating) parts.push(`(${pairing.blackRating})`)
-  parts.push(pairing.result || pairing.status || '状态待确认')
-  return parts.join(' ')
-}
-
 function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void {
   if (region === 'detail') void detailQuery.refetch()
   if (region === 'groups') void groupsQuery.refetch()
@@ -498,7 +495,7 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
     </template>
 
     <section class="detail-content" aria-labelledby="competition-detail-title">
-      <h2 id="competition-detail-title" class="visually-hidden">{{ title }}</h2>
+      <h2 id="competition-detail-title" class="sr-only">{{ title }}</h2>
 
       <section class="event-summary" aria-label="赛事摘要">
         <div class="summary-primary">
@@ -524,18 +521,6 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
         </ProductStateBanner>
       </section>
 
-      <div class="primary-actions">
-        <RouterLink class="action-link" :to="{ name: 'competitions' }">返回赛事</RouterLink>
-        <RouterLink class="action-link" :to="displayRoute()">场外大屏</RouterLink>
-        <ProductButton
-          variant="primary"
-          :disabled="!hasUsableGroup || !hasUsableRound"
-          @click="enterCommentary"
-        >
-          进入讲解
-        </ProductButton>
-      </div>
-
       <ProductStateBanner
         v-if="correctionNotice"
         status="warning"
@@ -545,39 +530,262 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
         {{ correctionNotice }}
       </ProductStateBanner>
 
-      <section class="controls desktop-controls" aria-label="赛事选择">
-        <ProductSelect
-          :model-value="selectedGroupId"
-          label="组别"
-          :options="groupOptions"
-          :disabled="groupsLoading || Boolean(groupsError)"
-          @update:model-value="selectGroup"
-        />
-        <ProductSelect
-          :model-value="selectedRoundId"
-          label="轮次"
-          :options="roundOptions"
-          :disabled="!hasUsableGroup || roundsLoading || Boolean(roundsError)"
-          @update:model-value="selectRound"
-        />
-        <ProductField
-          v-model="searchDraft.value"
-          label="对阵搜索"
-          placeholder="棋手姓名"
-          enterkeyhint="search"
-          @keydown.enter.prevent="submitSearch"
-        />
-        <ProductButton variant="primary" @click="submitSearch">查询对阵</ProductButton>
-      </section>
+      <div class="detail-main">
+        <section class="region hierarchy-region" aria-label="组别与轮次">
+          <header class="region-header">
+            <h3>组别 / 轮次</h3>
+          </header>
 
-      <section class="mobile-summary" aria-label="当前选择">
-        <p>
-          当前：{{ selectedGroupName || '未选择组别' }} / {{ selectedRoundName || '未选择轮次' }}
-        </p>
-        <ProductButton variant="secondary" @click="hierarchySheetOpen = true">
-          选择组别与轮次
-        </ProductButton>
-      </section>
+          <div class="region-body">
+            <ResourceState v-if="groupsLoading" pending loading-text="正在加载组别" />
+            <ResourceState
+              v-else-if="groupsError"
+              :error-text="groupsError.text"
+              :error-kind="groupsError.kind"
+              :retryable="groupsError.retryable"
+              @retry="retryRegion('groups')"
+            />
+            <ResourceState v-if="roundsLoading" pending loading-text="正在加载轮次" />
+            <ResourceState
+              v-else-if="roundsError"
+              :error-text="roundsError.text"
+              :error-kind="roundsError.kind"
+              :retryable="roundsError.retryable"
+              @retry="retryRegion('rounds')"
+            />
+
+            <div v-if="!groupsLoading && !groupsError" class="hierarchy-field">
+              <ProductSelect
+                :model-value="selectedGroupId"
+                label="组别"
+                :options="groupOptions"
+                :disabled="groupsLoading || Boolean(groupsError)"
+                @update:model-value="selectGroup"
+              />
+            </div>
+            <div v-if="!roundsLoading && !roundsError && hasUsableGroup" class="hierarchy-field">
+              <ProductSelect
+                :model-value="selectedRoundId"
+                label="轮次"
+                :options="roundOptions"
+                :disabled="!hasUsableGroup || roundsLoading || Boolean(roundsError)"
+                @update:model-value="selectRound"
+              />
+            </div>
+
+            <div class="hierarchy-actions">
+              <RouterLink class="action-link" :to="displayRoute()">场外大屏</RouterLink>
+            </div>
+          </div>
+        </section>
+
+        <section
+          ref="roundResultRef"
+          class="region pairing-region"
+          tabindex="-1"
+          aria-labelledby="pairing-region-title"
+        >
+          <header class="region-header">
+            <div class="pairing-header-primary">
+              <h3 id="pairing-region-title">
+                对阵列表<span v-if="selectedRoundName"> · {{ selectedRoundName }}</span>
+              </h3>
+              <ProductButton
+                variant="secondary"
+                size="small"
+                class="mobile-hierarchy-toggle"
+                @click="hierarchySheetOpen = true"
+              >
+                组别/轮次
+              </ProductButton>
+            </div>
+            <div class="pairing-search">
+              <ProductField
+                v-model="searchDraft.value"
+                label="对阵搜索"
+                placeholder="棋手姓名"
+                enterkeyhint="search"
+                @keydown.enter.prevent="submitSearch"
+              />
+              <ProductButton variant="primary" size="small" @click="submitSearch"
+                >查询</ProductButton
+              >
+              <ProductButton
+                v-if="routeState.pairingSearch"
+                variant="text"
+                size="small"
+                @click="clearSearch"
+              >
+                清除
+              </ProductButton>
+            </div>
+          </header>
+
+          <div class="region-body pairing-body">
+            <ResourceState v-if="pairingsLoading" pending loading-text="正在加载对阵" />
+            <ResourceState
+              v-else-if="pairingsError"
+              :error-text="pairingsError.text"
+              :error-kind="pairingsError.kind"
+              :retryable="pairingsError.retryable"
+              @retry="retryRegion('pairings')"
+            />
+            <template v-else-if="pairings.length === 0">
+              <ResourceState v-if="!routeState.pairingSearch" empty empty-text="当前轮次暂无对阵" />
+              <div v-else class="empty-search">
+                <ResourceState empty empty-text="当前搜索条件下暂无对阵" />
+                <ProductButton variant="secondary" size="small" @click="clearSearch">
+                  清除搜索
+                </ProductButton>
+              </div>
+            </template>
+
+            <template v-if="pairings.length > 0">
+              <table class="desktop-table">
+                <thead>
+                  <tr>
+                    <th scope="col">台次</th>
+                    <th scope="col">白方</th>
+                    <th scope="col">结果</th>
+                    <th scope="col">黑方</th>
+                    <th scope="col">状态</th>
+                    <th scope="col">选择</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="pairing in pairings"
+                    :key="pairing.id"
+                    :class="{ selected: selectedPairingId === pairing.id }"
+                  >
+                    <td>{{ pairing.boardNo || pairing.id }}</td>
+                    <td>
+                      <strong>{{ pairing.whiteName }}</strong>
+                      <span v-if="pairing.whiteRating">{{ pairing.whiteRating }}</span>
+                    </td>
+                    <td>{{ pairing.result || pairing.status || '状态待确认' }}</td>
+                    <td>
+                      <strong>{{ pairing.blackName }}</strong>
+                      <span v-if="pairing.blackRating">{{ pairing.blackRating }}</span>
+                    </td>
+                    <td>{{ pairing.status || '状态待确认' }}</td>
+                    <td>
+                      <ProductButton
+                        size="small"
+                        :variant="selectedPairingId === pairing.id ? 'primary' : 'secondary'"
+                        :aria-pressed="selectedPairingId === pairing.id"
+                        @click="selectPairing(pairing)"
+                      >
+                        {{ selectedPairingId === pairing.id ? '已选择' : '选择' }}
+                      </ProductButton>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <ul class="narrow-list">
+                <li
+                  v-for="pairing in pairings"
+                  :key="pairing.id"
+                  :class="{ selected: selectedPairingId === pairing.id }"
+                >
+                  <div class="narrow-card">
+                    <div class="narrow-card-header">
+                      <strong>第 {{ pairing.boardNo || pairing.id }} 台</strong>
+                      <span>{{ pairing.status || '状态待确认' }}</span>
+                    </div>
+                    <div class="narrow-card-row">
+                      <span class="narrow-label">白方</span>
+                      <strong>{{ pairing.whiteName }}</strong>
+                      <span v-if="pairing.whiteRating">{{ pairing.whiteRating }}</span>
+                    </div>
+                    <div class="narrow-card-row">
+                      <span class="narrow-label">黑方</span>
+                      <strong>{{ pairing.blackName }}</strong>
+                      <span v-if="pairing.blackRating">{{ pairing.blackRating }}</span>
+                    </div>
+                    <div class="narrow-card-result">
+                      结果：{{ pairing.result || pairing.status || '状态待确认' }}
+                    </div>
+                    <ProductButton
+                      size="small"
+                      :variant="selectedPairingId === pairing.id ? 'primary' : 'secondary'"
+                      :aria-pressed="selectedPairingId === pairing.id"
+                      @click="selectPairing(pairing)"
+                    >
+                      {{ selectedPairingId === pairing.id ? '已选择' : '选择第 ' + (pairing.boardNo || pairing.id) + ' 台' }}
+                    </ProductButton>
+                  </div>
+                </li>
+              </ul>
+            </template>
+          </div>
+
+          <footer class="region-footer pairing-footer">
+            <span class="refresh-indicator" aria-live="polite">
+              <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+                <span v-if="pairingsRefreshing">更新中…</span>
+              </Transition>
+            </span>
+            <ProductPagination
+              :page="pairingsPageOneBased"
+              :page-count="pairingsPageCount || 1"
+              :disabled="pairingsLoading || completeFailure"
+              @update:page="updatePairingPage"
+            />
+          </footer>
+        </section>
+
+        <section class="region detail-region" aria-label="已选对阵详情">
+          <header class="region-header">
+            <h3>已选对阵</h3>
+          </header>
+
+          <div class="region-body detail-body">
+            <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
+              <div v-if="selectedPairing" class="selected-summary" aria-label="已选对阵">
+                <div class="selected-players">
+                  <div class="selected-player">
+                    <strong>{{ selectedPairing.whiteName }}</strong>
+                    <span v-if="selectedPairing.whiteRating"
+                      >等级分 {{ selectedPairing.whiteRating }}</span
+                    >
+                    <span v-if="selectedPairing.whiteTeam">{{ selectedPairing.whiteTeam }}</span>
+                  </div>
+                  <div class="selected-versus">
+                    <span>第 {{ selectedPairing.boardNo || selectedPairing.id }} 台</span>
+                    <strong>VS</strong>
+                    <span
+                      >{{ selectedPairing.result || selectedPairing.status || '状态待确认' }}</span
+                    >
+                  </div>
+                  <div class="selected-player selected-player-right">
+                    <strong>{{ selectedPairing.blackName }}</strong>
+                    <span v-if="selectedPairing.blackRating"
+                      >等级分 {{ selectedPairing.blackRating }}</span
+                    >
+                    <span v-if="selectedPairing.blackTeam">{{ selectedPairing.blackTeam }}</span>
+                  </div>
+                </div>
+                <p v-if="blockedActionText(selectedPairing)" class="blocked-notice">
+                  {{ blockedActionText(selectedPairing) }}
+                </p>
+                <ProductButton
+                  variant="primary"
+                  :disabled="!hasUsableGroup || !hasUsableRound"
+                  @click="enterCommentary"
+                >
+                  进入讲解
+                </ProductButton>
+              </div>
+
+              <div v-else class="selected-empty">
+                <p>在左侧对阵列表中选择一台，可查看详情并进入讲解。</p>
+              </div>
+            </Transition>
+          </div>
+        </section>
+      </div>
 
       <ProductSheet v-model:show="hierarchySheetOpen" title="选择组别与轮次" :closable="true">
         <div class="sheet-fields">
@@ -597,161 +805,11 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
           />
         </div>
         <div class="sheet-actions">
-          <ProductButton variant="primary" @click="hierarchySheetOpen = false"
-            >应用选择</ProductButton
-          >
+          <ProductButton variant="primary" @click="hierarchySheetOpen = false">
+            应用选择
+          </ProductButton>
         </div>
       </ProductSheet>
-
-      <div class="regional-states">
-        <ResourceState v-if="detailLoading" pending loading-text="正在加载赛事详情" />
-        <ResourceState
-          v-else-if="detailError"
-          :error-text="detailError.text"
-          :error-kind="detailError.kind"
-          :retryable="detailError.retryable"
-          @retry="retryRegion('detail')"
-        />
-        <ResourceState v-if="groupsLoading" pending loading-text="正在加载组别" />
-        <ResourceState
-          v-else-if="groupsError"
-          :error-text="groupsError.text"
-          :error-kind="groupsError.kind"
-          :retryable="groupsError.retryable"
-          @retry="retryRegion('groups')"
-        />
-        <ResourceState v-if="roundsLoading" pending loading-text="正在加载轮次" />
-        <ResourceState
-          v-else-if="roundsError"
-          :error-text="roundsError.text"
-          :error-kind="roundsError.kind"
-          :retryable="roundsError.retryable"
-          @retry="retryRegion('rounds')"
-        />
-      </div>
-
-      <section
-        ref="roundResultRef"
-        class="pairing-region"
-        tabindex="-1"
-        aria-labelledby="pairing-region-title"
-      >
-        <div class="pairing-region-header">
-          <h3 id="pairing-region-title">
-            对阵列表<span v-if="selectedRoundName"> · {{ selectedRoundName }}</span>
-          </h3>
-          <span class="refresh-indicator" aria-live="polite">
-            <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
-              <span v-if="pairingsRefreshing">更新中…</span>
-            </Transition>
-          </span>
-        </div>
-
-        <ResourceState v-if="pairingsLoading" pending loading-text="正在加载对阵" />
-        <ResourceState
-          v-else-if="pairingsError"
-          :error-text="pairingsError.text"
-          :error-kind="pairingsError.kind"
-          :retryable="pairingsError.retryable"
-          @retry="retryRegion('pairings')"
-        />
-        <template v-else-if="pairings.length === 0">
-          <ResourceState v-if="!routeState.pairingSearch" empty empty-text="当前轮次暂无对阵" />
-          <div v-else class="empty-search">
-            <ResourceState empty empty-text="当前搜索条件下暂无对阵" />
-            <ProductButton variant="secondary" @click="clearSearch">清除搜索</ProductButton>
-          </div>
-        </template>
-
-        <template v-if="pairings.length > 0">
-          <table class="desktop-table">
-            <thead>
-              <tr>
-                <th scope="col">台次</th>
-                <th scope="col">白方</th>
-                <th scope="col">结果</th>
-                <th scope="col">黑方</th>
-                <th scope="col">状态</th>
-                <th scope="col">选择</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="pairing in pairings"
-                :key="pairing.id"
-                :class="{ selected: selectedPairingId === pairing.id }"
-              >
-                <td>{{ pairing.boardNo || pairing.id }}</td>
-                <td>
-                  <strong>{{ pairing.whiteName }}</strong>
-                  <span v-if="pairing.whiteRating">{{ pairing.whiteRating }}</span>
-                </td>
-                <td>{{ pairing.result || pairing.status || '状态待确认' }}</td>
-                <td>
-                  <strong>{{ pairing.blackName }}</strong>
-                  <span v-if="pairing.blackRating">{{ pairing.blackRating }}</span>
-                </td>
-                <td>{{ pairing.status || '状态待确认' }}</td>
-                <td>
-                  <ProductButton
-                    size="small"
-                    :variant="selectedPairingId === pairing.id ? 'primary' : 'secondary'"
-                    :aria-pressed="selectedPairingId === pairing.id"
-                    @click="selectPairing(pairing)"
-                  >
-                    {{ selectedPairingId === pairing.id ? '已选择' : '选择' }}
-                  </ProductButton>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <ul class="narrow-list">
-            <li
-              v-for="pairing in pairings"
-              :key="pairing.id"
-              :class="{ selected: selectedPairingId === pairing.id }"
-            >
-              <div class="narrow-card">
-                <div class="narrow-card-header">
-                  <strong>第 {{ pairing.boardNo || pairing.id }} 台</strong>
-                  <span>{{ pairing.status || '状态待确认' }}</span>
-                </div>
-                <div class="narrow-card-row">
-                  <span class="narrow-label">白方</span>
-                  <strong>{{ pairing.whiteName }}</strong>
-                  <span v-if="pairing.whiteRating">{{ pairing.whiteRating }}</span>
-                </div>
-                <div class="narrow-card-row">
-                  <span class="narrow-label">黑方</span>
-                  <strong>{{ pairing.blackName }}</strong>
-                  <span v-if="pairing.blackRating">{{ pairing.blackRating }}</span>
-                </div>
-                <div class="narrow-card-result">
-                  结果：{{ pairing.result || pairing.status || '状态待确认' }}
-                </div>
-                <ProductButton
-                  size="small"
-                  :variant="selectedPairingId === pairing.id ? 'primary' : 'secondary'"
-                  :aria-pressed="selectedPairingId === pairing.id"
-                  @click="selectPairing(pairing)"
-                >
-                  {{ selectedPairingId === pairing.id ? '已选择' : '选择第 ' + (pairing.boardNo || pairing.id) + ' 台' }}
-                </ProductButton>
-              </div>
-            </li>
-          </ul>
-        </template>
-      </section>
-
-      <Transition :css="false" @enter="onStateEnter" @leave="completeLeaveImmediately">
-        <section v-if="selectedPairing" class="selected-summary" aria-label="已选对阵">
-          <p>{{ pairingSummary(selectedPairing) }}</p>
-          <p v-if="blockedActionText(selectedPairing)" class="blocked-notice">
-            {{ blockedActionText(selectedPairing) }}
-          </p>
-        </section>
-      </Transition>
     </section>
   </ProductRouteShell>
 </template>
@@ -765,7 +823,7 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   min-height: 0;
 }
 
-.visually-hidden {
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -778,12 +836,7 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
 }
 
 .event-summary,
-.team-aggregate-region,
-.primary-actions,
-.controls,
-.mobile-summary,
-.regional-states,
-.selected-summary {
+.team-aggregate-region {
   flex: 0 0 auto;
 }
 
@@ -826,11 +879,68 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   -webkit-box-orient: vertical;
 }
 
-.primary-actions {
+.detail-main {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: 220px minmax(0, 1fr) 300px;
+  gap: var(--s-3);
+  min-height: 0;
+}
+
+.region {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border: var(--workspace-border-w) solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+}
+
+.region-header {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border-bottom: var(--workspace-border-w) solid var(--border);
+  background: var(--surface-2);
+}
+
+.region-header h3 {
+  margin: 0;
+  font-size: var(--fs-md);
+}
+
+.region-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: var(--s-3);
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.region-footer {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border-top: var(--workspace-border-w) solid var(--border);
+  background: var(--surface-2);
+}
+
+.hierarchy-field {
+  margin-bottom: var(--s-3);
+}
+
+.hierarchy-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-3);
-  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
 }
 
 .action-link {
@@ -844,85 +954,46 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   background: var(--surface-2);
   color: var(--text);
   font: inherit;
+  font-size: var(--fs-sm);
   text-decoration: none;
   cursor: pointer;
 }
 
-.controls {
+.action-link:hover {
+  border-color: var(--accent-soft);
+  background: var(--state-hover-bg);
+  color: var(--accent-strong);
+}
+
+.pairing-header-primary {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-3);
-  align-items: end;
-  padding: var(--s-3);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface);
-}
-
-.controls > :not(.date-fields) {
-  flex: 1 1 12rem;
-  min-width: 0;
-}
-
-.mobile-summary {
-  display: none;
-  flex-wrap: wrap;
-  gap: var(--s-3);
   align-items: center;
   justify-content: space-between;
-  padding: var(--s-3);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface);
-}
-
-.mobile-summary p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-}
-
-.sheet-fields {
-  display: grid;
-  gap: var(--s-3);
-  margin-bottom: var(--s-4);
-}
-
-.sheet-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-3);
-}
-
-.regional-states {
-  display: grid;
   gap: var(--s-2);
 }
 
-.pairing-region {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: auto;
-  scrollbar-gutter: stable;
+.mobile-hierarchy-toggle {
+  display: none;
 }
 
-.pairing-region:focus {
-  outline: none;
-  border-radius: var(--r-sm);
-  box-shadow: var(--state-focus-ring);
-}
-
-.pairing-region-header {
+.pairing-search {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
-  margin-bottom: var(--s-3);
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: end;
 }
 
-.pairing-region-header h3 {
-  margin: 0;
-  font-size: var(--fs-md);
+.pairing-search > * {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.pairing-body {
+  padding: 0;
+}
+
+.pairing-footer {
+  justify-content: flex-end;
 }
 
 .refresh-indicator {
@@ -938,19 +1009,29 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
 
 .desktop-table th,
 .desktop-table td {
-  padding: var(--s-3);
+  padding: var(--s-3) var(--s-4);
   border-bottom: var(--workspace-border-w) solid var(--border);
   text-align: left;
   vertical-align: top;
 }
 
-.desktop-table tbody tr.selected {
-  background: var(--accent-bg);
+.desktop-table thead th {
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
 }
 
-.narrow-card-header span {
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
+.desktop-table tbody tr {
+  transition: background-color var(--workspace-motion-duration-fast) var(--workspace-motion-ease-standard);
+}
+
+.desktop-table tbody tr:hover {
+  background: var(--state-hover-bg);
+}
+
+.desktop-table tbody tr.selected {
+  background: var(--accent-bg);
 }
 
 .desktop-table td:nth-child(2),
@@ -960,10 +1041,79 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   min-width: 0;
 }
 
-.desktop-table td:nth-child(2) span,
-.desktop-table td:nth-child(4) span {
+.detail-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.selected-summary {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.selected-players {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: var(--s-2);
+  align-items: center;
+  text-align: center;
+}
+
+.selected-player {
+  display: grid;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
+.selected-player-right {
+  text-align: right;
+}
+
+.selected-player strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selected-player span {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.selected-versus {
+  display: grid;
+  gap: var(--s-1);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.selected-versus strong {
+  color: var(--accent-strong);
+  font-size: var(--fs-lg);
+}
+
+.blocked-notice {
+  margin: 0;
   color: var(--text-muted);
   font-size: var(--fs-sm);
+}
+
+.selected-empty {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.empty-search {
+  display: grid;
+  gap: var(--s-3);
+  justify-items: start;
+  padding: var(--s-4);
 }
 
 .narrow-list {
@@ -974,10 +1124,8 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
 }
 
 .narrow-list li {
-  padding: var(--s-3);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--workspace-border-w) solid var(--border);
 }
 
 .narrow-list li.selected {
@@ -994,6 +1142,17 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   align-items: center;
   justify-content: space-between;
   gap: var(--s-2);
+}
+
+.narrow-card-header span {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.desktop-table td:nth-child(2) span,
+.desktop-table td:nth-child(4) span {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
 }
 
 .narrow-card-row {
@@ -1013,28 +1172,16 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   font-weight: 700;
 }
 
-.selected-summary {
-  display: grid;
-  gap: var(--s-2);
-  padding: var(--s-3);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface);
-}
-
-.selected-summary p {
-  margin: 0;
-}
-
-.blocked-notice {
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-}
-
-.empty-search {
+.sheet-fields {
   display: grid;
   gap: var(--s-3);
-  justify-items: start;
+  margin-bottom: var(--s-4);
+}
+
+.sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
 }
 
 @media (pointer: coarse), (width <= 1024px) {
@@ -1043,19 +1190,36 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   }
 }
 
-@media (width <= 900px) {
+@media (width <= 1024px) {
   .event-summary {
     grid-template-columns: 1fr;
   }
 
-  .desktop-controls {
+  .detail-main {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .hierarchy-region {
     display: none;
   }
 
-  .mobile-summary {
-    display: flex;
+  .pairing-region {
+    grid-column: 1 / -1;
+    grid-row: 1;
   }
 
+  .detail-region {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .mobile-hierarchy-toggle {
+    display: inline-flex;
+  }
+}
+
+@media (width <= 760px) {
   .desktop-table {
     display: none;
   }
@@ -1063,6 +1227,15 @@ function retryRegion(region: 'detail' | 'groups' | 'rounds' | 'pairings'): void 
   .narrow-list {
     display: grid;
     gap: var(--s-2);
+  }
+
+  .selected-players {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .selected-player-right {
+    text-align: left;
   }
 }
 </style>

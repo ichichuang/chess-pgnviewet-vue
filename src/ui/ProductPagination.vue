@@ -97,8 +97,5 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <NPagination
-    :ref="(el) => { rootEl = (el as any)?.$el ?? null }"
-    v-bind="paginationProps"
-  />
+  <NPagination :ref="(el) => { rootEl = (el as any)?.$el ?? null }" v-bind="paginationProps" />
 </template>

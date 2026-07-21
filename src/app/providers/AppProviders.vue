@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { NConfigProvider, NGlobalStyle, NMessageProvider } from 'naive-ui'
 
 import { useThemeStore } from '@/stores'
@@ -11,15 +11,24 @@ import ProductFeedbackProvider from './ProductFeedbackProvider.vue'
 const themeStore = useThemeStore()
 
 const naiveTheme = computed(() => resolveNaiveTheme(themeStore.resolvedTheme))
-const naiveThemeOverrides = computed(() => {
-  // Touch resolved theme so the override rebuilds after the document token state updates.
-  void themeStore.resolvedTheme
-  return buildNaiveThemeOverrides()
-})
+const naiveThemeOverrides = ref(buildNaiveThemeOverrides())
+
+// Rebuild Naive UI overrides only after the document token state has settled.
+// Reading getComputedStyle before the browser recalculates the themed custom
+// properties can capture stale values, so the watcher waits for Vue's DOM flush
+// (which follows applyThemeDocumentState) before sampling tokens.
+watch(
+  () => themeStore.resolvedTheme,
+  async () => {
+    await nextTick()
+    naiveThemeOverrides.value = buildNaiveThemeOverrides()
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
-  <NConfigProvider abstract :theme="naiveTheme" :theme-overrides="naiveThemeOverrides">
+  <NConfigProvider :theme="naiveTheme" :theme-overrides="naiveThemeOverrides">
     <NMessageProvider>
       <ProductFeedbackProvider>
         <NGlobalStyle />

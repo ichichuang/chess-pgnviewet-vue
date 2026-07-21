@@ -6,11 +6,11 @@ import {
   type AnnotationShapeKind,
 } from '@/features/annotations/domain/annotationTypes'
 import { BOARD_ORIENTATION_BLACK } from '@/features/board/domain/boardTypes'
-import { useAuthStore, usePgnStore, useWorkspaceStore } from '@/stores'
 import SettingsSurface from '@/features/settings'
 import type { SettingsCapabilityContext } from '@/features/settings/settingsContext'
-import { ProductButton } from '@/ui'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { useAuthStore, usePgnStore, useWorkspaceStore } from '@/stores'
+import { ProductButton, ProductPopover } from '@/ui'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { gsap } from 'gsap'
 
 import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
@@ -19,7 +19,7 @@ import type { PgnNavigationIntent } from '@/features/pgn/pgnWorkspaceTypes'
 
 import type { WorkspaceToolbarAction } from './workspaceToolbarTypes'
 
-const props = defineProps<{
+defineProps<{
   permissions: WorkspacePermissions
   settingsContext: SettingsCapabilityContext
 }>()
@@ -36,6 +36,8 @@ const workspace = useWorkspaceStore()
 const auth = useAuthStore()
 const settingsOpen = ref(false)
 const settingsButtonRef = ref<InstanceType<typeof ProductButton> | null>(null)
+const moreOpen = ref(false)
+const sourceMenuOpen = ref(false)
 
 const annotationTools: readonly { key: AnnotationShapeKind; label: string }[] = [
   { key: 'arrow', label: '箭头' },
@@ -49,57 +51,45 @@ const alignments: readonly { key: 'center' | 'left' | 'right'; label: string }[]
   { key: 'right', label: '右' },
 ]
 
+const movePositionText = computed(() => {
+  if (!pgn.hasGame) return '— / —'
+
+  const total = pgn.mainline.length
+  if (total === 0) return '1 / 1'
+
+  const currentIndex = pgn.mainline.findIndex((node) => node.id === pgn.currentNode?.id)
+  if (currentIndex >= 0) {
+    return `${currentIndex + 1} / ${total}`
+  }
+
+  const node = pgn.currentNode
+  if (!node || !node.parent) return `1 / ${total}`
+
+  return `变例 ${node.moveNumber}`
+})
+
 function setAnnotationColor(color: AnnotationColorId): void {
   workspace.setAnnotationColor(color)
 }
 
+function emitNavigate(intent: PgnNavigationIntent): void {
+  emit('navigate', intent)
+}
+
+function emitAction(name: WorkspaceToolbarAction): void {
+  emit('action', name)
+}
+
+function toggleSourcePanel(): void {
+  if (workspace.showLeftSidebar) {
+    void workspace.toggleLeftSidebar()
+  } else {
+    emit('openSource')
+  }
+}
+
 const rootEl = ref<HTMLElement | null>(null)
 let context: ReturnType<typeof gsap.context> | null = null
-
-function onGroupsEnter(element: Element, done: () => void): void {
-  if (!(element instanceof HTMLElement)) {
-    done()
-    return
-  }
-
-  context?.add(() => {
-    gsap.fromTo(
-      element,
-      { autoAlpha: 0, height: 0 },
-      {
-        autoAlpha: 1,
-        height: 'auto',
-        duration: motionDuration(rootEl.value, '--workspace-motion-duration-panel'),
-        ease: motionEase(rootEl.value, '--workspace-motion-ease-enter'),
-        overwrite: true,
-        clearProps: 'height,opacity,visibility',
-        onComplete: done,
-      }
-    )
-  })
-}
-
-function onGroupsLeave(element: Element, done: () => void): void {
-  if (!(element instanceof HTMLElement)) {
-    done()
-    return
-  }
-
-  context?.add(() => {
-    gsap.to(element, {
-      autoAlpha: 0,
-      height: 0,
-      duration: motionDuration(rootEl.value, '--workspace-motion-duration-fast'),
-      ease: motionEase(rootEl.value, '--workspace-motion-ease-state'),
-      overwrite: true,
-      onComplete: done,
-    })
-  })
-}
-
-onMounted(() => {
-  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
-})
 
 // Press feedback for plain toolbar buttons only. ProductButton instances own
 // their press motion through the shared usePressMotion adapter and are skipped
@@ -130,6 +120,10 @@ function animatePlainButtonPress(event: MouseEvent): void {
   })
 }
 
+onMounted(() => {
+  if (rootEl.value) context = gsap.context(() => undefined, rootEl.value)
+})
+
 onBeforeUnmount(() => {
   const targets = rootEl.value ? [rootEl.value, ...rootEl.value.querySelectorAll('*')] : []
   gsap.killTweensOf(targets)
@@ -146,185 +140,264 @@ onBeforeUnmount(() => {
     aria-label="工作区工具栏"
     @click.capture="animatePlainButtonPress"
   >
-    <button
-      class="toolbar-collapse"
-      type="button"
-      :aria-label="workspace.toolbarCollapsed ? '展开工作区工具栏' : '收起工作区工具栏'"
-      :aria-expanded="!workspace.toolbarCollapsed"
-      @click="workspace.toggleToolbar()"
-    >
-      {{ workspace.toolbarCollapsed ? '展开' : '收起' }}
-    </button>
+    <div class="toolbar-leading">
+      <ProductPopover
+        :show="sourceMenuOpen"
+        placement="bottom-start"
+        @update-show="sourceMenuOpen = $event"
+      >
+        <template #trigger>
+          <ProductButton size="small" variant="ghost" aria-haspopup="true"> 来源 </ProductButton>
+        </template>
 
-    <button class="toolbar-button source-drawer-trigger" type="button" @click="emit('openSource')">
-      来源
-    </button>
+        <div class="toolbar-menu source-menu">
+          <div class="menu-section">
+            <span class="menu-label">当前来源</span>
+            <div class="menu-source-info">
+              <strong>{{ permissions.modeLabel }}</strong>
+              <span>{{ permissions.sourceLabel }}</span>
+              <span v-if="permissions.sourceIdentityLabel" class="source-identity">
+                {{ permissions.sourceIdentityLabel }}
+              </span>
+            </div>
+            <p
+              v-if="permissions.sourceUnavailable && permissions.unavailableReason"
+              class="menu-unavailable"
+            >
+              {{ permissions.unavailableReason }}
+            </p>
+          </div>
 
-    <Transition :css="false" @enter="onGroupsEnter" @leave="onGroupsLeave">
-      <div v-if="!workspace.toolbarCollapsed" class="toolbar-groups">
-        <nav class="toolbar-group" aria-label="产品入口">
-          <RouterLink class="toolbar-button" :to="{ name: 'competitions' }">赛事</RouterLink>
-          <RouterLink v-if="!auth.isAuthenticated" class="toolbar-button" :to="{ name: 'login' }">
-            登录
-          </RouterLink>
-          <button v-else class="toolbar-button" type="button" @click="auth.logout()">退出</button>
-        </nav>
+          <div class="menu-section">
+            <span class="menu-label">导入与来源</span>
+            <div class="menu-actions">
+              <ProductButton
+                size="small"
+                variant="secondary"
+                :disabled="!permissions.canOpenLocalPgnAsNewSource"
+                @click="emitAction('openLocal'); sourceMenuOpen = false"
+              >
+                打开本地 PGN
+              </ProductButton>
+              <ProductButton
+                size="small"
+                variant="secondary"
+                :disabled="!permissions.canInsertLocalPgnIntoCurrentSource"
+                @click="emitAction('insertLocal'); sourceMenuOpen = false"
+              >
+                插入本地 PGN
+              </ProductButton>
+              <ProductButton
+                v-if="permissions.canCreateEditableLocalCopy"
+                size="small"
+                variant="secondary"
+                @click="emitAction('createEditableLocalCopy'); sourceMenuOpen = false"
+              >
+                创建本地可编辑副本
+              </ProductButton>
+            </div>
+          </div>
+        </div>
+      </ProductPopover>
 
-        <section class="toolbar-group" aria-label="棋谱文件">
-          <ProductButton
-            size="small"
-            :disabled="!props.permissions.canOpenLocalPgnAsNewSource"
-            @click="emit('action', 'openLocal')"
-          >
-            打开 PGN
-          </ProductButton>
-          <ProductButton
-            size="small"
-            :disabled="!props.permissions.canInsertLocalPgnIntoCurrentSource"
-            @click="emit('action', 'insertLocal')"
-          >
-            插入
-          </ProductButton>
-          <ProductButton
-            v-if="props.permissions.canCreateEditableLocalCopy"
-            size="small"
-            @click="emit('action', 'createEditableLocalCopy')"
-          >
-            创建本地可编辑副本
-          </ProductButton>
-        </section>
-
-        <section class="toolbar-group" aria-label="棋盘控制">
-          <ProductButton
-            size="small"
-            :aria-pressed="workspace.boardOrientation === BOARD_ORIENTATION_BLACK"
-            @click="workspace.flipBoardOrientation()"
-          >
-            翻转
-          </ProductButton>
-          <ProductButton
-            v-for="alignment in alignments"
-            :key="alignment.key"
-            size="small"
-            :aria-pressed="workspace.boardAlignment === alignment.key"
-            @click="workspace.setBoardAlignment(alignment.key)"
-          >
-            {{ alignment.label }}
-          </ProductButton>
-          <ProductButton
-            size="small"
-            :disabled="!props.permissions.canEnterBoardEditor"
-            @click="emit('action', 'enterBoardEditor')"
-          >
-            摆谱
-          </ProductButton>
-        </section>
-
-        <section class="toolbar-group" aria-label="棋谱导航">
-          <ProductButton
-            size="small"
-            :disabled="!pgn.canGoStart"
-            @click="emit('navigate', { kind: 'start' })"
-          >
-            起始
-          </ProductButton>
-          <ProductButton
-            size="small"
-            :disabled="!pgn.canStepBack"
-            @click="emit('navigate', { kind: 'previous' })"
-          >
-            上一步
-          </ProductButton>
-          <ProductButton
-            size="small"
-            :disabled="!pgn.canStepForward"
-            @click="emit('navigate', { kind: 'next' })"
-          >
-            下一步
-          </ProductButton>
-          <ProductButton
-            size="small"
-            :disabled="!pgn.canGoEnd"
-            @click="emit('navigate', { kind: 'end' })"
-          >
-            末尾
-          </ProductButton>
-        </section>
-
-        <section
-          v-if="props.permissions.canEditAnnotations"
-          class="toolbar-group"
-          aria-label="标注工具"
-        >
-          <ProductButton
-            v-for="tool in annotationTools"
-            :key="tool.key"
-            size="small"
-            :aria-pressed="workspace.annotationTool === tool.key"
-            :disabled="!pgn.hasGame"
-            @click="workspace.setAnnotationTool(tool.key)"
-          >
-            {{ tool.label }}
-          </ProductButton>
-          <button
-            v-for="color in ANNOTATION_COLORS"
-            :key="color"
-            class="toolbar-swatch"
-            type="button"
-            :style="{ background: annotationColorToken(color) }"
-            :aria-label="`标注颜色 ${color}`"
-            :aria-pressed="workspace.annotationColor === color"
-            :disabled="!pgn.hasGame"
-            @click="setAnnotationColor(color)"
-          />
-          <ProductButton
-            size="small"
-            :disabled="!pgn.canUndoCurrentDrawing"
-            @click="pgn.undoCurrentDrawing()"
-          >
-            撤销
-          </ProductButton>
-          <ProductButton
-            size="small"
-            :disabled="!pgn.canRedoCurrentDrawing"
-            @click="pgn.redoCurrentDrawing()"
-          >
-            重做
-          </ProductButton>
-          <ProductButton
-            size="small"
-            :disabled="!pgn.hasCurrentDrawing"
-            @click="emit('action', 'clearAnnotations')"
-          >
-            清除
-          </ProductButton>
-        </section>
-
-        <section class="toolbar-group" aria-label="面板控制">
-          <ProductButton
-            size="small"
-            :aria-pressed="workspace.showLeftSidebar"
-            @click="workspace.toggleLeftSidebar()"
-          >
-            列表
-          </ProductButton>
-          <ProductButton
-            v-if="props.permissions.canShowAnalysisPanel"
-            size="small"
-            :aria-pressed="workspace.showAnalysisRegion"
-            @click="workspace.toggleAnalysisRegion()"
-          >
-            分析
-          </ProductButton>
-          <ProductButton class="context-toggle" size="small" @click="emit('toggleContext')">
-            上下文
-          </ProductButton>
-          <ProductButton ref="settingsButtonRef" size="small" @click="settingsOpen = true">
-            设置
-          </ProductButton>
-        </section>
+      <div v-if="permissions.hasSource" class="source-summary" :title="permissions.sourceLabel">
+        <span class="source-summary-mode">{{ permissions.modeLabel }}</span>
+        <span class="source-summary-name">{{ permissions.sourceLabel }}</span>
+        <span v-if="permissions.sourceIdentityLabel" class="source-summary-identity">
+          {{ permissions.sourceIdentityLabel }}
+        </span>
       </div>
-    </Transition>
+    </div>
+
+    <nav class="toolbar-navigation" aria-label="棋谱导航">
+      <ProductButton
+        size="small"
+        :disabled="!pgn.canGoStart"
+        :title="pgn.canGoStart ? '跳到起始局面' : '已在起始局面'"
+        @click="emitNavigate({ kind: 'start' })"
+      >
+        起始
+      </ProductButton>
+      <ProductButton
+        size="small"
+        :disabled="!pgn.canStepBack"
+        :title="pgn.canStepBack ? '上一步' : '没有上一步'"
+        @click="emitNavigate({ kind: 'previous' })"
+      >
+        上一步
+      </ProductButton>
+
+      <span class="move-position" aria-live="polite">
+        <span class="move-position-label">当前着法</span>
+        <strong class="move-position-value">{{ movePositionText }}</strong>
+      </span>
+
+      <ProductButton
+        size="small"
+        :disabled="!pgn.canStepForward"
+        :title="pgn.canStepForward ? '下一步' : '没有下一步'"
+        @click="emitNavigate({ kind: 'next' })"
+      >
+        下一步
+      </ProductButton>
+      <ProductButton
+        size="small"
+        :disabled="!pgn.canGoEnd"
+        :title="pgn.canGoEnd ? '跳到末尾' : '已在末尾'"
+        @click="emitNavigate({ kind: 'end' })"
+      >
+        末尾
+      </ProductButton>
+    </nav>
+
+    <div class="toolbar-trailing">
+      <ProductButton
+        size="small"
+        :aria-pressed="workspace.boardOrientation === BOARD_ORIENTATION_BLACK"
+        :title="workspace.boardOrientation === BOARD_ORIENTATION_BLACK ? '白方在下' : '黑方在下'"
+        @click="workspace.flipBoardOrientation()"
+      >
+        翻转
+      </ProductButton>
+
+      <ProductPopover :show="moreOpen" placement="bottom-end" @update-show="moreOpen = $event">
+        <template #trigger>
+          <ProductButton size="small" variant="ghost" aria-haspopup="true"> 更多 </ProductButton>
+        </template>
+
+        <div class="toolbar-menu more-menu">
+          <div class="menu-section">
+            <span class="menu-label">棋盘</span>
+            <div class="menu-actions">
+              <ProductButton
+                size="small"
+                variant="secondary"
+                :disabled="!permissions.canEnterBoardEditor"
+                @click="emitAction('enterBoardEditor'); moreOpen = false"
+              >
+                摆谱
+              </ProductButton>
+              <ProductButton
+                v-for="alignment in alignments"
+                :key="alignment.key"
+                size="small"
+                :variant="workspace.boardAlignment === alignment.key ? 'primary' : 'secondary'"
+                :aria-pressed="workspace.boardAlignment === alignment.key"
+                @click="workspace.setBoardAlignment(alignment.key)"
+              >
+                {{ alignment.label }}
+              </ProductButton>
+            </div>
+          </div>
+
+          <div v-if="permissions.canEditAnnotations" class="menu-section">
+            <span class="menu-label">标注</span>
+            <div class="menu-actions">
+              <ProductButton
+                v-for="tool in annotationTools"
+                :key="tool.key"
+                size="small"
+                :variant="workspace.annotationTool === tool.key ? 'primary' : 'secondary'"
+                :aria-pressed="workspace.annotationTool === tool.key"
+                :disabled="!pgn.hasGame"
+                @click="workspace.setAnnotationTool(tool.key)"
+              >
+                {{ tool.label }}
+              </ProductButton>
+            </div>
+            <div class="menu-swatch-row">
+              <button
+                v-for="color in ANNOTATION_COLORS"
+                :key="color"
+                class="toolbar-swatch"
+                type="button"
+                :style="{ background: annotationColorToken(color) }"
+                :aria-label="`标注颜色 ${color}`"
+                :aria-pressed="workspace.annotationColor === color"
+                :disabled="!pgn.hasGame"
+                @click="setAnnotationColor(color)"
+              />
+            </div>
+            <div class="menu-actions">
+              <ProductButton
+                size="small"
+                variant="secondary"
+                :disabled="!pgn.canUndoCurrentDrawing"
+                @click="pgn.undoCurrentDrawing()"
+              >
+                撤销
+              </ProductButton>
+              <ProductButton
+                size="small"
+                variant="secondary"
+                :disabled="!pgn.canRedoCurrentDrawing"
+                @click="pgn.redoCurrentDrawing()"
+              >
+                重做
+              </ProductButton>
+              <ProductButton
+                size="small"
+                variant="secondary"
+                :disabled="!pgn.hasCurrentDrawing"
+                @click="emitAction('clearAnnotations')"
+              >
+                清除
+              </ProductButton>
+            </div>
+          </div>
+
+          <div class="menu-section">
+            <span class="menu-label">面板</span>
+            <div class="menu-actions">
+              <ProductButton
+                size="small"
+                :variant="workspace.showLeftSidebar ? 'primary' : 'secondary'"
+                :aria-pressed="workspace.showLeftSidebar"
+                @click="toggleSourcePanel()"
+              >
+                来源导航
+              </ProductButton>
+              <ProductButton
+                v-if="permissions.canShowAnalysisPanel"
+                size="small"
+                :variant="workspace.showAnalysisRegion ? 'primary' : 'secondary'"
+                :aria-pressed="workspace.showAnalysisRegion"
+                @click="workspace.toggleAnalysisRegion()"
+              >
+                分析标签
+              </ProductButton>
+              <ProductButton
+                size="small"
+                variant="secondary"
+                @click="emit('toggleContext'); moreOpen = false"
+              >
+                上下文面板
+              </ProductButton>
+            </div>
+          </div>
+
+          <div class="menu-section">
+            <span class="menu-label">产品入口</span>
+            <div class="menu-actions">
+              <RouterLink class="menu-link" :to="{ name: 'competitions' }">赛事</RouterLink>
+              <RouterLink v-if="!auth.isAuthenticated" class="menu-link" :to="{ name: 'login' }">
+                登录
+              </RouterLink>
+              <button v-else class="menu-link" type="button" @click="auth.logout()">退出</button>
+            </div>
+          </div>
+        </div>
+      </ProductPopover>
+
+      <ProductButton
+        ref="settingsButtonRef"
+        size="small"
+        variant="ghost"
+        @click="settingsOpen = true"
+      >
+        设置
+      </ProductButton>
+    </div>
 
     <SettingsSurface
       v-model:show="settingsOpen"
@@ -338,109 +411,210 @@ onBeforeUnmount(() => {
 .workspace-toolbar {
   display: flex;
   flex: 0 0 auto;
+  flex-wrap: nowrap;
   align-items: center;
+  justify-content: space-between;
   gap: var(--s-2);
   min-width: 0;
-  padding: var(--s-2);
+  height: var(--control-h);
+  padding: var(--s-2) var(--s-3);
   border-bottom: var(--workspace-border-w) solid var(--border);
   background: var(--surface-2);
+  white-space: nowrap;
 }
 
-.toolbar-collapse,
-.source-drawer-trigger,
-.context-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--control-h-sm);
-  min-height: var(--control-h-sm);
-  padding: 0 var(--s-2);
-  border: var(--workspace-border-w) solid var(--border-strong);
-  border-radius: var(--r-xs);
-  background: var(--surface-2);
-  color: var(--text);
-  font: inherit;
-  cursor: pointer;
-}
-
-.source-drawer-trigger {
-  display: none;
-}
-
-.toolbar-groups {
+.toolbar-leading,
+.toolbar-trailing,
+.toolbar-navigation {
   display: flex;
-  flex: 1 1 auto;
-  flex-wrap: wrap;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
   align-items: center;
   gap: var(--s-2);
   min-width: 0;
-  overflow: hidden;
 }
 
-.toolbar-group {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-1);
+.toolbar-navigation {
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+.source-summary {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: var(--s-2);
   min-width: 0;
-  padding: var(--s-1);
-  border: var(--workspace-border-w) solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--surface);
+  max-width: clamp(120px, 18vw, 360px);
+  padding: 0 var(--s-2);
+  color: var(--text);
+  font-size: var(--fs-sm);
 }
 
-.toolbar-button,
-.toolbar-swatch {
+.source-summary-mode {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+}
+
+.source-summary-name,
+.source-summary-identity {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.source-summary-identity {
+  color: var(--accent-strong);
+}
+
+.move-position {
   display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: var(--control-h-sm);
-  min-height: var(--control-h-sm);
+  min-width: 4.5rem;
   padding: 0 var(--s-2);
+  text-align: center;
+}
+
+.move-position-label {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+.move-position-value {
+  min-width: 0;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.toolbar-menu {
+  display: grid;
+  gap: var(--s-3);
+  min-width: 220px;
+  max-width: min(90vw, 360px);
+  padding: var(--s-3);
+}
+
+.menu-section {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.menu-label {
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.menu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: center;
+}
+
+.menu-source-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}
+
+.menu-source-info strong {
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.menu-source-info span {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+
+.menu-source-info .source-identity {
+  color: var(--accent-strong);
+}
+
+.menu-unavailable {
+  margin: 0;
+  color: var(--warning);
+  font-size: var(--fs-xs);
+}
+
+.menu-swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+}
+
+.toolbar-swatch {
+  display: inline-flex;
+  width: var(--control-h-sm);
+  min-width: var(--control-h-sm);
+  height: var(--control-h-sm);
+  padding: 0;
   border: var(--workspace-border-w) solid var(--border-strong);
   border-radius: var(--r-xs);
-  background: var(--surface-2);
-  color: var(--text);
-  font: inherit;
   cursor: pointer;
 }
 
-a.toolbar-button {
-  text-decoration: none;
-}
-
-.toolbar-swatch {
-  width: var(--control-h-sm);
-  min-width: var(--control-h-sm);
-  padding: 0;
-}
-
-.toolbar-button:disabled,
 .toolbar-swatch:disabled {
   cursor: default;
   opacity: var(--workspace-disabled-opacity);
 }
 
-.toolbar-button[aria-pressed='true'],
 .toolbar-swatch[aria-pressed='true'] {
-  border-color: var(--accent);
-  background: var(--accent-bg);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.menu-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h-sm);
+  padding: 0 var(--s-3);
+  border: var(--workspace-border-w) solid var(--border-strong);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-link:hover {
+  border-color: var(--accent-soft);
+  background: var(--state-hover-bg);
   color: var(--accent-strong);
 }
 
+/* Synchronized with --workspace-bp-tablet in tokens.css. */
 @media (width <= 900px) {
-  .source-drawer-trigger {
-    display: inline-flex;
+  .source-summary {
+    display: none;
   }
 }
 
+/* Synchronized with --workspace-bp-mobile in tokens.css. */
 @media (width <= 560px) {
   .workspace-toolbar {
-    align-items: flex-start;
+    gap: var(--s-1);
+    padding: var(--s-2);
   }
 
-  .toolbar-groups {
-    overflow: auto;
-    scrollbar-gutter: stable;
+  .toolbar-navigation {
+    gap: var(--s-1);
+  }
+
+  .move-position {
+    min-width: 3.5rem;
+  }
+
+  .move-position-label {
+    display: none;
   }
 }
 </style>

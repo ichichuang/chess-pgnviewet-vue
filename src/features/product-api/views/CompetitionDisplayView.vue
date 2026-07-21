@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router'
 
 import { competitionDisplayRepository } from '@/api/productApi'
@@ -27,8 +27,31 @@ const routeRootEl = ref<HTMLElement | null>(null)
 const stageFocusRef = ref<HTMLElement | null>(null)
 const displayGridRef = ref<HTMLElement | null>(null)
 const playerHeaderProbeRef = ref<HTMLElement | null>(null)
+const isFullscreen = ref(false)
 
 useRouteEntryMotion(routeRootEl)
+
+function updateFullscreenState(): void {
+  isFullscreen.value = Boolean(document.fullscreenElement)
+}
+
+function toggleFullscreen(): void {
+  if (typeof document === 'undefined') return
+  if (document.fullscreenElement) {
+    void document.exitFullscreen()
+  } else {
+    void document.documentElement.requestFullscreen()
+  }
+}
+
+onMounted(() => {
+  updateFullscreenState()
+  document.addEventListener('fullscreenchange', updateFullscreenState)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('fullscreenchange', updateFullscreenState)
+})
 
 const detailQuery = useQuery({
   queryKey: computed(() => productQueryKeys.displayDetail(hdid.value)),
@@ -312,6 +335,9 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
       <ProductButton variant="secondary" size="small" @click="$router.push(backToDetail)">
         返回赛事详情
       </ProductButton>
+      <ProductButton variant="secondary" size="small" @click="toggleFullscreen">
+        {{ isFullscreen ? '退出全屏' : '全屏' }}
+      </ProductButton>
     </template>
 
     <template #controls>
@@ -332,10 +358,11 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
           :disabled="roundsQuery.isLoading.value || roundOptions.length === 0"
           @update:model-value="selectRound"
         />
+        <span class="display-update-time">更新 {{ updatedAtText }}</span>
       </div>
 
       <div class="round-selection-mode">
-        <span>{{ roundSelectionText }}</span>
+        <span class="round-selection-text">{{ roundSelectionText }}</span>
         <ProductButton
           v-if="hasExplicitRoundOverride"
           variant="ghost"
@@ -403,16 +430,14 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
     <template #status>
       <span class="status-left">
         <template v-if="rawPairings.length">
-          {{ rawPairings.length }} 台全部同屏 · {{ columns }} 列 × {{ rows }} 行
+          {{ rawPairings.length }} 台 · {{ columns }} 列 × {{ rows }} 行
         </template>
         <template v-else>0 台</template>
-        <template v-if="isRetainedFetching && hasContextData">· 正在更新</template>
+        <span v-if="isRetainedFetching && hasContextData" class="status-refreshing">更新中…</span>
       </span>
       <span class="status-right">
         <span v-if="hasPartialFailure" class="status-warning">部分内容未完成</span>
-        <span>{{ roundSelectionText }}</span>
-        <span>权威实时/最终局面合同尚未提供</span>
-        <span>最后更新 {{ updatedAtText }}</span>
+        <span class="status-contract">权威实时/最终局面合同尚未提供</span>
       </span>
     </template>
   </VenueDisplayShell>
@@ -437,21 +462,35 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
 
 .display-control-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-end;
   gap: var(--s-3);
   min-width: 0;
 }
 
+.display-update-time {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+}
+
 .round-selection-mode {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
   gap: var(--s-2);
   min-width: 0;
   color: var(--text-muted);
   font-size: var(--fs-sm);
+}
+
+.round-selection-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .display-grid {
@@ -478,9 +517,10 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
 .status-left,
 .status-right {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: var(--s-2);
+  min-width: 0;
 }
 
 .status-right {
@@ -488,12 +528,30 @@ const backToDetail = computed<RouteLocationRaw>(() => ({
 }
 
 .status-warning {
+  flex: 0 0 auto;
   color: var(--warning);
   font-weight: 600;
 }
 
-@media (width <= 560px) {
-  .round-selection-mode,
+.status-contract {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-refreshing {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+}
+
+@media (width <= 760px) {
+  .display-control-group,
+  .round-selection-mode {
+    flex-wrap: wrap;
+  }
+
   .status-right {
     justify-content: flex-start;
   }

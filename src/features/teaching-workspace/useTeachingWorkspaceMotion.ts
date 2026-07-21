@@ -2,7 +2,12 @@ import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { gsap } from 'gsap'
 import { Flip } from 'gsap/Flip'
 
-import { motionDuration, motionEase, motionScalar } from '@/features/motion/gsapTokens'
+import {
+  motionDuration,
+  motionEase,
+  motionScalar,
+  prefersReducedMotion,
+} from '@/features/motion/gsapTokens'
 
 gsap.registerPlugin(Flip)
 
@@ -261,31 +266,50 @@ export function useTeachingWorkspaceMotion(options: TeachingWorkspaceMotionOptio
     })
   }
 
-  function onStageEnter(element: Element, done: () => void): void {
-    if (!(element instanceof HTMLElement) || !context) {
-      done()
+  function animateBoardStageContent(showEmpty: boolean): void {
+    if (!context) return
+
+    const empty = rootEl.value?.querySelector<HTMLElement>('.board-stage-empty')
+    const board = rootEl.value?.querySelector<HTMLElement>('.board-stage-board')
+    if (!empty || !board) return
+
+    const duration = motionDuration(rootEl.value, '--workspace-motion-duration-base')
+    gsap.killTweensOf([empty, board])
+
+    if (duration === 0 || prefersReducedMotion()) {
+      gsap.set(empty, {
+        autoAlpha: showEmpty ? 1 : 0,
+        display: showEmpty ? 'flex' : 'none',
+      })
+      gsap.set(board, {
+        autoAlpha: showEmpty ? 0 : 1,
+        display: showEmpty ? 'none' : 'flex',
+      })
       return
     }
 
-    context.add(() => {
-      gsap.fromTo(
-        element,
-        { autoAlpha: 0 },
-        {
-          autoAlpha: 1,
-          duration: motionDuration(rootEl.value, '--workspace-motion-duration-base'),
-          ease: motionEase(rootEl.value, '--workspace-motion-ease-enter'),
-          overwrite: true,
-          clearProps: 'opacity,visibility',
-          onComplete: done,
-          onInterrupt: done,
-        }
-      )
-    })
-  }
+    const entering = showEmpty ? empty : board
+    const leaving = showEmpty ? board : empty
 
-  function onStageLeave(_element: Element, done: () => void): void {
-    done()
+    gsap.set(leaving, { display: 'flex' })
+    gsap.to(leaving, {
+      autoAlpha: 0,
+      duration,
+      ease: motionEase(rootEl.value, '--workspace-motion-ease-state'),
+      overwrite: true,
+      onComplete: () => {
+        gsap.set(leaving, { display: 'none' })
+      },
+    })
+
+    gsap.set(entering, { display: 'flex', autoAlpha: 0 })
+    gsap.to(entering, {
+      autoAlpha: 1,
+      duration,
+      ease: motionEase(rootEl.value, '--workspace-motion-ease-enter'),
+      overwrite: true,
+      clearProps: 'opacity,visibility',
+    })
   }
 
   function clearWorkspaceTweens(): void {
@@ -438,10 +462,9 @@ export function useTeachingWorkspaceMotion(options: TeachingWorkspaceMotionOptio
     onOverlayLeave,
     onPanelEnter,
     onPanelLeave,
-    onStageEnter,
-    onStageLeave,
     onStatusEnter,
     onStatusLeave,
     rootEl,
+    animateBoardStageContent,
   }
 }

@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
 import { gsap } from 'gsap'
 
+import AnalysisPanel from '@/features/analysis/components/AnalysisPanel.vue'
 import { motionDuration, motionEase } from '@/features/motion/gsapTokens'
 import {
   completeLeaveImmediately,
@@ -13,7 +14,7 @@ import type {
   PgnWorkspaceAction,
 } from '@/features/pgn/pgnWorkspaceTypes'
 import type { TeachingDraftScope } from '@/features/pgn/domain/teachingDraft'
-import { useAnalysisStore, usePgnStore, useWorkspaceStore } from '@/stores'
+import { usePgnStore, useWorkspaceStore } from '@/stores'
 import { ProductButton, ProductField, ProductStateBanner, ProductTabs } from '@/ui'
 import type { ProductTabPaneDef } from '@/ui/ProductTabs.vue'
 import type { WorkspacePermissions } from '@/features/workspace-mode/useWorkspacePermissionAdapter'
@@ -28,11 +29,11 @@ const emit = defineEmits<{
   openTeachingDraft: [scope: TeachingDraftScope, focusEditor: () => void]
   saveTeachingDraft: [focusEditor: () => void]
   cancelTeachingDraft: [focusTrigger: () => void]
+  candidateInserted: [nodeId: number]
 }>()
 
 const pgn = usePgnStore()
 const workspace = useWorkspaceStore()
-const analysis = useAnalysisStore()
 const panelId = useId()
 const nodeTitleId = `${panelId}-node-comment-title`
 const gameTitleId = `${panelId}-game-note-title`
@@ -146,24 +147,6 @@ const annotationSummary = computed(() => ({
   arrows: pgn.currentAnnotation?.arrows.length ?? 0,
   squares: pgn.currentAnnotation?.squares.length ?? 0,
 }))
-const currentAnalysis = computed(() => analysis.selectedPositionResult)
-const analysisPresentation = computed(() => analysis.presentation)
-const analysisScore = computed(() => {
-  const score = currentAnalysis.value?.score
-
-  if (!score) {
-    return '—'
-  }
-
-  if (score.kind === 'mate') {
-    return `#${score.whiteValue}`
-  }
-
-  const pawns = score.whiteValue / 100
-
-  return `${pawns > 0 ? '+' : ''}${pawns.toFixed(2)}`
-})
-
 function updateTeachingDraft(text: string): void {
   const draft = pgn.teachingDraft
   if (draft) pgn.updateTeachingDraft(draft.id, text)
@@ -202,6 +185,10 @@ function cancelTeachingDraft(): void {
     'cancelTeachingDraft',
     nodeDraftActive.value ? focusNodeEditTrigger : focusGameEditTrigger
   )
+}
+
+function onAnalysisSelectNode(nodeId: number): void {
+  pgn.selectNode(nodeId)
 }
 </script>
 
@@ -372,21 +359,12 @@ function cancelTeachingDraft(): void {
       </template>
 
       <template #analysis>
-        <section class="panel-content panel-scroll" aria-label="AI 分析状态">
-          <h2>分析面板</h2>
-          <dl class="panel-list">
-            <dt>状态</dt>
-            <dd>{{ analysisPresentation.statusText }}</dd>
-            <template v-if="analysis.resultFreshness === 'retained'">
-              <dt>结果</dt>
-              <dd>此前完成结果</dd>
-            </template>
-            <dt>评估</dt>
-            <dd>{{ analysisScore }}</dd>
-            <dt>最佳着法</dt>
-            <dd>{{ currentAnalysis?.bestMoveSan || '—' }}</dd>
-          </dl>
-        </section>
+        <AnalysisPanel
+          class="panel-content analysis-tab-panel"
+          :permissions="permissions"
+          @candidate-inserted="emit('candidateInserted', $event)"
+          @select-node="onAnalysisSelectNode"
+        />
       </template>
     </ProductTabs>
   </section>
@@ -434,6 +412,14 @@ function cancelTeachingDraft(): void {
   flex: 1 1 auto;
   min-width: 0;
   min-height: 0;
+}
+
+.analysis-tab-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .panel-scroll {

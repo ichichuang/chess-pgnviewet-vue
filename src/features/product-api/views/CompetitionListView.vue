@@ -207,7 +207,7 @@ watch(
 )
 useResultsRefreshMotion(resultRegionEl, resultsRefreshIdentity)
 
-// Delegated press feedback for the result row/card detail links (plain
+// Delegated press feedback for the result row detail links (plain
 // anchors, not ProductButton). Transform-only, fast, and owned by a local
 // gsap.context; navigation itself is never touched.
 let resultLinkPressContext: gsap.Context | null = null
@@ -356,6 +356,13 @@ const typeOptions: ProductSelectOption[] = [
   { label: '线上赛', value: '1024' },
 ]
 
+function statusBadgeClass(status: string): string {
+  if (status === '比赛中') return 'status-ongoing'
+  if (status === '报名中') return 'status-enrolling'
+  if (status === '已结束') return 'status-ended'
+  return 'status-unknown'
+}
+
 function validateDraft(): { year?: string; month?: string } {
   const errors: { year?: string; month?: string } = {}
   const yearNum = Number(draft.year)
@@ -450,46 +457,24 @@ function updatePage(next: number): void {
     </template>
 
     <section class="list-content" aria-labelledby="competition-list-title">
-      <h2 id="competition-list-title" class="page-title">赛事列表</h2>
+      <h1 id="competition-list-title" class="sr-only">赛事列表</h1>
 
-      <form class="filters desktop-filters" @submit.prevent="applyFilters">
-        <ProductField v-model="draft.search" label="搜索" placeholder="赛事名称" />
-        <ProductSelect v-model="draft.status" label="状态" :options="statusOptions" />
-        <ProductSelect v-model="draft.type" label="类型" :options="typeOptions" />
-        <div class="date-fields">
-          <ProductField
-            ref="yearFieldRef"
-            v-model="draft.year"
-            label="年份"
-            input-mode="numeric"
-            :error="validation.year"
-          />
-          <ProductField
-            ref="monthFieldRef"
-            v-model="draft.month"
-            label="月份"
-            input-mode="numeric"
-            :error="validation.month"
-          />
-        </div>
-        <ProductButton native-type="submit" variant="primary" :busy="isFetching"
-          >查询</ProductButton
-        >
-        <ProductButton
-          native-type="button"
-          variant="secondary"
-          :disabled="!canReset"
-          @click="resetFilters"
-        >
-          清除筛选
+      <form class="filter-bar" @submit.prevent="applyFilters">
+        <ProductField
+          v-model="draft.search"
+          class="filter-search"
+          label="搜索"
+          placeholder="赛事名称"
+        />
+        <ProductSelect
+          v-model="draft.status"
+          class="filter-status"
+          label="状态"
+          :options="statusOptions"
+        />
+        <ProductButton native-type="submit" variant="primary" :busy="isFetching">
+          查询
         </ProductButton>
-      </form>
-
-      <form class="filters mobile-filters" @submit.prevent="applyFilters">
-        <ProductField v-model="draft.search" label="搜索" placeholder="赛事名称" />
-        <ProductButton native-type="submit" variant="primary" :busy="isFetching"
-          >查询</ProductButton
-        >
         <ProductButton
           native-type="button"
           variant="secondary"
@@ -497,7 +482,7 @@ function updatePage(next: number): void {
           aria-controls="competition-filter-sheet"
           @click="filterSheetOpen = true"
         >
-          筛选
+          更多筛选
         </ProductButton>
       </form>
 
@@ -527,9 +512,9 @@ function updatePage(next: number): void {
           />
         </div>
         <div class="sheet-actions">
-          <ProductButton variant="primary" :busy="isFetching" @click="applyFilters"
-            >应用</ProductButton
-          >
+          <ProductButton variant="primary" :busy="isFetching" @click="applyFilters">
+            应用
+          </ProductButton>
           <ProductButton variant="secondary" @click="filterSheetOpen = false">取消</ProductButton>
         </div>
       </ProductSheet>
@@ -556,33 +541,27 @@ function updatePage(next: number): void {
       </ProductStateBanner>
 
       <section ref="resultRegionEl" class="result-region" aria-labelledby="result-heading">
-        <div class="result-meta">
-          <h3 id="result-heading" ref="resultHeadingRef" class="result-heading" tabindex="-1">
+        <header class="result-region-header">
+          <h2 id="result-heading" ref="resultHeadingRef" class="result-heading" tabindex="-1">
             赛事结果
-          </h3>
-          <span aria-live="polite">{{ resultMetaText }}</span>
-          <ProductPagination
-            :page="pageOneBased"
-            :page-count="pageCount || 1"
-            :disabled="isFetching || completeFailure"
-            @update:page="updatePage"
+          </h2>
+          <span class="result-meta" aria-live="polite">{{ resultMetaText }}</span>
+        </header>
+
+        <div class="result-body">
+          <ResourceState
+            v-if="initialLoading || completeFailure || completeEmpty"
+            :pending="initialLoading"
+            :error-text="errorState?.text ?? ''"
+            :error-kind="errorState?.kind ?? 'error'"
+            :retryable="errorState?.retryable ?? false"
+            :empty="completeEmpty"
+            loading-text="正在加载赛事列表"
+            empty-text="暂无赛事"
+            @retry="competitionQuery.refetch()"
           />
-        </div>
 
-        <ResourceState
-          v-if="initialLoading || completeFailure || completeEmpty"
-          :pending="initialLoading"
-          :error-text="errorState?.text ?? ''"
-          :error-kind="errorState?.kind ?? 'error'"
-          :retryable="errorState?.retryable ?? false"
-          :empty="completeEmpty"
-          loading-text="正在加载赛事列表"
-          empty-text="暂无赛事"
-          @retry="competitionQuery.refetch()"
-        />
-
-        <template v-if="hasData">
-          <table class="desktop-table">
+          <table v-if="hasData" class="desktop-table">
             <thead>
               <tr>
                 <th scope="col">赛事</th>
@@ -595,16 +574,26 @@ function updatePage(next: number): void {
             <tbody>
               <tr v-for="competition in competitions" :key="competition.id">
                 <td>
-                  <strong>{{ competition.title }}</strong>
-                  <span
-                    >{{ competition.countSummary || competition.category || competition.type }}</span
+                  <RouterLink
+                    class="row-title-link"
+                    :to="{ name: 'competition-detail', params: { hdid: competition.id } }"
                   >
+                    <strong>{{ competition.title }}</strong>
+                  </RouterLink>
+                  <span class="row-meta">
+                    {{ competition.countSummary || competition.category || competition.type }}
+                  </span>
                 </td>
-                <td>{{ competition.status || '信息暂缺' }}</td>
+                <td>
+                  <span class="status-badge" :class="statusBadgeClass(competition.status)">
+                    {{ competition.status || '信息暂缺' }}
+                  </span>
+                </td>
                 <td>{{ competition.startTime || '信息暂缺' }}</td>
                 <td>{{ competition.organizer || '信息暂缺' }}</td>
                 <td>
                   <RouterLink
+                    class="row-entry-link"
                     :to="{ name: 'competition-detail', params: { hdid: competition.id } }"
                   >
                     查看详情
@@ -614,12 +603,14 @@ function updatePage(next: number): void {
             </tbody>
           </table>
 
-          <ul class="narrow-list">
+          <ul v-if="hasData" class="narrow-list">
             <li v-for="competition in competitions" :key="competition.id">
               <div class="narrow-item">
                 <div class="narrow-primary">
                   <strong>{{ competition.title }}</strong>
-                  <span>{{ competition.status || '信息暂缺' }}</span>
+                  <span class="status-badge" :class="statusBadgeClass(competition.status)">
+                    {{ competition.status || '信息暂缺' }}
+                  </span>
                 </div>
                 <div class="narrow-secondary">
                   <span>{{ competition.startTime || '信息暂缺' }}</span>
@@ -628,13 +619,25 @@ function updatePage(next: number): void {
                     >{{ competition.countSummary || competition.category || competition.type }}</span
                   >
                 </div>
-                <RouterLink :to="{ name: 'competition-detail', params: { hdid: competition.id } }">
+                <RouterLink
+                  class="row-entry-link"
+                  :to="{ name: 'competition-detail', params: { hdid: competition.id } }"
+                >
                   查看详情
                 </RouterLink>
               </div>
             </li>
           </ul>
-        </template>
+        </div>
+
+        <footer class="result-region-footer">
+          <ProductPagination
+            :page="pageOneBased"
+            :page-count="pageCount || 1"
+            :disabled="isFetching || completeFailure"
+            @update:page="updatePage"
+          />
+        </footer>
       </section>
     </section>
   </ProductRouteShell>
@@ -649,44 +652,44 @@ function updatePage(next: number): void {
   min-height: 0;
 }
 
-.page-title {
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
   margin: 0;
-  font-size: var(--fs-lg);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
-.filters {
+.filter-bar {
   display: flex;
-  flex-wrap: wrap;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
   align-items: end;
   gap: var(--s-3);
-}
-
-.filters > :not(.date-fields) {
-  flex: 1 1 12rem;
   min-width: 0;
 }
 
-.desktop-filters .date-fields {
-  display: flex;
-  flex: 1 1 16rem;
-  gap: var(--s-2);
+.filter-search {
+  flex: 1 1 auto;
   min-width: 0;
 }
 
-.desktop-filters .date-fields > * {
-  flex: 1 1 50%;
+.filter-status {
+  flex: 0 0 8rem;
   min-width: 0;
-}
-
-.mobile-filters {
-  display: none;
 }
 
 .applied-summary {
   display: flex;
+  flex: 0 0 auto;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--s-2);
+  min-width: 0;
   color: var(--text-muted);
   font-size: var(--fs-sm);
 }
@@ -696,19 +699,27 @@ function updatePage(next: number): void {
 }
 
 .result-region {
+  display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
   min-height: 0;
-  overflow: auto;
-  scrollbar-gutter: stable;
+  border: var(--workspace-border-w) solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  overflow: hidden;
 }
 
-.result-meta {
+.result-region-header {
   display: flex;
+  flex: 0 0 auto;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--s-3);
-  margin-bottom: var(--s-3);
+  min-width: 0;
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--workspace-border-w) solid var(--border);
+  background: var(--surface-2);
 }
 
 .result-heading {
@@ -717,9 +728,25 @@ function updatePage(next: number): void {
   outline: none;
 }
 
-.result-meta span {
+.result-meta {
   color: var(--text-muted);
   font-size: var(--fs-sm);
+}
+
+.result-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.result-region-footer {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  padding: var(--s-3) var(--s-4);
+  border-top: var(--workspace-border-w) solid var(--border);
+  background: var(--surface-2);
 }
 
 .desktop-table {
@@ -730,10 +757,25 @@ function updatePage(next: number): void {
 
 .desktop-table th,
 .desktop-table td {
-  padding: var(--s-3);
+  padding: var(--s-3) var(--s-4);
   border-bottom: var(--workspace-border-w) solid var(--border);
   text-align: left;
   vertical-align: top;
+}
+
+.desktop-table thead th {
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.desktop-table tbody tr {
+  transition: background-color var(--workspace-motion-duration-fast) var(--workspace-motion-ease-standard);
+}
+
+.desktop-table tbody tr:hover {
+  background: var(--state-hover-bg);
 }
 
 .desktop-table td:first-child {
@@ -741,8 +783,50 @@ function updatePage(next: number): void {
   gap: var(--s-1);
 }
 
-.desktop-table a,
-.narrow-list a {
+.row-title-link {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.row-title-link:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.row-meta {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-h-sm);
+  padding: 0 var(--s-2);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.status-badge.status-ongoing {
+  background: var(--accent-bg);
+  color: var(--accent-strong);
+}
+
+.status-badge.status-enrolling {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.status-badge.status-ended {
+  background: var(--surface-3);
+  color: var(--text-muted);
+}
+
+.row-entry-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -753,8 +837,15 @@ function updatePage(next: number): void {
   background: var(--surface-2);
   color: var(--text);
   font: inherit;
+  font-size: var(--fs-sm);
   text-decoration: none;
   cursor: pointer;
+}
+
+.row-entry-link:hover {
+  border-color: var(--accent-soft);
+  background: var(--state-hover-bg);
+  color: var(--accent-strong);
 }
 
 .narrow-list {
@@ -765,9 +856,8 @@ function updatePage(next: number): void {
 }
 
 .narrow-list li {
-  padding: var(--s-3);
+  padding: var(--s-3) var(--s-4);
   border-bottom: var(--workspace-border-w) solid var(--border);
-  background: var(--surface);
 }
 
 .narrow-item {
@@ -784,11 +874,6 @@ function updatePage(next: number): void {
 }
 
 .narrow-primary span {
-  color: var(--text-muted);
-  font-size: var(--fs-sm);
-}
-
-.desktop-table td:first-child span {
   color: var(--text-muted);
   font-size: var(--fs-sm);
 }
@@ -814,21 +899,26 @@ function updatePage(next: number): void {
 }
 
 @media (pointer: coarse), (width <= 1024px) {
-  .desktop-table a,
-  .narrow-list a {
+  .row-entry-link {
     min-height: var(--board-touch-target-min);
   }
 }
 
-@media (width <= 960px) {
-  .desktop-filters {
-    display: none;
+@media (width <= 900px) {
+  .filter-bar {
+    flex-wrap: wrap;
   }
 
-  .mobile-filters {
-    display: flex;
+  .filter-search {
+    flex: 1 1 100%;
   }
 
+  .filter-status {
+    flex: 1 1 auto;
+  }
+}
+
+@media (width <= 760px) {
   .desktop-table {
     display: none;
   }
@@ -836,6 +926,11 @@ function updatePage(next: number): void {
   .narrow-list {
     display: grid;
     gap: var(--s-2);
+  }
+
+  .result-region-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 </style>
